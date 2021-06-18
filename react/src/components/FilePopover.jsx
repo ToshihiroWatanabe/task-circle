@@ -21,7 +21,7 @@ function Alert(props) {
 const useStyles = makeStyles((theme) => ({}));
 
 /**
- * アカウントアイコンメニューの関数コンポーネントです。
+ * アカウントアイコンメニューのコンポーネントです。
  */
 const FilePopover = memo((props) => {
   /** Material-UIのスタイル */

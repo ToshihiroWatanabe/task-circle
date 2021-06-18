@@ -1,5 +1,4 @@
 import React, { memo, useContext, useState } from "react";
-import AccountCircleIcon from "@material-ui/icons/AccountCircle";
 import {
   Button,
   IconButton,
@@ -13,10 +12,11 @@ import {
   Typography,
 } from "@material-ui/core";
 import "./AccountPopover.css";
+import AccountCircleIcon from "@material-ui/icons/AccountCircle";
 import SettingsIcon from "@material-ui/icons/Settings";
+import SyncIcon from "@material-ui/icons/Sync";
 import { Link } from "react-router-dom";
 import { Context } from "../contexts/Context";
-import SyncIcon from "@material-ui/icons/Sync";
 
 const useStyles = makeStyles((theme) => ({
   button: {

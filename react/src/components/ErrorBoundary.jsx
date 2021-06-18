@@ -1,7 +1,7 @@
 import React from "react";
 
 /**
- * エラー画面を表示するクラスコンポーネントです。
+ * エラー画面を描画するコンポーネントです。
  */
 class ErrorBoundary extends React.Component {
   constructor(props) {
@@ -10,14 +10,11 @@ class ErrorBoundary extends React.Component {
   }
 
   componentDidCatch(error, errorInfo) {
-    // 以下のコンポーネントでエラーをキャッチし、エラーメッセージを表示して再レンダリングします。
     this.setState({ error, errorInfo });
-    // ここでエラーメッセージをエラー報告サービスに記録することもできます。
   }
 
   render() {
     if (this.state.errorInfo) {
-      // Error path
       return (
         <div>
           <h2>エラーが発生しました。</h2>
@@ -30,7 +27,6 @@ class ErrorBoundary extends React.Component {
         </div>
       );
     }
-    // 通常、ただ子要素を描画するだけ
     return this.props.children;
   }
 }

@@ -4,10 +4,10 @@ import { Link } from "react-router-dom";
 import ReportAnalytics from "./ReportAnalytics";
 
 const Portfolio = () => {
-  const [reports, setReports] = useState([]);
-  const [userName, setUserName] = useState("");
-  const [introduction, setIntroduction] = useState("");
-  const [skillSet, setSkillSet] = useState([]);
+  const [reports] = useState([]);
+  const [userName] = useState("");
+  const [introduction] = useState("");
+  const [skillSet] = useState([]);
   const reportId = document.location.href.split("/").slice(-1)[0];
 
   const [message, setMessage] = useState("読込中...");
