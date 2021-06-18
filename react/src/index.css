@@ -1,0 +1,4 @@
+* {
+    /* ボタンをクリックしたときの枠線を消す */
+    outline: none !important;
+}

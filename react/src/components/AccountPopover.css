@@ -1,0 +1,6 @@
+.MuiPopover-paper {
+    min-width: 200px;
+    width: 20rem;
+    max-width: 360px;
+    position: absolute !important;
+}
