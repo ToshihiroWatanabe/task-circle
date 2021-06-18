@@ -7,18 +7,21 @@ import { ContextProvider } from "./contexts/Context";
 import { BrowserRouter } from "react-router-dom";
 import "./index.css";
 import { CssBaseline, MuiThemeProvider } from "@material-ui/core";
+import ErrorBoundary from "./components/ErrorBoundary";
 import { theme } from "./theme";
 
 ReactDOM.render(
-  <BrowserRouter>
-    <ContextProvider>
-      <MuiThemeProvider theme={theme}>
-        <CssBaseline>
-          <App />
-        </CssBaseline>
-      </MuiThemeProvider>
-    </ContextProvider>
-  </BrowserRouter>,
+  <ErrorBoundary>
+    <BrowserRouter>
+      <ContextProvider>
+        <MuiThemeProvider theme={theme}>
+          <CssBaseline>
+            <App />
+          </CssBaseline>
+        </MuiThemeProvider>
+      </ContextProvider>
+    </BrowserRouter>
+  </ErrorBoundary>,
   document.getElementById("app")
 );
 

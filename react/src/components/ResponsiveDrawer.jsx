@@ -16,24 +16,23 @@ import {
   Typography,
   SwipeableDrawer,
 } from "@material-ui/core";
-
 import MenuIcon from "@material-ui/icons/Menu";
 import DescriptionIcon from "@material-ui/icons/Description";
 import AssessmentIcon from "@material-ui/icons/Assessment";
 import InfoIcon from "@material-ui/icons/Info";
+import SettingsIcon from "@material-ui/icons/Settings";
+import TimerIcon from "@material-ui/icons/Timer";
+import { Context } from "../contexts/Context";
 import FilePopover from "./FilePopover";
 import AccountPopover from "./AccountPopover";
-import SettingsIcon from "@material-ui/icons/Settings";
-import PortraitIcon from "@material-ui/icons/Portrait";
-import { Context } from "../contexts/Context";
 
 /** ドロワーの横幅 */
 const DRAWER_WIDTH = "15rem";
 
 const pages = [
-  { label: "日報管理", path: "/" },
+  { label: "タスク＆タイマー", path: "/" },
+  { label: "日報管理", path: "/reports" },
   { label: "分析レポート", path: "/analytics" },
-  { label: "ポートフォリオ", path: "/portfolio" },
   { label: "設定", path: "/settings" },
   { label: "このアプリについて", path: "/about" },
 ];
@@ -78,11 +77,9 @@ const useStyles = makeStyles((theme) => ({
  */
 const ResponsiveDrawer = memo((props) => {
   const { window } = props;
-  const location = useLocation();
-  /** Material-UIのスタイル */
   const classes = useStyles();
-  /** Material-UIのテーマ */
   const theme = useTheme();
+  const location = useLocation();
   const [state, setState] = useContext(Context);
   const [mobileOpen, setMobileOpen] = useState(false);
 
@@ -97,35 +94,32 @@ const ResponsiveDrawer = memo((props) => {
 
   const drawer = (
     <>
-      <div className={classes.toolbar} />
+      <div className={classes.toolbar}></div>
       <Divider />
       <List>
-        {pages.map(
-          (page, index) =>
-            (state.userId !== "" || page.label !== "ポートフォリオ") && (
-              <Fragment key={index}>
-                <Link
-                  to={page.path}
-                  style={{ color: "inherit", textDecoration: "none" }}
-                >
-                  <ListItem
-                    button
-                    onClick={() => handleListItemClick(index)}
-                    data-num={index.toString()}
-                  >
-                    <ListItemIcon>
-                      {page.label === "日報管理" ? <DescriptionIcon /> : ""}
-                      {page.label === "分析レポート" ? <AssessmentIcon /> : ""}
-                      {page.label === "ポートフォリオ" ? <PortraitIcon /> : ""}
-                      {page.label === "設定" ? <SettingsIcon /> : ""}
-                      {page.label === "このアプリについて" ? <InfoIcon /> : ""}
-                    </ListItemIcon>
-                    <ListItemText primary={page.label} />
-                  </ListItem>
-                </Link>
-              </Fragment>
-            )
-        )}
+        {pages.map((page, index) => (
+          <Fragment key={index}>
+            <Link
+              to={page.path}
+              style={{ color: "inherit", textDecoration: "none" }}
+            >
+              <ListItem
+                button
+                onClick={() => handleListItemClick(index)}
+                data-num={index.toString()}
+              >
+                <ListItemIcon>
+                  {page.label === "タスク＆タイマー" ? <TimerIcon /> : ""}
+                  {page.label === "日報管理" ? <DescriptionIcon /> : ""}
+                  {page.label === "分析レポート" ? <AssessmentIcon /> : ""}
+                  {page.label === "設定" ? <SettingsIcon /> : ""}
+                  {page.label === "このアプリについて" ? <InfoIcon /> : ""}
+                </ListItemIcon>
+                <ListItemText primary={page.label} />
+              </ListItem>
+            </Link>
+          </Fragment>
+        ))}
       </List>
     </>
   );
