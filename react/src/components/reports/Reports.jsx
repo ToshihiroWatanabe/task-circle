@@ -96,26 +96,30 @@ const Reports = memo(() => {
   useEffect(() => {
     setState((state) => {
       setCategories((categories) => {
-        for (let i = 0; i < state.reports.length; i++) {
-          for (let j = 0; j < state.reports[i].report_items.length; j++) {
-            categories.push({
-              label: state.reports[i].report_items[j].category,
-              value: state.reports[i].report_items[j].category,
-            });
-          }
-        }
-        // 重複を削除
-        const newCategories = categories.filter((element, index, array) => {
-          return (
-            array.findIndex((element2) => element.label === element2.label) ===
-            index
-          );
-        });
-        return newCategories;
+        return getCategories();
       });
       return state;
     });
   }, []);
+
+  const getCategories = () => {
+    for (let i = 0; i < state.reports.length; i++) {
+      for (let j = 0; j < state.reports[i].report_items.length; j++) {
+        categories.push({
+          label: state.reports[i].report_items[j].category,
+          value: state.reports[i].report_items[j].category,
+        });
+      }
+    }
+    // 重複を削除
+    const newCategories = categories.filter((element, index, array) => {
+      return (
+        array.findIndex((element2) => element.label === element2.label) ===
+        index
+      );
+    });
+    return newCategories;
+  };
 
   /**
    * カレンダーの月が変わったときの処理です。
@@ -279,6 +283,7 @@ const Reports = memo(() => {
                 <div className={classes.reportCard}>
                   <ReportCard
                     report={report}
+                    categories={categories}
                     onEditButtonClick={onEditButtonClick}
                     onDeleteButtonClick={onDeleteButtonClick}
                   />

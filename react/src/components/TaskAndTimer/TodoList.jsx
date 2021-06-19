@@ -2,18 +2,18 @@ import React, { useState } from "react";
 import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
 import uuid from "uuid/v4";
 
-const itemsFromBackend = [
-  { id: uuid(), content: "First task" },
-  { id: uuid(), content: "Second task" },
-  { id: uuid(), content: "Third task" },
-  { id: uuid(), content: "Fourth task" },
-  { id: uuid(), content: "Fifth task" },
+const items = [
+  { id: uuid(), content: "予習" },
+  { id: uuid(), content: "復習" },
+  { id: uuid(), content: "テスト" },
+  { id: uuid(), content: "ふりかえり" },
+  { id: uuid(), content: "課題" },
 ];
 
-const columnsFromBackend = {
+const columnsFrom = {
   [uuid()]: {
     name: "やること",
-    items: itemsFromBackend,
+    items: items,
   },
   [uuid()]: {
     name: "完了済み",
@@ -59,7 +59,7 @@ const onDragEnd = (result, columns, setColumns) => {
 };
 
 function TodoList() {
-  const [columns, setColumns] = useState(columnsFromBackend);
+  const [columns, setColumns] = useState(columnsFrom);
   return (
     // <div style={{ display: "flex", justifyContent: "center", height: "100%" }}>
     <div style={{ display: "flex", height: "100%" }}>
