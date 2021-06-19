@@ -1,10 +1,17 @@
 import React, { useState } from "react";
 import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
-import { Chip, IconButton, makeStyles } from "@material-ui/core";
+import {
+  Chip,
+  IconButton,
+  LinearProgress,
+  makeStyles,
+} from "@material-ui/core";
 import Card from "@material-ui/core/Card";
 import uuid from "uuid/v4";
 import PlayArrowIcon from "@material-ui/icons/PlayArrow";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
+import LinearDeterminate from "components/TaskAndTimer/LinearDeterminate";
+import "components/TaskAndTimer/TodoList.css";
 
 const itemsFrom = [
   {
@@ -100,7 +107,6 @@ const useStyles = makeStyles((theme) => ({
     margin: "0 0 8px 0",
     minHeight: "50px",
     color: "white",
-    display: "flex",
   },
 }));
 
@@ -182,47 +188,56 @@ const TodoList = () => {
                                       onItemClick(index, event)
                                     }
                                   >
-                                    <IconButton
-                                      size="small"
-                                      color="inherit"
-                                      style={{
-                                        marginLeft: "-0.5rem",
-                                        marginRight: "0.5rem",
-                                        visibility: item.isSelected
-                                          ? ""
-                                          : "hidden",
-                                      }}
-                                    >
-                                      <PlayArrowIcon />
-                                    </IconButton>
-                                    <div style={{ flexGrow: "1" }}>
-                                      <div style={{ marginBottom: "0.2rem" }}>
-                                        {item.category !== "" && (
-                                          <Chip
-                                            label={item.category}
-                                            size="small"
-                                            style={{
-                                              marginTop: "-0.2rem",
-                                              marginRight: "0.5rem",
-                                              fontSize: "0.5rem",
-                                              height: "1rem",
-                                              width: "3.5rem",
-                                            }}
-                                          />
-                                        )}
-                                        {item.content}
+                                    <div style={{ display: "flex" }}>
+                                      <IconButton
+                                        size="small"
+                                        color="inherit"
+                                        style={{
+                                          marginLeft: "-0.75rem",
+                                          marginRight: "0.25rem",
+                                          visibility: item.isSelected
+                                            ? ""
+                                            : "hidden",
+                                        }}
+                                      >
+                                        <PlayArrowIcon />
+                                      </IconButton>
+                                      <div style={{ flexGrow: "1" }}>
+                                        <div style={{ marginBottom: "0.2rem" }}>
+                                          {item.category !== "" && (
+                                            <Chip
+                                              label={item.category}
+                                              size="small"
+                                              style={{
+                                                marginTop: "-0.2rem",
+                                                marginRight: "0.5rem",
+                                                fontSize: "0.5rem",
+                                                height: "1rem",
+                                                width: "3.5rem",
+                                              }}
+                                            />
+                                          )}
+                                          {item.content}
+                                        </div>
+                                        <div
+                                          style={{
+                                            fontSize: "0.75rem",
+                                            marginTop: "0.5rem",
+                                            marginBottom: "-0.2rem",
+                                          }}
+                                        >
+                                          00:00:00
+                                        </div>
                                       </div>
-                                      <div style={{ fontSize: "0.75rem" }}>
-                                        00:00:00
-                                      </div>
+                                      <IconButton
+                                        size="small"
+                                        color="inherit"
+                                        style={{ marginRight: "-0.5rem" }}
+                                      >
+                                        <MoreVertIcon />
+                                      </IconButton>
                                     </div>
-                                    <IconButton
-                                      size="small"
-                                      color="inherit"
-                                      style={{ marginRight: "-0.5rem" }}
-                                    >
-                                      <MoreVertIcon />
-                                    </IconButton>
+                                    <LinearDeterminate />
                                   </Card>
                                 );
                               }}
