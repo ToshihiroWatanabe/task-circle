@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
-import { IconButton, makeStyles } from "@material-ui/core";
+import { Chip, IconButton, makeStyles } from "@material-ui/core";
 import Card from "@material-ui/core/Card";
 import uuid from "uuid/v4";
 import PlayArrowIcon from "@material-ui/icons/PlayArrow";
+import MoreVertIcon from "@material-ui/icons/MoreVert";
 
 const itemsFrom = [
   {
@@ -25,7 +26,7 @@ const itemsFrom = [
   {
     id: uuid(),
     category: "Java",
-    content: "テスト",
+    content: "JUnitのテストコードを書く",
     spentMinute: 0,
     estimatedMinute: 0,
     isSelected: false,
@@ -40,7 +41,7 @@ const itemsFrom = [
   },
   {
     id: uuid(),
-    category: "",
+    category: "カテゴリ",
     content: "課題",
     spentMinute: 0,
     estimatedMinute: 0,
@@ -142,7 +143,7 @@ const TodoList = () => {
                 <Droppable droppableId={columnId} key={columnId}>
                   {(provided, snapshot) => {
                     return (
-                      <div
+                      <Card
                         {...provided.droppableProps}
                         ref={provided.innerRef}
                         style={{
@@ -150,7 +151,8 @@ const TodoList = () => {
                             ? "lightblue"
                             : "lightgrey",
                           padding: 4,
-                          minWidth: 300,
+                          minWidth: 320,
+                          width: 320,
                           minHeight: 500,
                         }}
                       >
@@ -184,6 +186,8 @@ const TodoList = () => {
                                       size="small"
                                       color="inherit"
                                       style={{
+                                        marginLeft: "-0.5rem",
+                                        marginRight: "0.5rem",
                                         visibility: item.isSelected
                                           ? ""
                                           : "hidden",
@@ -191,10 +195,34 @@ const TodoList = () => {
                                     >
                                       <PlayArrowIcon />
                                     </IconButton>
-                                    <div>
-                                      <div>{item.content}</div>
-                                      <div>00:00:00</div>
+                                    <div style={{ flexGrow: "1" }}>
+                                      <div style={{ marginBottom: "0.2rem" }}>
+                                        {item.category !== "" && (
+                                          <Chip
+                                            label={item.category}
+                                            size="small"
+                                            style={{
+                                              marginTop: "-0.2rem",
+                                              marginRight: "0.5rem",
+                                              fontSize: "0.5rem",
+                                              height: "1rem",
+                                              width: "3.5rem",
+                                            }}
+                                          />
+                                        )}
+                                        {item.content}
+                                      </div>
+                                      <div style={{ fontSize: "0.75rem" }}>
+                                        00:00:00
+                                      </div>
                                     </div>
+                                    <IconButton
+                                      size="small"
+                                      color="inherit"
+                                      style={{ marginRight: "-0.5rem" }}
+                                    >
+                                      <MoreVertIcon />
+                                    </IconButton>
                                   </Card>
                                 );
                               }}
@@ -202,7 +230,7 @@ const TodoList = () => {
                           );
                         })}
                         {provided.placeholder}
-                      </div>
+                      </Card>
                     );
                   }}
                 </Droppable>
