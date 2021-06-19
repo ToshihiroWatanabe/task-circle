@@ -1,4 +1,4 @@
-import React, { Fragment, useContext, useEffect, useState } from "react";
+import React, { Fragment, useContext, useEffect, useState, memo } from "react";
 import ReportDatePicker from "components/reports/ReportDatePicker";
 import ReportFormDialog from "components/reports/ReportFormDialog";
 import ReportCard from "components/reports/ReportCard";
@@ -8,6 +8,8 @@ import { Button, Typography } from "@material-ui/core";
 import AddCircleOutlineIcon from "@material-ui/icons/AddCircleOutline";
 import { Context } from "contexts/Context";
 import SyncSnackbar from "components/SimpleSnackbar";
+
+let loadingThreshold = 31;
 
 const DEFAULT_REPORT = {
   date: "",
@@ -24,7 +26,7 @@ const DEFAULT_REPORT = {
 };
 
 const useStyles = makeStyles((theme) => ({
-  contents1: {
+  topContent: {
     [theme.breakpoints.up("md")]: { display: "flex" },
   },
   leftColumn: {
@@ -75,7 +77,7 @@ const useStyles = makeStyles((theme) => ({
 /**
  * 日報管理ページのコンポーネントです。
  */
-const Reports = () => {
+const Reports = memo(() => {
   const classes = useStyles();
   const [state, setState] = useContext(Context);
   const [selectedDate, setSelectedDate] = useState(new Date());
@@ -192,7 +194,7 @@ const Reports = () => {
 
   return (
     <>
-      <div className={classes.contents1}>
+      <div className={classes.topContent}>
         <div className={classes.leftColumn}>
           {/* 日付選択カレンダー */}
           <ReportDatePicker
@@ -259,23 +261,25 @@ const Reports = () => {
         })
         .map((report, index) => {
           return (
-            <div key={index} className={classes.reportCard}>
-              <ReportCard
-                report={report}
-                onEditButtonClick={onEditButtonClick}
-                onDeleteButtonClick={onDeleteButtonClick}
-              />
-            </div>
+            <Fragment key={index}>
+              {index < loadingThreshold && (
+                <div className={classes.reportCard}>
+                  <ReportCard
+                    report={report}
+                    onEditButtonClick={onEditButtonClick}
+                    onDeleteButtonClick={onDeleteButtonClick}
+                  />
+                </div>
+              )}
+            </Fragment>
           );
         })}
-
       {/* その月の日報がないとき→「日報がありません」と表示 */}
       {state.reports.filter((report, index) => {
         return report.date.includes(calendarMonth);
       }).length === 0 && (
         <div className={classes.monthReportNotFound}>日報がありません</div>
       )}
-
       {/* 日報入力ダイアログ */}
       <ReportFormDialog
         open={formDialogOpen}
@@ -291,6 +295,6 @@ const Reports = () => {
       />
     </>
   );
-};
+});
 
 export default Reports;
