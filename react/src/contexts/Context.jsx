@@ -10,13 +10,22 @@ export const Context = createContext([{}, () => {}]);
 export function ContextProvider(props) {
   /** グローバルstate */
   const [state, setState] = useState({
+    // Slackに投稿するときの名前
     slackUserName: "",
+    // Slack Webhook URL
     slackWebhookUrl: "",
+    // ユーザーID
     userId: "",
+    // パスワード
     password: "",
+    // 日報ID
     reportId: "",
+    // 日報の更新日時
     reportUpdatedAt: "",
+    // 日報
     reports: [],
+    // タイマーがオンかどうか
+    isTimerOn: false,
   });
 
   return (

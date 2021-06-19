@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
 import {
   Chip,
@@ -12,6 +12,8 @@ import PlayArrowIcon from "@material-ui/icons/PlayArrow";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
 import LinearDeterminate from "components/TaskAndTimer/LinearDeterminate";
 import "components/TaskAndTimer/TodoList.css";
+import { Context } from "contexts/Context";
+import StopIcon from "@material-ui/icons/Stop";
 
 const itemsFrom = [
   {
@@ -63,6 +65,13 @@ const columnsFrom = {
   },
 };
 
+/**
+ * ドラッグが終わったときの処理です。
+ * @param {*} result
+ * @param {*} columns
+ * @param {*} setColumns
+ * @returns
+ */
 const onDragEnd = (result, columns, setColumns) => {
   if (!result.destination) return;
   const { source, destination } = result;
@@ -110,10 +119,19 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+/**
+ * ToDoリストのコンポーネントです。
+ */
 const TodoList = () => {
   const classes = useStyles();
+  const [state, setState] = useContext(Context);
   const [columns, setColumns] = useState(columnsFrom);
 
+  /**
+   * タスクがクリックされたときの処理です。
+   * @param {*} index
+   * @param {*} event
+   */
   const onItemClick = (index, event) => {
     setColumns((columns) => {
       console.log(Object.values(columns)[0]);
@@ -126,6 +144,17 @@ const TodoList = () => {
         return item;
       });
       return { ...columns };
+    });
+  };
+
+  /**
+   * タイマーの開始・停止ボタンがクリックされたときの処理です。
+   * @param {*} index
+   */
+  const onPlayButtonClick = (index) => {
+    console.log(index);
+    setState((state) => {
+      return { ...state, isTimerOn: !state.isTimerOn };
     });
   };
 
@@ -199,8 +228,10 @@ const TodoList = () => {
                                             ? ""
                                             : "hidden",
                                         }}
+                                        onClick={() => onPlayButtonClick(index)}
                                       >
-                                        <PlayArrowIcon />
+                                        {state.isTimerOn && <StopIcon />}
+                                        {!state.isTimerOn && <PlayArrowIcon />}
                                       </IconButton>
                                       <div style={{ flexGrow: "1" }}>
                                         <div style={{ marginBottom: "0.2rem" }}>
