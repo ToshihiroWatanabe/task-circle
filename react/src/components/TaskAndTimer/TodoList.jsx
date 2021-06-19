@@ -1,23 +1,22 @@
 import React, { useState } from "react";
 import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
+import { IconButton, makeStyles } from "@material-ui/core";
+import Card from "@material-ui/core/Card";
 import uuid from "uuid/v4";
+import PlayArrowIcon from "@material-ui/icons/PlayArrow";
 
-const items = [
-  { id: uuid(), content: "予習" },
-  { id: uuid(), content: "復習" },
-  { id: uuid(), content: "テスト" },
-  { id: uuid(), content: "ふりかえり" },
-  { id: uuid(), content: "課題" },
+const itemsFrom = [
+  { id: uuid(), content: "予習", isSelected: true },
+  { id: uuid(), content: "復習", isSelected: false },
+  { id: uuid(), content: "テスト", isSelected: false },
+  { id: uuid(), content: "ふりかえり", isSelected: false },
+  { id: uuid(), content: "課題", isSelected: false },
 ];
 
 const columnsFrom = {
   [uuid()]: {
-    name: "やること",
-    items: items,
-  },
-  [uuid()]: {
-    name: "完了済み",
-    items: [],
+    name: "タスク",
+    items: itemsFrom,
   },
 };
 
@@ -58,8 +57,25 @@ const onDragEnd = (result, columns, setColumns) => {
   }
 };
 
-function TodoList() {
+const useStyles = makeStyles((theme) => ({}));
+
+const TodoList = () => {
+  const classes = useStyles();
   const [columns, setColumns] = useState(columnsFrom);
+
+  const onItemClick = (index, event) => {
+    setColumns((columns) => {
+      console.log(columns);
+      // columns.forEach((column) => {
+      //   column.items.forEach((item) => {
+      //     item.isSelected = false;
+      //   });
+      // });
+      // columns[0].items[index].isSelected = true;
+      return columns;
+    });
+  };
+
   return (
     // <div style={{ display: "flex", justifyContent: "center", height: "100%" }}>
     <div style={{ display: "flex", height: "100%" }}>
@@ -89,7 +105,7 @@ function TodoList() {
                             ? "lightblue"
                             : "lightgrey",
                           padding: 4,
-                          width: 250,
+                          minWidth: 300,
                           minHeight: 500,
                         }}
                       >
@@ -102,7 +118,8 @@ function TodoList() {
                             >
                               {(provided, snapshot) => {
                                 return (
-                                  <div
+                                  <Card
+                                    color="primary"
                                     ref={provided.innerRef}
                                     {...provided.draggableProps}
                                     {...provided.dragHandleProps}
@@ -112,14 +129,28 @@ function TodoList() {
                                       margin: "0 0 8px 0",
                                       minHeight: "50px",
                                       backgroundColor: snapshot.isDragging
-                                        ? "#263B4A"
+                                        ? "#2498b3"
                                         : "#456C86",
                                       color: "white",
                                       ...provided.draggableProps.style,
                                     }}
+                                    onClick={(event) =>
+                                      onItemClick(index, event)
+                                    }
                                   >
+                                    <IconButton
+                                      size="small"
+                                      color="inherit"
+                                      style={{
+                                        visibility: item.isSelected
+                                          ? ""
+                                          : "hidden",
+                                      }}
+                                    >
+                                      <PlayArrowIcon />
+                                    </IconButton>
                                     {item.content}
-                                  </div>
+                                  </Card>
                                 );
                               }}
                             </Draggable>
@@ -137,6 +168,6 @@ function TodoList() {
       </DragDropContext>
     </div>
   );
-}
+};
 
 export default TodoList;
