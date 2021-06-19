@@ -375,7 +375,6 @@ const ReportAnalytics = (props) => {
         style={{
           width: "95%",
           padding: "1rem",
-          marginLeft: "1rem",
           marginBottom: "1rem",
         }}
       >
@@ -406,7 +405,6 @@ const ReportAnalytics = (props) => {
         style={{
           width: "95%",
           padding: "1rem",
-          marginLeft: "1rem",
           marginBottom: "1rem",
         }}
       >
@@ -458,7 +456,6 @@ const ReportAnalytics = (props) => {
         style={{
           width: "95%",
           padding: "1rem",
-          marginLeft: "1rem",
         }}
         className={classes.categoryCard}
       >

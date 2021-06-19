@@ -30,6 +30,7 @@ const localStorageGetItemReports = localStorage.getItem("reports")
 const useStyles = makeStyles((theme) => ({
   main: {
     marginTop: "5rem",
+    paddingLeft: theme.spacing(2),
     [theme.breakpoints.down("sm")]: {
       display: "flex",
       alignItems: "center",

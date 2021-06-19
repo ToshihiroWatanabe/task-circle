@@ -47,7 +47,7 @@ const Settings = () => {
         style={{
           width: "95%",
           padding: "1rem",
-          marginLeft: "1rem",
+          // marginLeft: "1rem",
           marginBottom: "1rem",
         }}
       >

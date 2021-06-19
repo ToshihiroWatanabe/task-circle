@@ -11,11 +11,13 @@ const About = () => {
   return (
     <>
       <div
-        style={{
-          // display: "flex",
-          // alignItems: "center",
-          margin: "0 1rem",
-        }}
+        style={
+          {
+            // display: "flex",
+            // alignItems: "center",
+            // margin: "0 1rem",
+          }
+        }
       >
         <Typography variant="h5">Task Circle（タスクサークル）</Typography>
         <Typography
@@ -27,7 +29,7 @@ const About = () => {
         </Typography>
         <Tooltip title="GitHubでリポジトリを見る">
           <Link
-            href="https://github.com/ToshihiroWatanabe/daily-report-management"
+            href="https://github.com/ToshihiroWatanabe/task-circle"
             target="_blank"
             rel="noopener"
           >
