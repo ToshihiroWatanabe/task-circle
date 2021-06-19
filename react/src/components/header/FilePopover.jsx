@@ -7,7 +7,7 @@ import {
   Button,
   Snackbar,
 } from "@material-ui/core";
-import "components/FilePopover.css";
+import "components/header/FilePopover.css";
 import FileCopyIcon from "@material-ui/icons/FileCopy";
 import { DropzoneArea } from "material-ui-dropzone";
 import AttachFileIcon from "@material-ui/icons/AttachFile";

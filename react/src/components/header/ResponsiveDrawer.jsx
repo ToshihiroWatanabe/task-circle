@@ -23,8 +23,8 @@ import InfoIcon from "@material-ui/icons/Info";
 import SettingsIcon from "@material-ui/icons/Settings";
 import TimerIcon from "@material-ui/icons/Timer";
 import { Context } from "contexts/Context";
-import FilePopover from "components/FilePopover";
-import AccountPopover from "components/AccountPopover";
+import FilePopover from "components/header/FilePopover";
+import AccountPopover from "components/header/AccountPopover";
 
 /** ドロワーの横幅 */
 const DRAWER_WIDTH = "15rem";

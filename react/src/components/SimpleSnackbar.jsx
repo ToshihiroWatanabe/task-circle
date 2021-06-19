@@ -3,7 +3,7 @@ import { Snackbar, IconButton } from "@material-ui/core";
 import CloseIcon from "@material-ui/icons/Close";
 
 /**
- * スナックバーの関数コンポーネントです。
+ * スナックバーのコンポーネントです。
  */
 const SimpleSnackbar = memo((props) => {
   // 閉じる

@@ -1,7 +1,7 @@
 import React, { Fragment, useContext, useEffect } from "react";
 import { Switch, Route } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
-import ResponsiveDrawer from "components/ResponsiveDrawer";
+import ResponsiveDrawer from "components/header/ResponsiveDrawer";
 import ReportAnalytics from "components/ReportAnalytics";
 import Settings from "components/Settings";
 import Login from "components/Login";
