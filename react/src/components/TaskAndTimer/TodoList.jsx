@@ -6,11 +6,46 @@ import uuid from "uuid/v4";
 import PlayArrowIcon from "@material-ui/icons/PlayArrow";
 
 const itemsFrom = [
-  { id: uuid(), content: "予習", isSelected: true },
-  { id: uuid(), content: "復習", isSelected: false },
-  { id: uuid(), content: "テスト", isSelected: false },
-  { id: uuid(), content: "ふりかえり", isSelected: false },
-  { id: uuid(), content: "課題", isSelected: false },
+  {
+    id: uuid(),
+    category: "",
+    content: "予習",
+    spentMinute: 0,
+    estimatedMinute: 0,
+    isSelected: true,
+  },
+  {
+    id: uuid(),
+    category: "",
+    content: "復習",
+    spentMinute: 0,
+    estimatedMinute: 0,
+    isSelected: false,
+  },
+  {
+    id: uuid(),
+    category: "Java",
+    content: "テスト",
+    spentMinute: 0,
+    estimatedMinute: 0,
+    isSelected: false,
+  },
+  {
+    id: uuid(),
+    category: "",
+    content: "ふりかえり",
+    spentMinute: 0,
+    estimatedMinute: 0,
+    isSelected: false,
+  },
+  {
+    id: uuid(),
+    category: "",
+    content: "課題",
+    spentMinute: 0,
+    estimatedMinute: 0,
+    isSelected: false,
+  },
 ];
 
 const columnsFrom = {
@@ -64,6 +99,7 @@ const useStyles = makeStyles((theme) => ({
     margin: "0 0 8px 0",
     minHeight: "50px",
     color: "white",
+    display: "flex",
   },
 }));
 
@@ -155,7 +191,10 @@ const TodoList = () => {
                                     >
                                       <PlayArrowIcon />
                                     </IconButton>
-                                    {item.content}
+                                    <div>
+                                      <div>{item.content}</div>
+                                      <div>00:00:00</div>
+                                    </div>
                                   </Card>
                                 );
                               }}
