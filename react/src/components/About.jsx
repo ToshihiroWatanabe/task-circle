@@ -4,6 +4,9 @@ import GitHubIcon from "@material-ui/icons/GitHub";
 import format from "date-fns/format";
 import preval from "preval.macro";
 
+/**
+ * 「～について」ページのコンポーネントです。
+ */
 const About = () => {
   return (
     <>

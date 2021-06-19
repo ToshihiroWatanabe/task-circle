@@ -10,6 +10,9 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+/**
+ * タグ入力のコンポーネントです。
+ */
 export default function TagsInput({ ...props }) {
   const classes = useStyles();
   const { selectedTags, placeholder, tags, ...other } = props;

@@ -11,6 +11,9 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+/**
+ * 設定ページのコンポーネントです。
+ */
 const Settings = () => {
   const classes = useStyles();
   const [state, setState] = useContext(Context);

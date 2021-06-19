@@ -55,6 +55,9 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+/**
+ * ログインページのコンポーネントです。
+ */
 export default function Login() {
   const classes = useStyles();
 

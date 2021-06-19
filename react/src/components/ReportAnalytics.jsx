@@ -56,7 +56,7 @@ const renderColorfulLegendText = (value, entry) => {
 };
 
 /**
- * 日報の分析レポートのコンポーネントです。
+ * 分析レポートページのコンポーネントです。
  * @param {*} props
  * @returns
  */

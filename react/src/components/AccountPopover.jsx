@@ -28,6 +28,9 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+/**
+ * アカウントポップオーバーのコンポーネントです。
+ */
 const AccountPopover = memo((props) => {
   const classes = useStyles();
   const [state, setState] = useContext(Context);

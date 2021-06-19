@@ -54,6 +54,9 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+/**
+ * 新規登録ページのコンポーネントです。
+ */
 export default function Signup() {
   const classes = useStyles();
 

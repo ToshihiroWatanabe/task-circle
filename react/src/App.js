@@ -15,7 +15,6 @@ import Login from "./components/Login";
 import Signup from "./components/Signup";
 import { Context } from "./contexts/Context";
 import Portfolio from "./components/Portfolio";
-import PortfolioSettings from "./components/PortfolioSettings";
 import About from "./components/About";
 import SyncSnackbar from "./components/SimpleSnackbar";
 
@@ -147,14 +146,6 @@ const App = () => {
     });
     return newCategories;
   });
-
-  /**
-   * ヘッダーのタイトルがクリックされたときの処理です。
-   */
-  const onHeaderTitleClick = () => {
-    // ページトップへ移動
-    window.scrollTo(0, 0);
-  };
 
   /**
    * 日報を作成する処理です。
@@ -318,7 +309,6 @@ const App = () => {
           {/* ドロワー */}
           <ResponsiveDrawer
             importReportsFromJson={importReportsFromJson}
-            onHeaderTitleClick={onHeaderTitleClick}
             onExportReportsToTxtButtonClick={() =>
               onExportReportsToTxtButtonClick()
             }
@@ -428,21 +418,23 @@ const App = () => {
                   </div>
                 )}
               </Route>
+              {/* 分析レポート */}
               <Route exact path="/analytics">
                 <ReportAnalytics reports={reports} />
               </Route>
-              <Route exact path="/about">
-                <About />
-              </Route>
-              <Route exact path="/portfolio">
-                <PortfolioSettings />
-              </Route>
+              {/* 設定 */}
               <Route exact path="/settings">
                 <Settings />
               </Route>
+              {/* について */}
+              <Route exact path="/about">
+                <About />
+              </Route>
+              {/* ログイン */}
               <Route exact path="/login">
                 <Login />
               </Route>
+              {/* 新規登録 */}
               <Route exact path="/signup">
                 <Signup />
               </Route>

@@ -76,7 +76,7 @@ const useStyles = makeStyles((theme) => ({
  * ドロワーのコンポーネントです。
  */
 const ResponsiveDrawer = memo((props) => {
-  const { window } = props;
+  const { windowProps } = props;
   const classes = useStyles();
   const theme = useTheme();
   const location = useLocation();
@@ -90,6 +90,14 @@ const ResponsiveDrawer = memo((props) => {
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
+  };
+
+  /**
+   * ヘッダーのタイトルがクリックされたときの処理です。
+   */
+  const onHeaderTitleClick = () => {
+    // ページトップへ移動
+    window.scrollTo(0, 0);
   };
 
   const drawer = (
@@ -125,7 +133,7 @@ const ResponsiveDrawer = memo((props) => {
   );
 
   const container =
-    window !== undefined ? () => window().document.body : undefined;
+    windowProps !== undefined ? () => windowProps().document.body : undefined;
 
   return (
     <div className={classes.root}>
@@ -143,7 +151,7 @@ const ResponsiveDrawer = memo((props) => {
           <Typography
             variant="h6"
             className={classes.title}
-            onClick={props.onHeaderTitleClick}
+            onClick={onHeaderTitleClick}
             noWrap
           >
             {pages.map(
