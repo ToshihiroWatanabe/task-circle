@@ -65,14 +65,16 @@ const TodoList = () => {
 
   const onItemClick = (index, event) => {
     setColumns((columns) => {
-      console.log(columns);
-      // columns.forEach((column) => {
-      //   column.items.forEach((item) => {
-      //     item.isSelected = false;
-      //   });
-      // });
-      // columns[0].items[index].isSelected = true;
-      return columns;
+      console.log(Object.values(columns)[0]);
+      Object.values(columns)[0].items.map((item, i) => {
+        if (i === index) {
+          item.isSelected = true;
+        } else {
+          item.isSelected = false;
+        }
+        return item;
+      });
+      return { ...columns };
     });
   };
 
