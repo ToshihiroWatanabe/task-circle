@@ -292,7 +292,10 @@ const Reports = memo(() => {
             </Fragment>
           );
         })}
-      {loadingThreshold < 28 && (
+      {loadingThreshold <
+        state.reports.filter((report, index) => {
+          return report.date.includes(calendarMonth);
+        }).length && (
         <div className={classes.monthReportNotFound}>読み込み中...</div>
       )}
       {/* その月の日報がないとき→「日報がありません」と表示 */}
