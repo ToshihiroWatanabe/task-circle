@@ -1,4 +1,4 @@
-import React, { Fragment, useContext, useState } from "react";
+import React, { Fragment, useContext, useEffect, useState } from "react";
 import ReportDatePicker from "components/reports/ReportDatePicker";
 import ReportFormDialog from "components/reports/ReportFormDialog";
 import ReportCard from "components/reports/ReportCard";
@@ -89,31 +89,36 @@ const Reports = () => {
   const [formDialogOpen, setFormDialogOpen] = useState(false);
   const [syncSnackbarOpen, setSyncSnackbarOpen] = useState(false);
   const [syncSnackbarMessage, setSyncSnackbarMessage] = useState("");
-  const [reports, setReports] = useState(localStorageGetItemReports);
   // 日報入力ダイアログの初期値
   const [defaultReport, setDefaultReport] = useState(
     JSON.parse(JSON.stringify(DEFAULT_REPORT))
   );
   // カテゴリーの配列
-  const [categories, setCategories] = useState(() => {
-    let categories = [];
-    for (let i = 0; i < reports.length; i++) {
-      for (let j = 0; j < reports[i].report_items.length; j++) {
-        categories.push({
-          label: reports[i].report_items[j].category,
-          value: reports[i].report_items[j].category,
+  const [categories, setCategories] = useState([]);
+
+  useEffect(() => {
+    setState((state) => {
+      setCategories((categories) => {
+        for (let i = 0; i < state.reports.length; i++) {
+          for (let j = 0; j < state.reports[i].report_items.length; j++) {
+            categories.push({
+              label: state.reports[i].report_items[j].category,
+              value: state.reports[i].report_items[j].category,
+            });
+          }
+        }
+        // 重複を削除
+        const newCategories = categories.filter((element, index, array) => {
+          return (
+            array.findIndex((element2) => element.label === element2.label) ===
+            index
+          );
         });
-      }
-    }
-    // 重複を削除
-    let newCategories = categories.filter((element, index, array) => {
-      return (
-        array.findIndex((element2) => element.label === element2.label) ===
-        index
-      );
+        return newCategories;
+      });
+      return state;
     });
-    return newCategories;
-  });
+  }, []);
 
   /**
    * 日報を作成する処理です。
@@ -125,8 +130,8 @@ const Reports = () => {
       input.report_items[i].category = input.report_items[i].category.trim();
       input.report_items[i].content = input.report_items[i].content.trim();
     }
-    setReports((reports) => {
-      let newReports = [input, ...reports]
+    setState((state) => {
+      let newReports = [input, ...state.reports]
         // 重複を削除
         .filter(
           (element, index, array) =>
@@ -137,23 +142,8 @@ const Reports = () => {
           return b.date.replaceAll("-", "") - a.date.replaceAll("-", "");
         });
       localStorage.setItem("reports", JSON.stringify(newReports));
-      return newReports;
+      return { ...state, reports: newReports };
     });
-  };
-
-  /**
-   * カレンダーの月が変わったときの処理です。
-   * @param {*} event
-   */
-  const onMonthChange = (event) => {
-    setCalendarMonth(format(event, "yyyy-MM"));
-  };
-
-  /**
-   * 選択した日時が変わったときの処理です。
-   */
-  const onDateChange = (date) => {
-    setSelectedDate(date);
   };
 
   /**
@@ -180,7 +170,7 @@ const Reports = () => {
     setDefaultReport(() => {
       let defaultReport = JSON.parse(
         JSON.stringify(
-          reports.filter((report, index) => {
+          state.reports.filter((report, index) => {
             return report.date.includes(date);
           })[0]
         )
@@ -195,12 +185,12 @@ const Reports = () => {
    * @param {*} date 削除する日報の日付
    */
   const onDeleteButtonClick = (date) => {
-    setReports((reports) => {
-      let newReports = reports.filter((report) => {
+    setState((state) => {
+      let newReports = state.reports.filter((report) => {
         return report.date !== date;
       });
       localStorage.setItem("reports", JSON.stringify(newReports));
-      return newReports;
+      return { ...state, reports: newReports };
     });
   };
 
@@ -212,9 +202,8 @@ const Reports = () => {
           <ReportDatePicker
             selectedDate={selectedDate}
             setSelectedDate={setSelectedDate}
-            onMonthChange={onMonthChange}
-            onDateChange={onDateChange}
-            reports={reports}
+            setCalendarMonth={setCalendarMonth}
+            reports={state.reports}
           />
         </div>
         <div className={classes.rightColumn}>
@@ -225,7 +214,7 @@ const Reports = () => {
             {format(selectedDate, "yyyy.MM.dd")}の日報
           </Typography>
           {/* 選択した日に日報がなかったとき */}
-          {reports.filter((report, index) => {
+          {state.reports.filter((report, index) => {
             return report.date.includes(format(selectedDate, "yyyy-MM-dd"));
           }).length === 0 && (
             <div className={classes.selectedDateReportNotFound}>
@@ -243,10 +232,10 @@ const Reports = () => {
             </div>
           )}
           {/* 選択した日に日報があったとき */}
-          {reports.filter((report, index) => {
+          {state.reports.filter((report, index) => {
             return report.date.includes(format(selectedDate, "yyyy-MM-dd"));
           }).length > 0 &&
-            reports
+            state.reports
               .filter((report, index) => {
                 return report.date.includes(format(selectedDate, "yyyy-MM-dd"));
               })
@@ -268,7 +257,7 @@ const Reports = () => {
       <Typography variant="h5" className={classes.reportsHeading}>
         日報一覧
       </Typography>
-      {reports
+      {state.reports
         .filter((report, index) => {
           return report.date.includes(calendarMonth);
         })
@@ -287,11 +276,12 @@ const Reports = () => {
           );
         })}
       {/* その月の日報がないとき→「日報がありません」と表示 */}
-      {reports.filter((report, index) => {
+      {state.reports.filter((report, index) => {
         return report.date.includes(calendarMonth);
       }).length === 0 && (
         <div className={classes.monthReportNotFound}>日報がありません</div>
       )}
+
       {/* 日報入力ダイアログ */}
       <ReportFormDialog
         open={formDialogOpen}
