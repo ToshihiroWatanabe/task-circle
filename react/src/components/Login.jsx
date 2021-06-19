@@ -15,9 +15,9 @@ import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import { makeStyles } from "@material-ui/core/styles";
 import VisibilityIcon from "@material-ui/icons/Visibility";
 import VisibilityOffIcon from "@material-ui/icons/VisibilityOff";
-import { Context } from "../contexts/Context";
+import { Context } from "contexts/Context";
 import { Link } from "react-router-dom";
-import SimpleSnackbar from "./SimpleSnackbar";
+import SimpleSnackbar from "components/SimpleSnackbar";
 
 const USER_ID_LENGTH_MIN = 5;
 const USER_ID_LENGTH_MAX = 32;

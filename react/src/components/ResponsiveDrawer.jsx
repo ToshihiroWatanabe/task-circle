@@ -22,9 +22,9 @@ import AssessmentIcon from "@material-ui/icons/Assessment";
 import InfoIcon from "@material-ui/icons/Info";
 import SettingsIcon from "@material-ui/icons/Settings";
 import TimerIcon from "@material-ui/icons/Timer";
-import { Context } from "../contexts/Context";
-import FilePopover from "./FilePopover";
-import AccountPopover from "./AccountPopover";
+import { Context } from "contexts/Context";
+import FilePopover from "components/FilePopover";
+import AccountPopover from "components/AccountPopover";
 
 /** ドロワーの横幅 */
 const DRAWER_WIDTH = "15rem";

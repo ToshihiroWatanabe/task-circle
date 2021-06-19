@@ -8,10 +8,10 @@ import {
   TextField,
   Typography,
 } from "@material-ui/core";
-import { Context } from "../contexts/Context";
+import { Context } from "contexts/Context";
 import AttachFileIcon from "@material-ui/icons/AttachFile";
-import SimpleSnackbar from "./SimpleSnackbar";
-import TagsInput from "./TagsInput";
+import SimpleSnackbar from "components/SimpleSnackbar";
+import TagsInput from "components/TagsInput";
 import SyncIcon from "@material-ui/icons/Sync";
 import { Link } from "react-router-dom";
 

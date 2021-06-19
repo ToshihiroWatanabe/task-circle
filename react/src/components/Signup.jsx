@@ -15,7 +15,7 @@ import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import { makeStyles } from "@material-ui/core/styles";
 import VisibilityIcon from "@material-ui/icons/Visibility";
 import VisibilityOffIcon from "@material-ui/icons/VisibilityOff";
-import { Context } from "../contexts/Context";
+import { Context } from "contexts/Context";
 import { Link } from "react-router-dom";
 
 const USER_ID_LENGTH_MIN = 5;

@@ -16,7 +16,7 @@ import AccountCircleIcon from "@material-ui/icons/AccountCircle";
 import SettingsIcon from "@material-ui/icons/Settings";
 import SyncIcon from "@material-ui/icons/Sync";
 import { Link } from "react-router-dom";
-import { Context } from "../contexts/Context";
+import { Context } from "contexts/Context";
 
 const useStyles = makeStyles((theme) => ({
   button: {

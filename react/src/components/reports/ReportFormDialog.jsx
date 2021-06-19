@@ -21,7 +21,7 @@ import Autocomplete, {
 } from "@material-ui/lab/Autocomplete";
 import AddCircleOutlineIcon from "@material-ui/icons/AddCircleOutline";
 import DeleteIcon from "@material-ui/icons/Delete";
-import "./ReportFormDialog.css";
+import "components/reports/ReportFormDialog.css";
 
 const useStyles = makeStyles((theme) => ({
   reportItem: {

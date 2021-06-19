@@ -1,8 +1,8 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Button, Card, makeStyles, TextField } from "@material-ui/core";
-import { Context } from "../contexts/Context";
+import { Context } from "contexts/Context";
 import SyncIcon from "@material-ui/icons/Sync";
-import SimpleSnackbar from "./SimpleSnackbar";
+import SimpleSnackbar from "components/SimpleSnackbar";
 
 const useStyles = makeStyles((theme) => ({
   slackTextField: {
