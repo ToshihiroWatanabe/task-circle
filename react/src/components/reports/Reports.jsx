@@ -9,8 +9,6 @@ import AddCircleOutlineIcon from "@material-ui/icons/AddCircleOutline";
 import { Context } from "contexts/Context";
 import SyncSnackbar from "components/SimpleSnackbar";
 
-let loadingThreshold = 31;
-
 const DEFAULT_REPORT = {
   date: "",
   content: "",
@@ -93,6 +91,7 @@ const Reports = memo(() => {
   );
   // カテゴリーの配列
   const [categories, setCategories] = useState([]);
+  const [loadingThreshold, setLoadingThreshold] = useState(7);
 
   useEffect(() => {
     setState((state) => {
@@ -117,6 +116,19 @@ const Reports = memo(() => {
       return state;
     });
   }, []);
+
+  /**
+   * カレンダーの月が変わったときの処理です。
+   * @param {*} event
+   */
+  const onMonthChange = (event) => {
+    setLoadingThreshold(7);
+    setCalendarMonth(format(event, "yyyy-MM"));
+  };
+
+  window.addEventListener("scroll", () => {
+    setLoadingThreshold(31);
+  });
 
   /**
    * 日報を作成する処理です。
@@ -201,6 +213,7 @@ const Reports = memo(() => {
             selectedDate={selectedDate}
             setSelectedDate={setSelectedDate}
             setCalendarMonth={setCalendarMonth}
+            onMonthChange={onMonthChange}
             reports={state.reports}
           />
         </div>
@@ -274,6 +287,9 @@ const Reports = memo(() => {
             </Fragment>
           );
         })}
+      {loadingThreshold < 28 && (
+        <div className={classes.monthReportNotFound}>読み込み中...</div>
+      )}
       {/* その月の日報がないとき→「日報がありません」と表示 */}
       {state.reports.filter((report, index) => {
         return report.date.includes(calendarMonth);
