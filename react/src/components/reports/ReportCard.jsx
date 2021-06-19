@@ -23,9 +23,9 @@ import EditIcon from "@material-ui/icons/Edit";
 import DeleteIcon from "@material-ui/icons/Delete";
 import TwitterIcon from "@material-ui/icons/Twitter";
 import "./ReportCard.css";
-import slackMark from "../slackMark.svg";
+import slackMark from "../../slackMark.svg";
 import axios from "axios";
-import { Context } from "../contexts/Context";
+import { Context } from "../../contexts/Context";
 import Alert from "@material-ui/lab/Alert";
 
 const useStyles = makeStyles((theme) => ({

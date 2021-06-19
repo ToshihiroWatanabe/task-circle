@@ -1,7 +1,7 @@
 import React, { Fragment, useContext, useState } from "react";
-import ReportDatePicker from "./components/ReportDatePicker";
-import ReportFormDialog from "./components/ReportFormDialog";
-import ReportCard from "./components/ReportCard";
+import ReportDatePicker from "./components/reports/ReportDatePicker";
+import ReportFormDialog from "./components/reports/ReportFormDialog";
+import ReportCard from "./components/reports/ReportCard";
 import format from "date-fns/format";
 import { makeStyles } from "@material-ui/core/styles";
 import { Button, Typography } from "@material-ui/core";
