@@ -23,10 +23,6 @@ const DEFAULT_REPORT = {
   updatedAt: 0,
 };
 
-const localStorageGetItemReports = localStorage.getItem("reports")
-  ? JSON.parse(localStorage.getItem("reports"))
-  : [];
-
 const useStyles = makeStyles((theme) => ({
   contents1: {
     [theme.breakpoints.up("md")]: { display: "flex" },
@@ -263,18 +259,16 @@ const Reports = () => {
         })
         .map((report, index) => {
           return (
-            <Fragment key={index}>
-              <div className={classes.reportCard}>
-                <ReportCard
-                  className={classes.reportCard}
-                  report={report}
-                  onEditButtonClick={onEditButtonClick}
-                  onDeleteButtonClick={onDeleteButtonClick}
-                />
-              </div>
-            </Fragment>
+            <div key={index} className={classes.reportCard}>
+              <ReportCard
+                report={report}
+                onEditButtonClick={onEditButtonClick}
+                onDeleteButtonClick={onDeleteButtonClick}
+              />
+            </div>
           );
         })}
+
       {/* その月の日報がないとき→「日報がありません」と表示 */}
       {state.reports.filter((report, index) => {
         return report.date.includes(calendarMonth);
