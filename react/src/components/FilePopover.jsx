@@ -1,4 +1,4 @@
-import React, { useState, memo, useCallback } from "react";
+import React, { useState, memo, useCallback, useContext } from "react";
 import {
   makeStyles,
   Popover,
@@ -12,6 +12,8 @@ import FileCopyIcon from "@material-ui/icons/FileCopy";
 import { DropzoneArea } from "material-ui-dropzone";
 import AttachFileIcon from "@material-ui/icons/AttachFile";
 import MuiAlert from "@material-ui/lab/Alert";
+import { Context } from "contexts/Context";
+import { exportReportsToTxt, exportReportsToJson } from "utils/export";
 
 function Alert(props) {
   return <MuiAlert elevation={6} variant="filled" {...props} />;
@@ -26,6 +28,7 @@ const useStyles = makeStyles((theme) => ({}));
 const FilePopover = memo((props) => {
   /** Material-UIのスタイル */
   const classes = useStyles();
+  const [state, setState] = useContext(Context);
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
 
@@ -62,8 +65,8 @@ const FilePopover = memo((props) => {
       reader.onload = () => {
         // Do whatever you want with the file contents
         const binaryStr = reader.result;
-        const text = new Buffer(binaryStr, "base64");
-        props.importReportsFromJson(JSON.parse(text));
+        const text = new Buffer.from(binaryStr, "base64");
+        importReportsFromJson(JSON.parse(text));
         setSuccessSnackbarOpen(true);
         // Popoverを閉じる
         setAnchorEl(null);
@@ -71,6 +74,67 @@ const FilePopover = memo((props) => {
       reader.readAsArrayBuffer(file);
     });
   }, []);
+
+  /**
+   * JSONから日報をインポートする処理です。
+   * @param {*} data
+   */
+  const importReportsFromJson = (data) => {
+    // TODO: データのフォーマットが正しいか検証する処理を入れる？例外処理
+    let additionalReports = [];
+    // データの数だけ繰り返す
+    for (let i = 0; i < data.length; i++) {
+      let additionalReportItems = [];
+      for (let j = 0; j < data[i].report_items.length; j++) {
+        additionalReportItems.push({
+          category: data[i].report_items[j].category,
+          content: data[i].report_items[j].content,
+          hour: data[i].report_items[j].hour,
+          minute: data[i].report_items[j].minute,
+        });
+      }
+      additionalReports.push({
+        date: data[i].date,
+        report_items: additionalReportItems,
+        content: data[i].content,
+        updatedAt: data[i].updatedAt,
+      });
+    }
+    setState((state) => {
+      let newReports = [...additionalReports, ...state.reports]
+        // 更新日が新しい順に並べ替え
+        .sort((a, b) => {
+          if (a.updatedAt === undefined) a.updatedAt = 0;
+          if (b.updatedAt === undefined) b.updatedAt = 0;
+          return b.updatedAt - a.updatedAt;
+        })
+        // 重複を削除
+        .filter(
+          (element, index, array) =>
+            array.findIndex((e) => e.date === element.date) === index
+        )
+        // 日付が新しい順に並べ替え
+        .sort((a, b) => {
+          return b.date.replaceAll("-", "") - a.date.replaceAll("-", "");
+        });
+      localStorage.setItem("reports", JSON.stringify(newReports));
+      return { ...state, reports: newReports };
+    });
+  };
+
+  /**
+   * テキスト形式でエクスポートするボタンが押されたときの処理です。
+   */
+  const onExportReportsToTxtButtonClick = () => {
+    exportReportsToTxt(state.reports);
+  };
+
+  /**
+   * JSON形式でエクスポートするボタンが押されたときの処理です。
+   */
+  const onExportReportsToJsonButtonClick = () => {
+    exportReportsToJson(state.reports);
+  };
 
   return (
     <>
@@ -112,14 +176,14 @@ const FilePopover = memo((props) => {
           }}
         />
         <Button
-          onClick={props.onExportReportsToJsonButtonClick}
+          onClick={onExportReportsToJsonButtonClick}
           variant="outlined"
           style={{ marginTop: "0.5rem" }}
         >
           JSON形式でエクスポート
         </Button>
         <Button
-          onClick={props.onExportReportsToTxtButtonClick}
+          onClick={onExportReportsToTxtButtonClick}
           variant="outlined"
           style={{ marginTop: "0.5rem" }}
         >

@@ -52,6 +52,11 @@ const AccountPopover = memo((props) => {
     setState({ ...state, userId: "", password: "" });
   };
 
+  /**
+   * 同期ボタンが押されたときの処理です。
+   */
+  const onSyncButtonClick = () => {};
+
   return (
     <>
       <Tooltip title="アカウントメニュー">
@@ -107,7 +112,7 @@ const AccountPopover = memo((props) => {
             <Button
               className={classes.button}
               variant="outlined"
-              onClick={props.onSyncButtonClick}
+              onClick={onSyncButtonClick}
             >
               <SyncIcon />
               日報をサーバーと同期

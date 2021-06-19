@@ -51,6 +51,21 @@ const ReportDatePicker = memo((props) => {
   const classes = useStyles();
 
   /**
+   * カレンダーの月が変わったときの処理です。
+   * @param {*} event
+   */
+  const onMonthChange = (event) => {
+    props.setCalendarMonth(format(event, "yyyy-MM"));
+  };
+
+  /**
+   * 選択した日時が変わったときの処理です。
+   */
+  const onDateChange = (date) => {
+    props.setSelectedDate(date);
+  };
+
+  /**
    * 日を描画します。
    */
   const renderDay = (day, selectedDate, dayInCurrentMonth, dayComponent) => {
@@ -139,8 +154,8 @@ const ReportDatePicker = memo((props) => {
           format="yyyy/MM/dd"
           margin="normal"
           value={props.selectedDate}
-          onChange={props.onDateChange}
-          onMonthChange={props.onMonthChange}
+          onChange={onDateChange}
+          onMonthChange={onMonthChange}
           KeyboardButtonProps={{
             "aria-label": "change date",
           }}

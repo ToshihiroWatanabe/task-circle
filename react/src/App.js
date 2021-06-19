@@ -9,7 +9,6 @@ import AddCircleOutlineIcon from "@material-ui/icons/AddCircleOutline";
 import ResponsiveDrawer from "components/ResponsiveDrawer";
 import { Switch, Route } from "react-router-dom";
 import ReportAnalytics from "components/ReportAnalytics";
-import { exportReportsToTxt, exportReportsToJson } from "utils/export";
 import Settings from "components/Settings";
 import Login from "components/Login";
 import Signup from "components/Signup";
@@ -180,21 +179,6 @@ const App = () => {
   };
 
   /**
-   * カレンダーの月が変わったときの処理です。
-   * @param {*} event
-   */
-  const onMonthChange = (event) => {
-    setCalendarMonth(format(event, "yyyy-MM"));
-  };
-
-  /**
-   * 選択した日時が変わったときの処理です。
-   */
-  const onDateChange = (date) => {
-    setSelectedDate(date);
-  };
-
-  /**
    * 作成ボタンがクリックされたときの処理です。
    * @param {*} event
    */
@@ -242,87 +226,12 @@ const App = () => {
     });
   };
 
-  /**
-   * JSONから日報をインポートする処理です。
-   * @param {*} data
-   */
-  const importReportsFromJson = (data) => {
-    // TODO: データのフォーマットが正しいか検証する処理を入れる？例外処理
-    let additionalReports = [];
-    // データの数だけ繰り返す
-    for (let i = 0; i < data.length; i++) {
-      let additionalReportItems = [];
-      for (let j = 0; j < data[i].report_items.length; j++) {
-        additionalReportItems.push({
-          category: data[i].report_items[j].category,
-          content: data[i].report_items[j].content,
-          hour: data[i].report_items[j].hour,
-          minute: data[i].report_items[j].minute,
-        });
-      }
-      additionalReports.push({
-        date: data[i].date,
-        report_items: additionalReportItems,
-        content: data[i].content,
-        updatedAt: data[i].updatedAt,
-      });
-    }
-    setState((state) => {
-      let newReports = [...additionalReports, ...state.reports]
-        // 更新日が新しい順に並べ替え
-        .sort((a, b) => {
-          if (a.updatedAt === undefined) a.updatedAt = 0;
-          if (b.updatedAt === undefined) b.updatedAt = 0;
-          return b.updatedAt - a.updatedAt;
-        })
-        // 重複を削除
-        .filter(
-          (element, index, array) =>
-            array.findIndex((e) => e.date === element.date) === index
-        )
-        // 日付が新しい順に並べ替え
-        .sort((a, b) => {
-          return b.date.replaceAll("-", "") - a.date.replaceAll("-", "");
-        });
-      localStorage.setItem("reports", JSON.stringify(newReports));
-      return { ...state, reports: newReports };
-    });
-  };
-
-  /**
-   * テキスト形式でエクスポートするボタンが押されたときの処理です。
-   */
-  const onExportReportsToTxtButtonClick = () => {
-    exportReportsToTxt(state.reports);
-  };
-
-  /**
-   * JSON形式でエクスポートするボタンが押されたときの処理です。
-   */
-  const onExportReportsToJsonButtonClick = () => {
-    exportReportsToJson(state.reports);
-  };
-
-  /**
-   * 同期ボタンが押されたときの処理です。
-   */
-  const onSyncButtonClick = () => {};
-
   return (
     <>
       {!window.location.href.match(/.*\/portfolio\/.*/) && (
         <>
           {/* ドロワー */}
-          <ResponsiveDrawer
-            importReportsFromJson={importReportsFromJson}
-            onExportReportsToTxtButtonClick={() =>
-              onExportReportsToTxtButtonClick()
-            }
-            onExportReportsToJsonButtonClick={() =>
-              onExportReportsToJsonButtonClick()
-            }
-            onSyncButtonClick={onSyncButtonClick}
-          />
+          <ResponsiveDrawer />
           <main className={classes.main}>
             {/* 画面切り替え */}
             <Switch>
@@ -333,8 +242,7 @@ const App = () => {
                     <ReportDatePicker
                       selectedDate={selectedDate}
                       setSelectedDate={setSelectedDate}
-                      onMonthChange={onMonthChange}
-                      onDateChange={onDateChange}
+                      setCalendarMonth={setCalendarMonth}
                       reports={state.reports}
                     />
                   </div>
