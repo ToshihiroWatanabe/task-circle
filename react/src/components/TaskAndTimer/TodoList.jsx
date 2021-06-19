@@ -1,11 +1,6 @@
 import React, { useContext, useState } from "react";
 import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
-import {
-  Chip,
-  IconButton,
-  LinearProgress,
-  makeStyles,
-} from "@material-ui/core";
+import { Chip, IconButton, makeStyles } from "@material-ui/core";
 import Card from "@material-ui/core/Card";
 import uuid from "uuid/v4";
 import PlayArrowIcon from "@material-ui/icons/PlayArrow";
@@ -15,12 +10,19 @@ import "components/TaskAndTimer/TodoList.css";
 import { Context } from "contexts/Context";
 import StopIcon from "@material-ui/icons/Stop";
 
+/** 一度にカウントする秒数 */
+const ONCE_COUNT = 1;
+/** カウントの間隔(ミリ秒) */
+const COUNT_INTERVAL = 1000;
+
+let interval = null;
+
 const itemsFrom = [
   {
     id: uuid(),
     category: "",
     content: "予習",
-    spentMinute: 0,
+    spentSecond: 0,
     estimatedMinute: 0,
     isSelected: true,
   },
@@ -28,7 +30,7 @@ const itemsFrom = [
     id: uuid(),
     category: "",
     content: "復習",
-    spentMinute: 0,
+    spentSecond: 0,
     estimatedMinute: 0,
     isSelected: false,
   },
@@ -36,7 +38,7 @@ const itemsFrom = [
     id: uuid(),
     category: "Java",
     content: "JUnitのテストコードを書く",
-    spentMinute: 0,
+    spentSecond: 0,
     estimatedMinute: 0,
     isSelected: false,
   },
@@ -44,7 +46,7 @@ const itemsFrom = [
     id: uuid(),
     category: "",
     content: "ふりかえり",
-    spentMinute: 0,
+    spentSecond: 0,
     estimatedMinute: 0,
     isSelected: false,
   },
@@ -52,7 +54,7 @@ const itemsFrom = [
     id: uuid(),
     category: "カテゴリ",
     content: "課題",
-    spentMinute: 0,
+    spentSecond: 0,
     estimatedMinute: 0,
     isSelected: false,
   },
@@ -134,7 +136,6 @@ const TodoList = () => {
    */
   const onItemClick = (index, event) => {
     setColumns((columns) => {
-      console.log(Object.values(columns)[0]);
       Object.values(columns)[0].items.map((item, i) => {
         if (i === index) {
           item.isSelected = true;
@@ -152,9 +153,28 @@ const TodoList = () => {
    * @param {*} index
    */
   const onPlayButtonClick = (index) => {
-    console.log(index);
     setState((state) => {
+      if (!state.isTimerOn) {
+        interval = setInterval(() => {
+          spendTime();
+        }, COUNT_INTERVAL);
+      }
       return { ...state, isTimerOn: !state.isTimerOn };
+    });
+  };
+
+  /**
+   * 選択されているタスクの経過時間を加算します。
+   */
+  const spendTime = () => {
+    setColumns((columns) => {
+      Object.values(columns)[0].items.map((item, index) => {
+        if (item.isSelected) {
+          item.spentSecond += ONCE_COUNT;
+        }
+        return item;
+      });
+      return { ...columns };
     });
   };
 
