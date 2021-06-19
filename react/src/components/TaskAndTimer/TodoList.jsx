@@ -57,7 +57,15 @@ const onDragEnd = (result, columns, setColumns) => {
   }
 };
 
-const useStyles = makeStyles((theme) => ({}));
+const useStyles = makeStyles((theme) => ({
+  card: {
+    userSelect: "none",
+    padding: 16,
+    margin: "0 0 8px 0",
+    minHeight: "50px",
+    color: "white",
+  },
+}));
 
 const TodoList = () => {
   const classes = useStyles();
@@ -79,7 +87,6 @@ const TodoList = () => {
   };
 
   return (
-    // <div style={{ display: "flex", justifyContent: "center", height: "100%" }}>
     <div style={{ display: "flex", height: "100%" }}>
       <DragDropContext
         onDragEnd={(result) => onDragEnd(result, columns, setColumns)}
@@ -125,15 +132,12 @@ const TodoList = () => {
                                     ref={provided.innerRef}
                                     {...provided.draggableProps}
                                     {...provided.dragHandleProps}
+                                    className={classes.card}
                                     style={{
-                                      userSelect: "none",
-                                      padding: 16,
-                                      margin: "0 0 8px 0",
-                                      minHeight: "50px",
                                       backgroundColor: snapshot.isDragging
                                         ? "#2498b3"
                                         : "#456C86",
-                                      color: "white",
+
                                       ...provided.draggableProps.style,
                                     }}
                                     onClick={(event) =>
