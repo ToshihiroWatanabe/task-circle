@@ -157,6 +157,7 @@ const TodoList = () => {
   const [categoryInput, setCategoryInput] = useState([]);
   const [isTagsInputFocused, setIsTagsInputFocused] = useState(false);
   const [inputValue, setInputValue] = useState("");
+  const [helperMessage, setHelperMessage] = useState("");
 
   /**
    * タスクがクリックされたときの処理です。
@@ -236,8 +237,8 @@ const TodoList = () => {
           count++;
         }
         spendTime(count);
-        tickSound.play();
         lastCountedAt = Date.now();
+        tickSound.play();
       }
       if (!state.isTimerOn) {
         clearTimeout(timeoutId);
@@ -267,7 +268,7 @@ const TodoList = () => {
    */
   const refreshTitle = (content, spentSecond) => {
     document.title =
-      content + "(" + secondToHHMMSS(spentSecond) + ") " + defaultTitle;
+      content + " (" + secondToHHMMSS(spentSecond) + ") " + defaultTitle;
   };
 
   /**
@@ -282,13 +283,14 @@ const TodoList = () => {
    * 追加ボタンがクリックされたときの処理です。
    */
   const onAddButtonClick = () => {
+    //文字数チェック
     setColumns((columns) => {
       Object.values(columns)[0].items.push({
         id: uuid(),
         category: categoryInput.length > 0 ? categoryInput[0] : "",
         content: inputValue.trim(),
         spentSecond: 0,
-        estimatedMinute: 60,
+        estimatedMinute: 0,
         isSelected: false,
       });
       return { ...columns };
@@ -430,18 +432,20 @@ const TodoList = () => {
                                         setColumns={setColumns}
                                       />
                                     </div>
-                                    <LinearDeterminate
-                                      progress={getProgress(
-                                        item.spentSecond,
-                                        item.estimatedMinute
-                                      )}
-                                      color={
-                                        item.spentSecond <
-                                        item.estimatedMinute * 60
-                                          ? "primary"
-                                          : "secondary"
-                                      }
-                                    />
+                                    {item.estimatedMinute > 0 && (
+                                      <LinearDeterminate
+                                        progress={getProgress(
+                                          item.spentSecond,
+                                          item.estimatedMinute
+                                        )}
+                                        color={
+                                          item.spentSecond <
+                                          item.estimatedMinute * 60
+                                            ? "primary"
+                                            : "secondary"
+                                        }
+                                      />
+                                    )}
                                   </Card>
                                 );
                               }}

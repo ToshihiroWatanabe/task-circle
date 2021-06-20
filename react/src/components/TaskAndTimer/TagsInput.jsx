@@ -104,6 +104,7 @@ export default function TagsInput({ ...props }) {
             <div>
               <TextField
                 InputProps={{
+                  maxLength: "4",
                   startAdornment: props.categoryInput.map((item) => (
                     <Chip
                       key={item}
