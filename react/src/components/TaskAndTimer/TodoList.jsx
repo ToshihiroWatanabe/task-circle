@@ -132,7 +132,12 @@ const onDragEnd = (result, columns, setColumns) => {
 };
 
 const useStyles = makeStyles((theme) => ({
-  card: {
+  columnCard: {
+    padding: 4,
+    minWidth: 320,
+    width: 320,
+  },
+  taskCard: {
     userSelect: "none",
     padding: 16,
     margin: "0 0 8px 0",
@@ -313,11 +318,8 @@ const TodoList = () => {
                           background: snapshot.isDraggingOver
                             ? "lightblue"
                             : "lightgrey",
-                          padding: 4,
-                          minWidth: 320,
-                          width: 320,
-                          minHeight: 500,
                         }}
+                        className={classes.columnCard}
                       >
                         {/* タスクカード */}
                         {column.items.map((item, index) => {
@@ -334,7 +336,7 @@ const TodoList = () => {
                                     ref={provided.innerRef}
                                     {...provided.draggableProps}
                                     {...provided.dragHandleProps}
-                                    className={classes.card}
+                                    className={classes.taskCard}
                                     style={{
                                       backgroundColor: snapshot.isDragging
                                         ? "#254C86"
