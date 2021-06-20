@@ -463,7 +463,6 @@ const TodoList = () => {
                             selectedTags={handleSelecetedTags}
                             fullWidth
                             variant="outlined"
-                            id="tags"
                             name="tags"
                             size="small"
                             placeholder="タスクを追加"
