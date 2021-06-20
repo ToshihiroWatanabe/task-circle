@@ -151,21 +151,24 @@ const TodoList = () => {
 
   /**
    * タスクがクリックされたときの処理です。
-   * @param {*} index
-   * @param {*} event
    */
-  const onItemClick = (index, event) => {
-    setColumns((columns) => {
-      Object.values(columns)[0].items.map((item, i) => {
-        if (i === index) {
-          item.isSelected = true;
-        } else {
-          item.isSelected = false;
-        }
-        return item;
+  const onItemClick = (event, index) => {
+    if (
+      ["DIV", "span"].includes(event.target.tagName) &&
+      event.target.style.backgroundColor !== "transparent"
+    ) {
+      setColumns((columns) => {
+        Object.values(columns)[0].items.map((item, i) => {
+          if (i === index) {
+            item.isSelected = true;
+          } else {
+            item.isSelected = false;
+          }
+          return item;
+        });
+        return { ...columns };
       });
-      return { ...columns };
-    });
+    }
   };
 
   /**
@@ -324,7 +327,7 @@ const TodoList = () => {
                                       ...provided.draggableProps.style,
                                     }}
                                     onClick={(event) =>
-                                      onItemClick(index, event)
+                                      onItemClick(event, index)
                                     }
                                   >
                                     <div style={{ display: "flex" }}>
