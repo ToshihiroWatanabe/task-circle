@@ -193,6 +193,7 @@ const TodoList = () => {
         timeoutId = setTimeout(timerCount, getTimeout());
         startedSound.play();
       } else {
+        document.title = defaultTitle;
         stoppedSound.play();
       }
       return { ...state, isTimerOn: !state.isTimerOn };
@@ -389,7 +390,7 @@ const TodoList = () => {
                                       <Tooltip
                                         title={
                                           state.isTimerOn
-                                            ? "タイマーを停止"
+                                            ? ""
                                             : "タイマーを開始"
                                         }
                                       >
