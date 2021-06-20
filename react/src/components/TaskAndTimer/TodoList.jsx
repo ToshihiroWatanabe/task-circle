@@ -156,6 +156,7 @@ const TodoList = () => {
   const [columns, setColumns] = useState(columnsFrom);
   const [categoryInput, setCategoryInput] = useState([]);
   const [isTagsInputFocused, setIsTagsInputFocused] = useState(false);
+  const [inputValue, setInputValue] = useState("");
 
   /**
    * タスクがクリックされたときの処理です。
@@ -284,14 +285,16 @@ const TodoList = () => {
     setColumns((columns) => {
       Object.values(columns)[0].items.push({
         id: uuid(),
-        category: "",
-        content: "復習",
+        category: categoryInput.length > 0 ? categoryInput[0] : "",
+        content: inputValue.trim(),
         spentSecond: 0,
         estimatedMinute: 60,
         isSelected: false,
       });
       return { ...columns };
     });
+    setCategoryInput([]);
+    setInputValue("");
   };
 
   const handleSelecetedTags = (category) => {
@@ -393,8 +396,9 @@ const TodoList = () => {
                                               style={{
                                                 marginTop: "-0.2rem",
                                                 marginRight: "0.3rem",
-                                                fontSize: "0.5rem",
-                                                height: "1rem",
+                                                paddingBottom: "0.1rem",
+                                                fontSize: "0.75rem",
+                                                height: "1.2rem",
                                                 width: "3.5rem",
                                               }}
                                             />
@@ -463,6 +467,9 @@ const TodoList = () => {
                             setCategoryInput={setCategoryInput}
                             isTagsInputFocused={isTagsInputFocused}
                             setIsTagsInputFocused={setIsTagsInputFocused}
+                            inputValue={inputValue}
+                            setInputValue={setInputValue}
+                            onAddButtonClick={onAddButtonClick}
                             style={{
                               width: "105%",
                               marginTop: "0.2rem",
@@ -472,7 +479,10 @@ const TodoList = () => {
                               borderRadius: "4px",
                             }}
                           />
-                          <IconButton onClick={onAddButtonClick}>
+                          <IconButton
+                            onClick={onAddButtonClick}
+                            style={{ marginLeft: "1rem" }}
+                          >
                             <AddIcon />
                           </IconButton>
                         </div>
