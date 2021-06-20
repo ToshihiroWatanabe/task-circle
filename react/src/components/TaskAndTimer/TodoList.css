@@ -4,3 +4,9 @@
     margin-left: -16px;
     margin-right: -16px;
 }
+
+#downshift-multiple-input-helper-text {
+    background-color: lightgrey !important;
+    margin: 0;
+    width: 100%;
+}

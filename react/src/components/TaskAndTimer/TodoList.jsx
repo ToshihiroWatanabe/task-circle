@@ -14,7 +14,6 @@ import tickAudio from "audio/tick.mp3";
 import TaskMenu from "./TaskMenu";
 import AddIcon from "@material-ui/icons/Add";
 import TagsInput from "./TagsInput";
-import { validate } from "@material-ui/pickers";
 
 /** 一度にカウントする秒数 */
 const ONCE_COUNT = 1;
@@ -488,6 +487,7 @@ const TodoList = () => {
                           style={{
                             display: "flex",
                             justifyContent: "space-between",
+                            height: helperText ? "4rem" : "",
                           }}
                         >
                           <TagsInput
@@ -515,6 +515,7 @@ const TodoList = () => {
                                 ? "white"
                                 : "lightgrey",
                               borderRadius: "4px",
+                              height: "2.5rem",
                             }}
                           />
                           <IconButton

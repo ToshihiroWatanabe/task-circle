@@ -30,6 +30,7 @@ const TagsInput = (props) => {
     setInputValue,
     onAddButtonClick,
     helperText,
+    setHelperText,
     ...other
   } = props;
 
