@@ -15,7 +15,7 @@ import { secondToHHMMSS } from "utils/convert";
 const ONCE_COUNT = 1;
 /** カウントの間隔(ミリ秒) */
 const COUNT_INTERVAL = 1000;
-
+/** setTimeoutのID */
 let timeoutId = null;
 
 /** タイマーを開始した時刻 */
@@ -23,13 +23,15 @@ let startedAt = null;
 /** 最後にカウントした時刻 */
 let lastCountedAt = null;
 
+const defaultTitle = document.title;
+
 const itemsFrom = [
   {
     id: uuid(),
     category: "",
     content: "予習",
     spentSecond: 0,
-    estimatedMinute: 0,
+    estimatedMinute: 60,
     isSelected: true,
   },
   {
@@ -37,7 +39,7 @@ const itemsFrom = [
     category: "",
     content: "復習",
     spentSecond: 0,
-    estimatedMinute: 0,
+    estimatedMinute: 60,
     isSelected: false,
   },
   {
@@ -45,7 +47,7 @@ const itemsFrom = [
     category: "Java",
     content: "JUnitのテストコードを書く",
     spentSecond: 0,
-    estimatedMinute: 0,
+    estimatedMinute: 60,
     isSelected: false,
   },
   {
@@ -53,7 +55,7 @@ const itemsFrom = [
     category: "",
     content: "ふりかえり",
     spentSecond: 0,
-    estimatedMinute: 0,
+    estimatedMinute: 60,
     isSelected: false,
   },
   {
@@ -61,7 +63,7 @@ const itemsFrom = [
     category: "カテゴリ",
     content: "課題",
     spentSecond: 0,
-    estimatedMinute: 0,
+    estimatedMinute: 60,
     isSelected: false,
   },
 ];
@@ -162,6 +164,7 @@ const TodoList = () => {
     setState((state) => {
       if (!state.isTimerOn) {
         startedAt = Date.now();
+        lastCountedAt = Date.now();
         console.log("startedAt: " + startedAt);
         timeoutId = setTimeout(timerCount, getTimeout());
       }
@@ -186,7 +189,6 @@ const TodoList = () => {
           (startedAt % COUNT_INTERVAL) -
           (dateNow % COUNT_INTERVAL)
         : (startedAt % COUNT_INTERVAL) - (dateNow % COUNT_INTERVAL);
-    console.log(timeout);
     return timeout;
   };
 
@@ -197,7 +199,18 @@ const TodoList = () => {
     setState((state) => {
       if (state.isTimerOn) {
         timeoutId = setTimeout(timerCount, getTimeout());
-        spendTime(1);
+        // 前回のカウントから1.5秒以上経っていると一度にカウントする量が増える
+        const dateNow = Date.now();
+        let count = 0;
+        for (
+          let i = 0;
+          i <= dateNow - lastCountedAt - COUNT_INTERVAL / 2;
+          i += COUNT_INTERVAL
+        ) {
+          count++;
+        }
+        spendTime(count);
+        lastCountedAt = Date.now();
       }
       if (!state.isTimerOn) {
         clearTimeout(timeoutId);
@@ -214,12 +227,26 @@ const TodoList = () => {
       Object.values(columns)[0].items.map((item, index) => {
         if (item.isSelected) {
           item.spentSecond += ONCE_COUNT * count;
+          refreshTitle(item.content, item.spentSecond);
         }
         return item;
       });
       return { ...columns };
     });
   };
+
+  /**
+   * ページのタイトルを更新します。
+   */
+  const refreshTitle = (content, spentSecond) => {
+    document.title =
+      content + "(" + secondToHHMMSS(spentSecond) + ") " + defaultTitle;
+  };
+
+  /**
+   * 進行状況の割合を返します。
+   */
+  const getProgress = (spentSecond, estimatedMinute) => {};
 
   return (
     <div style={{ display: "flex", height: "100%" }}>
