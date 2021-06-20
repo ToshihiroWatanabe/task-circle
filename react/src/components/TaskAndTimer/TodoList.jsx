@@ -165,7 +165,6 @@ const TodoList = () => {
       if (!state.isTimerOn) {
         startedAt = Date.now();
         lastCountedAt = Date.now();
-        console.log("startedAt: " + startedAt);
         timeoutId = setTimeout(timerCount, getTimeout());
       }
       return { ...state, isTimerOn: !state.isTimerOn };
@@ -374,6 +373,12 @@ const TodoList = () => {
                                         item.spentSecond,
                                         item.estimatedMinute
                                       )}
+                                      color={
+                                        item.spentSecond <
+                                        item.estimatedMinute * 60
+                                          ? "primary"
+                                          : "secondary"
+                                      }
                                     />
                                   </Card>
                                 );
