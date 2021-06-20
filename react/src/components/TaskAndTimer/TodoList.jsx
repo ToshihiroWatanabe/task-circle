@@ -1,7 +1,6 @@
 import React, { useContext, useState } from "react";
 import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
-import { Chip, IconButton, makeStyles } from "@material-ui/core";
-import Card from "@material-ui/core/Card";
+import { Chip, IconButton, makeStyles, Card } from "@material-ui/core";
 import uuid from "uuid/v4";
 import PlayArrowIcon from "@material-ui/icons/PlayArrow";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
@@ -299,6 +298,7 @@ const TodoList = () => {
                           minHeight: 500,
                         }}
                       >
+                        {/* タスクカード */}
                         {column.items.map((item, index) => {
                           return (
                             <Draggable
