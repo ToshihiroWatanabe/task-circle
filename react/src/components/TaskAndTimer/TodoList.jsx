@@ -394,7 +394,11 @@ const TodoList = () => {
                                         </div>
                                       </div>
                                       {/* タスクメニュー */}
-                                      <TaskMenu />
+                                      <TaskMenu
+                                        index={index}
+                                        columns={columns}
+                                        setColumns={setColumns}
+                                      />
                                     </div>
                                     <LinearDeterminate
                                       progress={getProgress(

@@ -9,8 +9,8 @@ import EditDialog from "components/TaskAndTimer/EditDialog";
 
 /** Material-UIのスタイル */
 const useStyles = makeStyles({
-  hidden: {
-    display: "none",
+  menu: {
+    width: "13rem",
   },
 });
 
@@ -32,10 +32,16 @@ const TaskMenu = memo((props) => {
     }
   }, [editOpen]);
 
+  /**
+   * メニューアイコンがクリックされたときの処理です。
+   */
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
 
+  /**
+   * メニューが閉じられるときの処理です。
+   */
   const handleClose = () => {
     setAnchorEl(null);
   };
@@ -59,6 +65,16 @@ const TaskMenu = memo((props) => {
    * 削除がクリックされたときの処理です。
    */
   const handleDelete = () => {
+    props.setColumns((columns) => {
+      return {
+        [Object.keys(columns)[0]]: {
+          ...Object.values(columns)[0],
+          items: Object.values(columns)[0].items.filter((value, index) => {
+            return index !== props.index;
+          }),
+        },
+      };
+    });
     setAnchorEl(null);
   };
 
@@ -77,7 +93,7 @@ const TaskMenu = memo((props) => {
         keepMounted
         open={Boolean(anchorEl)}
         onClose={handleClose}
-        style={{ width: "13rem" }}
+        className={classes.menu}
       >
         <MenuItem onClick={handleEdit}>
           <EditIcon />
