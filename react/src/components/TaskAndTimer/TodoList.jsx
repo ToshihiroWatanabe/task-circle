@@ -204,19 +204,17 @@ const TodoList = () => {
    * 次にタイマーをカウントするまでの時間(ミリ秒)を返します。
    */
   const getTimeout = () => {
-    /*
-    現在時刻(ミリ秒)の下3桁が開始時刻(ミリ秒)の下3桁以上の場合
-    → 1000 + 開始時刻(ミリ秒)の下3桁 - 現在時刻(ミリ秒)の下3桁
-    現在時刻(ミリ秒)の下3桁が開始時刻(ミリ秒)の下3桁未満の場合
-    → 開始時刻(ミリ秒)の下3桁 - 現在時刻(ミリ秒)の下3桁
-    */
     const dateNow = Date.now();
     const timeout =
+      // 現在時刻(ミリ秒)の下3桁が開始時刻(ミリ秒)の下3桁以上の場合
+      // → 1000 + 開始時刻(ミリ秒)の下3桁 - 現在時刻(ミリ秒)の下3桁
       dateNow % COUNT_INTERVAL >= startedAt % COUNT_INTERVAL
         ? COUNT_INTERVAL +
           (startedAt % COUNT_INTERVAL) -
           (dateNow % COUNT_INTERVAL)
-        : (startedAt % COUNT_INTERVAL) - (dateNow % COUNT_INTERVAL);
+        : // 現在時刻(ミリ秒)の下3桁が開始時刻(ミリ秒)の下3桁未満の場合
+          // → 開始時刻(ミリ秒)の下3桁 - 現在時刻(ミリ秒)の下3桁
+          (startedAt % COUNT_INTERVAL) - (dateNow % COUNT_INTERVAL);
     return timeout;
   };
 
@@ -277,13 +275,14 @@ const TodoList = () => {
    */
   const onAddButtonClick = () => {
     if (validate()) {
+      const retrievedInputValue = retrieveEstimatedSecond(inputValue.trim());
       setColumns((columns) => {
         Object.values(columns)[0].items.push({
           id: uuid(),
           category: categoryInput.length > 0 ? categoryInput[0] : "",
-          content: inputValue.trim(),
+          content: retrievedInputValue.content,
           spentSecond: 0,
-          estimatedSecond: 0,
+          estimatedSecond: retrievedInputValue.estimatedSecond,
           isSelected: false,
         });
         return { ...columns };
@@ -310,6 +309,19 @@ const TodoList = () => {
       return false;
     }
     return true;
+  };
+
+  /**
+   * 入力された文字列を、文字列と目標時間に分割します。
+   * @param {*} input
+   * @returns
+   */
+  const retrieveEstimatedSecond = (input) => {
+    const matched = input.match(/\d+:[0-5]*[0-9]:[0-5]*[0-9]/);
+    if (matched) {
+      console.log(matched[0]);
+    }
+    return { content: input, estimatedSecond: 0 };
   };
 
   const handleSelecetedTags = (category) => {
@@ -405,18 +417,23 @@ const TodoList = () => {
                                       <div style={{ flexGrow: "1" }}>
                                         <div style={{ marginBottom: "0.2rem" }}>
                                           {item.category !== "" && (
-                                            <Chip
-                                              label={item.category}
-                                              size="small"
-                                              style={{
-                                                marginTop: "-0.2rem",
-                                                marginRight: "0.3rem",
-                                                paddingBottom: "0.1rem",
-                                                fontSize: "0.75rem",
-                                                height: "1.2rem",
-                                                maxWidth: "4rem",
-                                              }}
-                                            />
+                                            <Tooltip
+                                              title={item.category}
+                                              placement="top"
+                                            >
+                                              <Chip
+                                                label={item.category}
+                                                size="small"
+                                                style={{
+                                                  marginTop: "-0.2rem",
+                                                  marginRight: "0.3rem",
+                                                  paddingBottom: "0.1rem",
+                                                  fontSize: "0.75rem",
+                                                  height: "1.2rem",
+                                                  maxWidth: "4rem",
+                                                }}
+                                              />
+                                            </Tooltip>
                                           )}
                                           {item.content}
                                         </div>
