@@ -16,8 +16,12 @@ const ONCE_COUNT = 1;
 /** カウントの間隔(ミリ秒) */
 const COUNT_INTERVAL = 1000;
 
-let interval = null;
-let timeout = null;
+let timeoutId = null;
+
+/** タイマーを開始した時刻 */
+let startedAt = null;
+/** 最後にカウントした時刻 */
+let lastCountedAt = null;
 
 const itemsFrom = [
   {
@@ -157,19 +161,43 @@ const TodoList = () => {
   const onPlayButtonClick = (index) => {
     setState((state) => {
       if (!state.isTimerOn) {
-        // interval = setInterval(() => {
-        //   spendTime();
-        // }, COUNT_INTERVAL);
-        timeout = setTimeout(function timerCount() {
-          timeout = setTimeout(timerCount, COUNT_INTERVAL);
-          spendTime(1);
-        }, COUNT_INTERVAL);
-      }
-      if (state.isTimerOn) {
-        // clearInterval(interval);
-        clearTimeout(timeout);
+        startedAt = Date.now();
+        console.log("startedAt: " + startedAt);
+        timeoutId = setTimeout(timerCount, getTimeout());
       }
       return { ...state, isTimerOn: !state.isTimerOn };
+    });
+  };
+
+  /**
+   * 次にタイマーをカウントするまでの時間(ミリ秒)を返します。
+   */
+  const getTimeout = () => {
+    const dateNow = Date.now();
+    let timeout =
+      dateNow % COUNT_INTERVAL >= startedAt % COUNT_INTERVAL
+        ? COUNT_INTERVAL -
+          ((dateNow % COUNT_INTERVAL) - (startedAt % COUNT_INTERVAL))
+        : COUNT_INTERVAL -
+          ((dateNow % COUNT_INTERVAL) +
+            COUNT_INTERVAL -
+            (startedAt % COUNT_INTERVAL));
+    return timeout;
+  };
+
+  /**
+   * タイマーのカウント処理です。
+   */
+  const timerCount = () => {
+    setState((state) => {
+      if (state.isTimerOn) {
+        timeoutId = setTimeout(timerCount, getTimeout());
+        spendTime(1);
+      }
+      if (!state.isTimerOn) {
+        clearTimeout(timeoutId);
+      }
+      return state;
     });
   };
 
