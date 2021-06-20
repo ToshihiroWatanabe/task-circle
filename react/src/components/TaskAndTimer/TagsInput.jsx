@@ -29,6 +29,7 @@ const TagsInput = (props) => {
     inputValue,
     setInputValue,
     onAddButtonClick,
+    helperText,
     ...other
   } = props;
 
@@ -99,6 +100,7 @@ const TagsInput = (props) => {
 
   function handleInputChange(event) {
     props.setInputValue(event.target.value);
+    props.setHelperText("");
   }
 
   return (
@@ -139,6 +141,7 @@ const TagsInput = (props) => {
                     props.setIsTagsInputFocused(true);
                   },
                 }}
+                helperText={props.helperText}
                 {...other}
                 {...inputProps}
               />

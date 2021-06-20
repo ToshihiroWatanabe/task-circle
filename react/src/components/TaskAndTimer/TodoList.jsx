@@ -14,6 +14,7 @@ import tickAudio from "audio/tick.mp3";
 import TaskMenu from "./TaskMenu";
 import AddIcon from "@material-ui/icons/Add";
 import TagsInput from "./TagsInput";
+import { validate } from "@material-ui/pickers";
 
 /** 一度にカウントする秒数 */
 const ONCE_COUNT = 1;
@@ -157,7 +158,7 @@ const TodoList = () => {
   const [categoryInput, setCategoryInput] = useState([]);
   const [isTagsInputFocused, setIsTagsInputFocused] = useState(false);
   const [inputValue, setInputValue] = useState("");
-  const [helperMessage, setHelperMessage] = useState("");
+  const [helperText, setHelperText] = useState("");
 
   /**
    * タスクがクリックされたときの処理です。
@@ -275,20 +276,40 @@ const TodoList = () => {
    * 追加ボタンがクリックされたときの処理です。
    */
   const onAddButtonClick = () => {
-    //文字数チェック
-    setColumns((columns) => {
-      Object.values(columns)[0].items.push({
-        id: uuid(),
-        category: categoryInput.length > 0 ? categoryInput[0] : "",
-        content: inputValue.trim(),
-        spentSecond: 0,
-        estimatedSecond: 0,
-        isSelected: false,
+    if (validate()) {
+      setColumns((columns) => {
+        Object.values(columns)[0].items.push({
+          id: uuid(),
+          category: categoryInput.length > 0 ? categoryInput[0] : "",
+          content: inputValue.trim(),
+          spentSecond: 0,
+          estimatedSecond: 0,
+          isSelected: false,
+        });
+        return { ...columns };
       });
-      return { ...columns };
-    });
-    setCategoryInput([]);
-    setInputValue("");
+      setCategoryInput([]);
+      setInputValue("");
+    }
+  };
+
+  /**
+   * 入力された値を検証します。
+   */
+  const validate = () => {
+    if (inputValue.trim().length < 1) {
+      setHelperText("タスク名を入力してください");
+      return false;
+    }
+    if (inputValue.trim().length > 45) {
+      setHelperText("タスク名は45文字以内にしてください");
+      return false;
+    }
+    if (categoryInput.length > 0 && categoryInput[0].trim().length > 45) {
+      setHelperText("カテゴリー名は45文字以内にしてください");
+      return false;
+    }
+    return true;
   };
 
   const handleSelecetedTags = (category) => {
@@ -453,6 +474,9 @@ const TodoList = () => {
                           }}
                         >
                           <TagsInput
+                            error={helperText !== "" ? true : false}
+                            helperText={helperText}
+                            setHelperText={setHelperText}
                             selectedTags={handleSelecetedTags}
                             fullWidth
                             variant="outlined"
