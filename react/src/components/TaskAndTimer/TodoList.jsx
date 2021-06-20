@@ -1,6 +1,6 @@
 import React, { useContext, useState } from "react";
 import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
-import { Chip, IconButton, makeStyles, Card } from "@material-ui/core";
+import { Chip, IconButton, makeStyles, Card, Tooltip } from "@material-ui/core";
 import uuid from "uuid/v4";
 import PlayArrowIcon from "@material-ui/icons/PlayArrow";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
@@ -154,7 +154,7 @@ const TodoList = () => {
    */
   const onItemClick = (event, index) => {
     if (
-      ["DIV", "span"].includes(event.target.tagName) &&
+      ["DIV", "SPAN"].includes(event.target.tagName) &&
       event.target.style.backgroundColor !== "transparent"
     ) {
       setColumns((columns) => {
@@ -331,21 +331,33 @@ const TodoList = () => {
                                     }
                                   >
                                     <div style={{ display: "flex" }}>
-                                      <IconButton
-                                        size="small"
-                                        color="inherit"
-                                        style={{
-                                          marginLeft: "-0.75rem",
-                                          marginRight: "0.25rem",
-                                          visibility: item.isSelected
-                                            ? ""
-                                            : "hidden",
-                                        }}
-                                        onClick={() => onPlayButtonClick(index)}
+                                      <Tooltip
+                                        title={
+                                          state.isTimerOn
+                                            ? "タイマーを停止"
+                                            : "タイマーを開始"
+                                        }
                                       >
-                                        {state.isTimerOn && <StopIcon />}
-                                        {!state.isTimerOn && <PlayArrowIcon />}
-                                      </IconButton>
+                                        <IconButton
+                                          size="small"
+                                          color="inherit"
+                                          style={{
+                                            marginLeft: "-0.75rem",
+                                            marginRight: "0.25rem",
+                                            visibility: item.isSelected
+                                              ? ""
+                                              : "hidden",
+                                          }}
+                                          onClick={() =>
+                                            onPlayButtonClick(index)
+                                          }
+                                        >
+                                          {state.isTimerOn && <StopIcon />}
+                                          {!state.isTimerOn && (
+                                            <PlayArrowIcon />
+                                          )}
+                                        </IconButton>
+                                      </Tooltip>
                                       <div style={{ flexGrow: "1" }}>
                                         <div style={{ marginBottom: "0.2rem" }}>
                                           {item.category !== "" && (
