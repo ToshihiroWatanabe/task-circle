@@ -43,7 +43,7 @@ const itemsFrom = [
     category: "",
     content: "予習",
     spentSecond: 0,
-    estimatedMinute: 15,
+    estimatedMinute: 3,
     isSelected: true,
   },
   {
@@ -316,9 +316,10 @@ const TodoList = () => {
                                     className={classes.card}
                                     style={{
                                       backgroundColor: snapshot.isDragging
+                                        ? "#254C86"
+                                        : item.isSelected
                                         ? "#2498b3"
                                         : "#456C86",
-
                                       ...provided.draggableProps.style,
                                     }}
                                     onClick={(event) =>
