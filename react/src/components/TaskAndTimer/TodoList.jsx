@@ -401,7 +401,7 @@ const TodoList = () => {
                                                 paddingBottom: "0.1rem",
                                                 fontSize: "0.75rem",
                                                 height: "1.2rem",
-                                                width: "3.5rem",
+                                                maxWidth: "4rem",
                                               }}
                                             />
                                           )}
