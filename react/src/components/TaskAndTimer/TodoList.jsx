@@ -9,6 +9,7 @@ import LinearDeterminate from "components/TaskAndTimer/LinearDeterminate";
 import "components/TaskAndTimer/TodoList.css";
 import { Context } from "contexts/Context";
 import StopIcon from "@material-ui/icons/Stop";
+import { secondToHHMMSS } from "utils/convert";
 
 /** 一度にカウントする秒数 */
 const ONCE_COUNT = 1;
@@ -16,6 +17,7 @@ const ONCE_COUNT = 1;
 const COUNT_INTERVAL = 1000;
 
 let interval = null;
+let timeout = null;
 
 const itemsFrom = [
   {
@@ -159,6 +161,9 @@ const TodoList = () => {
           spendTime();
         }, COUNT_INTERVAL);
       }
+      if (state.isTimerOn) {
+        clearInterval(interval);
+      }
       return { ...state, isTimerOn: !state.isTimerOn };
     });
   };
@@ -277,7 +282,7 @@ const TodoList = () => {
                                             marginBottom: "-0.2rem",
                                           }}
                                         >
-                                          00:00:00
+                                          {secondToHHMMSS(item.spentSecond)}
                                         </div>
                                       </div>
                                       <IconButton
