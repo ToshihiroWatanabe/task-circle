@@ -44,7 +44,7 @@ const itemsFrom = [
     category: "",
     content: "予習",
     spentSecond: 0,
-    estimatedMinute: 3,
+    estimatedSecond: 3 * 60,
     isSelected: true,
   },
   {
@@ -52,7 +52,7 @@ const itemsFrom = [
     category: "",
     content: "復習",
     spentSecond: 0,
-    estimatedMinute: 60,
+    estimatedSecond: 60 * 60,
     isSelected: false,
   },
   {
@@ -60,7 +60,7 @@ const itemsFrom = [
     category: "Java",
     content: "JUnitのテストコードを書く",
     spentSecond: 0,
-    estimatedMinute: 60,
+    estimatedSecond: 15 * 60,
     isSelected: false,
   },
   {
@@ -68,7 +68,7 @@ const itemsFrom = [
     category: "",
     content: "ふりかえり",
     spentSecond: 0,
-    estimatedMinute: 60,
+    estimatedSecond: 60 * 60,
     isSelected: false,
   },
   {
@@ -76,7 +76,7 @@ const itemsFrom = [
     category: "カテゴリ",
     content: "課題",
     spentSecond: 0,
-    estimatedMinute: 60,
+    estimatedSecond: 60 * 60,
     isSelected: false,
   },
 ];
@@ -272,14 +272,6 @@ const TodoList = () => {
   };
 
   /**
-   * 進行状況の割合を返します。
-   */
-  const getProgress = (spentSecond, estimatedMinute) => {
-    const percentage = (spentSecond / (estimatedMinute * 60)) * 100;
-    return percentage;
-  };
-
-  /**
    * 追加ボタンがクリックされたときの処理です。
    */
   const onAddButtonClick = () => {
@@ -290,7 +282,7 @@ const TodoList = () => {
         category: categoryInput.length > 0 ? categoryInput[0] : "",
         content: inputValue.trim(),
         spentSecond: 0,
-        estimatedMinute: 0,
+        estimatedSecond: 0,
         isSelected: false,
       });
       return { ...columns };
@@ -415,11 +407,11 @@ const TodoList = () => {
                                           }}
                                         >
                                           {secondToHHMMSS(item.spentSecond)}
-                                          {item.estimatedMinute !== 0 && (
+                                          {item.estimatedSecond !== 0 && (
                                             <span style={{ color: "#AAA" }}>
                                               {" / "}
                                               {secondToHHMMSS(
-                                                item.estimatedMinute * 60
+                                                item.estimatedSecond
                                               )}
                                             </span>
                                           )}
@@ -432,15 +424,16 @@ const TodoList = () => {
                                         setColumns={setColumns}
                                       />
                                     </div>
-                                    {item.estimatedMinute > 0 && (
+                                    {item.estimatedSecond > 0 && (
                                       <LinearDeterminate
-                                        progress={getProgress(
-                                          item.spentSecond,
-                                          item.estimatedMinute
-                                        )}
+                                        progress={
+                                          (item.spentSecond /
+                                            item.estimatedSecond) *
+                                          100
+                                        }
                                         color={
                                           item.spentSecond <
-                                          item.estimatedMinute * 60
+                                          item.estimatedSecond
                                             ? "primary"
                                             : "secondary"
                                         }
