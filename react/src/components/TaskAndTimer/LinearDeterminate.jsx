@@ -8,29 +8,29 @@ const useStyles = makeStyles({
   },
 });
 
-export default function LinearDeterminate() {
+export default function LinearDeterminate(props) {
   const classes = useStyles();
-  const [progress, setProgress] = React.useState(0);
+  // const [progress, setProgress] = React.useState(0);
 
-  React.useEffect(() => {
-    const timer = setInterval(() => {
-      setProgress((oldProgress) => {
-        if (oldProgress === 100) {
-          return 0;
-        }
-        const diff = Math.random() * 10;
-        return Math.min(oldProgress + diff, 100);
-      });
-    }, 500);
+  // React.useEffect(() => {
+  //   const timer = setInterval(() => {
+  //     setProgress((oldProgress) => {
+  //       if (oldProgress === 100) {
+  //         return 0;
+  //       }
+  //       const diff = Math.random() * 10;
+  //       return Math.min(oldProgress + diff, 100);
+  //     });
+  //   }, 500);
 
-    return () => {
-      clearInterval(timer);
-    };
-  }, []);
+  //   return () => {
+  //     clearInterval(timer);
+  //   };
+  // }, []);
 
   return (
     <div className={classes.root}>
-      <LinearProgress variant="determinate" value={progress} />
+      <LinearProgress variant="determinate" value={props.progress} />
     </div>
   );
 }

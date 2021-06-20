@@ -14,7 +14,7 @@ import { secondToHHMMSS } from "utils/convert";
 /** 一度にカウントする秒数 */
 const ONCE_COUNT = 1;
 /** カウントの間隔(ミリ秒) */
-const COUNT_INTERVAL = 1000;
+const COUNT_INTERVAL = 10;
 /** setTimeoutのID */
 let timeoutId = null;
 
@@ -31,7 +31,7 @@ const itemsFrom = [
     category: "",
     content: "予習",
     spentSecond: 0,
-    estimatedMinute: 60,
+    estimatedMinute: 15,
     isSelected: true,
   },
   {
@@ -246,7 +246,10 @@ const TodoList = () => {
   /**
    * 進行状況の割合を返します。
    */
-  const getProgress = (spentSecond, estimatedMinute) => {};
+  const getProgress = (spentSecond, estimatedMinute) => {
+    const percentage = (spentSecond / (estimatedMinute * 60)) * 100;
+    return percentage;
+  };
 
   return (
     <div style={{ display: "flex", height: "100%" }}>
@@ -348,6 +351,14 @@ const TodoList = () => {
                                           }}
                                         >
                                           {secondToHHMMSS(item.spentSecond)}
+                                          {item.estimatedMinute !== 0 && (
+                                            <span style={{ color: "#AAA" }}>
+                                              {" / "}
+                                              {secondToHHMMSS(
+                                                item.estimatedMinute * 60
+                                              )}
+                                            </span>
+                                          )}
                                         </div>
                                       </div>
                                       <IconButton
@@ -358,7 +369,12 @@ const TodoList = () => {
                                         <MoreVertIcon />
                                       </IconButton>
                                     </div>
-                                    <LinearDeterminate />
+                                    <LinearDeterminate
+                                      progress={getProgress(
+                                        item.spentSecond,
+                                        item.estimatedMinute
+                                      )}
+                                    />
                                   </Card>
                                 );
                               }}
