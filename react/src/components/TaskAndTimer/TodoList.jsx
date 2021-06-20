@@ -12,6 +12,7 @@ import { secondToHHMMSS } from "utils/convert";
 import startedAudio from "audio/notification_simple-01.mp3";
 import stoppedAudio from "audio/notification_simple-02.mp3";
 import tickAudio from "audio/tick.mp3";
+import TaskMenu from "./TaskMenu";
 
 /** 一度にカウントする秒数 */
 const ONCE_COUNT = 1;
@@ -317,7 +318,7 @@ const TodoList = () => {
                                     style={{
                                       backgroundColor: snapshot.isDragging
                                         ? "#254C86"
-                                        : item.isSelected
+                                        : item.isSelected && state.isTimerOn
                                         ? "#2498b3"
                                         : "#456C86",
                                       ...provided.draggableProps.style,
@@ -377,13 +378,8 @@ const TodoList = () => {
                                           )}
                                         </div>
                                       </div>
-                                      <IconButton
-                                        size="small"
-                                        color="inherit"
-                                        style={{ marginRight: "-0.5rem" }}
-                                      >
-                                        <MoreVertIcon />
-                                      </IconButton>
+                                      {/* タスクメニュー */}
+                                      <TaskMenu />
                                     </div>
                                     <LinearDeterminate
                                       progress={getProgress(
