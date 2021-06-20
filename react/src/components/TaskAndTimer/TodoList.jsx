@@ -157,12 +157,17 @@ const TodoList = () => {
   const onPlayButtonClick = (index) => {
     setState((state) => {
       if (!state.isTimerOn) {
-        interval = setInterval(() => {
-          spendTime();
+        // interval = setInterval(() => {
+        //   spendTime();
+        // }, COUNT_INTERVAL);
+        timeout = setTimeout(function timerCount() {
+          timeout = setTimeout(timerCount, COUNT_INTERVAL);
+          spendTime(1);
         }, COUNT_INTERVAL);
       }
       if (state.isTimerOn) {
-        clearInterval(interval);
+        // clearInterval(interval);
+        clearTimeout(timeout);
       }
       return { ...state, isTimerOn: !state.isTimerOn };
     });
@@ -171,11 +176,11 @@ const TodoList = () => {
   /**
    * 選択されているタスクの経過時間を加算します。
    */
-  const spendTime = () => {
+  const spendTime = (count) => {
     setColumns((columns) => {
       Object.values(columns)[0].items.map((item, index) => {
         if (item.isSelected) {
-          item.spentSecond += ONCE_COUNT;
+          item.spentSecond += ONCE_COUNT * count;
         }
         return item;
       });
