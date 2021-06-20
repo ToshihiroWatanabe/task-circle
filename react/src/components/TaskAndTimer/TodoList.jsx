@@ -14,7 +14,7 @@ import { secondToHHMMSS } from "utils/convert";
 /** 一度にカウントする秒数 */
 const ONCE_COUNT = 1;
 /** カウントの間隔(ミリ秒) */
-const COUNT_INTERVAL = 10;
+const COUNT_INTERVAL = 1000;
 /** setTimeoutのID */
 let timeoutId = null;
 
