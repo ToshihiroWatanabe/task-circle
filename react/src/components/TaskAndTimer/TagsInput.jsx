@@ -16,7 +16,7 @@ const useStyles = makeStyles((theme) => ({
 /**
  * タグ入力のコンポーネントです。
  */
-export default function TagsInput({ ...props }) {
+const TagsInput = ({ ...props }) => {
   const classes = useStyles();
   const { selectedTags, placeholder, tags, ...other } = props;
 
@@ -134,7 +134,7 @@ export default function TagsInput({ ...props }) {
       </Downshift>
     </>
   );
-}
+};
 TagsInput.defaultProps = {
   tags: [],
 };
@@ -142,3 +142,5 @@ TagsInput.propTypes = {
   selectedTags: PropTypes.func.isRequired,
   tags: PropTypes.arrayOf(PropTypes.string),
 };
+
+export default TagsInput;
