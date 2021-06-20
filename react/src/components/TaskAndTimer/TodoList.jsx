@@ -173,15 +173,20 @@ const TodoList = () => {
    * 次にタイマーをカウントするまでの時間(ミリ秒)を返します。
    */
   const getTimeout = () => {
+    /*
+    現在時刻(ミリ秒)の下3桁が開始時刻(ミリ秒)の下3桁以上の場合
+    → 1000 + 開始時刻(ミリ秒)の下3桁 - 現在時刻(ミリ秒)の下3桁
+    現在時刻(ミリ秒)の下3桁が開始時刻(ミリ秒)の下3桁未満の場合
+    → 開始時刻(ミリ秒)の下3桁 - 現在時刻(ミリ秒)の下3桁
+    */
     const dateNow = Date.now();
-    let timeout =
+    const timeout =
       dateNow % COUNT_INTERVAL >= startedAt % COUNT_INTERVAL
-        ? COUNT_INTERVAL -
-          ((dateNow % COUNT_INTERVAL) - (startedAt % COUNT_INTERVAL))
-        : COUNT_INTERVAL -
-          ((dateNow % COUNT_INTERVAL) +
-            COUNT_INTERVAL -
-            (startedAt % COUNT_INTERVAL));
+        ? COUNT_INTERVAL +
+          (startedAt % COUNT_INTERVAL) -
+          (dateNow % COUNT_INTERVAL)
+        : (startedAt % COUNT_INTERVAL) - (dateNow % COUNT_INTERVAL);
+    console.log(timeout);
     return timeout;
   };
 
