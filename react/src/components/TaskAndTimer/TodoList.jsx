@@ -13,6 +13,7 @@ import stoppedAudio from "audio/notification_simple-02.mp3";
 import tickAudio from "audio/tick.mp3";
 import TaskMenu from "./TaskMenu";
 import AddIcon from "@material-ui/icons/Add";
+import TagsInput from "./TagsInput";
 
 /** 一度にカウントする秒数 */
 const ONCE_COUNT = 1;
@@ -153,6 +154,8 @@ const TodoList = () => {
   const classes = useStyles();
   const [state, setState] = useContext(Context);
   const [columns, setColumns] = useState(columnsFrom);
+  const [categoryInput, setCategoryInput] = useState([]);
+  const [isTagsInputFocused, setIsTagsInputFocused] = useState(false);
 
   /**
    * タスクがクリックされたときの処理です。
@@ -289,6 +292,10 @@ const TodoList = () => {
       });
       return { ...columns };
     });
+  };
+
+  const handleSelecetedTags = (category) => {
+    setCategoryInput(category);
   };
 
   return (
@@ -438,9 +445,37 @@ const TodoList = () => {
                           );
                         })}
                         {provided.placeholder}
-                        <IconButton onClick={onAddButtonClick}>
-                          <AddIcon />
-                        </IconButton>
+                        <div
+                          style={{
+                            display: "flex",
+                            justifyContent: "space-between",
+                          }}
+                        >
+                          <TagsInput
+                            selectedTags={handleSelecetedTags}
+                            fullWidth
+                            variant="outlined"
+                            id="tags"
+                            name="tags"
+                            size="small"
+                            placeholder="タスクを追加"
+                            categoryInput={categoryInput}
+                            setCategoryInput={setCategoryInput}
+                            isTagsInputFocused={isTagsInputFocused}
+                            setIsTagsInputFocused={setIsTagsInputFocused}
+                            style={{
+                              width: "105%",
+                              marginTop: "0.2rem",
+                              backgroundColor: isTagsInputFocused
+                                ? "white"
+                                : "lightgrey",
+                              borderRadius: "4px",
+                            }}
+                          />
+                          <IconButton onClick={onAddButtonClick}>
+                            <AddIcon />
+                          </IconButton>
+                        </div>
                       </Card>
                     );
                   }}
