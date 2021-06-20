@@ -477,6 +477,7 @@ const TodoList = () => {
                             style={{
                               width: "105%",
                               marginTop: "0.2rem",
+                              marginLeft: "0.2rem",
                               backgroundColor: isTagsInputFocused
                                 ? "white"
                                 : "lightgrey",
