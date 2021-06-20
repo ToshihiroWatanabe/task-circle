@@ -18,7 +18,19 @@ const useStyles = makeStyles((theme) => ({
  */
 const TagsInput = (props) => {
   const classes = useStyles();
-  const { selectedTags, placeholder, tags, ...other } = props;
+  const {
+    selectedTags,
+    placeholder,
+    tags,
+    categoryInput,
+    setCategoryInput,
+    isTagsInputFocused,
+    setIsTagsInputFocused,
+    inputValue,
+    setInputValue,
+    onAddButtonClick,
+    ...other
+  } = props;
 
   useEffect(() => {
     props.setCategoryInput(tags);
