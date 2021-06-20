@@ -59,6 +59,17 @@ const TaskMenu = memo((props) => {
    * リセットがクリックされたときの処理です。
    */
   const handleReset = () => {
+    props.setColumns((columns) => {
+      return {
+        [Object.keys(columns)[0]]: {
+          ...Object.values(columns)[0],
+          items: Object.values(columns)[0].items.map((item, index) => {
+            if (index === props.index) item.spentSecond = 0;
+            return item;
+          }),
+        },
+      };
+    });
     setAnchorEl(null);
   };
 
