@@ -10,6 +10,9 @@ import "components/TaskAndTimer/TodoList.css";
 import { Context } from "contexts/Context";
 import StopIcon from "@material-ui/icons/Stop";
 import { secondToHHMMSS } from "utils/convert";
+import startedAudio from "audio/notification_simple-01.mp3";
+import stoppedAudio from "audio/notification_simple-02.mp3";
+import tickAudio from "audio/tick.mp3";
 
 /** 一度にカウントする秒数 */
 const ONCE_COUNT = 1;
@@ -23,7 +26,16 @@ let startedAt = null;
 /** 最後にカウントした時刻 */
 let lastCountedAt = null;
 
+/** デフォルトタイトル */
 const defaultTitle = document.title;
+
+/** タイマー開始の効果音 */
+const startedSound = new Audio(startedAudio);
+/** タイマー停止の効果音 */
+const stoppedSound = new Audio(stoppedAudio);
+/** タイマーのチクタク音 */
+const tickSound = new Audio(tickAudio);
+tickSound.volume = 1;
 
 const itemsFrom = [
   {
@@ -166,6 +178,9 @@ const TodoList = () => {
         startedAt = Date.now();
         lastCountedAt = Date.now();
         timeoutId = setTimeout(timerCount, getTimeout());
+        startedSound.play();
+      } else {
+        stoppedSound.play();
       }
       return { ...state, isTimerOn: !state.isTimerOn };
     });
@@ -209,6 +224,7 @@ const TodoList = () => {
           count++;
         }
         spendTime(count);
+        tickSound.play();
         lastCountedAt = Date.now();
       }
       if (!state.isTimerOn) {
@@ -333,7 +349,7 @@ const TodoList = () => {
                                               size="small"
                                               style={{
                                                 marginTop: "-0.2rem",
-                                                marginRight: "0.5rem",
+                                                marginRight: "0.3rem",
                                                 fontSize: "0.5rem",
                                                 height: "1rem",
                                                 width: "3.5rem",
