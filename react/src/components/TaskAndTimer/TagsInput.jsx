@@ -4,7 +4,7 @@ import { Chip, TextField } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import Downshift from "downshift";
 
-let lastSpacePressed = Date.now();
+let lastSpacePressed = 0;
 
 const useStyles = makeStyles((theme) => ({
   chip: {
@@ -65,6 +65,8 @@ const TagsInput = (props) => {
       } else {
         lastSpacePressed = Date.now();
       }
+    } else {
+      lastSpacePressed = 0;
     }
     if (event.key === "Enter") {
       props.onAddButtonClick();
