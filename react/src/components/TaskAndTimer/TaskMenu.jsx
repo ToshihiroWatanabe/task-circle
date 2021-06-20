@@ -1,4 +1,4 @@
-import React, { useState, useEffect, memo } from "react";
+import React, { useState, useEffect, memo, useContext } from "react";
 import { makeStyles } from "@material-ui/core";
 import { IconButton, Menu, MenuItem } from "@material-ui/core";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
@@ -6,6 +6,7 @@ import DeleteIcon from "@material-ui/icons/Delete";
 import RotateLeftIcon from "@material-ui/icons/RotateLeft";
 import EditIcon from "@material-ui/icons/Edit";
 import EditDialog from "components/TaskAndTimer/EditDialog";
+import { Context } from "contexts/Context";
 
 /** Material-UIのスタイル */
 const useStyles = makeStyles({
@@ -18,8 +19,8 @@ const useStyles = makeStyles({
  * タスクメニューのコンポーネントです。
  */
 const TaskMenu = memo((props) => {
-  /** Material-UIのスタイル */
   const classes = useStyles();
+  const [state, setState] = useContext(Context);
   const [anchorEl, setAnchorEl] = useState(null);
   const [editOpen, setEditOpen] = useState(false);
 
@@ -99,11 +100,24 @@ const TaskMenu = memo((props) => {
           <EditIcon />
           編集
         </MenuItem>
-        <MenuItem onClick={handleReset}>
+        <MenuItem
+          onClick={handleReset}
+          disabled={
+            Object.values(props.columns)[0].items[props.index].isSelected ===
+              true && state.isTimerOn
+          }
+        >
           <RotateLeftIcon />
           時間をリセット
         </MenuItem>
-        <MenuItem style={{ color: "red" }} onClick={handleDelete}>
+        <MenuItem
+          style={{ color: "red" }}
+          onClick={handleDelete}
+          disabled={
+            Object.values(props.columns)[0].items[props.index].isSelected ===
+              true && state.isTimerOn
+          }
+        >
           <DeleteIcon />
           削除
         </MenuItem>

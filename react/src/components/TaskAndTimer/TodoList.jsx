@@ -3,7 +3,6 @@ import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
 import { Chip, IconButton, makeStyles, Card, Tooltip } from "@material-ui/core";
 import uuid from "uuid/v4";
 import PlayArrowIcon from "@material-ui/icons/PlayArrow";
-import MoreVertIcon from "@material-ui/icons/MoreVert";
 import LinearDeterminate from "components/TaskAndTimer/LinearDeterminate";
 import "components/TaskAndTimer/TodoList.css";
 import { Context } from "contexts/Context";
@@ -13,6 +12,7 @@ import startedAudio from "audio/notification_simple-01.mp3";
 import stoppedAudio from "audio/notification_simple-02.mp3";
 import tickAudio from "audio/tick.mp3";
 import TaskMenu from "./TaskMenu";
+import AddIcon from "@material-ui/icons/Add";
 
 /** 一度にカウントする秒数 */
 const ONCE_COUNT = 1;
@@ -269,6 +269,23 @@ const TodoList = () => {
     return percentage;
   };
 
+  /**
+   * 追加ボタンがクリックされたときの処理です。
+   */
+  const onAddButtonClick = () => {
+    setColumns((columns) => {
+      Object.values(columns)[0].items.push({
+        id: uuid(),
+        category: "",
+        content: "復習",
+        spentSecond: 0,
+        estimatedMinute: 60,
+        isSelected: false,
+      });
+      return { ...columns };
+    });
+  };
+
   return (
     <div style={{ display: "flex", height: "100%" }}>
       <DragDropContext
@@ -419,6 +436,9 @@ const TodoList = () => {
                           );
                         })}
                         {provided.placeholder}
+                        <IconButton onClick={onAddButtonClick}>
+                          <AddIcon />
+                        </IconButton>
                       </Card>
                     );
                   }}
