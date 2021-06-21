@@ -1,4 +1,4 @@
-import React, { memo } from "react";
+import React, { memo, useContext, useEffect, useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import {
   Button,
@@ -7,7 +7,16 @@ import {
   DialogActions,
   DialogContent,
   DialogTitle,
+  Popper,
 } from "@material-ui/core";
+import Autocomplete, {
+  createFilterOptions,
+} from "@material-ui/lab/Autocomplete";
+import { Context } from "contexts/Context";
+
+const filterOptions = createFilterOptions({
+  matchFrom: "start",
+});
 
 /** Material-UIのスタイル */
 const useStyles = makeStyles((theme) => ({
@@ -22,7 +31,37 @@ let enterKeyIsDown = false;
 const EditDialog = memo((props) => {
   /** Material-UIのスタイル */
   const classes = useStyles();
+  const [state, setState] = useContext(Context);
   let inRef = null;
+  const [categories, setCategories] = useState([]);
+
+  useEffect(() => {
+    setState((state) => {
+      setCategories((categories) => {
+        return getCategories();
+      });
+      return state;
+    });
+  }, []);
+
+  const getCategories = () => {
+    for (let i = 0; i < state.reports.length; i++) {
+      for (let j = 0; j < state.reports[i].report_items.length; j++) {
+        categories.push({
+          label: state.reports[i].report_items[j].category,
+          value: state.reports[i].report_items[j].category,
+        });
+      }
+    }
+    // 重複を削除
+    const newCategories = categories.filter((element, index, array) => {
+      return (
+        array.findIndex((element2) => element.label === element2.label) ===
+        index
+      );
+    });
+    return newCategories;
+  };
 
   /**
    * キャンセルしたときの処理です。
@@ -77,6 +116,55 @@ const EditDialog = memo((props) => {
     }
   };
 
+  /** オートコンプリートの選択肢 */
+  const Popper8rem = function (props) {
+    return (
+      <Popper {...props} style={{ width: "8rem" }} placement="bottom-start" />
+    );
+  };
+
+  /**
+   * カテゴリーの選択肢が選ばれたときの処理です。
+   * @param {*} index
+   * @param {*} value
+   */
+  const onCategoryChange = (index, value, reason) => {
+    if (value === undefined) {
+      document.activeElement.blur();
+    }
+    if (reason === "select-option") {
+      // setReport((report) => {
+      //   report.report_items[index].category = value;
+      //   return {
+      //     date: report.date,
+      //     content: report.content,
+      //     report_items: report.report_items,
+      //     updatedAt: report.updatedAt,
+      //   };
+      // });
+    }
+  };
+
+  /**
+   * カテゴリーの選択肢が閉じられたときの処理です。
+   * @param {*} index
+   * @param {*} event
+   */
+  const onCategoryClose = (index, event, reason) => {
+    // カーソルが外れて選択肢が閉じられた場合
+    if (reason === "blur") {
+      // setReport((report) => {
+      //   report.report_items[index].category = event.target.value;
+      //   return {
+      //     date: report.date,
+      //     content: report.content,
+      //     report_items: report.report_items,
+      //     updatedAt: report.updatedAt,
+      //   };
+      // });
+    }
+  };
+
   return (
     <div>
       <Dialog
@@ -87,17 +175,34 @@ const EditDialog = memo((props) => {
       >
         <DialogTitle id="form-dialog-title">編集</DialogTitle>
         <DialogContent>
-          <TextField
-            autoFocus
-            margin="dense"
-            label="カテゴリー"
-            type="text"
-            defaultValue={
-              Object.values(props.columns)[0].items[props.index].category
-            }
-            inputRef={(ref) => (inRef = ref)}
-            onKeyDown={handleKeyDown}
-            onKeyUp={handleKeyUp}
+          <Autocomplete
+            freeSolo
+            disableClearable
+            PopperComponent={Popper8rem}
+            options={categories}
+            getOptionLabel={(option) => option.label}
+            filterOptions={filterOptions}
+            value={{
+              label: Object.values(props.columns)[0].items[props.index]
+                .category,
+              value: Object.values(props.columns)[0].items[props.index]
+                .category,
+            }}
+            onChange={(e, v, r) => onCategoryChange(props.index, v.value, r)}
+            onClose={(e, r) => onCategoryClose(props.index, e, r)}
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                autoFocus
+                label="カテゴリー"
+                variant="outlined"
+                margin="dense"
+                style={{ width: "8rem", marginRight: "4px" }}
+                inputProps={{
+                  ...params.inputProps,
+                }}
+              />
+            )}
           />
           <TextField
             autoFocus
