@@ -1,6 +1,14 @@
 import React, { useContext, useState } from "react";
 import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
-import { Chip, IconButton, makeStyles, Card, Tooltip } from "@material-ui/core";
+import {
+  Chip,
+  IconButton,
+  makeStyles,
+  Card,
+  Tooltip,
+  Typography,
+  Divider,
+} from "@material-ui/core";
 import uuid from "uuid/v4";
 import PlayArrowIcon from "@material-ui/icons/PlayArrow";
 import LinearDeterminate from "components/TaskAndTimer/LinearDeterminate";
@@ -351,7 +359,6 @@ const TodoList = () => {
               }}
               key={columnId}
             >
-              <h2>{column.name}</h2>
               <div style={{ margin: 8 }}>
                 <Droppable droppableId={columnId} key={columnId}>
                   {(provided, snapshot) => {
@@ -366,6 +373,8 @@ const TodoList = () => {
                         }}
                         className={classes.columnCard}
                       >
+                        <Typography>{column.name}</Typography>
+                        <Divider style={{ margin: "0.25rem 0" }} />
                         {/* タスクカード */}
                         {column.items.map((item, index) => {
                           return (
