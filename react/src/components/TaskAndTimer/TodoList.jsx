@@ -17,7 +17,7 @@ import LinearDeterminate from "components/TaskAndTimer/LinearDeterminate";
 import "components/TaskAndTimer/TodoList.css";
 import { Context } from "contexts/Context";
 import StopIcon from "@material-ui/icons/Stop";
-import { secondToHHMMSS } from "utils/convert";
+import { secondToHHMMSS, taskItemsToReport } from "utils/convert";
 import startedAudio from "audio/notification_simple-01.mp3";
 import stoppedAudio from "audio/notification_simple-02.mp3";
 import tickAudio from "audio/tick.mp3";
@@ -28,6 +28,10 @@ import TagsInput from "./TagsInput";
 import CloseIcon from "@material-ui/icons/Close";
 import AssignmentOutlinedIcon from "@material-ui/icons/AssignmentOutlined";
 import { copyTasksToClipboard } from "utils/export";
+import NoteAddOutlinedIcon from "@material-ui/icons/NoteAddOutlined";
+
+/** タスクの最大数 */
+const NUMBER_OF_ITEMS_MAX = 32;
 
 /** 一度にカウントする秒数 */
 const ONCE_COUNT = 1;
@@ -316,6 +320,10 @@ const TodoList = () => {
    * 入力された値を検証します。
    */
   const validate = () => {
+    if (Object.values(columns)[0].items.length > NUMBER_OF_ITEMS_MAX) {
+      setHelperText("これ以上タスクを追加できません");
+      return false;
+    }
     if (inputValue.trim().length < 1) {
       setHelperText("タスク名を入力してください");
       return false;
@@ -439,6 +447,13 @@ const TodoList = () => {
     }
   };
 
+  /**
+   * タスクから日報を作成するボタンがクリックされたときの処理です。
+   */
+  const onCreateReportButtonClick = () => {
+    console.log(taskItemsToReport(Object.values(columns)[0].items));
+  };
+
   return (
     <div style={{ display: "flex", height: "100%" }}>
       <DragDropContext
@@ -470,6 +485,17 @@ const TodoList = () => {
                   <div style={{ flexGrow: "1" }}>
                     <Typography>{column.name}</Typography>
                   </div>
+                  <Tooltip title="タスクから日報を作成" placement="top">
+                    <IconButton
+                      size="small"
+                      color="inherit"
+                      onClick={() => {
+                        onCreateReportButtonClick();
+                      }}
+                    >
+                      <NoteAddOutlinedIcon />
+                    </IconButton>
+                  </Tooltip>
                   <Tooltip
                     title="タスクをクリップボードにコピー"
                     placement="top"

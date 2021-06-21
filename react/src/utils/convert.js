@@ -15,3 +15,13 @@ export const secondToHHMMSS = (second) => {
   output += remainderSecond < 10 ? "0" + remainderSecond : remainderSecond;
   return output;
 };
+
+/**
+ * タスクの配列を日報に変換します。
+ * @param {*} items タスクの配列
+ */
+export const taskItemsToReport = (items) => {
+  let report = {};
+  items.foreach((item) => {});
+  return items;
+};
