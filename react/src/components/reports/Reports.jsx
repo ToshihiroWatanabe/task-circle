@@ -100,8 +100,8 @@ const Reports = memo(() => {
       });
       // 待機中の日報があれば作成ダイアログを開く
       if (Object.keys(state.waitingReport).length > 0) {
-        console.log(state.waitingReport);
-        console.log("待機中の日報があります");
+        setDefaultReport(JSON.parse(JSON.stringify(state.waitingReport)));
+        setFormDialogOpen(true);
         state.waitingReport = {};
       }
       return state;

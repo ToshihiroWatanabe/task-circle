@@ -35,8 +35,8 @@ export const taskItemsToReport = (items) => {
       let reportItem = {
         category: item.category,
         content: item.content,
-        hour: Math.floor(item.spentSecond / 60),
-        minute: Math.floor(item.spentSecond % 60),
+        hour: Math.floor(item.spentSecond / 3600),
+        minute: Math.floor((item.spentSecond / 60) % 60),
       };
       report.report_items.push(reportItem);
     }
