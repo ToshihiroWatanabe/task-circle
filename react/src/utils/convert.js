@@ -1,3 +1,6 @@
+import { endOfToday } from "date-fns/esm";
+import format from "date-fns/format";
+
 /**
  * 秒をHH:MM:SS形式の文字列に変換します。
  * @param {*} second 秒
@@ -21,7 +24,22 @@ export const secondToHHMMSS = (second) => {
  * @param {*} items タスクの配列
  */
 export const taskItemsToReport = (items) => {
-  let report = {};
-  items.foreach((item) => {});
-  return items;
+  let report = {
+    date: format(new Date(), "yyyy/MM/dd"),
+    content: "",
+    report_items: [],
+    updatedAt: 0,
+  };
+  items.forEach((item) => {
+    if (item.spentSecond > 0) {
+      let reportItem = {
+        category: item.category,
+        content: item.content,
+        hour: Math.floor(item.spentSecond / 60),
+        minute: Math.floor(item.spentSecond % 60),
+      };
+      report.report_items.push(reportItem);
+    }
+  });
+  return report;
 };
