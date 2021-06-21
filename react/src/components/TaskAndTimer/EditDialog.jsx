@@ -65,6 +65,11 @@ const EditDialog = memo((props) => {
       }, 1);
     }
   };
+
+  /**
+   * キーが離れたときの処理です。
+   * @param {*} event
+   */
   const handleKeyUp = (event) => {
     if (event.key === "Enter" && enterKeyIsDown) {
       enterKeyIsDown = false;
@@ -80,19 +85,30 @@ const EditDialog = memo((props) => {
         aria-labelledby="form-dialog-title"
         classes={{ paper: classes.paper }}
       >
-        <DialogTitle id="form-dialog-title">
-          {props.formDialogTitle}
-        </DialogTitle>
+        <DialogTitle id="form-dialog-title">編集</DialogTitle>
         <DialogContent>
           <TextField
             autoFocus
             margin="dense"
-            label={props.label}
+            label="カテゴリー"
             type="text"
-            fullWidth
-            defaultValue={props.defaultValue}
+            defaultValue={
+              Object.values(props.columns)[0].items[props.index].category
+            }
             inputRef={(ref) => (inRef = ref)}
-            inputProps={{ maxLength: 45 }}
+            onKeyDown={handleKeyDown}
+            onKeyUp={handleKeyUp}
+          />
+          <TextField
+            autoFocus
+            margin="dense"
+            label="タスク名"
+            type="text"
+            style={{ width: "97%" }}
+            defaultValue={
+              Object.values(props.columns)[0].items[props.index].content
+            }
+            inputRef={(ref) => (inRef = ref)}
             onKeyDown={handleKeyDown}
             onKeyUp={handleKeyUp}
           />

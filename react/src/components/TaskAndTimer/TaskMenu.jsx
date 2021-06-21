@@ -114,8 +114,10 @@ const TaskMenu = memo((props) => {
         <MenuItem
           onClick={handleReset}
           disabled={
-            Object.values(props.columns)[0].items[props.index].isSelected ===
-              true && state.isTimerOn
+            (Object.values(props.columns)[0].items[props.index].isSelected ===
+              true &&
+              state.isTimerOn) ||
+            Object.values(props.columns)[0].items[props.index].spentSecond === 0
           }
         >
           <RotateLeftIcon />
@@ -136,12 +138,9 @@ const TaskMenu = memo((props) => {
       <EditDialog
         open={editOpen}
         setOpen={setEditOpen}
-        id={props.id}
-        defaultValue={props.text}
-        todoList={props.todoList}
-        setTodoList={props.setTodoList}
-        formDialogTitle="編集"
-        label="タスク名"
+        index={props.index}
+        columns={props.columns}
+        setColumns={props.setColumns}
       />
     </>
   );
