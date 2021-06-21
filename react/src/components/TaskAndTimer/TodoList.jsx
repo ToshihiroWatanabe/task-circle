@@ -516,8 +516,8 @@ const TodoList = () => {
                   justifyContent: "space-between",
                   backgroundColor: "lightgray",
                   marginTop: "-2px",
-                  paddingTop: "0.5rem",
-                  paddingBottom: "0.5rem",
+                  paddingTop: helperText !== "" ? "0" : "0.5rem",
+                  paddingBottom: helperText !== "" ? "0" : "0.5rem",
                   borderRadius: "4px",
                   height: helperText ? "4rem" : "",
                   boxShadow:
@@ -563,6 +563,7 @@ const TodoList = () => {
       </DragDropContext>
       <Snackbar
         open={undoSnackbarOpen}
+        onClose={() => setUndoSnackbarOpen(false)}
         autoHideDuration={6000}
         message="削除しました"
         action={
