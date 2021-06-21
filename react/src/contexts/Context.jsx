@@ -24,6 +24,8 @@ export function ContextProvider(props) {
     reportUpdatedAt: "",
     // 日報
     reports: [],
+    // 作成ダイアログ待機中の日報
+    waitingReport: {},
     // タイマーがオンかどうか
     isTimerOn: false,
   });

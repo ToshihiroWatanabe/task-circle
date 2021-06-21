@@ -29,6 +29,7 @@ import CloseIcon from "@material-ui/icons/Close";
 import AssignmentOutlinedIcon from "@material-ui/icons/AssignmentOutlined";
 import { copyTasksToClipboard } from "utils/export";
 import NoteAddOutlinedIcon from "@material-ui/icons/NoteAddOutlined";
+import { Link } from "react-router-dom";
 
 /** タスクの最大数 */
 const NUMBER_OF_ITEMS_MAX = 32;
@@ -291,7 +292,7 @@ const TodoList = () => {
    */
   const refreshTitle = (content, spentSecond) => {
     document.title =
-      content + " (" + secondToHHMMSS(spentSecond) + ") " + defaultTitle;
+      content + " (" + secondToHHMMSS(spentSecond) + ") | " + defaultTitle;
   };
 
   /**
@@ -452,6 +453,7 @@ const TodoList = () => {
    */
   const onCreateReportButtonClick = () => {
     console.log(taskItemsToReport(Object.values(columns)[0].items));
+    document.getElementById("linkToReports").click();
   };
 
   return (
@@ -752,6 +754,7 @@ const TodoList = () => {
           </>
         }
       />
+      <Link to="/reports" id="linkToReports" />
     </div>
   );
 };
