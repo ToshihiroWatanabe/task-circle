@@ -518,7 +518,7 @@ const TodoList = () => {
                             onAddButtonClick={onAddButtonClick}
                             style={{
                               width: "105%",
-                              marginTop: "0.2rem",
+                              marginTop: "0.25rem",
                               marginLeft: "0.2rem",
                               backgroundColor: isTagsInputFocused
                                 ? "white"
