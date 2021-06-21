@@ -145,6 +145,7 @@ const useStyles = makeStyles((theme) => ({
     padding: 4,
     minWidth: 320,
     width: 320,
+    maxHeight: "85vh",
   },
   taskCardArea: {
     minHeight: "calc(100% - 5rem)",
