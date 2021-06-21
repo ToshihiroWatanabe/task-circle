@@ -165,7 +165,7 @@ const ResponsiveDrawer = memo((props) => {
           </Typography>
           <span style={{ flexGrow: 1 }}></span>
           {/* データ移行のファイルアイコン */}
-          <FilePopover />
+          {location.pathname === "/reports" && <FilePopover />}
           <AccountPopover onSyncButtonClick={props.onSyncButtonClick} />
         </Toolbar>
       </AppBar>

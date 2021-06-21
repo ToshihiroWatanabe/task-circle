@@ -296,7 +296,7 @@ const EditDialog = memo((props) => {
   };
 
   return (
-    <div>
+    <>
       <Dialog
         open={props.open}
         onClose={handleCancel}
@@ -538,7 +538,7 @@ const EditDialog = memo((props) => {
           </Button>
         </DialogActions>
       </Dialog>
-    </div>
+    </>
   );
 });
 

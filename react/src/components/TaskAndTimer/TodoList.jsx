@@ -395,33 +395,21 @@ const TodoList = () => {
                                     }
                                   >
                                     <div style={{ display: "flex" }}>
-                                      <Tooltip
-                                        title={
-                                          state.isTimerOn
+                                      <IconButton
+                                        size="small"
+                                        color="inherit"
+                                        style={{
+                                          marginLeft: "-0.75rem",
+                                          marginRight: "0.25rem",
+                                          visibility: item.isSelected
                                             ? ""
-                                            : "タイマーを開始"
-                                        }
+                                            : "hidden",
+                                        }}
+                                        onClick={() => onPlayButtonClick(index)}
                                       >
-                                        <IconButton
-                                          size="small"
-                                          color="inherit"
-                                          style={{
-                                            marginLeft: "-0.75rem",
-                                            marginRight: "0.25rem",
-                                            visibility: item.isSelected
-                                              ? ""
-                                              : "hidden",
-                                          }}
-                                          onClick={() =>
-                                            onPlayButtonClick(index)
-                                          }
-                                        >
-                                          {state.isTimerOn && <StopIcon />}
-                                          {!state.isTimerOn && (
-                                            <PlayArrowIcon />
-                                          )}
-                                        </IconButton>
-                                      </Tooltip>
+                                        {state.isTimerOn && <StopIcon />}
+                                        {!state.isTimerOn && <PlayArrowIcon />}
+                                      </IconButton>
                                       <div style={{ flexGrow: "1" }}>
                                         <div style={{ marginBottom: "0.2rem" }}>
                                           {item.category !== "" && (
