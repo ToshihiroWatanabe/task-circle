@@ -38,6 +38,8 @@ let startedAt = null;
 /** 最後にカウントした時刻 */
 let lastCountedAt = null;
 
+let simpleSnackbarMessage = "";
+
 /** デフォルトタイトル */
 const defaultTitle = document.title;
 
@@ -170,8 +172,9 @@ const TodoList = () => {
   const [isTagsInputFocused, setIsTagsInputFocused] = useState(false);
   const [inputValue, setInputValue] = useState("");
   const [helperText, setHelperText] = useState("");
-  const [lastActivity, setLastActivity] = useState(null);
+  const [lastActivity, setLastActivity] = useState({});
   const [undoSnackbarOpen, setUndoSnackbarOpen] = useState(false);
+  const [simpleSnackbarOpen, setSimpleSnackbarOpen] = useState(false);
 
   /**
    * タスクがクリックされたときの処理です。
@@ -346,8 +349,39 @@ const TodoList = () => {
     return { content: input, estimatedSecond: 0 };
   };
 
+  /**
+   * カテゴリーの入力を反映させます。
+   */
   const handleSelecetedTags = (category) => {
     setCategoryInput(category);
+  };
+
+  /**
+   * 取り消しボタンがクリックされたときの処理です。
+   */
+  const onUndoButtonClick = () => {
+    console.log(lastActivity);
+    if (lastActivity.type === "itemDelete") {
+      setColumns((columns) => {
+        Object.values(columns)[0].items.splice(
+          lastActivity.index,
+          0,
+          lastActivity.item
+        );
+        return {
+          [Object.keys(columns)[0]]: {
+            ...Object.values(columns)[0],
+            items: Object.values(columns)[0].items,
+          },
+        };
+      });
+      setLastActivity({});
+      simpleSnackbarMessage = "操作を元に戻しました";
+    } else {
+      simpleSnackbarMessage = "操作を元に戻せませんでした";
+    }
+    setUndoSnackbarOpen(false);
+    setSimpleSnackbarOpen(true);
   };
 
   return (
@@ -568,7 +602,11 @@ const TodoList = () => {
         message="削除しました"
         action={
           <>
-            <Button size="small" style={{ color: "skyblue" }}>
+            <Button
+              size="small"
+              style={{ color: "skyblue" }}
+              onClick={() => onUndoButtonClick()}
+            >
               取消
             </Button>
             <IconButton
@@ -576,6 +614,26 @@ const TodoList = () => {
               size="small"
               onClick={() => {
                 setUndoSnackbarOpen(false);
+              }}
+            >
+              <CloseIcon />
+            </IconButton>
+          </>
+        }
+        className={classes.snackbar}
+      />
+      <Snackbar
+        open={simpleSnackbarOpen}
+        onClose={() => setSimpleSnackbarOpen(false)}
+        autoHideDuration={6000}
+        message={simpleSnackbarMessage}
+        action={
+          <>
+            <IconButton
+              color="inherit"
+              size="small"
+              onClick={() => {
+                setSimpleSnackbarOpen(false);
               }}
             >
               <CloseIcon />
