@@ -145,7 +145,12 @@ const useStyles = makeStyles((theme) => ({
     padding: 4,
     minWidth: 320,
     width: 320,
+    maxHeight: "80vh",
+    [theme.breakpoints.down("sm")]: {
+      maxHeight: "90vh",
+    },
   },
+  taskCardArea: { overflow: "auto" },
   taskCard: {
     userSelect: "none",
     padding: 16,
@@ -356,186 +361,183 @@ const TodoList = () => {
                 display: "flex",
                 flexDirection: "column",
                 alignItems: "center",
+                margin: 8,
               }}
               key={columnId}
             >
-              <div style={{ margin: 8 }}>
-                <Droppable droppableId={columnId} key={columnId}>
-                  {(provided, snapshot) => {
-                    return (
-                      <Card
-                        {...provided.droppableProps}
-                        ref={provided.innerRef}
-                        style={{
-                          background: snapshot.isDraggingOver
-                            ? "lightblue"
-                            : "lightgrey",
-                        }}
-                        className={classes.columnCard}
-                      >
-                        <Typography>{column.name}</Typography>
-                        <Divider style={{ margin: "0.25rem 0" }} />
-                        {/* タスクカード */}
-                        {column.items.map((item, index) => {
-                          return (
-                            <Draggable
-                              key={item.id}
-                              draggableId={item.id}
-                              index={index}
-                            >
-                              {(provided, snapshot) => {
-                                return (
-                                  <Card
-                                    color="primary"
-                                    ref={provided.innerRef}
-                                    {...provided.draggableProps}
-                                    {...provided.dragHandleProps}
-                                    className={classes.taskCard}
-                                    style={{
-                                      backgroundColor: snapshot.isDragging
-                                        ? "#254C86"
-                                        : item.isSelected && state.isTimerOn
-                                        ? "#2498b3"
-                                        : "#456C86",
-                                      ...provided.draggableProps.style,
-                                    }}
-                                    onClick={(event) =>
-                                      onItemClick(event, index)
-                                    }
-                                  >
-                                    <div style={{ display: "flex" }}>
-                                      <IconButton
-                                        size="small"
-                                        color="inherit"
-                                        style={{
-                                          marginLeft: "-0.75rem",
-                                          marginRight: "0.25rem",
-                                          visibility: item.isSelected
-                                            ? ""
-                                            : "hidden",
-                                        }}
-                                        onClick={() => onPlayButtonClick(index)}
-                                      >
-                                        {state.isTimerOn && <StopIcon />}
-                                        {!state.isTimerOn && <PlayArrowIcon />}
-                                      </IconButton>
-                                      <div style={{ flexGrow: "1" }}>
-                                        <div style={{ marginBottom: "0.2rem" }}>
-                                          {item.category !== "" && (
-                                            <Tooltip
-                                              title={item.category}
-                                              placement="top"
-                                            >
-                                              <Chip
-                                                label={item.category}
-                                                size="small"
-                                                style={{
-                                                  marginTop: "-0.2rem",
-                                                  marginRight: "0.3rem",
-                                                  paddingBottom: "0.1rem",
-                                                  fontSize: "0.75rem",
-                                                  height: "1.2rem",
-                                                  maxWidth: "4rem",
-                                                }}
-                                              />
-                                            </Tooltip>
-                                          )}
-                                          {item.content}
-                                        </div>
-                                        <div
-                                          style={{
-                                            fontSize: "0.75rem",
-                                            marginTop: "0.5rem",
-                                            marginBottom: "-0.2rem",
-                                          }}
-                                        >
-                                          {secondToHHMMSS(item.spentSecond)}
-                                          {item.estimatedSecond !== 0 && (
-                                            <span style={{ color: "#AAA" }}>
-                                              {" / "}
-                                              {secondToHHMMSS(
-                                                item.estimatedSecond
-                                              )}
-                                            </span>
-                                          )}
-                                        </div>
-                                      </div>
-                                      {/* タスクメニュー */}
-                                      <TaskMenu
-                                        index={index}
-                                        columns={columns}
-                                        setColumns={setColumns}
-                                      />
-                                    </div>
-                                    {item.estimatedSecond > 0 && (
-                                      <LinearDeterminate
-                                        progress={
-                                          (item.spentSecond /
-                                            item.estimatedSecond) *
-                                          100
-                                        }
-                                        color={
-                                          item.spentSecond <
-                                          item.estimatedSecond
-                                            ? "primary"
-                                            : "secondary"
-                                        }
-                                      />
-                                    )}
-                                  </Card>
-                                );
-                              }}
-                            </Draggable>
-                          );
-                        })}
-                        {provided.placeholder}
-                        <div
-                          style={{
-                            display: "flex",
-                            justifyContent: "space-between",
-                            height: helperText ? "4rem" : "",
-                          }}
-                        >
-                          <TagsInput
-                            error={helperText !== "" ? true : false}
-                            helperText={helperText}
-                            setHelperText={setHelperText}
-                            selectedTags={handleSelecetedTags}
-                            fullWidth
-                            variant="outlined"
-                            name="tags"
-                            size="small"
-                            placeholder="タスクを追加"
-                            categoryInput={categoryInput}
-                            setCategoryInput={setCategoryInput}
-                            isTagsInputFocused={isTagsInputFocused}
-                            setIsTagsInputFocused={setIsTagsInputFocused}
-                            inputValue={inputValue}
-                            setInputValue={setInputValue}
-                            onAddButtonClick={onAddButtonClick}
-                            style={{
-                              width: "105%",
-                              marginTop: "0.25rem",
-                              marginLeft: "0.2rem",
-                              backgroundColor: isTagsInputFocused
-                                ? "white"
-                                : "lightgrey",
-                              borderRadius: "4px",
-                              height: "2.5rem",
-                            }}
-                          />
-                          <IconButton
-                            onClick={onAddButtonClick}
-                            style={{ marginLeft: "1rem" }}
+              <Droppable droppableId={columnId} key={columnId}>
+                {(provided, snapshot) => {
+                  return (
+                    <Card
+                      {...provided.droppableProps}
+                      ref={provided.innerRef}
+                      style={{
+                        background: snapshot.isDraggingOver
+                          ? "lightblue"
+                          : "lightgrey",
+                      }}
+                      className={classes.columnCard}
+                    >
+                      <Typography>{column.name}</Typography>
+                      <Divider style={{ margin: "0.25rem 0" }} />
+                      {/* タスクカード */}
+                      {column.items.map((item, index) => {
+                        return (
+                          <Draggable
+                            key={item.id}
+                            draggableId={item.id}
+                            index={index}
                           >
-                            <AddIcon />
-                          </IconButton>
-                        </div>
-                      </Card>
-                    );
-                  }}
-                </Droppable>
-              </div>
+                            {(provided, snapshot) => {
+                              return (
+                                <Card
+                                  color="primary"
+                                  ref={provided.innerRef}
+                                  {...provided.draggableProps}
+                                  {...provided.dragHandleProps}
+                                  className={classes.taskCard}
+                                  style={{
+                                    backgroundColor: snapshot.isDragging
+                                      ? "#254C86"
+                                      : item.isSelected && state.isTimerOn
+                                      ? "#2498b3"
+                                      : "#456C86",
+                                    ...provided.draggableProps.style,
+                                  }}
+                                  onClick={(event) => onItemClick(event, index)}
+                                >
+                                  <div style={{ display: "flex" }}>
+                                    <IconButton
+                                      size="small"
+                                      color="inherit"
+                                      style={{
+                                        marginLeft: "-0.75rem",
+                                        marginRight: "0.25rem",
+                                        visibility: item.isSelected
+                                          ? ""
+                                          : "hidden",
+                                      }}
+                                      onClick={() => onPlayButtonClick(index)}
+                                    >
+                                      {state.isTimerOn && <StopIcon />}
+                                      {!state.isTimerOn && <PlayArrowIcon />}
+                                    </IconButton>
+                                    <div style={{ flexGrow: "1" }}>
+                                      <div style={{ marginBottom: "0.2rem" }}>
+                                        {item.category !== "" && (
+                                          <Tooltip
+                                            title={item.category}
+                                            placement="top"
+                                          >
+                                            <Chip
+                                              label={item.category}
+                                              size="small"
+                                              style={{
+                                                marginTop: "-0.2rem",
+                                                marginRight: "0.3rem",
+                                                paddingBottom: "0.1rem",
+                                                fontSize: "0.75rem",
+                                                height: "1.2rem",
+                                                maxWidth: "4rem",
+                                              }}
+                                            />
+                                          </Tooltip>
+                                        )}
+                                        {item.content}
+                                      </div>
+                                      <div
+                                        style={{
+                                          fontSize: "0.75rem",
+                                          marginTop: "0.5rem",
+                                          marginBottom: "-0.2rem",
+                                        }}
+                                      >
+                                        {secondToHHMMSS(item.spentSecond)}
+                                        {item.estimatedSecond !== 0 && (
+                                          <span style={{ color: "#AAA" }}>
+                                            {" / "}
+                                            {secondToHHMMSS(
+                                              item.estimatedSecond
+                                            )}
+                                          </span>
+                                        )}
+                                      </div>
+                                    </div>
+                                    {/* タスクメニュー */}
+                                    <TaskMenu
+                                      index={index}
+                                      columns={columns}
+                                      setColumns={setColumns}
+                                    />
+                                  </div>
+                                  {item.estimatedSecond > 0 && (
+                                    <LinearDeterminate
+                                      progress={
+                                        (item.spentSecond /
+                                          item.estimatedSecond) *
+                                        100
+                                      }
+                                      color={
+                                        item.spentSecond < item.estimatedSecond
+                                          ? "primary"
+                                          : "secondary"
+                                      }
+                                    />
+                                  )}
+                                </Card>
+                              );
+                            }}
+                          </Draggable>
+                        );
+                      })}
+
+                      {provided.placeholder}
+                      <div
+                        style={{
+                          display: "flex",
+                          justifyContent: "space-between",
+                          height: helperText ? "4rem" : "",
+                        }}
+                      >
+                        <TagsInput
+                          error={helperText !== "" ? true : false}
+                          helperText={helperText}
+                          setHelperText={setHelperText}
+                          selectedTags={handleSelecetedTags}
+                          fullWidth
+                          variant="outlined"
+                          name="tags"
+                          size="small"
+                          placeholder="タスクを追加"
+                          categoryInput={categoryInput}
+                          setCategoryInput={setCategoryInput}
+                          isTagsInputFocused={isTagsInputFocused}
+                          setIsTagsInputFocused={setIsTagsInputFocused}
+                          inputValue={inputValue}
+                          setInputValue={setInputValue}
+                          onAddButtonClick={onAddButtonClick}
+                          style={{
+                            width: "105%",
+                            marginTop: "0.25rem",
+                            marginLeft: "0.2rem",
+                            backgroundColor: isTagsInputFocused
+                              ? "white"
+                              : "lightgrey",
+                            borderRadius: "4px",
+                            height: "2.5rem",
+                          }}
+                        />
+                        <IconButton
+                          onClick={onAddButtonClick}
+                          style={{ marginLeft: "1rem" }}
+                        >
+                          <AddIcon />
+                        </IconButton>
+                      </div>
+                    </Card>
+                  );
+                }}
+              </Droppable>
             </div>
           );
         })}
