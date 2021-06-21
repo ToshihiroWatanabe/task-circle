@@ -363,6 +363,9 @@ const EditDialog = memo((props) => {
                     value: value.hour,
                   }}
                   onChange={(e, v) => onHourChange(v.value)}
+                  onFocus={(e) => {
+                    e.target.select();
+                  }}
                   renderInput={(params) => (
                     <TextField
                       {...params}
@@ -420,6 +423,9 @@ const EditDialog = memo((props) => {
                     value: value.minute,
                   }}
                   onChange={(e, v) => onMinuteChange(v.value)}
+                  onFocus={(e) => {
+                    e.target.select();
+                  }}
                   renderInput={(params) => (
                     <TextField
                       {...params}
@@ -476,6 +482,9 @@ const EditDialog = memo((props) => {
                     value: value.second,
                   }}
                   onChange={(e, v) => onSecondChange(v.value)}
+                  onFocus={(e) => {
+                    e.target.select();
+                  }}
                   renderInput={(params) => (
                     <TextField
                       {...params}
