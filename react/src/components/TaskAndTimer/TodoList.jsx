@@ -580,6 +580,7 @@ const TodoList = () => {
                   display: "flex",
                   justifyContent: "space-between",
                   backgroundColor: "lightgray",
+                  width: 320,
                   marginTop: "-2px",
                   paddingTop: helperText !== "" ? "0" : "0.5rem",
                   paddingBottom: helperText !== "" ? "0" : "0.5rem",
