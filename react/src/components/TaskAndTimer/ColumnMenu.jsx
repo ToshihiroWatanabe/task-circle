@@ -1,31 +1,10 @@
-import React, { useState, useEffect, memo, useContext } from "react";
-import { makeStyles } from "@material-ui/core";
+import React, { useState, memo, useContext } from "react";
+import { Box, makeStyles } from "@material-ui/core";
 import { IconButton, Menu, MenuItem } from "@material-ui/core";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
 import DeleteIcon from "@material-ui/icons/Delete";
 import RotateLeftIcon from "@material-ui/icons/RotateLeft";
-import EditIcon from "@material-ui/icons/Edit";
-import EditDialog from "components/TaskAndTimer/EditDialog";
 import { Context } from "contexts/Context";
-
-const getCategories = (reports) => {
-  let categories = [];
-  for (let i = 0; i < reports.length; i++) {
-    for (let j = 0; j < reports[i].report_items.length; j++) {
-      categories.push({
-        label: reports[i].report_items[j].category,
-        value: reports[i].report_items[j].category,
-      });
-    }
-  }
-  // 重複を削除
-  const newCategories = categories.filter((element, index, array) => {
-    return (
-      array.findIndex((element2) => element.label === element2.label) === index
-    );
-  });
-  return newCategories;
-};
 
 /** Material-UIのスタイル */
 const useStyles = makeStyles({
@@ -41,23 +20,6 @@ const ColumnMenu = memo((props) => {
   const classes = useStyles();
   const [state, setState] = useContext(Context);
   const [anchorEl, setAnchorEl] = useState(null);
-  const [editOpen, setEditOpen] = useState(false);
-  const [categories, setCategories] = useState([]);
-
-  useEffect(() => {
-    setState((state) => {
-      setCategories((categories) => {
-        return getCategories(state.reports);
-      });
-      return state;
-    });
-    // 編集でEnterを押した時にメニューが開かないようにする
-    if (!editOpen) {
-      setTimeout(() => {
-        setAnchorEl(false);
-      }, 50);
-    }
-  }, [editOpen]);
 
   /**
    * メニューアイコンがクリックされたときの処理です。
@@ -74,28 +36,27 @@ const ColumnMenu = memo((props) => {
   };
 
   /**
-   * 編集がクリックされたときの処理です。
-   */
-  const handleEdit = () => {
-    setEditOpen(true);
-    setAnchorEl(null);
-  };
-
-  /**
    * リセットがクリックされたときの処理です。
    */
   const handleReset = () => {
     props.setColumns((columns) => {
+      props.setLastActivity({
+        type: "resetAllTime",
+        items: JSON.parse(JSON.stringify(Object.values(columns)[0].items)),
+      });
       return {
         [Object.keys(columns)[0]]: {
           ...Object.values(columns)[0],
           items: Object.values(columns)[0].items.map((item, index) => {
-            if (index === props.index) item.spentSecond = 0;
+            item.spentSecond = 0;
+            item.estimatedSecond = 0;
             return item;
           }),
         },
       };
     });
+    props.setUndoSnackbarMessage("経過時間をリセットしました");
+    props.setUndoSnackbarOpen(true);
     setAnchorEl(null);
   };
 
@@ -104,21 +65,14 @@ const ColumnMenu = memo((props) => {
    */
   const handleDelete = () => {
     props.setColumns((columns) => {
+      props.setLastActivity({
+        type: "deleteAll",
+        items: Object.values(columns)[0].items,
+      });
+      props.setUndoSnackbarMessage("削除しました");
+      props.setUndoSnackbarOpen(true);
       return {
-        [Object.keys(columns)[0]]: {
-          ...Object.values(columns)[0],
-          items: Object.values(columns)[0].items.filter((value, index) => {
-            if (index === props.index) {
-              props.setLastActivity({
-                type: "itemDelete",
-                item: Object.values(columns)[0].items[index],
-                index: index,
-              });
-              props.setUndoSnackbarOpen(true);
-            }
-            return index !== props.index;
-          }),
-        },
+        [Object.keys(columns)[0]]: { ...Object.values(columns)[0], items: [] },
       };
     });
     setAnchorEl(null);
@@ -142,38 +96,27 @@ const ColumnMenu = memo((props) => {
         onClose={handleClose}
         className={classes.menu}
       >
-        <MenuItem
-          onClick={handleReset}
-          disabled={
-            (Object.values(props.columns)[0].items[props.index].isSelected ===
-              true &&
-              state.isTimerOn) ||
-            Object.values(props.columns)[0].items[props.index].spentSecond === 0
-          }
-        >
-          <RotateLeftIcon />
-          すべての経過時間をリセット
+        <MenuItem onClick={handleReset} disabled={state.isTimerOn}>
+          <Box
+            style={{
+              fontSize: "0.8rem",
+              display: "flex",
+              alignItems: "center",
+            }}
+          >
+            <RotateLeftIcon />
+            全ての時間をリセット
+          </Box>
         </MenuItem>
         <MenuItem
           style={{ color: "red" }}
           onClick={handleDelete}
-          disabled={
-            Object.values(props.columns)[0].items[props.index].isSelected ===
-              true && state.isTimerOn
-          }
+          disabled={state.isTimerOn}
         >
           <DeleteIcon />
-          削除
+          全て削除
         </MenuItem>
       </Menu>
-      <EditDialog
-        open={editOpen}
-        setOpen={setEditOpen}
-        index={props.index}
-        columns={props.columns}
-        setColumns={props.setColumns}
-        categories={categories}
-      />
     </>
   );
 });

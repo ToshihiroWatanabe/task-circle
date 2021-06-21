@@ -361,6 +361,7 @@ const TodoList = () => {
    * 取り消しボタンがクリックされたときの処理です。
    */
   const onUndoButtonClick = () => {
+    // タスクの削除を取り消す
     if (lastActivity.type === "itemDelete") {
       setColumns((columns) => {
         Object.values(columns)[0].items.splice(
@@ -377,6 +378,7 @@ const TodoList = () => {
       });
       setLastActivity({});
       setSimpleSnackbarMessage("削除を取り消しました");
+      // 経過時間のリセットを取り消す
     } else if (lastActivity.type === "resetSpentSecond") {
       setColumns((columns) => {
         return {
@@ -393,6 +395,31 @@ const TodoList = () => {
       });
       setLastActivity({});
       setSimpleSnackbarMessage("経過時間のリセットを取り消しました");
+      // 全て削除を取り消す
+    } else if (lastActivity.type === "deleteAll") {
+      setColumns((columns) => {
+        return {
+          [Object.keys(columns)[0]]: {
+            ...Object.values(columns)[0],
+            items: lastActivity.items,
+          },
+        };
+      });
+      setLastActivity({});
+      setSimpleSnackbarMessage("削除を取り消しました");
+      // 全ての時間をリセットを取り消す
+    } else if (lastActivity.type === "resetAllTime") {
+      console.log(lastActivity.items);
+      setColumns((columns) => {
+        return {
+          [Object.keys(columns)[0]]: {
+            ...Object.values(columns)[0],
+            items: lastActivity.items,
+          },
+        };
+      });
+      setLastActivity({});
+      setSimpleSnackbarMessage("時間のリセットを取り消しました");
     } else {
       setSimpleSnackbarMessage("操作を元に戻せませんでした");
     }
@@ -438,6 +465,7 @@ const TodoList = () => {
                     setColumns={setColumns}
                     setLastActivity={setLastActivity}
                     setUndoSnackbarOpen={setUndoSnackbarOpen}
+                    setUndoSnackbarMessage={setUndoSnackbarMessage}
                   />
                 </div>
                 <Divider style={{ margin: "0.25rem 0" }} />
