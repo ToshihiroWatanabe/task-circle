@@ -145,7 +145,7 @@ const useStyles = makeStyles((theme) => ({
     padding: 4,
     minWidth: 320,
     width: 320,
-    maxHeight: "85vh",
+    maxHeight: "86vh",
   },
   taskCardArea: {
     minHeight: "calc(100% - 5rem)",
@@ -409,9 +409,6 @@ const TodoList = () => {
                                     onClick={(event) =>
                                       onItemClick(event, index)
                                     }
-                                    onDrag={(e) => {
-                                      console.log(e);
-                                    }}
                                   >
                                     <div style={{ display: "flex" }}>
                                       <IconButton
