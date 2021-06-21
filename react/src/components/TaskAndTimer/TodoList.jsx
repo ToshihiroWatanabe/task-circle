@@ -319,7 +319,15 @@ const TodoList = () => {
   const retrieveEstimatedSecond = (input) => {
     const matched = input.match(/\d+:[0-5]*[0-9]:[0-5]*[0-9]/);
     if (matched) {
-      console.log(matched[0]);
+      let matchedSplit = matched[0].split(":");
+      let estimatedSecond =
+        parseInt(matchedSplit[0]) * 3600 +
+        parseInt(matchedSplit[1]) * 60 +
+        parseInt(matchedSplit[2]);
+      return {
+        content: input.split(matched[0])[0],
+        estimatedSecond: estimatedSecond,
+      };
     }
     return { content: input, estimatedSecond: 0 };
   };
