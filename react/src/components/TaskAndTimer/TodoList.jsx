@@ -376,7 +376,7 @@ const TodoList = () => {
         };
       });
       setLastActivity({});
-      setSimpleSnackbarMessage("操作を元に戻しました");
+      setSimpleSnackbarMessage("削除を取り消しました");
     } else if (lastActivity.type === "resetSpentSecond") {
       setColumns((columns) => {
         return {
@@ -392,7 +392,7 @@ const TodoList = () => {
         };
       });
       setLastActivity({});
-      setSimpleSnackbarMessage("操作を元に戻しました");
+      setSimpleSnackbarMessage("経過時間のリセットを取り消しました");
     } else {
       setSimpleSnackbarMessage("操作を元に戻せませんでした");
     }
