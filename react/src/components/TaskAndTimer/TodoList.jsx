@@ -452,8 +452,11 @@ const TodoList = () => {
    * タスクから日報を作成するボタンがクリックされたときの処理です。
    */
   const onCreateReportButtonClick = () => {
-    console.log(taskItemsToReport(Object.values(columns)[0].items));
-    document.getElementById("linkToReports").click();
+    const report = taskItemsToReport(Object.values(columns)[0].items);
+    setState({ ...state, waitingReport: report });
+    setTimeout(() => {
+      document.getElementById("linkToReports").click();
+    }, 1);
   };
 
   return (
@@ -664,6 +667,7 @@ const TodoList = () => {
                   backgroundColor: "lightgray",
                   width: 320,
                   marginTop: "-2px",
+                  paddingLeft: "0.5rem",
                   paddingTop: helperText !== "" ? "0" : "0.5rem",
                   paddingBottom: helperText !== "" ? "0" : "0.5rem",
                   borderRadius: "4px",

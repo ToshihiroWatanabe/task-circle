@@ -98,6 +98,12 @@ const Reports = memo(() => {
       setCategories((categories) => {
         return getCategories();
       });
+      // 待機中の日報があれば作成ダイアログを開く
+      if (Object.keys(state.waitingReport).length > 0) {
+        console.log(state.waitingReport);
+        console.log("待機中の日報があります");
+        state.waitingReport = {};
+      }
       return state;
     });
   }, []);
