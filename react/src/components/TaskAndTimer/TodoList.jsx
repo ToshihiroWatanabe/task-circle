@@ -8,6 +8,8 @@ import {
   Tooltip,
   Typography,
   Divider,
+  Snackbar,
+  Button,
 } from "@material-ui/core";
 import uuid from "uuid/v4";
 import PlayArrowIcon from "@material-ui/icons/PlayArrow";
@@ -22,6 +24,7 @@ import tickAudio from "audio/tick.mp3";
 import TaskMenu from "./TaskMenu";
 import AddIcon from "@material-ui/icons/Add";
 import TagsInput from "./TagsInput";
+import CloseIcon from "@material-ui/icons/Close";
 
 /** 一度にカウントする秒数 */
 const ONCE_COUNT = 1;
@@ -167,6 +170,8 @@ const TodoList = () => {
   const [isTagsInputFocused, setIsTagsInputFocused] = useState(false);
   const [inputValue, setInputValue] = useState("");
   const [helperText, setHelperText] = useState("");
+  const [lastActivity, setLastActivity] = useState(null);
+  const [undoSnackbarOpen, setUndoSnackbarOpen] = useState(false);
 
   /**
    * タスクがクリックされたときの処理です。
@@ -476,6 +481,8 @@ const TodoList = () => {
                                       index={index}
                                       columns={columns}
                                       setColumns={setColumns}
+                                      setLastActivity={setLastActivity}
+                                      setUndoSnackbarOpen={setUndoSnackbarOpen}
                                     />
                                   </div>
                                   {item.estimatedSecond > 0 && (
@@ -554,6 +561,28 @@ const TodoList = () => {
           );
         })}
       </DragDropContext>
+      <Snackbar
+        open={undoSnackbarOpen}
+        autoHideDuration={6000}
+        message="削除しました"
+        action={
+          <>
+            <Button size="small" style={{ color: "skyblue" }}>
+              取消
+            </Button>
+            <IconButton
+              color="inherit"
+              size="small"
+              onClick={() => {
+                setUndoSnackbarOpen(false);
+              }}
+            >
+              <CloseIcon />
+            </IconButton>
+          </>
+        }
+        className={classes.snackbar}
+      />
     </div>
   );
 };

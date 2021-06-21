@@ -108,6 +108,14 @@ const TaskMenu = memo((props) => {
         [Object.keys(columns)[0]]: {
           ...Object.values(columns)[0],
           items: Object.values(columns)[0].items.filter((value, index) => {
+            if (index === props.index) {
+              props.setLastActivity({
+                type: "itemDelete",
+                item: Object.values(columns)[0].items[index],
+                index: index,
+              });
+              props.setUndoSnackbarOpen(true);
+            }
             return index !== props.index;
           }),
         },
