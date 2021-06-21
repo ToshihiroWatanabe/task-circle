@@ -26,6 +26,8 @@ import ColumnMenu from "./ColumnMenu";
 import AddIcon from "@material-ui/icons/Add";
 import TagsInput from "./TagsInput";
 import CloseIcon from "@material-ui/icons/Close";
+import AssignmentOutlinedIcon from "@material-ui/icons/AssignmentOutlined";
+import { copyTasksToClipboard } from "utils/export";
 
 /** 一度にカウントする秒数 */
 const ONCE_COUNT = 1;
@@ -427,6 +429,16 @@ const TodoList = () => {
     setSimpleSnackbarOpen(true);
   };
 
+  /**
+   * クリップボードボタンがクリックされたときの処理です。
+   */
+  const onClipboardButtonClick = () => {
+    if (copyTasksToClipboard(Object.values(columns)[0].items)) {
+      setSimpleSnackbarMessage("タスクをコピーしました！");
+      setSimpleSnackbarOpen(true);
+    }
+  };
+
   return (
     <div style={{ display: "flex", height: "100%" }}>
       <DragDropContext
@@ -458,6 +470,20 @@ const TodoList = () => {
                   <div style={{ flexGrow: "1" }}>
                     <Typography>{column.name}</Typography>
                   </div>
+                  <Tooltip
+                    title="タスクをクリップボードにコピー"
+                    placement="top"
+                  >
+                    <IconButton
+                      size="small"
+                      color="inherit"
+                      onClick={() => {
+                        onClipboardButtonClick();
+                      }}
+                    >
+                      <AssignmentOutlinedIcon />
+                    </IconButton>
+                  </Tooltip>
                   {/* カラムメニュー */}
                   <ColumnMenu
                     index={index}

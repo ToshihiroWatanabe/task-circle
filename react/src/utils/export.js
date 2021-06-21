@@ -1,3 +1,35 @@
+import { secondToHHMMSS } from "utils/convert";
+
+/** タスクをクリップボードにコピーします。 */
+export const copyTasksToClipboard = (items) => {
+  let text = "";
+  let totalSecond = 0;
+  items.forEach((item) => {
+    if (item.category !== "") {
+      text += "《" + item.category + "》";
+    }
+    text += item.content;
+    text += "\r\n";
+    text += secondToHHMMSS(item.spentSecond);
+    if (item.estimatedSecond !== 0) {
+      text += " / " + secondToHHMMSS(item.estimatedSecond);
+    }
+    text += "\r\n";
+    text += "\r\n";
+    totalSecond += item.spentSecond;
+  });
+  text += "計 " + secondToHHMMSS(totalSecond);
+  // 一時的に要素を追加
+  let textArea = document.createElement("textarea");
+  textArea.innerHTML = text;
+  textArea.id = "copyArea";
+  document.getElementById("app").appendChild(textArea);
+  textArea.select(document.getElementById("copyArea"));
+  document.execCommand("Copy");
+  document.getElementById("copyArea").remove();
+  return true;
+};
+
 /**
  * 日報をテキスト形式でエクスポートします。
  */
