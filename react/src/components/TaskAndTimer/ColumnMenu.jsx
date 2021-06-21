@@ -35,9 +35,9 @@ const useStyles = makeStyles({
 });
 
 /**
- * タスクメニューのコンポーネントです。
+ * カラムメニューのコンポーネントです。
  */
-const TaskMenu = memo((props) => {
+const ColumnMenu = memo((props) => {
   const classes = useStyles();
   const [state, setState] = useContext(Context);
   const [anchorEl, setAnchorEl] = useState(null);
@@ -90,16 +90,7 @@ const TaskMenu = memo((props) => {
         [Object.keys(columns)[0]]: {
           ...Object.values(columns)[0],
           items: Object.values(columns)[0].items.map((item, index) => {
-            if (index === props.index) {
-              props.setLastActivity({
-                type: "resetSpentSecond",
-                spentSecond: item.spentSecond,
-                index: index,
-              });
-              item.spentSecond = 0;
-              props.setUndoSnackbarMessage("経過時間をリセットしました");
-              props.setUndoSnackbarOpen(true);
-            }
+            if (index === props.index) item.spentSecond = 0;
             return item;
           }),
         },
@@ -123,7 +114,6 @@ const TaskMenu = memo((props) => {
                 item: Object.values(columns)[0].items[index],
                 index: index,
               });
-              props.setUndoSnackbarMessage("削除しました");
               props.setUndoSnackbarOpen(true);
             }
             return index !== props.index;
@@ -137,10 +127,11 @@ const TaskMenu = memo((props) => {
   return (
     <>
       <IconButton
+        size="small"
         edge={"end"}
         onClick={handleClick}
         color="inherit"
-        aria-label="タスクメニュー切替"
+        aria-label="カラムメニュー切替"
       >
         <MoreVertIcon />
       </IconButton>
@@ -151,10 +142,6 @@ const TaskMenu = memo((props) => {
         onClose={handleClose}
         className={classes.menu}
       >
-        <MenuItem onClick={handleEdit}>
-          <EditIcon />
-          編集
-        </MenuItem>
         <MenuItem
           onClick={handleReset}
           disabled={
@@ -165,7 +152,7 @@ const TaskMenu = memo((props) => {
           }
         >
           <RotateLeftIcon />
-          経過時間を戻す
+          すべての経過時間をリセット
         </MenuItem>
         <MenuItem
           style={{ color: "red" }}
@@ -191,4 +178,4 @@ const TaskMenu = memo((props) => {
   );
 });
 
-export default TaskMenu;
+export default ColumnMenu;

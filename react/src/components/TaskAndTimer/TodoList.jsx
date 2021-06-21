@@ -22,6 +22,7 @@ import startedAudio from "audio/notification_simple-01.mp3";
 import stoppedAudio from "audio/notification_simple-02.mp3";
 import tickAudio from "audio/tick.mp3";
 import TaskMenu from "./TaskMenu";
+import ColumnMenu from "./ColumnMenu";
 import AddIcon from "@material-ui/icons/Add";
 import TagsInput from "./TagsInput";
 import CloseIcon from "@material-ui/icons/Close";
@@ -37,8 +38,6 @@ let timeoutId = null;
 let startedAt = null;
 /** 最後にカウントした時刻 */
 let lastCountedAt = null;
-
-let simpleSnackbarMessage = "";
 
 /** デフォルトタイトル */
 const defaultTitle = document.title;
@@ -174,7 +173,9 @@ const TodoList = () => {
   const [helperText, setHelperText] = useState("");
   const [lastActivity, setLastActivity] = useState({});
   const [undoSnackbarOpen, setUndoSnackbarOpen] = useState(false);
+  const [undoSnackbarMessage, setUndoSnackbarMessage] = useState("");
   const [simpleSnackbarOpen, setSimpleSnackbarOpen] = useState(false);
+  const [simpleSnackbarMessage, setSimpleSnackbarMessage] = useState("");
 
   /**
    * タスクがクリックされたときの処理です。
@@ -360,7 +361,6 @@ const TodoList = () => {
    * 取り消しボタンがクリックされたときの処理です。
    */
   const onUndoButtonClick = () => {
-    console.log(lastActivity);
     if (lastActivity.type === "itemDelete") {
       setColumns((columns) => {
         Object.values(columns)[0].items.splice(
@@ -376,9 +376,25 @@ const TodoList = () => {
         };
       });
       setLastActivity({});
-      simpleSnackbarMessage = "操作を元に戻しました";
+      setSimpleSnackbarMessage("操作を元に戻しました");
+    } else if (lastActivity.type === "resetSpentSecond") {
+      setColumns((columns) => {
+        return {
+          [Object.keys(columns)[0]]: {
+            ...Object.values(columns)[0],
+            items: Object.values(columns)[0].items.map((item, index) => {
+              if (index === lastActivity.index) {
+                item.spentSecond = lastActivity.spentSecond;
+              }
+              return item;
+            }),
+          },
+        };
+      });
+      setLastActivity({});
+      setSimpleSnackbarMessage("操作を元に戻しました");
     } else {
-      simpleSnackbarMessage = "操作を元に戻せませんでした";
+      setSimpleSnackbarMessage("操作を元に戻せませんでした");
     }
     setUndoSnackbarOpen(false);
     setSimpleSnackbarOpen(true);
@@ -411,7 +427,19 @@ const TodoList = () => {
                     "0px 2px 1px -1px rgb(0 0 0 / 20%), 0px 1px 1px 0px rgb(0 0 0 / 14%), 0px 1px 3px 0px rgb(0 0 0 / 12%)",
                 }}
               >
-                <Typography>{column.name}</Typography>
+                <div style={{ display: "flex", alignItems: "center" }}>
+                  <div style={{ flexGrow: "1" }}>
+                    <Typography>{column.name}</Typography>
+                  </div>
+                  {/* カラムメニュー */}
+                  <ColumnMenu
+                    index={index}
+                    columns={columns}
+                    setColumns={setColumns}
+                    setLastActivity={setLastActivity}
+                    setUndoSnackbarOpen={setUndoSnackbarOpen}
+                  />
+                </div>
                 <Divider style={{ margin: "0.25rem 0" }} />
               </div>
               <Droppable droppableId={columnId} key={columnId}>
@@ -517,6 +545,9 @@ const TodoList = () => {
                                       setColumns={setColumns}
                                       setLastActivity={setLastActivity}
                                       setUndoSnackbarOpen={setUndoSnackbarOpen}
+                                      setUndoSnackbarMessage={
+                                        setUndoSnackbarMessage
+                                      }
                                     />
                                   </div>
                                   {item.estimatedSecond > 0 && (
@@ -599,7 +630,7 @@ const TodoList = () => {
         open={undoSnackbarOpen}
         onClose={() => setUndoSnackbarOpen(false)}
         autoHideDuration={6000}
-        message="削除しました"
+        message={undoSnackbarMessage}
         action={
           <>
             <Button
@@ -620,7 +651,6 @@ const TodoList = () => {
             </IconButton>
           </>
         }
-        className={classes.snackbar}
       />
       <Snackbar
         open={simpleSnackbarOpen}
@@ -640,7 +670,6 @@ const TodoList = () => {
             </IconButton>
           </>
         }
-        className={classes.snackbar}
       />
     </div>
   );
