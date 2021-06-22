@@ -224,21 +224,19 @@ const TodoList = () => {
     useState(false);
 
   const playArrowIconTooltip = () => {
-    if (!state.isTimerOn) {
+    if (!state.isTimerOn && Date.now() - lastMouseMoved > 4000) {
       setPlayArrowIconTooltipOpen(true);
     } else {
       setTimeout(playArrowIconTooltip, 5000);
     }
   };
 
-  playArrowIconTooltipOpenTimeout = setTimeout(playArrowIconTooltip, 5000);
-
+  // マウスが動いたとき
   window.addEventListener("mousemove", () => {
     lastMouseMoved = Date.now();
+    setPlayArrowIconTooltipOpen(false);
     clearTimeout(playArrowIconTooltipOpenTimeout);
-    setTimeout(() => {
-      setPlayArrowIconTooltipOpen(false);
-    }, 100);
+    playArrowIconTooltipOpenTimeout = setTimeout(playArrowIconTooltip, 5000);
   });
 
   /**
