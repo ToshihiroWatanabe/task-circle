@@ -73,6 +73,20 @@ const FloatingTimer = (props) => {
     exit: theme.transitions.duration.leavingScreen,
   };
 
+  /**
+   * Fabがクリックされたときの処理です。
+   */
+  const onFabClick = () => {
+    let index = 0;
+    Object.values(props.columns)[0].items.map((item, i) => {
+      if (item.isSelected) {
+        index = i;
+      }
+      return item;
+    });
+    props.onPlayButtonClick(index);
+  };
+
   return (
     <div className={classes.root}>
       {state.isModePomodoro && (
@@ -89,13 +103,16 @@ const FloatingTimer = (props) => {
             aria-label="timer"
             className={classes.fab}
             id="floatingTimer"
+            onClick={() => {
+              onFabClick();
+            }}
           >
             <div className={classes.timerCount}>
-              {Math.floor(props.pomodoroTimeLeft / 60) +
+              {Math.floor(state.pomodoroTimeLeft / 60) +
                 ":" +
-                (Math.floor(props.pomodoroTimeLeft % 60) < 10
-                  ? "0" + Math.floor(props.pomodoroTimeLeft % 60)
-                  : Math.floor(props.pomodoroTimeLeft % 60))}
+                (Math.floor(state.pomodoroTimeLeft % 60) < 10
+                  ? "0" + Math.floor(state.pomodoroTimeLeft % 60)
+                  : Math.floor(state.pomodoroTimeLeft % 60))}
             </div>
             <div className={classes.content}>
               {Object.values(props.columns)[0].items.filter((item, index) => {

@@ -56,6 +56,9 @@ const TimerPopover = memo((props) => {
    */
   const onWorkTimerLengthChange = (event) => {
     setState((state) => {
+      if (state.pomodoroTimerType === "Work") {
+        state.pomodoroTimeLeft = event.target.value;
+      }
       return { ...state, workTimerLength: event.target.value };
     });
   };
@@ -66,6 +69,9 @@ const TimerPopover = memo((props) => {
    */
   const onBreakTimerLengthChange = (event) => {
     setState((state) => {
+      if (state.pomodoroTimerType === "Break") {
+        state.pomodoroTimeLeft = event.target.value;
+      }
       return { ...state, breakTimerLength: event.target.value };
     });
   };

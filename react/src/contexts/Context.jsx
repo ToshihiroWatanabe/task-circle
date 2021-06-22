@@ -36,6 +36,10 @@ export function ContextProvider(props) {
     workTimerLength: 25 * 60,
     // 休憩タイマーの時間(秒)
     breakTimerLength: 5 * 60,
+    // ポモドーロタイマーの残り時間
+    pomodoroTimeLeft: 25 * 60,
+    // ポモドーロタイマーのタイプ
+    pomodoroTimerType: "Work",
   });
 
   return (

@@ -223,8 +223,6 @@ const TodoList = () => {
   const [simpleSnackbarMessage, setSimpleSnackbarMessage] = useState("");
   const [playArrowIconTooltipOpen, setPlayArrowIconTooltipOpen] =
     useState(false);
-  const [pomodoroTimeLeft, setPomodoroTimeLeft] = useState(25 * 60);
-  const [pomodoroTimerType, setPomodoroTimerType] = useState("Work");
 
   /**
    * 再生アイコンのツールチップを扱います。
@@ -295,15 +293,12 @@ const TodoList = () => {
         timeoutId = setTimeout(timerCount, getTimeout());
         startedSound.play();
       } else {
-        setPomodoroTimeLeft((pomodoroTimeLeft) => {
-          if (pomodoroTimerType === "Work") {
-            return state.workTimerLength;
-          }
-          if (pomodoroTimerType === "Break") {
-            return state.breakTimerLength;
-          }
-          return 0;
-        });
+        if (state.pomodoroTimerType === "Work") {
+          state.pomodoroTimeLeft = state.workTimerLength;
+        }
+        if (state.pomodoroTimerType === "Break") {
+          state.pomodoroTimeLeft = state.breakTimerLength;
+        }
         document.title = defaultTitle;
         stoppedSound.play();
       }
@@ -338,6 +333,7 @@ const TodoList = () => {
         timeoutId = setTimeout(timerCount, getTimeout());
         // 前回のカウントから1.5秒以上経っていると一度にカウントする量が増える
         const dateNow = Date.now();
+        console.log(dateNow);
         let count = 0;
         for (
           let i = 0;
@@ -394,9 +390,8 @@ const TodoList = () => {
       return { ...columns };
     });
     if (state.isModePomodoro) {
-      setPomodoroTimeLeft((pomodoroTimeLeft) => {
-        console.log(pomodoroTimeLeft);
-        return --pomodoroTimeLeft;
+      setState((state) => {
+        return { ...state, pomodoroTimeLeft: --state.pomodoroTimeLeft };
       });
     }
   };
@@ -937,7 +932,7 @@ const TodoList = () => {
         }
       />
       {/* フローティングタイマー */}
-      <FloatingTimer columns={columns} pomodoroTimeLeft={pomodoroTimeLeft} />
+      <FloatingTimer columns={columns} onPlayButtonClick={onPlayButtonClick} />
       <Link to="/reports" id="linkToReports" />
     </div>
   );
