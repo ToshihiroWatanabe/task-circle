@@ -5,6 +5,7 @@ import PlayArrowIcon from "@material-ui/icons/PlayArrow";
 import "./FloatingTimer.css";
 import { Context } from "contexts/Context";
 import { useTheme, Zoom } from "@material-ui/core";
+import StopIcon from "@material-ui/icons/Stop";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -25,8 +26,8 @@ const useStyles = makeStyles((theme) => ({
       height: "7.5rem",
     },
     [theme.breakpoints.down("xs")]: {
-      width: "5rem",
-      height: "5rem",
+      width: "4rem",
+      height: "4rem",
     },
   },
   timerCount: {
@@ -39,15 +40,19 @@ const useStyles = makeStyles((theme) => ({
     },
     [theme.breakpoints.down("xs")]: {
       fontSize: "1rem",
+      marginBottom: "-0.5rem",
     },
   },
   playStopIcon: {
     fontSize: "3rem",
+    marginBottom: "-0.3rem",
     [theme.breakpoints.down("sm")]: {
       fontSize: "2rem",
+      marginBottom: "-0.3rem",
     },
     [theme.breakpoints.down("xs")]: {
       fontSize: "1.5rem",
+      marginBottom: "-0.5rem",
     },
   },
   content: {
@@ -85,7 +90,13 @@ const FloatingTimer = (props) => {
             className={classes.fab}
             id="floatingTimer"
           >
-            <div className={classes.timerCount}>25:00</div>
+            <div className={classes.timerCount}>
+              {Math.floor(props.pomodoroTimeLeft / 60) +
+                ":" +
+                (Math.floor(props.pomodoroTimeLeft % 60) < 10
+                  ? "0" + Math.floor(props.pomodoroTimeLeft % 60)
+                  : Math.floor(props.pomodoroTimeLeft % 60))}
+            </div>
             <div className={classes.content}>
               {Object.values(props.columns)[0].items.filter((item, index) => {
                 return item.isSelected;
@@ -108,7 +119,16 @@ const FloatingTimer = (props) => {
                 : ""}
             </div>
             <div>
-              <PlayArrowIcon className={classes.playStopIcon} />
+              {!state.isTimerOn && (
+                <>
+                  <PlayArrowIcon className={classes.playStopIcon} />
+                </>
+              )}
+              {state.isTimerOn && (
+                <>
+                  <StopIcon className={classes.playStopIcon} />
+                </>
+              )}
             </div>
           </Fab>
         </Zoom>

@@ -10,3 +10,7 @@
     margin: 0;
     width: 100%;
 }
+
+#addInputArea>div {
+    flex-grow: 1;
+}

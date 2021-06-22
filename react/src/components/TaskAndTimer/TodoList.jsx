@@ -223,6 +223,8 @@ const TodoList = () => {
   const [simpleSnackbarMessage, setSimpleSnackbarMessage] = useState("");
   const [playArrowIconTooltipOpen, setPlayArrowIconTooltipOpen] =
     useState(false);
+  const [pomodoroTimeLeft, setPomodoroTimeLeft] = useState(25 * 60);
+  const [pomodoroTimerType, setPomodoroTimerType] = useState("Work");
 
   /**
    * 再生アイコンのツールチップを扱います。
@@ -293,6 +295,15 @@ const TodoList = () => {
         timeoutId = setTimeout(timerCount, getTimeout());
         startedSound.play();
       } else {
+        setPomodoroTimeLeft((pomodoroTimeLeft) => {
+          if (pomodoroTimerType === "Work") {
+            return state.workTimerLength;
+          }
+          if (pomodoroTimerType === "Break") {
+            return state.breakTimerLength;
+          }
+          return 0;
+        });
         document.title = defaultTitle;
         stoppedSound.play();
       }
@@ -369,7 +380,7 @@ const TodoList = () => {
   };
 
   /**
-   * 選択されているタスクの経過時間を加算します。
+   * 時間の加減算をします。
    */
   const spendTime = (count) => {
     setColumns((columns) => {
@@ -382,6 +393,12 @@ const TodoList = () => {
       });
       return { ...columns };
     });
+    if (state.isModePomodoro) {
+      setPomodoroTimeLeft((pomodoroTimeLeft) => {
+        console.log(pomodoroTimeLeft);
+        return --pomodoroTimeLeft;
+      });
+    }
   };
 
   /**
@@ -821,6 +838,7 @@ const TodoList = () => {
                 }}
               </Droppable>
               <div
+                id="addInputArea"
                 style={{
                   display: "flex",
                   justifyContent: "space-between",
@@ -919,7 +937,7 @@ const TodoList = () => {
         }
       />
       {/* フローティングタイマー */}
-      <FloatingTimer columns={columns} />
+      <FloatingTimer columns={columns} pomodoroTimeLeft={pomodoroTimeLeft} />
       <Link to="/reports" id="linkToReports" />
     </div>
   );

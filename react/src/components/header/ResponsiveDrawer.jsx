@@ -103,15 +103,6 @@ const ResponsiveDrawer = memo((props) => {
     window.scrollTo(0, 0);
   };
 
-  /**
-   * トマトアイコンがクリックされたときの処理です。
-   */
-  const onTomatoIconClick = () => {
-    setState((state) => {
-      return { ...state, isModePomodoro: !state.isModePomodoro };
-    });
-  };
-
   const drawer = (
     <>
       <div className={classes.toolbar}></div>
