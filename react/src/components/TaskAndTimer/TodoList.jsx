@@ -389,11 +389,14 @@ const TodoList = () => {
       });
       return { ...columns };
     });
-    if (state.isModePomodoro) {
+    setTimeout(() => {
       setState((state) => {
-        return { ...state, pomodoroTimeLeft: --state.pomodoroTimeLeft };
+        if (state.isModePomodoro) {
+          state.pomodoroTimeLeft--;
+        }
+        return { ...state };
       });
-    }
+    }, 1);
   };
 
   /**
