@@ -29,7 +29,10 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   timerCount: {
-    fontSize: "3rem",
+    [theme.breakpoints.up("sm")]: {
+      fontSize: "3rem",
+      marginBottom: "-0.7rem",
+    },
     [theme.breakpoints.down("sm")]: {
       fontSize: "2rem",
     },
@@ -60,30 +63,38 @@ const FloatingTimer = (props) => {
 
   return (
     <div className={classes.root}>
-      <Fab
-        color="primary"
-        aria-label="timer"
-        className={classes.fab}
-        id="floatingTimer"
-      >
-        <div className={classes.timerCount}>25:00</div>
-        <div className={classes.content}>
-          {Object.values(props.columns)[0].items.filter((item, index) => {
-            return item.isSelected;
-          })[0].content.length > 10
-            ? Object.values(props.columns)[0]
-                .items.filter((item, index) => {
+      {state.isModePomodoro && (
+        <Fab
+          color="primary"
+          aria-label="timer"
+          className={classes.fab}
+          id="floatingTimer"
+        >
+          <div className={classes.timerCount}>25:00</div>
+          <div className={classes.content}>
+            {Object.values(props.columns)[0].items.filter((item, index) => {
+              return item.isSelected;
+            }).length > 0
+              ? Object.values(props.columns)[0].items.filter((item, index) => {
                   return item.isSelected;
-                })[0]
-                .content.slice(0, 10) + "..."
-            : Object.values(props.columns)[0].items.filter((item, index) => {
-                return item.isSelected;
-              })[0].content}
-        </div>
-        <div>
-          <PlayArrowIcon className={classes.playStopIcon} />
-        </div>
-      </Fab>
+                })[0].content.length > 10
+                ? Object.values(props.columns)[0]
+                    .items.filter((item, index) => {
+                      return item.isSelected;
+                    })[0]
+                    .content.slice(0, 10) + "..."
+                : Object.values(props.columns)[0].items.filter(
+                    (item, index) => {
+                      return item.isSelected;
+                    }
+                  )[0].content
+              : ""}
+          </div>
+          <div>
+            <PlayArrowIcon className={classes.playStopIcon} />
+          </div>
+        </Fab>
+      )}
     </div>
   );
 };

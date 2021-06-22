@@ -109,9 +109,18 @@ const TimerPopover = memo((props) => {
       >
         {state.userId === "" && (
           <>
+            {state.isTimerOn && (
+              <Typography
+                variant="caption"
+                style={{ padding: "0.5rem 0 0 1rem" }}
+              >
+                タイマー作動中は変更できません
+              </Typography>
+            )}
             <Typography style={{ padding: "0.5rem 0 0 1rem" }}>
               ポモドーロタイマー
               <Switch
+                disabled={state.isTimerOn}
                 checked={state.isModePomodoro}
                 onChange={() =>
                   setState((state) => {
@@ -124,7 +133,7 @@ const TimerPopover = memo((props) => {
             <Typography style={{ padding: "0.5rem 0 0 1rem" }}>
               休憩を自動スタート
               <Switch
-                disabled={!state.isModePomodoro}
+                disabled={!state.isModePomodoro || state.isTimerOn}
                 checked={state.isBreakAutoStart}
                 onChange={() =>
                   setState((state) => {
@@ -141,7 +150,7 @@ const TimerPopover = memo((props) => {
               作業タイマー
               <Select
                 native
-                disabled={!state.isModePomodoro}
+                disabled={!state.isModePomodoro || state.isTimerOn}
                 value={state.workTimerLength}
                 IconComponent={() => <></>}
                 onChange={(e) => {
@@ -163,7 +172,7 @@ const TimerPopover = memo((props) => {
               休憩タイマー
               <Select
                 native
-                disabled={!state.isModePomodoro}
+                disabled={!state.isModePomodoro || state.isTimerOn}
                 value={state.breakTimerLength}
                 IconComponent={() => <></>}
                 onChange={(e) => {
