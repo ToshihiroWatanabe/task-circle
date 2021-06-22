@@ -1,13 +1,28 @@
 import React from "react";
+import { makeStyles, useTheme } from "@material-ui/core";
 import TodoList from "./TodoList";
+import Room from "./Room";
+
+const useStyles = makeStyles((theme) => ({
+  root: {
+    [theme.breakpoints.up("md")]: {
+      display: "flex",
+    },
+  },
+}));
 
 /**
  * タスク＆タイマーページのコンポーネントです。
  */
 const TaskAndTimer = () => {
+  const classes = useStyles();
+  const theme = useTheme();
   return (
     <>
-      <TodoList />
+      <div className={classes.root}>
+        <TodoList />
+        <Room />
+      </div>
     </>
   );
 };

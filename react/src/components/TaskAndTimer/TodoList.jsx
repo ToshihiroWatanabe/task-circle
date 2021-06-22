@@ -161,10 +161,17 @@ const onDragEnd = (result, columns, setColumns) => {
 };
 
 const useStyles = makeStyles((theme) => ({
+  column: {
+    width: 320,
+    [theme.breakpoints.down("xs")]: {
+      width: "calc(100vw - 2rem)",
+      maxWidth: "600px",
+    },
+  },
   columnCard: {
     padding: 4,
-    width: 320,
-    maxHeight: "75vh",
+    width: "100%",
+    maxHeight: "70vh",
     overflow: "auto",
   },
   taskCard: {
@@ -518,13 +525,14 @@ const TodoList = () => {
                 alignItems: "center",
                 margin: 8,
               }}
+              className={classes.column}
               key={columnId}
             >
               <div
                 style={{
                   backgroundColor: "lightgrey",
                   padding: 4,
-                  width: 320,
+                  width: "100%",
                   marginBottom: "-0.2rem",
                   borderRadius: "4px",
                   boxShadow:
@@ -746,7 +754,7 @@ const TodoList = () => {
                   display: "flex",
                   justifyContent: "space-between",
                   backgroundColor: "lightgray",
-                  width: 320,
+                  width: "100%",
                   marginTop: "-2px",
                   paddingLeft: "0.5rem",
                   paddingTop: helperText !== "" ? "0" : "0.5rem",
