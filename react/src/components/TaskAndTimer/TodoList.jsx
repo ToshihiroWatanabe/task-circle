@@ -10,6 +10,7 @@ import {
   Divider,
   Snackbar,
   Button,
+  useTheme,
 } from "@material-ui/core";
 import uuid from "uuid/v4";
 import PlayArrowIcon from "@material-ui/icons/PlayArrow";
@@ -180,6 +181,7 @@ const useStyles = makeStyles((theme) => ({
  */
 const TodoList = () => {
   const classes = useStyles();
+  const theme = useTheme();
   const [state, setState] = useContext(Context);
   const [columns, setColumns] = useState(columnsFrom);
   const [categoryInput, setCategoryInput] = useState([]);
@@ -601,11 +603,21 @@ const TodoList = () => {
                                   {...provided.dragHandleProps}
                                   className={classes.taskCard}
                                   style={{
+                                    // backgroundColor: snapshot.isDragging
+                                    //   ? "#254C86"
+                                    //   : item.isSelected && state.isTimerOn
+                                    //   ? "#2498b3"
+                                    //   : "#456C86",
                                     backgroundColor: snapshot.isDragging
-                                      ? "#254C86"
+                                      ? theme.palette.primary.dark
                                       : item.isSelected && state.isTimerOn
-                                      ? "#2498b3"
-                                      : "#456C86",
+                                      ? theme.palette.primary.main
+                                      : "#FFF",
+                                    color: snapshot.isDragging
+                                      ? "#FFF"
+                                      : item.isSelected && state.isTimerOn
+                                      ? "#FFF"
+                                      : "#000",
                                     ...provided.draggableProps.style,
                                   }}
                                   onClick={(event) => onItemClick(event, index)}
@@ -664,7 +676,7 @@ const TodoList = () => {
                                             style={{
                                               color: item.achievedThenStop
                                                 ? ""
-                                                : "#AAA",
+                                                : "#BBB",
                                               margin: "0 0.2rem",
                                             }}
                                           >
@@ -680,7 +692,7 @@ const TodoList = () => {
                                             style={{
                                               color: item.achievedThenStop
                                                 ? "inherit"
-                                                : "",
+                                                : "#BBB",
                                             }}
                                             onClick={() =>
                                               onAlarmIconClick(index)
