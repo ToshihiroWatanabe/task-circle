@@ -51,6 +51,7 @@ let lastCountedAt = null;
 
 /** 最後にマウスが動いた時刻 */
 let lastMouseMoved = Date.now();
+let playArrowIconTooltipOpenTimeout = null;
 
 /** デフォルトタイトル */
 const defaultTitle = document.title;
@@ -169,6 +170,7 @@ const useStylesBootstrap = makeStyles((theme) => ({
   },
   tooltip: {
     backgroundColor: theme.palette.common.black,
+    top: "-1rem",
   },
 }));
 
@@ -221,8 +223,22 @@ const TodoList = () => {
   const [playArrowIconTooltipOpen, setPlayArrowIconTooltipOpen] =
     useState(false);
 
+  const playArrowIconTooltip = () => {
+    if (!state.isTimerOn) {
+      setPlayArrowIconTooltipOpen(true);
+    } else {
+      setTimeout(playArrowIconTooltip, 5000);
+    }
+  };
+
+  playArrowIconTooltipOpenTimeout = setTimeout(playArrowIconTooltip, 5000);
+
   window.addEventListener("mousemove", () => {
     lastMouseMoved = Date.now();
+    clearTimeout(playArrowIconTooltipOpenTimeout);
+    setTimeout(() => {
+      setPlayArrowIconTooltipOpen(false);
+    }, 100);
   });
 
   /**
@@ -658,8 +674,12 @@ const TodoList = () => {
                                 >
                                   <div style={{ display: "flex" }}>
                                     <BootstrapTooltip
-                                      title="ここをクリックして開始"
-                                      open={playArrowIconTooltipOpen}
+                                      title="タイマーを開始"
+                                      open={
+                                        playArrowIconTooltipOpen &&
+                                        item.isSelected &&
+                                        item.spentSecond === 0
+                                      }
                                     >
                                       <IconButton
                                         size="small"
