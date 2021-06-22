@@ -50,7 +50,7 @@ const useStyles = makeStyles((theme) => ({
   paper: { width: "90%" },
 }));
 
-let enterKeyIsDown = false;
+let isControlPressed = false;
 
 /**
  * 編集ダイアログのコンポーネントです。
@@ -272,11 +272,38 @@ const EditDialog = memo((props) => {
     }
   };
 
+  /**
+   * キーが押下されたときの処理です。
+   * @param {*} event
+   */
+  const onKeyDown = (event) => {
+    if (event.key === "Control") {
+      isControlPressed = true;
+    }
+    if (event.key === "Enter" && isControlPressed) {
+      document.activeElement.blur();
+      isControlPressed = false;
+      handleAccept();
+    }
+  };
+
+  /**
+   * キーが離れたときの処理です。
+   * @param {*} event
+   */
+  const onKeyUp = (event) => {
+    if (event.key === "Control") {
+      isControlPressed = false;
+    }
+  };
+
   return (
     <>
       <Dialog
         open={props.open}
         onClose={handleCancel}
+        onKeyDown={onKeyDown}
+        onKeyUp={onKeyUp}
         aria-labelledby="form-dialog-title"
         classes={{ paper: classes.paper }}
       >
