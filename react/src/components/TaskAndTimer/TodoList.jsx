@@ -532,7 +532,7 @@ const TodoList = () => {
                 }}
               >
                 <div style={{ display: "flex", alignItems: "center" }}>
-                  <div style={{ flexGrow: "1" }}>
+                  <div style={{ flexGrow: "1", marginLeft: "0.5rem" }}>
                     <Typography>{column.name}</Typography>
                   </div>
                   <Tooltip title="タスクから日報を作成" placement="top">
@@ -603,11 +603,6 @@ const TodoList = () => {
                                   {...provided.dragHandleProps}
                                   className={classes.taskCard}
                                   style={{
-                                    // backgroundColor: snapshot.isDragging
-                                    //   ? "#254C86"
-                                    //   : item.isSelected && state.isTimerOn
-                                    //   ? "#2498b3"
-                                    //   : "#456C86",
                                     backgroundColor: snapshot.isDragging
                                       ? theme.palette.primary.dark
                                       : item.isSelected && state.isTimerOn
