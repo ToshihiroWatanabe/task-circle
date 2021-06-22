@@ -292,12 +292,20 @@ const TodoList = () => {
    */
   const onPlayButtonClick = (index) => {
     setState((state) => {
-      if (!state.isTimerOn) {
+      state.isTimerOn = !state.isTimerOn;
+      if (state.isTimerOn) {
+        // タイマー開始
         startedAt = Date.now();
         lastCountedAt = Date.now();
         timeoutId = setTimeout(timerCount, getTimeout());
+        // ポモドーロが休憩タイマーなら作業に切り替える
+        if (state.isModePomodoro && state.pomodoroTimerType === "Break") {
+          state.pomodoroTimerType = "Work";
+          state.pomodoroTimeLeft = state.workTimerLength;
+        }
         startedSound.play();
       } else {
+        // タイマー終了
         if (state.pomodoroTimerType === "Work") {
           state.pomodoroTimeLeft = state.workTimerLength;
         }
@@ -307,7 +315,7 @@ const TodoList = () => {
         document.title = defaultTitle;
         stoppedSound.play();
       }
-      return { ...state, isTimerOn: !state.isTimerOn };
+      return { ...state };
     });
   };
 
@@ -348,7 +356,7 @@ const TodoList = () => {
         }
         spendTime(count);
         lastCountedAt = Date.now();
-        // 目標時間を超えたとき
+        // 目標時間を超えた かつ 目標時間を超えたときに停止する設定のとき
         if (
           Object.values(columns)[0].items.filter((item, index) => {
             return item.isSelected;
@@ -366,7 +374,22 @@ const TodoList = () => {
             }
             return item;
           });
-          setState({ ...state, isTimerOn: false });
+          setTimeout(() => {
+            setState((state) => {
+              state.isTimerOn = false;
+              // ポモドーロの作業休憩切り替え
+              if (state.isModePomodoro) {
+                if (state.pomodoroTimerType === "Work") {
+                  state.pomodoroTimerType = "Break";
+                  state.pomodoroTimeLeft = state.breakTimerLength;
+                } else if (state.pomodoroTimerType === "Break") {
+                  state.pomodoroTimerType = "Work";
+                  state.pomodoroTimeLeft = state.workTimerLength;
+                }
+              }
+              return { ...state };
+            });
+          }, 2);
           clearTimeout(timeoutId);
           achievedSound.play();
         }
