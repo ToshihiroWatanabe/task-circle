@@ -28,6 +28,8 @@ export function ContextProvider(props) {
     waitingReport: {},
     // タイマーがオンかどうか
     isTimerOn: false,
+    // ポモドーロモードがオンかどうか
+    isModePomodoro: false,
   });
 
   return (

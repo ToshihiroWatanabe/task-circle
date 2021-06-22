@@ -603,16 +603,18 @@ const TodoList = () => {
                                   {...provided.dragHandleProps}
                                   className={classes.taskCard}
                                   style={{
-                                    backgroundColor: snapshot.isDragging
-                                      ? theme.palette.primary.dark
-                                      : item.isSelected && state.isTimerOn
-                                      ? theme.palette.primary.main
-                                      : "#FFF",
-                                    color: snapshot.isDragging
-                                      ? "#FFF"
-                                      : item.isSelected && state.isTimerOn
-                                      ? "#FFF"
-                                      : "#000",
+                                    backgroundColor:
+                                      item.isSelected && state.isTimerOn
+                                        ? theme.palette.primary.main
+                                        : snapshot.isDragging
+                                        ? "lightgray"
+                                        : "#FFF",
+                                    color:
+                                      item.isSelected && state.isTimerOn
+                                        ? "#FFF"
+                                        : snapshot.isDragging
+                                        ? "#000"
+                                        : "#000",
                                     ...provided.draggableProps.style,
                                   }}
                                   onClick={(event) => onItemClick(event, index)}

@@ -23,7 +23,7 @@ import EditIcon from "@material-ui/icons/Edit";
 import DeleteIcon from "@material-ui/icons/Delete";
 import TwitterIcon from "@material-ui/icons/Twitter";
 import "components/reports/ReportCard.css";
-import slackMark from "slackMark.svg";
+import slackMark from "image/slackMark.svg";
 import axios from "axios";
 import { Context } from "contexts/Context";
 import Alert from "@material-ui/lab/Alert";

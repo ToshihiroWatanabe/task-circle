@@ -15,6 +15,8 @@ import {
   Toolbar,
   Typography,
   SwipeableDrawer,
+  Icon,
+  Tooltip,
 } from "@material-ui/core";
 import MenuIcon from "@material-ui/icons/Menu";
 import DescriptionIcon from "@material-ui/icons/Description";
@@ -100,6 +102,15 @@ const ResponsiveDrawer = memo((props) => {
     window.scrollTo(0, 0);
   };
 
+  /**
+   * トマトアイコンがクリックされたときの処理です。
+   */
+  const onTomatoIconClick = () => {
+    setState((state) => {
+      return { ...state, isModePomodoro: !state.isModePomodoro };
+    });
+  };
+
   const drawer = (
     <>
       <div className={classes.toolbar}></div>
@@ -164,6 +175,30 @@ const ResponsiveDrawer = memo((props) => {
             {location.pathname === "/signup" && <>新規登録</>}
           </Typography>
           <span style={{ flexGrow: 1 }}></span>
+          {/* ポモドーロ切り替えアイコン */}
+          {location.pathname === "/" && (
+            <>
+              <Tooltip title="ポモドーロ切り替え">
+                <IconButton onClick={() => onTomatoIconClick()}>
+                  <Icon>
+                    <img
+                      alt="tomato"
+                      src={
+                        process.env.PUBLIC_URL +
+                        "/favicon/favicon_tomato/apple-touch-icon.png"
+                      }
+                      style={{
+                        width: "1.25rem",
+                        filter: state.isModePomodoro
+                          ? "drop-shadow(0px 0px 1.25px #000)"
+                          : "contrast(0%)",
+                      }}
+                    />
+                  </Icon>
+                </IconButton>
+              </Tooltip>
+            </>
+          )}
           {/* データ移行のファイルアイコン */}
           {location.pathname === "/reports" && <FilePopover />}
           <AccountPopover onSyncButtonClick={props.onSyncButtonClick} />
