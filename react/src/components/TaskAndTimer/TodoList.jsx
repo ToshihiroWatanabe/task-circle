@@ -237,18 +237,23 @@ const TodoList = () => {
 
   // マウスが動いたとき
   window.addEventListener("mousemove", () => {
-    handleMouseTouch();
+    handleOperation();
   });
 
   // タッチされたとき
   window.addEventListener("touchstart", () => {
-    handleMouseTouch();
+    handleOperation();
+  });
+
+  // キーが押されたとき
+  window.addEventListener("keypress", () => {
+    handleOperation();
   });
 
   /**
-   * マウスやタッチ操作されたときの処理です。
+   * 操作されたときの処理です。
    */
-  const handleMouseTouch = () => {
+  const handleOperation = () => {
     lastMouseMoved = Date.now();
     setPlayArrowIconTooltipOpen(false);
     clearTimeout(playArrowIconTooltipOpenTimeout);
