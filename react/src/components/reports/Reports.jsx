@@ -100,7 +100,18 @@ const Reports = memo(() => {
       });
       // 待機中の日報があれば作成ダイアログを開く
       if (Object.keys(state.waitingReport).length > 0) {
-        setDefaultReport(JSON.parse(JSON.stringify(state.waitingReport)));
+        if (state.waitingReport.report_items.length > 0) {
+          setDefaultReport(JSON.parse(JSON.stringify(state.waitingReport)));
+        } else {
+          setDefaultReport(
+            JSON.parse(
+              JSON.stringify({
+                ...DEFAULT_REPORT,
+                date: format(selectedDate, "yyyy-MM-dd"),
+              })
+            )
+          );
+        }
         setFormDialogOpen(true);
         state.waitingReport = {};
       }

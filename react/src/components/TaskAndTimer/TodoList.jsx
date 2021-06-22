@@ -30,6 +30,7 @@ import AssignmentOutlinedIcon from "@material-ui/icons/AssignmentOutlined";
 import { copyTasksToClipboard } from "utils/export";
 import NoteAddOutlinedIcon from "@material-ui/icons/NoteAddOutlined";
 import { Link } from "react-router-dom";
+import AlarmIcon from "@material-ui/icons/Alarm";
 
 /** タスクの最大数 */
 const NUMBER_OF_ITEMS_MAX = 32;
@@ -65,14 +66,16 @@ const itemsFrom = [
     spentSecond: 0,
     estimatedSecond: 3 * 60,
     isSelected: true,
+    achievedThenStop: false,
   },
   {
     id: uuid(),
     category: "",
     content: "復習",
     spentSecond: 0,
-    estimatedSecond: 60 * 60,
+    estimatedSecond: 3,
     isSelected: false,
+    achievedThenStop: true,
   },
   {
     id: uuid(),
@@ -81,6 +84,7 @@ const itemsFrom = [
     spentSecond: 0,
     estimatedSecond: 15 * 60,
     isSelected: false,
+    achievedThenStop: true,
   },
   {
     id: uuid(),
@@ -89,6 +93,7 @@ const itemsFrom = [
     spentSecond: 0,
     estimatedSecond: 60 * 60,
     isSelected: false,
+    achievedThenStop: false,
   },
   {
     id: uuid(),
@@ -97,6 +102,7 @@ const itemsFrom = [
     spentSecond: 0,
     estimatedSecond: 60 * 60,
     isSelected: false,
+    achievedThenStop: true,
   },
 ];
 
@@ -190,7 +196,8 @@ const TodoList = () => {
   const onItemClick = (event, index) => {
     if (
       ["DIV", "SPAN"].includes(event.target.tagName) &&
-      event.target.style.backgroundColor !== "transparent"
+      event.target.style.backgroundColor !== "transparent" &&
+      event.target.className !== "MuiIconButton-label"
     ) {
       setColumns((columns) => {
         Object.values(columns)[0].items.map((item, i) => {
@@ -459,6 +466,11 @@ const TodoList = () => {
     }, 1);
   };
 
+  /**
+   * アラームアイコンがクリックされたときの処理です。
+   */
+  const onAlarmIconClick = () => {};
+
   return (
     <div style={{ display: "flex", height: "100%" }}>
       <DragDropContext
@@ -492,6 +504,7 @@ const TodoList = () => {
                   </div>
                   <Tooltip title="タスクから日報を作成" placement="top">
                     <IconButton
+                      disabled={state.isTimerOn}
                       size="small"
                       color="inherit"
                       onClick={() => {
@@ -610,17 +623,43 @@ const TodoList = () => {
                                           fontSize: "0.75rem",
                                           marginTop: "0.5rem",
                                           marginBottom: "-0.2rem",
+                                          display: "flex",
+                                          alignItems: "center",
                                         }}
                                       >
                                         {secondToHHMMSS(item.spentSecond)}
                                         {item.estimatedSecond !== 0 && (
-                                          <span style={{ color: "#AAA" }}>
+                                          <span
+                                            style={{
+                                              color: item.achievedThenStop
+                                                ? ""
+                                                : "#AAA",
+                                              margin: "0 0.2rem",
+                                            }}
+                                          >
                                             {" / "}
                                             {secondToHHMMSS(
                                               item.estimatedSecond
                                             )}
                                           </span>
                                         )}
+                                        <IconButton
+                                          size="small"
+                                          style={{
+                                            color: item.achievedThenStop
+                                              ? "inherit"
+                                              : "",
+                                          }}
+                                          onClick={(index) =>
+                                            onAlarmIconClick(index)
+                                          }
+                                        >
+                                          <AlarmIcon
+                                            style={{
+                                              pointerEvents: "none",
+                                            }}
+                                          />
+                                        </IconButton>
                                       </div>
                                     </div>
                                     {/* タスクメニュー */}
