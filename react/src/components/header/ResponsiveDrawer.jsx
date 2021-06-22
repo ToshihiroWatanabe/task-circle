@@ -27,6 +27,7 @@ import TimerIcon from "@material-ui/icons/Timer";
 import { Context } from "contexts/Context";
 import FilePopover from "components/header/FilePopover";
 import AccountPopover from "components/header/AccountPopover";
+import TimerPopover from "./TimerPopover";
 
 /** ドロワーの横幅 */
 const DRAWER_WIDTH = "15rem";
@@ -178,25 +179,7 @@ const ResponsiveDrawer = memo((props) => {
           {/* ポモドーロ切り替えアイコン */}
           {location.pathname === "/" && (
             <>
-              <Tooltip title="ポモドーロ切り替え">
-                <IconButton onClick={() => onTomatoIconClick()}>
-                  <Icon>
-                    <img
-                      alt="tomato"
-                      src={
-                        process.env.PUBLIC_URL +
-                        "/favicon/favicon_tomato/apple-touch-icon.png"
-                      }
-                      style={{
-                        width: "1.25rem",
-                        filter: state.isModePomodoro
-                          ? "drop-shadow(0px 0px 1.25px #000)"
-                          : "contrast(0%)",
-                      }}
-                    />
-                  </Icon>
-                </IconButton>
-              </Tooltip>
+              <TimerPopover />
             </>
           )}
           {/* データ移行のファイルアイコン */}

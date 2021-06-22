@@ -1,0 +1,6 @@
+#timerPopover>.MuiPopover-paper {
+    min-width: 150px;
+    width: 15rem !important;
+    height: 12rem;
+    position: absolute !important;
+}

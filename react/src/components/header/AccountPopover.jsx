@@ -3,8 +3,6 @@ import {
   Button,
   IconButton,
   List,
-  ListItem,
-  ListItemIcon,
   ListItemText,
   makeStyles,
   Popover,

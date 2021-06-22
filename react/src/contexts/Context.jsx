@@ -30,6 +30,12 @@ export function ContextProvider(props) {
     isTimerOn: false,
     // ポモドーロモードがオンかどうか
     isModePomodoro: false,
+    // 休憩を自動スタートするかどうか
+    isBreakAutoStart: true,
+    // 作業タイマーの時間(秒)
+    workTimerLength: 25 * 60,
+    // 休憩タイマーの時間(秒)
+    breakTimerLength: 5 * 60,
   });
 
   return (
