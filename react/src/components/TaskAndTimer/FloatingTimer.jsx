@@ -4,6 +4,7 @@ import Fab from "@material-ui/core/Fab";
 import PlayArrowIcon from "@material-ui/icons/PlayArrow";
 import "./FloatingTimer.css";
 import { Context } from "contexts/Context";
+import { useTheme, Zoom } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -59,41 +60,58 @@ const useStyles = makeStyles((theme) => ({
 
 const FloatingTimer = (props) => {
   const classes = useStyles();
+  const theme = useTheme();
   const [state, setState] = useContext(Context);
+
+  const transitionDuration = {
+    enter: theme.transitions.duration.enteringScreen,
+    exit: theme.transitions.duration.leavingScreen,
+  };
 
   return (
     <div className={classes.root}>
       {state.isModePomodoro && (
-        <Fab
-          color="primary"
-          aria-label="timer"
-          className={classes.fab}
-          id="floatingTimer"
+        <Zoom
+          timeout={transitionDuration}
+          in={true}
+          style={{
+            transitionDelay: `${transitionDuration.exit}ms`,
+          }}
+          unmountOnExit
         >
-          <div className={classes.timerCount}>25:00</div>
-          <div className={classes.content}>
-            {Object.values(props.columns)[0].items.filter((item, index) => {
-              return item.isSelected;
-            }).length > 0
-              ? Object.values(props.columns)[0].items.filter((item, index) => {
-                  return item.isSelected;
-                })[0].content.length > 10
-                ? Object.values(props.columns)[0]
-                    .items.filter((item, index) => {
-                      return item.isSelected;
-                    })[0]
-                    .content.slice(0, 10) + "..."
-                : Object.values(props.columns)[0].items.filter(
+          <Fab
+            color="primary"
+            aria-label="timer"
+            className={classes.fab}
+            id="floatingTimer"
+          >
+            <div className={classes.timerCount}>25:00</div>
+            <div className={classes.content}>
+              {Object.values(props.columns)[0].items.filter((item, index) => {
+                return item.isSelected;
+              }).length > 0
+                ? Object.values(props.columns)[0].items.filter(
                     (item, index) => {
                       return item.isSelected;
                     }
-                  )[0].content
-              : ""}
-          </div>
-          <div>
-            <PlayArrowIcon className={classes.playStopIcon} />
-          </div>
-        </Fab>
+                  )[0].content.length > 10
+                  ? Object.values(props.columns)[0]
+                      .items.filter((item, index) => {
+                        return item.isSelected;
+                      })[0]
+                      .content.slice(0, 10) + "..."
+                  : Object.values(props.columns)[0].items.filter(
+                      (item, index) => {
+                        return item.isSelected;
+                      }
+                    )[0].content
+                : ""}
+            </div>
+            <div>
+              <PlayArrowIcon className={classes.playStopIcon} />
+            </div>
+          </Fab>
+        </Zoom>
       )}
     </div>
   );
