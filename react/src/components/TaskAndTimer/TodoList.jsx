@@ -333,7 +333,6 @@ const TodoList = () => {
         timeoutId = setTimeout(timerCount, getTimeout());
         // 前回のカウントから1.5秒以上経っていると一度にカウントする量が増える
         const dateNow = Date.now();
-        console.log(dateNow);
         let count = 0;
         for (
           let i = 0;
