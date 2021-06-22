@@ -223,21 +223,39 @@ const TodoList = () => {
   const [playArrowIconTooltipOpen, setPlayArrowIconTooltipOpen] =
     useState(false);
 
-  const playArrowIconTooltip = () => {
+  /**
+   * 再生アイコンのツールチップを扱います。
+   */
+  const handlePlayArrowIconTooltip = () => {
     if (!state.isTimerOn && Date.now() - lastMouseMoved > 4000) {
       setPlayArrowIconTooltipOpen(true);
     } else {
-      setTimeout(playArrowIconTooltip, 5000);
+      setTimeout(handlePlayArrowIconTooltip, 5000);
     }
   };
 
   // マウスが動いたとき
   window.addEventListener("mousemove", () => {
+    handleMouseTouch();
+  });
+
+  // タッチされたとき
+  window.addEventListener("touchstart", () => {
+    handleMouseTouch();
+  });
+
+  /**
+   * マウスやタッチ操作されたときの処理です。
+   */
+  const handleMouseTouch = () => {
     lastMouseMoved = Date.now();
     setPlayArrowIconTooltipOpen(false);
     clearTimeout(playArrowIconTooltipOpenTimeout);
-    playArrowIconTooltipOpenTimeout = setTimeout(playArrowIconTooltip, 5000);
-  });
+    playArrowIconTooltipOpenTimeout = setTimeout(
+      handlePlayArrowIconTooltip,
+      5000
+    );
+  };
 
   /**
    * タスクがクリックされたときの処理です。
