@@ -1,0 +1,8 @@
+#floatingTimer>span {
+    display: flex;
+    flex-direction: column;
+}
+
+.MuiFab-root {
+    text-transform: none;
+}

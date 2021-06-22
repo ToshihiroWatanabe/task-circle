@@ -33,6 +33,7 @@ import { copyTasksToClipboard } from "utils/export";
 import NoteAddOutlinedIcon from "@material-ui/icons/NoteAddOutlined";
 import { Link } from "react-router-dom";
 import AlarmIcon from "@material-ui/icons/Alarm";
+import FloatingTimer from "./FloatingTimer";
 
 /** タスクの最大数 */
 const NUMBER_OF_ITEMS_MAX = 32;
@@ -917,6 +918,8 @@ const TodoList = () => {
           </>
         }
       />
+      {/* フローティングタイマー */}
+      <FloatingTimer columns={columns} />
       <Link to="/reports" id="linkToReports" />
     </div>
   );
