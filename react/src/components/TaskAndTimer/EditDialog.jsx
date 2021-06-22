@@ -124,29 +124,6 @@ const EditDialog = memo((props) => {
     props.setOpen(false);
   };
 
-  /**
-   * キーが押されたときの処理です。
-   * @param {*} event
-   */
-  const handleKeyDown = (event) => {
-    if (event.key === "Enter") {
-      setTimeout(() => {
-        enterKeyIsDown = true;
-      }, 1);
-    }
-  };
-
-  /**
-   * キーが離れたときの処理です。
-   * @param {*} event
-   */
-  const handleKeyUp = (event) => {
-    if (event.key === "Enter" && enterKeyIsDown) {
-      enterKeyIsDown = false;
-      handleAccept();
-    }
-  };
-
   /** オートコンプリートの選択肢 */
   const Popper4rem = function (props) {
     return (
@@ -339,12 +316,15 @@ const EditDialog = memo((props) => {
             label="タスク名"
             type="text"
             style={{ width: "97%" }}
-            defaultValue={
-              Object.values(props.columns)[0].items[props.index].content
-            }
-            inputRef={(ref) => (inRef = ref)}
-            onKeyDown={handleKeyDown}
-            onKeyUp={handleKeyUp}
+            // defaultValue={
+            //   Object.values(props.columns)[0].items[props.index].content
+            // }
+            value={value.content}
+            onChange={(e) => {
+              setValue((value) => {
+                return { ...value, content: e.target.value };
+              });
+            }}
           />
           <div style={{ display: "flex", alignItems: "center" }}>
             目標・見積時間:
