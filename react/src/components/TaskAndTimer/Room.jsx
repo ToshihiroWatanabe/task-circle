@@ -7,6 +7,10 @@ const useStyles = makeStyles((theme) => ({
     width: 320,
     height: "76vh",
     margin: 8,
+    [theme.breakpoints.down("xs")]: {
+      width: "calc(100vw - 2rem)",
+      maxWidth: "600px",
+    },
   },
 }));
 
@@ -18,7 +22,9 @@ const Room = () => {
   const theme = useTheme();
   return (
     <>
-      <Card className={classes.roomCard}>ここに他のユーザーが表示されます</Card>
+      <Card className={classes.roomCard}>
+        ここにユーザーリストが表示されます
+      </Card>
     </>
   );
 };

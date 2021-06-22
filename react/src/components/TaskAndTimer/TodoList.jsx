@@ -49,6 +49,9 @@ let startedAt = null;
 /** 最後にカウントした時刻 */
 let lastCountedAt = null;
 
+/** 最後にマウスが動いた時刻 */
+let lastMouseMoved = Date.now();
+
 /** デフォルトタイトル */
 const defaultTitle = document.title;
 
@@ -160,6 +163,21 @@ const onDragEnd = (result, columns, setColumns) => {
   }
 };
 
+const useStylesBootstrap = makeStyles((theme) => ({
+  arrow: {
+    color: theme.palette.common.black,
+  },
+  tooltip: {
+    backgroundColor: theme.palette.common.black,
+  },
+}));
+
+function BootstrapTooltip(props) {
+  const classes = useStylesBootstrap();
+
+  return <Tooltip arrow classes={classes} {...props} />;
+}
+
 const useStyles = makeStyles((theme) => ({
   column: {
     width: 320,
@@ -200,6 +218,12 @@ const TodoList = () => {
   const [undoSnackbarMessage, setUndoSnackbarMessage] = useState("");
   const [simpleSnackbarOpen, setSimpleSnackbarOpen] = useState(false);
   const [simpleSnackbarMessage, setSimpleSnackbarMessage] = useState("");
+  const [playArrowIconTooltipOpen, setPlayArrowIconTooltipOpen] =
+    useState(false);
+
+  window.addEventListener("mousemove", () => {
+    lastMouseMoved = Date.now();
+  });
 
   /**
    * タスクがクリックされたときの処理です。
@@ -504,11 +528,16 @@ const TodoList = () => {
    * アラームアイコンがクリックされたときの処理です。
    */
   const onAlarmIconClick = (index) => {
-    setColumns((columns) => {
-      Object.values(columns)[0].items[index].achievedThenStop =
-        !Object.values(columns)[0].items[index].achievedThenStop;
-      return { ...columns };
-    });
+    if (
+      Object.values(columns)[0].items[index].spentSecond <
+      Object.values(columns)[0].items[index].estimatedSecond
+    ) {
+      setColumns((columns) => {
+        Object.values(columns)[0].items[index].achievedThenStop =
+          !Object.values(columns)[0].items[index].achievedThenStop;
+        return { ...columns };
+      });
+    }
   };
 
   return (
@@ -628,21 +657,26 @@ const TodoList = () => {
                                   onClick={(event) => onItemClick(event, index)}
                                 >
                                   <div style={{ display: "flex" }}>
-                                    <IconButton
-                                      size="small"
-                                      color="inherit"
-                                      style={{
-                                        marginLeft: "-0.75rem",
-                                        marginRight: "0.25rem",
-                                        visibility: item.isSelected
-                                          ? ""
-                                          : "hidden",
-                                      }}
-                                      onClick={() => onPlayButtonClick(index)}
+                                    <BootstrapTooltip
+                                      title="ここをクリックして開始"
+                                      open={playArrowIconTooltipOpen}
                                     >
-                                      {state.isTimerOn && <StopIcon />}
-                                      {!state.isTimerOn && <PlayArrowIcon />}
-                                    </IconButton>
+                                      <IconButton
+                                        size="small"
+                                        color="inherit"
+                                        style={{
+                                          marginLeft: "-0.75rem",
+                                          marginRight: "0.25rem",
+                                          visibility: item.isSelected
+                                            ? ""
+                                            : "hidden",
+                                        }}
+                                        onClick={() => onPlayButtonClick(index)}
+                                      >
+                                        {state.isTimerOn && <StopIcon />}
+                                        {!state.isTimerOn && <PlayArrowIcon />}
+                                      </IconButton>
+                                    </BootstrapTooltip>
                                     <div style={{ flexGrow: "1" }}>
                                       <div style={{ marginBottom: "0.2rem" }}>
                                         {item.category !== "" && (
