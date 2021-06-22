@@ -21,6 +21,7 @@ import { secondToHHMMSS, taskItemsToReport } from "utils/convert";
 import startedAudio from "audio/notification_simple-01.mp3";
 import stoppedAudio from "audio/notification_simple-02.mp3";
 import tickAudio from "audio/tick.mp3";
+import achievedAudio from "audio/sound02.mp3";
 import TaskMenu from "./TaskMenu";
 import ColumnMenu from "./ColumnMenu";
 import AddIcon from "@material-ui/icons/Add";
@@ -57,6 +58,7 @@ const stoppedSound = new Audio(stoppedAudio);
 /** タイマーのチクタク音 */
 const tickSound = new Audio(tickAudio);
 tickSound.volume = 1;
+const achievedSound = new Audio(achievedAudio);
 
 const itemsFrom = [
   {
@@ -269,6 +271,28 @@ const TodoList = () => {
         }
         spendTime(count);
         lastCountedAt = Date.now();
+        // 目標時間を超えたとき
+        if (
+          Object.values(columns)[0].items.filter((item, index) => {
+            return item.isSelected;
+          })[0].spentSecond >=
+            Object.values(columns)[0].items.filter((item, index) => {
+              return item.isSelected;
+            })[0].estimatedSecond &&
+          Object.values(columns)[0].items.filter((item, index) => {
+            return item.isSelected;
+          })[0].achievedThenStop
+        ) {
+          Object.values(columns)[0].items.map((item, index) => {
+            if (item.isSelected && item.achievedThenStop) {
+              item.achievedThenStop = false;
+            }
+            return item;
+          });
+          setState({ ...state, isTimerOn: false });
+          clearTimeout(timeoutId);
+          achievedSound.play();
+        }
         tickSound.play();
       }
       if (!state.isTimerOn) {
@@ -316,6 +340,7 @@ const TodoList = () => {
           spentSecond: 0,
           estimatedSecond: retrievedInputValue.estimatedSecond,
           isSelected: false,
+          achievedThenStop: false,
         });
         return { ...columns };
       });
@@ -469,7 +494,13 @@ const TodoList = () => {
   /**
    * アラームアイコンがクリックされたときの処理です。
    */
-  const onAlarmIconClick = () => {};
+  const onAlarmIconClick = (index) => {
+    setColumns((columns) => {
+      Object.values(columns)[0].items[index].achievedThenStop =
+        !Object.values(columns)[0].items[index].achievedThenStop;
+      return { ...columns };
+    });
+  };
 
   return (
     <div style={{ display: "flex", height: "100%" }}>
@@ -643,23 +674,25 @@ const TodoList = () => {
                                             )}
                                           </span>
                                         )}
-                                        <IconButton
-                                          size="small"
-                                          style={{
-                                            color: item.achievedThenStop
-                                              ? "inherit"
-                                              : "",
-                                          }}
-                                          onClick={(index) =>
-                                            onAlarmIconClick(index)
-                                          }
-                                        >
-                                          <AlarmIcon
+                                        {item.estimatedSecond > 0 && (
+                                          <IconButton
+                                            size="small"
                                             style={{
-                                              pointerEvents: "none",
+                                              color: item.achievedThenStop
+                                                ? "inherit"
+                                                : "",
                                             }}
-                                          />
-                                        </IconButton>
+                                            onClick={() =>
+                                              onAlarmIconClick(index)
+                                            }
+                                          >
+                                            <AlarmIcon
+                                              style={{
+                                                pointerEvents: "none",
+                                              }}
+                                            />
+                                          </IconButton>
+                                        )}
                                       </div>
                                     </div>
                                     {/* タスクメニュー */}
