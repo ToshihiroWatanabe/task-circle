@@ -1254,7 +1254,12 @@ const TodoList = memo(() => {
             onStateChange={onPlayerStateChange}
             id="workVideoPlayer"
           />
-          {workVideoOnReady ? "" : "作業用BGMが読み込まれていません"}
+          <Typography
+            variant="caption"
+            style={{ position: "fixed", bottom: "1rem" }}
+          >
+            {workVideoOnReady ? "" : "作業用BGMが読み込まれていません"}
+          </Typography>
         </>
       )}
       {/* 休憩用BGM動画 */}
@@ -1267,7 +1272,12 @@ const TodoList = memo(() => {
             onStateChange={onPlayerStateChange}
             id="breakVideoPlayer"
           />
-          {breakVideoOnReady ? "" : "休憩用BGMが読み込まれていません"}
+          <Typography
+            variant="caption"
+            style={{ position: "fixed", bottom: 0 }}
+          >
+            {breakVideoOnReady ? "" : "休憩用BGMが読み込まれていません"}
+          </Typography>
         </>
       )}
       <Link to="/reports" id="linkToReports" />
