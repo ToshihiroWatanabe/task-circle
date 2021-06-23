@@ -476,7 +476,9 @@ const TodoList = () => {
             Object.values(columns)[0].items.map((item, index) => {
               if (item.isSelected) {
                 item.spentSecond += ONCE_COUNT * count;
-                refreshTitle(item.content, item.spentSecond);
+                setTimeout(() => {
+                  refreshTitle(item.content, item.spentSecond);
+                }, 2);
               }
               return item;
             });

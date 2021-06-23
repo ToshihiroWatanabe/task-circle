@@ -110,6 +110,7 @@ const FloatingTimer = (props) => {
           >
             {/* 進行状況サークル */}
             <CircularDeterminate />
+            {/* カウント */}
             <div className={classes.timerCount}>
               {Math.floor(state.pomodoroTimeLeft / 60) +
                 ":" +
@@ -117,6 +118,7 @@ const FloatingTimer = (props) => {
                   ? "0" + Math.floor(state.pomodoroTimeLeft % 60)
                   : Math.floor(state.pomodoroTimeLeft % 60))}
             </div>
+            {/* タスク名 */}
             <div className={classes.content}>
               {state.pomodoroTimerType === "Work" &&
               Object.values(props.columns)[0].items.filter((item, index) => {
@@ -140,6 +142,7 @@ const FloatingTimer = (props) => {
                 : ""}
               {state.pomodoroTimerType === "Break" ? "休憩" : ""}
             </div>
+            {/* 再生・停止アイコン */}
             <div>
               {!state.isTimerOn && (
                 <>
