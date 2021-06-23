@@ -1,4 +1,4 @@
-import React from "react";
+import React, { memo } from "react";
 import { makeStyles, useTheme } from "@material-ui/core";
 import TodoList from "./TodoList";
 import Room from "./Room";
@@ -14,7 +14,7 @@ const useStyles = makeStyles((theme) => ({
 /**
  * タスク＆タイマーページのコンポーネントです。
  */
-const TaskAndTimer = () => {
+const TaskAndTimer = memo(() => {
   const classes = useStyles();
   const theme = useTheme();
   return (
@@ -25,6 +25,6 @@ const TaskAndTimer = () => {
       </div>
     </>
   );
-};
+});
 
 export default TaskAndTimer;

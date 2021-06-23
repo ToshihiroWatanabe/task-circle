@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { memo, useContext } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Fab from "@material-ui/core/Fab";
 import PlayArrowIcon from "@material-ui/icons/PlayArrow";
@@ -64,7 +64,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const FloatingTimer = (props) => {
+const FloatingTimer = memo((props) => {
   const classes = useStyles();
   const theme = useTheme();
   const [state, setState] = useContext(Context);
@@ -160,6 +160,6 @@ const FloatingTimer = (props) => {
       )}
     </div>
   );
-};
+});
 
 export default FloatingTimer;

@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { memo, useContext, useState } from "react";
 import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
 import {
   Chip,
@@ -231,7 +231,7 @@ const useStyles = makeStyles((theme) => ({
 /**
  * ToDoリストのコンポーネントです。
  */
-const TodoList = () => {
+const TodoList = memo(() => {
   const classes = useStyles();
   const theme = useTheme();
   const [state, setState] = useContext(Context);
@@ -1065,6 +1065,6 @@ const TodoList = () => {
       <Link to="/reports" id="linkToReports" />
     </div>
   );
-};
+});
 
 export default TodoList;

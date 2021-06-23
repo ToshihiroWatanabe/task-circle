@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { memo, useEffect } from "react";
 import PropTypes from "prop-types";
 import { Chip, TextField } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
@@ -16,7 +16,7 @@ const useStyles = makeStyles((theme) => ({
 /**
  * タグ入力のコンポーネントです。
  */
-const TagsInput = (props) => {
+const TagsInput = memo((props) => {
   const classes = useStyles();
   const {
     selectedTags,
@@ -152,7 +152,8 @@ const TagsInput = (props) => {
       </Downshift>
     </>
   );
-};
+});
+
 TagsInput.defaultProps = {
   tags: [],
 };

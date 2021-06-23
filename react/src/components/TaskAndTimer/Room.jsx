@@ -1,4 +1,4 @@
-import React from "react";
+import React, { memo } from "react";
 import { makeStyles, useTheme } from "@material-ui/core";
 import { Card } from "@material-ui/core";
 
@@ -21,7 +21,7 @@ const useStyles = makeStyles((theme) => ({
 /**
  * ルームのコンポーネントです。
  */
-const Room = () => {
+const Room = memo(() => {
   const classes = useStyles();
   const theme = useTheme();
   return (
@@ -31,6 +31,6 @@ const Room = () => {
       </Card>
     </>
   );
-};
+});
 
 export default Room;

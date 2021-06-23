@@ -1,4 +1,4 @@
-import React from "react";
+import React, { memo } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import LinearProgress from "@material-ui/core/LinearProgress";
 
@@ -8,7 +8,7 @@ const useStyles = makeStyles({
   },
 });
 
-export default function LinearDeterminate(props) {
+const LinearDeterminate = memo((props) => {
   const classes = useStyles();
   return (
     <div className={classes.root}>
@@ -19,4 +19,6 @@ export default function LinearDeterminate(props) {
       />
     </div>
   );
-}
+});
+
+export default LinearDeterminate;

@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { memo, useContext } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import { Context } from "contexts/Context";
@@ -30,7 +30,7 @@ const useStyles = makeStyles((theme) => ({
 /**
  * 進行状況サークルのコンポーネントです。
  */
-const CircularDeterminate = () => {
+const CircularDeterminate = memo(() => {
   const classes = useStyles();
   const [state] = useContext(Context);
 
@@ -49,6 +49,6 @@ const CircularDeterminate = () => {
       />
     </div>
   );
-};
+});
 
 export default CircularDeterminate;

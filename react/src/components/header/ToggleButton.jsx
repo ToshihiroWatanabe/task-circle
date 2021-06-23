@@ -1,11 +1,11 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, memo } from "react";
 import { Context } from "contexts/Context";
 import { Button } from "@material-ui/core";
 
 /**
  * 作業・休憩切り替えボタンの切り替えボタンのコンポーネントです。
  */
-export default function ToggleButton() {
+const ToggleButton = memo(() => {
   const [state, setState] = useContext(Context);
 
   /**
@@ -41,4 +41,6 @@ export default function ToggleButton() {
       </Button>
     </>
   );
-}
+});
+
+export default ToggleButton;
