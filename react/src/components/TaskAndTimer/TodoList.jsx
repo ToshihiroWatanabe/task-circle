@@ -35,12 +35,13 @@ import { Link } from "react-router-dom";
 import AlarmIcon from "@material-ui/icons/Alarm";
 import FloatingTimer from "./FloatingTimer";
 import FreeBreakfastOutlinedIcon from "@material-ui/icons/FreeBreakfastOutlined";
+import { changeFaviconTo } from "utils/changeFavicon";
 
 /** タスクの最大数 */
 const NUMBER_OF_ITEMS_MAX = 32;
 
 /** 一度にカウントする秒数 */
-const ONCE_COUNT = 100;
+const ONCE_COUNT = 1;
 /** カウントの間隔(ミリ秒) */
 const COUNT_INTERVAL = 1000;
 /** setTimeoutのID */
@@ -330,6 +331,16 @@ const TodoList = () => {
           state.pomodoroTimerType = "Work";
           state.pomodoroTimeLeft = state.workTimerLength;
         }
+        // favicon変更
+        if (state.isPomodoroEnabled && state.pomodoroTimerType === "Work") {
+          changeFaviconTo("tomato");
+        } else if (
+          state.isPomodoroEnabled &&
+          state.pomodoroTimerType === "Break"
+        ) {
+          changeFaviconTo("coffee");
+        }
+        // 効果音
         startedSound.play();
       } else {
         // タイマー終了
@@ -340,6 +351,9 @@ const TodoList = () => {
           state.pomodoroTimeLeft = state.breakTimerLength;
         }
         document.title = defaultTitle;
+        // faviconをデフォルトに戻す
+        const link = document.querySelector("link[rel*='icon']");
+        link.href = "/favicon.ico";
         stoppedSound.play();
       }
       return { ...state };
@@ -405,6 +419,9 @@ const TodoList = () => {
                 return { ...state };
               });
               clearTimeout(timeoutId);
+              // faviconをデフォルトに戻す
+              const link = document.querySelector("link[rel*='icon']");
+              link.href = "/favicon.ico";
               achievedSound.play();
             } else if (state.isPomodoroEnabled && state.pomodoroTimeLeft <= 0) {
               // ポモドーロタイマーのカウントが0以下のとき
@@ -431,6 +448,9 @@ const TodoList = () => {
                 return { ...state };
               });
               clearTimeout(timeoutId);
+              // faviconをデフォルトに戻す
+              const link = document.querySelector("link[rel*='icon']");
+              link.href = "/favicon.ico";
               achievedSound.play();
             } else {
               tickSound.play();
@@ -475,8 +495,21 @@ const TodoList = () => {
    * ページのタイトルを更新します。
    */
   const refreshTitle = (content, spentSecond) => {
-    document.title =
-      content + " (" + secondToHHMMSS(spentSecond) + ") | " + defaultTitle;
+    setState((state) => {
+      if (state.isPomodoroEnabled) {
+        document.title =
+          "(" +
+          secondToHHMMSS(state.pomodoroTimeLeft).substring(3) +
+          ") " +
+          content +
+          " | " +
+          defaultTitle;
+      } else {
+        document.title =
+          content + " (" + secondToHHMMSS(spentSecond) + ") | " + defaultTitle;
+      }
+      return state;
+    });
   };
 
   /**
