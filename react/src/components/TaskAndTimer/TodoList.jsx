@@ -361,23 +361,23 @@ const TodoList = () => {
           }
           spendTime(count);
           lastCountedAt = Date.now();
-          // 目標時間を超えた かつ 目標時間を超えたときに停止する設定のとき
-          const selectedItem = Object.values(columns)[0].items.filter(
-            (item, index) => {
-              return item.isSelected;
-            }
-          )[0];
-          if (
-            selectedItem.spentSecond >= selectedItem.estimatedSecond &&
-            selectedItem.achievedThenStop
-          ) {
-            Object.values(columns)[0].items.map((item, index) => {
-              if (item.isSelected && item.achievedThenStop) {
-                item.achievedThenStop = false;
+          setTimeout(() => {
+            // 目標時間を超えた かつ 目標時間を超えたときに停止する設定のとき
+            const selectedItem = Object.values(columns)[0].items.filter(
+              (item, index) => {
+                return item.isSelected;
               }
-              return item;
-            });
-            setTimeout(() => {
+            )[0];
+            if (
+              selectedItem.spentSecond >= selectedItem.estimatedSecond &&
+              selectedItem.achievedThenStop
+            ) {
+              Object.values(columns)[0].items.map((item, index) => {
+                if (item.isSelected && item.achievedThenStop) {
+                  item.achievedThenStop = false;
+                }
+                return item;
+              });
               setState((state) => {
                 state.isTimerOn = false;
                 // ポモドーロの作業休憩切り替え
@@ -392,16 +392,16 @@ const TodoList = () => {
                   if (state.isBreakAutoStart) {
                     setTimeout(() => {
                       onPlayButtonClick("fab");
-                    }, 500);
+                    }, 100);
                   }
                 }
                 return { ...state };
               });
-            }, 2);
-            clearTimeout(timeoutId);
-            achievedSound.play();
-          }
-          tickSound.play();
+              clearTimeout(timeoutId);
+              achievedSound.play();
+            }
+            tickSound.play();
+          }, 2);
         } else if (!state.isTimerOn) {
           clearTimeout(timeoutId);
         }
