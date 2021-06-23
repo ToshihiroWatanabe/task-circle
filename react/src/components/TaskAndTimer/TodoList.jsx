@@ -503,7 +503,7 @@ const TodoList = () => {
           "(" +
           secondToHHMMSS(state.pomodoroTimeLeft).substring(3) +
           ") " +
-          content +
+          (state.pomodoroTimerType === "work" ? content : "休憩中") +
           " | " +
           defaultTitle;
       } else {

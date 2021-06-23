@@ -7,6 +7,10 @@ const useStyles = makeStyles((theme) => ({
     width: 320,
     height: "76vh",
     margin: 8,
+    [theme.breakpoints.down("sm")]: {
+      width: "calc(100vw - 2rem)",
+      maxWidth: "480px",
+    },
     [theme.breakpoints.down("xs")]: {
       width: "calc(100vw - 2rem)",
       maxWidth: "600px",

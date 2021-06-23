@@ -12,7 +12,7 @@ import {
 } from "@material-ui/core";
 import "./TimerPopover.css";
 import { Context } from "contexts/Context";
-import ToggleButtons from "./ToggleButtons";
+import ToggleButton from "./ToggleButton";
 
 const workTimerLength = [];
 workTimerLength.push({ label: "5", value: 5 * 60 });
@@ -200,8 +200,7 @@ const TimerPopover = memo((props) => {
               分
             </Typography>
             <Typography component="div" style={{ padding: "0.5rem 0 0 1rem" }}>
-              <span style={{ marginRight: "1rem" }}>切り替え</span>
-              <ToggleButtons />
+              <ToggleButton />
             </Typography>
           </>
         )}
