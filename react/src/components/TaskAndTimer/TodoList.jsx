@@ -34,6 +34,7 @@ import NoteAddOutlinedIcon from "@material-ui/icons/NoteAddOutlined";
 import { Link } from "react-router-dom";
 import AlarmIcon from "@material-ui/icons/Alarm";
 import FloatingTimer from "./FloatingTimer";
+import FreeBreakfastOutlinedIcon from "@material-ui/icons/FreeBreakfastOutlined";
 
 /** タスクの最大数 */
 const NUMBER_OF_ITEMS_MAX = 32;
@@ -796,21 +797,27 @@ const TodoList = () => {
                                         style={{
                                           marginLeft: "-0.75rem",
                                           marginRight: "0.25rem",
-                                          visibility:
-                                            item.isSelected &&
-                                            (!state.isPomodoroEnabled ||
-                                              state.pomodoroTimerType !==
-                                                "Break" ||
-                                              !state.isTimerOn)
-                                              ? ""
-                                              : "hidden",
+                                          visibility: item.isSelected
+                                            ? ""
+                                            : "hidden",
                                         }}
                                         onClick={() =>
                                           onPlayButtonClick("task")
                                         }
                                       >
-                                        {state.isTimerOn && <StopIcon />}
+                                        {/* タイマーがオフのときは再生アイコン */}
                                         {!state.isTimerOn && <PlayArrowIcon />}
+                                        {/* 停止アイコン */}
+                                        {(!state.isPomodoroEnabled ||
+                                          state.pomodoroTimerType !==
+                                            "Break") &&
+                                          state.isTimerOn && <StopIcon />}
+                                        {/* コーヒーアイコン */}
+                                        {state.isPomodoroEnabled &&
+                                          state.pomodoroTimerType === "Break" &&
+                                          state.isTimerOn && (
+                                            <FreeBreakfastOutlinedIcon />
+                                          )}
                                       </IconButton>
                                     </BootstrapTooltip>
                                     <div style={{ flexGrow: "1" }}>
