@@ -11,6 +11,7 @@ import {
   FormGroup,
   FormHelperText,
   CircularProgress,
+  Icon,
 } from "@material-ui/core";
 import { Context } from "contexts/Context";
 import SyncIcon from "@material-ui/icons/Sync";
@@ -22,6 +23,7 @@ import VolumeSlider from "./VolumeSlider";
 import YouTubeIcon from "@material-ui/icons/YouTube";
 import NotificationsNoneOutlinedIcon from "@material-ui/icons/NotificationsNoneOutlined";
 import AddAlertIcon from "@material-ui/icons/AddAlert";
+import slackMark from "image/slackMark.svg";
 
 /**
  * YouTube動画再生オプション
@@ -65,6 +67,11 @@ const useStyles = makeStyles((theme) => ({
   },
   circularProgress: {
     marginLeft: theme.spacing(2),
+  },
+  imageIcon: {
+    height: "2rem",
+    marginRight: "-0.7rem",
+    transform: "translate(-15%, 30%)",
   },
   slackTextField: {
     marginTop: theme.spacing(1),
@@ -338,7 +345,12 @@ const Settings = () => {
           marginBottom: "1rem",
         }}
       >
-        <Typography>Slack連携設定</Typography>
+        <Typography>
+          <Icon>
+            <img alt="slack" src={slackMark} className={classes.imageIcon} />
+          </Icon>
+          Slack連携設定
+        </Typography>
         {state.userId === "" && (
           <FormHelperText>
             ログインしていない場合、この設定はページをリロードするとリセットされます。
