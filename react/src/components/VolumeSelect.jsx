@@ -31,8 +31,6 @@ let settings = {};
 const SimpleSelect = memo((props) => {
   const classes = useStyles();
 
-  console.log(props);
-
   const handleChange = (event) => {
     // console.log(event.target.value);
     if (props.helperText.match(/.*作業.*/)) {

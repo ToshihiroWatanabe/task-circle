@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import {
+  Box,
   Button,
   Card,
   FormControl,
@@ -16,13 +17,11 @@ import {
   FormControlLabel,
   Switch,
   FormHelperText,
-  Divider,
 } from "@material-ui/core";
-import WarningIcon from "@material-ui/icons/Warning";
 import MusicVideoIcon from "@material-ui/icons/MusicVideo";
 import YouTube from "react-youtube";
-import SimpleSelect from "./VolumeSelect";
 import { SettingsContext } from "contexts/SettingsContext";
+import VolumeSlider from "./VolumeSlider";
 
 const useStyles = makeStyles((theme) => ({
   card: {
@@ -38,12 +37,13 @@ const useStyles = makeStyles((theme) => ({
   },
   allDeleteButton: {
     margin: theme.spacing(3),
+    textTransform: "none !important",
   },
   urlField: {
     width: "100%",
   },
   musicVideoIcon: {
-    marginBottom: theme.spacing(0.5),
+    marginBottom: "-0.5rem",
   },
   slackTextField: {
     marginTop: theme.spacing(1),
@@ -86,6 +86,9 @@ const Settings = () => {
     <>
       <Card className={classes.card}>
         <Typography>タイマー設定</Typography>
+        <FormHelperText>
+          一部の設定はタイマーを停止させないと反映されません。
+        </FormHelperText>
         <FormControl component="fieldset" className={classes.formControl}>
           <FormLabel>
             <MusicVideoIcon className={classes.musicVideoIcon} />
@@ -128,7 +131,8 @@ const Settings = () => {
                 );
               }
             })()} */}
-            <SimpleSelect
+            <Box mt={1} />
+            <VolumeSlider
               helperText="音量(作業用BGM)"
               settings={settings}
               setSettings={setSettings}
@@ -177,7 +181,8 @@ const Settings = () => {
                 );
               }
             })()} */}
-            <SimpleSelect
+            <Box mt={1} />
+            <VolumeSlider
               helperText="音量(休憩用BGM)"
               settings={settings}
               setSettings={setSettings}
@@ -198,31 +203,8 @@ const Settings = () => {
               }
               label="かすかなチクタク音"
             />
-            <FormHelperText>
-              一部の設定はタイマーを停止させないと反映されません。
-            </FormHelperText>
           </FormGroup>
         </FormControl>
-        <Divider />
-        <Button
-          variant="contained"
-          color="secondary"
-          // onClick={handleTodoListDeleteClick}
-          className={classes.allDeleteButton}
-        >
-          <WarningIcon />
-          Todoリストのタスクを全て消去
-        </Button>
-        <Divider />
-        <Button
-          variant="contained"
-          color="secondary"
-          // onClick={handleAllDeleteClick}
-          className={classes.allDeleteButton}
-        >
-          <WarningIcon />
-          ローカルデータを全て消去
-        </Button>
       </Card>
       <Card
         style={{
@@ -233,6 +215,11 @@ const Settings = () => {
         }}
       >
         <Typography>Slack連携設定</Typography>
+        {state.userId === "" && (
+          <FormHelperText>
+            ログインしていない場合、この設定はページをリロードするとリセットされます。
+          </FormHelperText>
+        )}
         <form autoComplete="on">
           <TextField
             label="ユーザー名(任意)"
@@ -255,6 +242,7 @@ const Settings = () => {
             className={classes.slackTextField}
             disabled={settingDisabled}
           />
+          <Box mt={1} />
           <Button
             type="submit"
             variant="contained"
@@ -265,11 +253,6 @@ const Settings = () => {
             <SyncIcon />
             適用する
           </Button>
-          {state.userId === "" && (
-            <>
-              ※ログインしていない場合、この設定はページをリロードするとリセットされます。
-            </>
-          )}
         </form>
       </Card>
       <SimpleSnackbar
