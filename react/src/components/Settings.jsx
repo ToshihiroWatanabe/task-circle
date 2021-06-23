@@ -10,6 +10,7 @@ import {
   Typography,
   FormGroup,
   FormHelperText,
+  CircularProgress,
 } from "@material-ui/core";
 import { Context } from "contexts/Context";
 import SyncIcon from "@material-ui/icons/Sync";
@@ -18,6 +19,7 @@ import MusicVideoIcon from "@material-ui/icons/MusicVideo";
 import YouTube from "react-youtube";
 import { SettingsContext } from "contexts/SettingsContext";
 import VolumeSlider from "./VolumeSlider";
+import YouTubeIcon from "@material-ui/icons/YouTube";
 
 /**
  * YouTube動画再生オプション
@@ -54,6 +56,13 @@ const useStyles = makeStyles((theme) => ({
   },
   musicVideoIcon: {
     marginBottom: "-0.4rem",
+  },
+  youTubeIcon: {
+    color: "#ff1a1a",
+    marginBottom: "-0.4rem",
+  },
+  circularProgress: {
+    marginLeft: theme.spacing(2),
   },
   slackTextField: {
     marginTop: theme.spacing(1),
@@ -169,7 +178,15 @@ const Settings = () => {
                   <>
                     <br />
                     <Typography>
-                      {workVideoTitle !== "" ? workVideoTitle : ""}
+                      <YouTubeIcon className={classes.youTubeIcon} />
+                      {workVideoTitle !== "" ? (
+                        workVideoTitle
+                      ) : (
+                        <CircularProgress
+                          size={20}
+                          className={classes.circularProgress}
+                        />
+                      )}
                     </Typography>
                     <YouTube
                       videoId={
@@ -217,7 +234,15 @@ const Settings = () => {
                   <>
                     <br />
                     <Typography>
-                      {breakVideoTitle !== "" ? breakVideoTitle : ""}
+                      <YouTubeIcon className={classes.youTubeIcon} />
+                      {breakVideoTitle !== "" ? (
+                        breakVideoTitle
+                      ) : (
+                        <CircularProgress
+                          size={20}
+                          className={classes.circularProgress}
+                        />
+                      )}
                     </Typography>
                     <YouTube
                       videoId={

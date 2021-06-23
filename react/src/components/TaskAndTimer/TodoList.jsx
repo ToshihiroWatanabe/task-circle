@@ -1,4 +1,4 @@
-import React, { memo, useContext, useState } from "react";
+import React, { memo, useContext, useEffect, useState } from "react";
 import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
 import {
   Chip,
@@ -38,6 +38,7 @@ import FloatingTimer from "./FloatingTimer";
 import FreeBreakfastOutlinedIcon from "@material-ui/icons/FreeBreakfastOutlined";
 import { changeFaviconTo } from "utils/changeFavicon";
 import { SettingsContext } from "contexts/SettingsContext";
+import YouTube from "react-youtube";
 
 /** タスクの最大数 */
 const NUMBER_OF_ITEMS_MAX = 32;
@@ -89,6 +90,19 @@ tickSound.volume = 1;
 const faintTickSound = new Audio(faintTickAudio);
 faintTickSound.volume = 1;
 const achievedSound = new Audio(achievedAudio);
+
+/** YouTube動作再生オプション */
+const playerOptions = {
+  height: "1",
+  width: "1",
+  playerVars: {
+    autoplay: 0,
+  },
+};
+
+let workVideoPlayer = null;
+let breakVideoPlayer = null;
+let videoPlayDone = true;
 
 const itemsFrom = [
   {
@@ -253,6 +267,146 @@ const TodoList = memo(() => {
   const [playArrowIconTooltipOpen, setPlayArrowIconTooltipOpen] =
     useState(false);
   const location = useLocation();
+  // 動画の読み込みが終わったかどうか
+  const [workVideoOnReady, setWorkVideoOnReady] = useState(false);
+  const [breakVideoOnReady, setBreakVideoOnReady] = useState(false);
+  // 作業用BGMの動画ID
+  const [workVideoId, setWorkVideoId] = useState(
+    settings.workVideoUrl.split(/v=|\//).slice(-1)[0]
+  );
+  // 休憩用BGMの動画ID
+  const [breakVideoId, setBreakVideoId] = useState(
+    settings.breakVideoUrl.split(/v=|\//).slice(-1)[0]
+  );
+
+  // 設定の動画URLに変化があったとき
+  useEffect(() => {
+    // タイマーが作動していないとき
+    if (!state.isTimerOn) {
+      // 動画IDを更新
+      updateVideoId();
+    }
+  }, [settings.workVideoUrl, settings.breakVideoUrl]);
+
+  // 設定の作業用動画の音量に変化があったとき
+  useEffect(() => {
+    // 作業用動画が存在しているとき
+    if (workVideoPlayer !== null) {
+      // ボリュームを調整
+      workVideoPlayer.setVolume(settings.workVideoVolume);
+    }
+  }, [settings.workVideoVolume]);
+  // 設定の休憩用動画の音量に変化があったとき
+  useEffect(() => {
+    // 休憩用動画が存在しているとき
+    if (breakVideoPlayer !== null) {
+      // ボリュームを調整
+      breakVideoPlayer.setVolume(settings.breakVideoVolume);
+    }
+  }, [settings.breakVideoVolume]);
+
+  /**
+   * 動画IDを更新します。
+   */
+  const updateVideoId = () => {
+    // 動画URLが変わっていたら動画IDを更新
+    if (settings.workVideoUrl.split(/v=|\//).slice(-1)[0] !== workVideoId) {
+      setWorkVideoOnReady(false);
+      workVideoPlayer = null;
+      setWorkVideoId("");
+      setTimeout(() => {
+        setWorkVideoId(settings.workVideoUrl.split(/v=|\//).slice(-1)[0]);
+      }, 10);
+    }
+    if (settings.breakVideoUrl.split(/v=|\//).slice(-1)[0] !== breakVideoId) {
+      setBreakVideoOnReady(false);
+      breakVideoPlayer = null;
+      setBreakVideoId("");
+      setTimeout(() => {
+        setBreakVideoId(settings.breakVideoUrl.split(/v=|\//).slice(-1)[0]);
+      }, 10);
+    }
+  };
+
+  /**
+   * 動画プレーヤーが準備完了したときの処理です。
+   */
+  const onPlayerReady = (event) => {
+    if (event.target.h.id === "workVideoPlayer") {
+      workVideoPlayer = event.target;
+      if (event.target.playerInfo.videoData.title !== "") {
+        setWorkVideoOnReady(true);
+      }
+    }
+    if (event.target.h.id === "breakVideoPlayer") {
+      breakVideoPlayer = event.target;
+      if (event.target.playerInfo.videoData.title !== "") {
+        setBreakVideoOnReady(true);
+      }
+    }
+  };
+
+  // 動画プレーヤーの状態が変わったときの処理です。
+  const onPlayerStateChange = (event) => {
+    if (event.data === 1) {
+      videoPlayDone = false;
+    }
+    // 動画が終わったとき
+    if (event.data === 0 && !videoPlayDone) {
+      if (event.target.h.id === "workVideoPlayer") {
+        workVideoPlayer.setVolume(settings.workVideoVolume);
+        workVideoPlayer.playVideo();
+      }
+      if (event.target.h.id === "breakVideoPlayer") {
+        breakVideoPlayer.setVolume(settings.breakVideoVolume);
+        breakVideoPlayer.playVideo();
+      }
+      videoPlayDone = true;
+    }
+  };
+
+  /**
+   * BGM用の動画を再生します。
+   */
+  const playVideo = () => {
+    if (
+      (!state.isPomodoroEnabled || state.pomodoroTimerType !== "break") &&
+      workVideoId !== "" &&
+      workVideoPlayer !== null
+    ) {
+      workVideoPlayer.setVolume(settings.workVideoVolume);
+      workVideoPlayer.playVideo();
+    }
+    if (
+      state.isPomodoroEnabled &&
+      state.pomodoroTimerType === "break" &&
+      breakVideoId !== "" &&
+      breakVideoPlayer !== null
+    ) {
+      breakVideoPlayer.setVolume(settings.breakVideoVolume);
+      breakVideoPlayer.playVideo();
+    }
+  };
+  /**
+   * BGM用の動画を停止します。
+   */
+  const stopVideo = () => {
+    if (
+      (!state.isPomodoroEnabled || state.pomodoroTimerType !== "break") &&
+      workVideoId !== "" &&
+      workVideoPlayer !== null
+    ) {
+      workVideoPlayer.stopVideo();
+    }
+    if (
+      state.isPomodoroEnabled &&
+      state.pomodoroTimerType === "break" &&
+      breakVideoId !== "" &&
+      breakVideoPlayer !== null
+    ) {
+      breakVideoPlayer.stopVideo();
+    }
+  };
 
   /**
    * 再生アイコンのツールチップを扱います。
@@ -353,6 +507,8 @@ const TodoList = memo(() => {
         // 開始の効果音
         startedSound.volume = settings.volume * 0.01;
         startedSound.play();
+        // BGM用の動画を再生
+        playVideo();
       } else {
         // タイマー終了
         if (state.pomodoroTimerType === "work") {
@@ -368,6 +524,10 @@ const TodoList = memo(() => {
         // 停止の効果音
         stoppedSound.volume = settings.volume * 0.01;
         stoppedSound.play();
+        // 動画をストップ
+        stopVideo();
+        // 動画IDを更新
+        updateVideoId();
       }
       return { ...state };
     });
@@ -1084,6 +1244,32 @@ const TodoList = memo(() => {
       />
       {/* フローティングタイマー */}
       <FloatingTimer columns={columns} onPlayButtonClick={onPlayButtonClick} />
+      {/* 作業用BGM動画 */}
+      {workVideoId !== "" && (
+        <>
+          <YouTube
+            videoId={workVideoId}
+            opts={playerOptions}
+            onReady={onPlayerReady}
+            onStateChange={onPlayerStateChange}
+            id="workVideoPlayer"
+          />
+          {workVideoOnReady ? "" : "作業用BGMが読み込まれていません"}
+        </>
+      )}
+      {/* 休憩用BGM動画 */}
+      {breakVideoId !== "" && (
+        <>
+          <YouTube
+            videoId={breakVideoId}
+            opts={playerOptions}
+            onReady={onPlayerReady}
+            onStateChange={onPlayerStateChange}
+            id="breakVideoPlayer"
+          />
+          {breakVideoOnReady ? "" : "休憩用BGMが読み込まれていません"}
+        </>
+      )}
       <Link to="/reports" id="linkToReports" />
     </div>
   );
