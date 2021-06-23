@@ -122,10 +122,12 @@ const Reports = memo(() => {
   const getCategories = () => {
     for (let i = 0; i < state.reports.length; i++) {
       for (let j = 0; j < state.reports[i].report_items.length; j++) {
-        categories.push({
-          label: state.reports[i].report_items[j].category,
-          value: state.reports[i].report_items[j].category,
-        });
+        if (state.reports[i].report_items[j].category !== "") {
+          categories.push({
+            label: state.reports[i].report_items[j].category,
+            value: state.reports[i].report_items[j].category,
+          });
+        }
       }
     }
     // 重複を削除

@@ -59,7 +59,6 @@ const EditDialog = memo((props) => {
   /** Material-UIのスタイル */
   const classes = useStyles();
   const [state, setState] = useContext(Context);
-  let inRef = null;
   const theme = useTheme();
   const isBreakPointsDownXs = useMediaQuery(theme.breakpoints.down("xs"));
   const [value, setValue] = useState({

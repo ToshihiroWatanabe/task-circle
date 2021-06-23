@@ -12,10 +12,12 @@ const getCategories = (reports) => {
   let categories = [];
   for (let i = 0; i < reports.length; i++) {
     for (let j = 0; j < reports[i].report_items.length; j++) {
-      categories.push({
-        label: reports[i].report_items[j].category,
-        value: reports[i].report_items[j].category,
-      });
+      if (reports[i].report_items[j].category !== "") {
+        categories.push({
+          label: reports[i].report_items[j].category,
+          value: reports[i].report_items[j].category,
+        });
+      }
     }
   }
   // 重複を削除
