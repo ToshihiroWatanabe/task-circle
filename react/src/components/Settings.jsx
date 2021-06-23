@@ -23,6 +23,17 @@ import YouTube from "react-youtube";
 import { SettingsContext } from "contexts/SettingsContext";
 import VolumeSlider from "./VolumeSlider";
 
+/**
+ * YouTube動画再生オプション
+ */
+const playerOptions = {
+  height: "1",
+  width: "1",
+  playerVars: {
+    autoplay: 0,
+  },
+};
+
 const useStyles = makeStyles((theme) => ({
   card: {
     display: "flex",
@@ -30,6 +41,9 @@ const useStyles = makeStyles((theme) => ({
     width: "95%",
     padding: "1rem",
     marginBottom: "1rem",
+  },
+  formLabel: {
+    color: "black",
   },
   formControl: {
     margin: theme.spacing(1),
@@ -43,7 +57,7 @@ const useStyles = makeStyles((theme) => ({
     width: "100%",
   },
   musicVideoIcon: {
-    marginBottom: "-0.5rem",
+    marginBottom: "-0.4rem",
   },
   slackTextField: {
     marginTop: theme.spacing(1),
@@ -64,6 +78,10 @@ const Settings = () => {
     state.userId === "" ? false : true
   );
   const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [workVideoTitle, setWorkVideoTitle] = useState("");
+  const [breakVideoTitle, setBreakVideoTitle] = useState("");
+  const [renderWorkVideo, setRenderWorkVideo] = useState(true);
+  const [renderBreakVideo, setRenderBreakVideo] = useState(true);
 
   useEffect(() => {}, []);
 
@@ -82,31 +100,75 @@ const Settings = () => {
     });
   };
 
+  /**
+   * 設定に変化があったときの処理です。
+   * @param {} event
+   */
+  const handleChange = (event) => {
+    setSettings((settings) => {
+      if (event.target.name === "workVideoUrl") {
+        setWorkVideoTitle("");
+        setRenderWorkVideo(false);
+        setTimeout(() => {
+          setRenderWorkVideo(true);
+        }, 10);
+      }
+      if (event.target.name === "breakVideoUrl") {
+        setBreakVideoTitle("");
+        setRenderBreakVideo(false);
+        setTimeout(() => {
+          setRenderBreakVideo(true);
+        }, 10);
+      }
+      settings = {
+        ...settings,
+        [event.target.name]: event.target.name.match(/.*VideoUrl/)
+          ? event.target.value
+          : event.target.checked,
+      };
+      localStorage.setItem("settings", JSON.stringify(settings));
+      return settings;
+    });
+  };
+
+  /**
+   * 動画プレーヤーが準備完了したときの処理です。
+   */
+  const onPlayerReady = (event) => {
+    if (event.target.h.id === "workVideoPlayer") {
+      setWorkVideoTitle(event.target.playerInfo.videoData.title);
+    }
+    if (event.target.h.id === "breakVideoPlayer") {
+      setBreakVideoTitle(event.target.playerInfo.videoData.title);
+    }
+  };
+
   return (
     <>
       <Card className={classes.card}>
-        <Typography>タイマー設定</Typography>
+        <Typography>
+          <MusicVideoIcon className={classes.musicVideoIcon} />
+          サウンド設定
+        </Typography>
         <FormHelperText>
           一部の設定はタイマーを停止させないと反映されません。
         </FormHelperText>
         <FormControl component="fieldset" className={classes.formControl}>
-          <FormLabel>
-            <MusicVideoIcon className={classes.musicVideoIcon} />
-            🍅作業用BGM
-          </FormLabel>
+          <FormLabel className={classes.formLabel}>🍅作業用BGM</FormLabel>
+          <Box mt={1} />
           <FormGroup>
             <TextField
               className={classes.urlField}
               label="YouTube動画のURL"
-              // onChange={handleChange}
+              onChange={handleChange}
               name="workVideoUrl"
               value={settings.workVideoUrl}
               onFocus={(event) => {
                 event.target.select();
               }}
             ></TextField>
-            {/* {(() => {
-              if (props.settings.workVideoUrl !== "" && renderWorkVideo) {
+            {(() => {
+              if (settings.workVideoUrl !== "" && renderWorkVideo) {
                 return (
                   <>
                     <br />
@@ -115,7 +177,7 @@ const Settings = () => {
                     </Typography>
                     <YouTube
                       videoId={
-                        props.settings.workVideoUrl.split(/v=|\//).slice(-1)[0]
+                        settings.workVideoUrl.split(/v=|\//).slice(-1)[0]
                       }
                       opts={playerOptions}
                       onReady={onPlayerReady}
@@ -130,7 +192,7 @@ const Settings = () => {
                   </>
                 );
               }
-            })()} */}
+            })()}
             <Box mt={1} />
             <VolumeSlider
               helperText="音量(作業用BGM)"
@@ -140,23 +202,21 @@ const Settings = () => {
           </FormGroup>
         </FormControl>
         <FormControl component="fieldset" className={classes.formControl}>
-          <FormLabel>
-            <MusicVideoIcon className={classes.musicVideoIcon} />
-            ☕休憩用BGM
-          </FormLabel>
+          <FormLabel className={classes.formLabel}>☕休憩用BGM</FormLabel>
+          <Box mt={1} />
           <FormGroup>
             <TextField
               className={classes.urlField}
               label="YouTube動画のURL"
-              // onChange={handleChange}
+              onChange={handleChange}
               name="breakVideoUrl"
               value={settings.breakVideoUrl}
               onFocus={(event) => {
                 event.target.select();
               }}
             ></TextField>
-            {/* {(() => {
-              if (props.settings.breakVideoUrl !== "" && renderBreakVideo) {
+            {(() => {
+              if (settings.breakVideoUrl !== "" && renderBreakVideo) {
                 return (
                   <>
                     <br />
@@ -165,7 +225,7 @@ const Settings = () => {
                     </Typography>
                     <YouTube
                       videoId={
-                        props.settings.breakVideoUrl.split(/v=|\//).slice(-1)[0]
+                        settings.breakVideoUrl.split(/v=|\//).slice(-1)[0]
                       }
                       opts={playerOptions}
                       onReady={onPlayerReady}
@@ -180,7 +240,7 @@ const Settings = () => {
                   </>
                 );
               }
-            })()} */}
+            })()}
             <Box mt={1} />
             <VolumeSlider
               helperText="音量(休憩用BGM)"
@@ -189,21 +249,25 @@ const Settings = () => {
             />
           </FormGroup>
         </FormControl>
-
         <FormControl component="fieldset" className={classes.formControl}>
-          <FormLabel component="legend">タイマー作動中の効果音</FormLabel>
-          <FormGroup>
-            <FormControlLabel
-              control={
-                <Switch
-                  // checked={props.settings.tick}
-                  // onChange={handleChange}
-                  name="tick"
-                />
-              }
-              label="かすかなチクタク音"
-            />
-          </FormGroup>
+          <FormLabel className={classes.formLabel}>チクタク音</FormLabel>
+          <Box mt={1} />
+          <VolumeSlider
+            helperText="チクタク音"
+            settings={settings}
+            setSettings={setSettings}
+          />
+        </FormControl>
+        <FormControl component="fieldset" className={classes.formControl}>
+          <FormLabel className={classes.formLabel}>
+            開始・停止・アラーム音
+          </FormLabel>
+          <Box mt={1} />
+          <VolumeSlider
+            helperText="その他の音"
+            settings={settings}
+            setSettings={setSettings}
+          />
         </FormControl>
       </Card>
       <Card

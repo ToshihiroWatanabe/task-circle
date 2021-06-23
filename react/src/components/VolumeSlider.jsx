@@ -6,25 +6,40 @@ import Slider from "@material-ui/core/Slider";
 import VolumeDown from "@material-ui/icons/VolumeDown";
 import VolumeUp from "@material-ui/icons/VolumeUp";
 
+/** setTimeoutのID */
+let changeTimeout = 0;
+
 const useStyles = makeStyles({
   root: {
     width: 200,
   },
 });
 
+/**
+ * 音量スライダーのコンポーネントです。
+ */
 export default function VolumeSlider(props) {
   const classes = useStyles();
 
+  /**
+   * 入力値に変化があったときの処理です。
+   * @param {*} event
+   * @param {*} newValue 新しい値
+   */
   const handleChange = (event, newValue) => {
-    console.log(newValue);
     if (props.helperText.match(/.*作業.*/)) {
       props.setSettings({ ...props.settings, workVideoVolume: newValue });
-      localStorage.setItem("settings", JSON.stringify(props.settings));
-    }
-    if (props.helperText.match(/.*休憩.*/)) {
+    } else if (props.helperText.match(/.*休憩.*/)) {
       props.setSettings({ ...props.settings, breakVideoVolume: newValue });
-      localStorage.setItem("settings", JSON.stringify(props.settings));
+    } else if (props.helperText.match(/.*チクタク.*/)) {
+      props.setSettings({ ...props.settings, tickVolume: newValue });
+    } else {
+      props.setSettings({ ...props.settings, volume: newValue });
     }
+    clearTimeout(changeTimeout);
+    changeTimeout = setTimeout(() => {
+      localStorage.setItem("settings", JSON.stringify(props.settings));
+    }, 500);
   };
 
   return (
@@ -41,12 +56,16 @@ export default function VolumeSlider(props) {
             value={
               props.helperText.match(/.*作業.*/)
                 ? props.settings.workVideoVolume
-                : props.settings.breakVideoVolume
+                : props.helperText.match(/.*休憩.*/)
+                ? props.settings.breakVideoVolume
+                : props.helperText.match(/.*チクタク.*/)
+                ? props.settings.tickVolume
+                : props.settings.volume
             }
             onChange={handleChange}
             aria-labelledby="continuous-slider"
             valueLabelDisplay="auto"
-            step={10}
+            step={props.helperText.match(/.*チクタク.*/) ? 1 : 10}
             marks
             min={0}
             max={100}
