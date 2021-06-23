@@ -17,6 +17,7 @@ const useStyles = makeStyles((theme) => ({
 const TaskAndTimer = memo(() => {
   const classes = useStyles();
   const theme = useTheme();
+
   return (
     <>
       <div className={classes.root}>
