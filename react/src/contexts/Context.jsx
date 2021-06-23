@@ -39,7 +39,7 @@ export function ContextProvider(props) {
     // ポモドーロタイマーの残り時間
     pomodoroTimeLeft: 25 * 60,
     // ポモドーロタイマーのタイプ
-    pomodoroTimerType: "Work",
+    pomodoroTimerType: "work",
   });
 
   return (

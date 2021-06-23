@@ -40,12 +40,12 @@ const CircularDeterminate = () => {
         className={classes.fab}
         variant="determinate"
         value={
-          state.pomodoroTimerType === "Work"
+          state.pomodoroTimerType === "work"
             ? (state.pomodoroTimeLeft / state.workTimerLength) * -100
             : (state.pomodoroTimeLeft / state.breakTimerLength) * -100
         }
         thickness={1}
-        style={{ color: state.pomodoroTimerType === "Work" ? "red" : "yellow" }}
+        style={{ color: state.pomodoroTimerType === "work" ? "red" : "yellow" }}
       />
     </div>
   );

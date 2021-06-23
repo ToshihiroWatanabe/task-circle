@@ -120,7 +120,7 @@ const FloatingTimer = (props) => {
             </div>
             {/* タスク名 */}
             <div className={classes.content}>
-              {state.pomodoroTimerType === "Work" &&
+              {state.pomodoroTimerType === "work" &&
               Object.values(props.columns)[0].items.filter((item, index) => {
                 return item.isSelected;
               }).length > 0
@@ -140,7 +140,7 @@ const FloatingTimer = (props) => {
                       }
                     )[0].content
                 : ""}
-              {state.pomodoroTimerType === "Break" ? "休憩" : ""}
+              {state.pomodoroTimerType === "break" ? "休憩" : ""}
             </div>
             {/* 再生・停止アイコン */}
             <div>
