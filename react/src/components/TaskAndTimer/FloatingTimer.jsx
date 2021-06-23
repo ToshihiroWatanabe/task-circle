@@ -115,7 +115,8 @@ const FloatingTimer = (props) => {
                   : Math.floor(state.pomodoroTimeLeft % 60))}
             </div>
             <div className={classes.content}>
-              {Object.values(props.columns)[0].items.filter((item, index) => {
+              {state.pomodoroTimerType === "Work" &&
+              Object.values(props.columns)[0].items.filter((item, index) => {
                 return item.isSelected;
               }).length > 0
                 ? Object.values(props.columns)[0].items.filter(
@@ -134,6 +135,7 @@ const FloatingTimer = (props) => {
                       }
                     )[0].content
                 : ""}
+              {state.pomodoroTimerType === "Break" ? "休憩" : ""}
             </div>
             <div>
               {!state.isTimerOn && (
