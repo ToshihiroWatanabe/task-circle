@@ -289,9 +289,8 @@ const TodoList = () => {
   /**
    * タイマーの開始・停止ボタンがクリックされたときの処理です。
    * @param {*} type taskかfab
-   * @param {*} index
    */
-  const onPlayButtonClick = (type, index) => {
+  const onPlayButtonClick = (type) => {
     setState((state) => {
       state.isTimerOn = !state.isTimerOn;
       if (state.isTimerOn) {
@@ -394,6 +393,11 @@ const TodoList = () => {
               }
               return { ...state };
             });
+            if (state.isBreakAutoStart) {
+              setTimeout(() => {
+                onPlayButtonClick("fab");
+              }, 500);
+            }
           }, 2);
           clearTimeout(timeoutId);
           achievedSound.play();
@@ -411,20 +415,20 @@ const TodoList = () => {
    * 時間の加減算をします。
    */
   const spendTime = (count) => {
-    if (!state.isModePomodoro || state.pomodoroTimerType !== "Break") {
-      setColumns((columns) => {
-        Object.values(columns)[0].items.map((item, index) => {
-          if (item.isSelected) {
-            item.spentSecond += ONCE_COUNT * count;
-            refreshTitle(item.content, item.spentSecond);
-          }
-          return item;
-        });
-        return { ...columns };
-      });
-    }
     setTimeout(() => {
       setState((state) => {
+        if (!state.isModePomodoro || state.pomodoroTimerType !== "Break") {
+          setColumns((columns) => {
+            Object.values(columns)[0].items.map((item, index) => {
+              if (item.isSelected) {
+                item.spentSecond += ONCE_COUNT * count;
+                refreshTitle(item.content, item.spentSecond);
+              }
+              return item;
+            });
+            return { ...columns };
+          });
+        }
         if (state.isModePomodoro) {
           state.pomodoroTimeLeft--;
         }
@@ -769,7 +773,7 @@ const TodoList = () => {
                                               : "hidden",
                                         }}
                                         onClick={() =>
-                                          onPlayButtonClick("task", index)
+                                          onPlayButtonClick("task")
                                         }
                                       >
                                         {state.isTimerOn && <StopIcon />}
