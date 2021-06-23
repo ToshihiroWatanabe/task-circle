@@ -6,6 +6,7 @@ import "./FloatingTimer.css";
 import { Context } from "contexts/Context";
 import { useTheme, Zoom } from "@material-ui/core";
 import StopIcon from "@material-ui/icons/Stop";
+import CircularDeterminate from "./CircularDeterminate";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -32,7 +33,7 @@ const useStyles = makeStyles((theme) => ({
   },
   timerCount: {
     [theme.breakpoints.up("sm")]: {
-      fontSize: "3rem",
+      fontSize: "2.75rem",
       marginBottom: "-0.7rem",
     },
     [theme.breakpoints.down("sm")]: {
@@ -44,7 +45,7 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   playStopIcon: {
-    fontSize: "3rem",
+    fontSize: "2.75rem",
     marginBottom: "-0.3rem",
     [theme.breakpoints.down("sm")]: {
       fontSize: "2rem",
@@ -107,6 +108,8 @@ const FloatingTimer = (props) => {
               onFabClick();
             }}
           >
+            {/* 進行状況サークル */}
+            <CircularDeterminate />
             <div className={classes.timerCount}>
               {Math.floor(state.pomodoroTimeLeft / 60) +
                 ":" +
