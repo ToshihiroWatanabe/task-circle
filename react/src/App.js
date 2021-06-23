@@ -1,5 +1,5 @@
-import React, { Fragment, useContext, useEffect } from "react";
-import { Switch, Route } from "react-router-dom";
+import React, { useContext, useEffect } from "react";
+import { Switch, Route, useLocation } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
 import ResponsiveDrawer from "components/header/ResponsiveDrawer";
 import ReportAnalytics from "components/ReportAnalytics";
@@ -50,6 +50,7 @@ const useStyles = makeStyles((theme) => ({
 const App = () => {
   const classes = useStyles();
   const [state, setState] = useContext(Context);
+  let location = useLocation();
 
   useEffect(() => {
     setState((state) => {
@@ -66,11 +67,15 @@ const App = () => {
           {/* ドロワー */}
           <ResponsiveDrawer />
           <main className={classes.main}>
+            {/* タスク＆タイマー */}
+            <div
+              style={{
+                display: location.pathname === "/" ? "" : "none",
+              }}
+            >
+              <TaskAndTimer />
+            </div>
             <Switch>
-              {/* タスク＆タイマー */}
-              <Route exact path="/">
-                <TaskAndTimer />
-              </Route>
               {/* 日報管理 */}
               <Route exact path="/reports">
                 <Reports />
