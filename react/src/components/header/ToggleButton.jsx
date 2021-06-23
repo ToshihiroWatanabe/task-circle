@@ -1,6 +1,9 @@
 import React, { useContext, memo } from "react";
 import { Context } from "contexts/Context";
 import { Button } from "@material-ui/core";
+import stoppedAudio from "audio/notification_simple-02.mp3";
+
+const stoppedSound = new Audio(stoppedAudio);
 
 /**
  * 作業・休憩切り替えボタンの切り替えボタンのコンポーネントです。
@@ -13,6 +16,11 @@ const ToggleButton = memo(() => {
    */
   const onClick = () => {
     setState((state) => {
+      if (state.isTimerOn === true) {
+        state.isTimerOn = false;
+        // 効果音
+        stoppedSound.play();
+      }
       if (state.pomodoroTimerType === "work") {
         state.pomodoroTimerType = "break";
         state.pomodoroTimeLeft = state.breakTimerLength;

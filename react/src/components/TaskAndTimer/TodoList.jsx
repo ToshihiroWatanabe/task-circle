@@ -494,20 +494,20 @@ const TodoList = memo(() => {
   const spendTime = (count) => {
     setTimeout(() => {
       setState((state) => {
-        if (!state.isPomodoroEnabled || state.pomodoroTimerType !== "break") {
-          setColumns((columns) => {
-            Object.values(columns)[0].items.map((item, index) => {
-              if (item.isSelected) {
-                item.spentSecond += ONCE_COUNT * count;
-                setTimeout(() => {
-                  refreshTitle(item.content, item.spentSecond);
-                }, 2);
-              }
-              return item;
-            });
-            return { ...columns };
+        // if (!state.isPomodoroEnabled || state.pomodoroTimerType !== "break") {
+        setColumns((columns) => {
+          Object.values(columns)[0].items.map((item, index) => {
+            if (item.isSelected) {
+              item.spentSecond += ONCE_COUNT * count;
+              setTimeout(() => {
+                refreshTitle(item.content, item.spentSecond);
+              }, 2);
+            }
+            return item;
           });
-        }
+          return { ...columns };
+        });
+        // }
         if (state.isPomodoroEnabled) {
           state.pomodoroTimeLeft -= ONCE_COUNT * count;
         }
@@ -663,7 +663,6 @@ const TodoList = memo(() => {
       setSimpleSnackbarMessage("削除を取り消しました");
       // 全ての時間をリセットを取り消す
     } else if (lastActivity.type === "resetAllTime") {
-      console.log(lastActivity.items);
       setColumns((columns) => {
         return {
           [Object.keys(columns)[0]]: {
