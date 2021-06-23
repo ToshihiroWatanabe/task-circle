@@ -346,67 +346,67 @@ const TodoList = () => {
    */
   const timerCount = () => {
     setState((state) => {
-      if (state.isTimerOn) {
-        timeoutId = setTimeout(timerCount, getTimeout());
-        // 前回のカウントから1.5秒以上経っていると一度にカウントする量が増える
-        const dateNow = Date.now();
-        let count = 0;
-        for (
-          let i = 0;
-          i <= dateNow - lastCountedAt - COUNT_INTERVAL / 2;
-          i += COUNT_INTERVAL
-        ) {
-          count++;
-        }
-        spendTime(count);
-        lastCountedAt = Date.now();
-        // 目標時間を超えた かつ 目標時間を超えたときに停止する設定のとき
-        if (
-          Object.values(columns)[0].items.filter((item, index) => {
-            return item.isSelected;
-          })[0].spentSecond >=
-            Object.values(columns)[0].items.filter((item, index) => {
+      setColumns((columns) => {
+        if (state.isTimerOn) {
+          timeoutId = setTimeout(timerCount, getTimeout());
+          // 前回のカウントから1.5秒以上経っていると一度にカウントする量が増える
+          const dateNow = Date.now();
+          let count = 0;
+          for (
+            let i = 0;
+            i <= dateNow - lastCountedAt - COUNT_INTERVAL / 2;
+            i += COUNT_INTERVAL
+          ) {
+            count++;
+          }
+          spendTime(count);
+          lastCountedAt = Date.now();
+          // 目標時間を超えた かつ 目標時間を超えたときに停止する設定のとき
+          const selectedItem = Object.values(columns)[0].items.filter(
+            (item, index) => {
               return item.isSelected;
-            })[0].estimatedSecond &&
-          Object.values(columns)[0].items.filter((item, index) => {
-            return item.isSelected;
-          })[0].achievedThenStop
-        ) {
-          Object.values(columns)[0].items.map((item, index) => {
-            if (item.isSelected && item.achievedThenStop) {
-              item.achievedThenStop = false;
             }
-            return item;
-          });
-          setTimeout(() => {
-            setState((state) => {
-              state.isTimerOn = false;
-              // ポモドーロの作業休憩切り替え
-              if (state.isModePomodoro) {
-                if (state.pomodoroTimerType === "Work") {
-                  state.pomodoroTimerType = "Break";
-                  state.pomodoroTimeLeft = state.breakTimerLength;
-                } else if (state.pomodoroTimerType === "Break") {
-                  state.pomodoroTimerType = "Work";
-                  state.pomodoroTimeLeft = state.workTimerLength;
-                }
-                if (state.isBreakAutoStart) {
-                  setTimeout(() => {
-                    onPlayButtonClick("fab");
-                  }, 500);
-                }
+          )[0];
+          if (
+            selectedItem.spentSecond >= selectedItem.estimatedSecond &&
+            selectedItem.achievedThenStop
+          ) {
+            Object.values(columns)[0].items.map((item, index) => {
+              if (item.isSelected && item.achievedThenStop) {
+                item.achievedThenStop = false;
               }
-              return { ...state };
+              return item;
             });
-          }, 2);
+            setTimeout(() => {
+              setState((state) => {
+                state.isTimerOn = false;
+                // ポモドーロの作業休憩切り替え
+                if (state.isModePomodoro) {
+                  if (state.pomodoroTimerType === "Work") {
+                    state.pomodoroTimerType = "Break";
+                    state.pomodoroTimeLeft = state.breakTimerLength;
+                  } else if (state.pomodoroTimerType === "Break") {
+                    state.pomodoroTimerType = "Work";
+                    state.pomodoroTimeLeft = state.workTimerLength;
+                  }
+                  if (state.isBreakAutoStart) {
+                    setTimeout(() => {
+                      onPlayButtonClick("fab");
+                    }, 500);
+                  }
+                }
+                return { ...state };
+              });
+            }, 2);
+            clearTimeout(timeoutId);
+            achievedSound.play();
+          }
+          tickSound.play();
+        } else if (!state.isTimerOn) {
           clearTimeout(timeoutId);
-          achievedSound.play();
         }
-        tickSound.play();
-      }
-      if (!state.isTimerOn) {
-        clearTimeout(timeoutId);
-      }
+        return columns;
+      });
       return state;
     });
   };
