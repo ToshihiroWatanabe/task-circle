@@ -8,16 +8,12 @@ import {
   makeStyles,
   TextField,
   Typography,
+  FormGroup,
+  FormHelperText,
 } from "@material-ui/core";
 import { Context } from "contexts/Context";
 import SyncIcon from "@material-ui/icons/Sync";
 import SimpleSnackbar from "components/SimpleSnackbar";
-import {
-  FormGroup,
-  FormControlLabel,
-  Switch,
-  FormHelperText,
-} from "@material-ui/core";
 import MusicVideoIcon from "@material-ui/icons/MusicVideo";
 import YouTube from "react-youtube";
 import { SettingsContext } from "contexts/SettingsContext";
@@ -250,15 +246,6 @@ const Settings = () => {
           </FormGroup>
         </FormControl>
         <FormControl component="fieldset" className={classes.formControl}>
-          <FormLabel className={classes.formLabel}>チクタク音</FormLabel>
-          <Box mt={1} />
-          <VolumeSlider
-            helperText="チクタク音"
-            settings={settings}
-            setSettings={setSettings}
-          />
-        </FormControl>
-        <FormControl component="fieldset" className={classes.formControl}>
           <FormLabel className={classes.formLabel}>
             開始・停止・アラーム音
           </FormLabel>
@@ -268,6 +255,20 @@ const Settings = () => {
             settings={settings}
             setSettings={setSettings}
           />
+        </FormControl>
+        <FormControl component="fieldset" className={classes.formControl}>
+          <FormLabel className={classes.formLabel}>チクタク音</FormLabel>
+          <Box mt={1} />
+          <VolumeSlider
+            helperText="チクタク音"
+            settings={settings}
+            setSettings={setSettings}
+          />
+          {settings.tickVolume === 0 && (
+            <Typography variant="caption">
+              チクタク音のボリュームが0だと、動作が不安定になる場合があります。
+            </Typography>
+          )}
         </FormControl>
       </Card>
       <Card

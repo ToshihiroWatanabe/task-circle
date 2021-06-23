@@ -20,6 +20,10 @@ const faintTickMarks = [
     label: "1",
   },
   {
+    value: 50,
+    label: "10",
+  },
+  {
     value: 100,
     label: "100",
   },
@@ -83,6 +87,8 @@ export default function VolumeSlider(props) {
             valueLabelFormat={(x) => {
               if (props.helperText.match(/.*チクタク.*/) && x === 10) {
                 return 1;
+              } else if (props.helperText.match(/.*チクタク.*/) && x === 50) {
+                return 10;
               }
               return x;
             }}

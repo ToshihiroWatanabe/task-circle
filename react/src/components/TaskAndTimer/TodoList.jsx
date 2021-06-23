@@ -468,8 +468,15 @@ const TodoList = memo(() => {
               achievedSound.volume = settings.volume * 0.01;
               achievedSound.play();
             } else {
-              achievedSound.volume = settings.volume * 0.01;
-              faintTickSound.play();
+              if (settings.tickVolume === 10) {
+                faintTickSound.play();
+              } else if (settings.tickVolume === 50) {
+                tickSound.volume = settings.tickVolume * 0.002;
+                tickSound.play();
+              } else if (settings.tickVolume === 100) {
+                tickSound.volume = settings.tickVolume * 0.01;
+                tickSound.play();
+              }
             }
           }, 2);
         } else if (!state.isTimerOn) {
