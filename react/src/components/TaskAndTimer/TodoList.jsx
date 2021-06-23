@@ -44,7 +44,7 @@ import YouTube from "react-youtube";
 const NUMBER_OF_ITEMS_MAX = 32;
 
 /** 一度にカウントする秒数 */
-const ONCE_COUNT = 100;
+const ONCE_COUNT = 1;
 /** カウントの間隔(ミリ秒) */
 const COUNT_INTERVAL = 1000;
 /** setTimeoutのID */
@@ -104,7 +104,7 @@ let workVideoPlayer = null;
 let breakVideoPlayer = null;
 let videoPlayDone = true;
 
-const itemsFrom = [
+const itemsFromBackEnd = [
   {
     id: uuid(),
     category: "",
@@ -152,10 +152,10 @@ const itemsFrom = [
   },
 ];
 
-const columnsFrom = {
+const columnsFromBackEnd = {
   [uuid()]: {
     name: "タスク",
-    items: itemsFrom,
+    items: itemsFromBackEnd,
   },
 };
 
@@ -254,7 +254,7 @@ const TodoList = memo(() => {
   const theme = useTheme();
   const [state, setState] = useContext(Context);
   const [settings] = useContext(SettingsContext);
-  const [columns, setColumns] = useState(columnsFrom);
+  const [columns, setColumns] = useState(columnsFromBackEnd);
   const [categoryInput, setCategoryInput] = useState([]);
   const [isTagsInputFocused, setIsTagsInputFocused] = useState(false);
   const [inputValue, setInputValue] = useState("");
