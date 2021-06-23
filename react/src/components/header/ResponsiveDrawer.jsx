@@ -40,7 +40,6 @@ const pages = [
   { label: "このアプリについて", path: "/about" },
 ];
 
-/** Material-UIのスタイル */
 const useStyles = makeStyles((theme) => ({
   root: {
     display: "flex",

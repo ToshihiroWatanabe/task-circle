@@ -19,14 +19,12 @@ function Alert(props) {
   return <MuiAlert elevation={6} variant="filled" {...props} />;
 }
 
-/** Material-UIのスタイル */
 const useStyles = makeStyles((theme) => ({}));
 
 /**
  * アカウントアイコンメニューのコンポーネントです。
  */
 const FilePopover = memo((props) => {
-  /** Material-UIのスタイル */
   const classes = useStyles();
   const [state, setState] = useContext(Context);
   const [anchorEl, setAnchorEl] = useState(null);

@@ -6,7 +6,6 @@ import DeleteIcon from "@material-ui/icons/Delete";
 import RotateLeftIcon from "@material-ui/icons/RotateLeft";
 import { Context } from "contexts/Context";
 
-/** Material-UIのスタイル */
 const useStyles = makeStyles({
   menu: {
     width: "13rem",

@@ -50,7 +50,7 @@ const useStyles = makeStyles((theme) => ({
 const App = () => {
   const classes = useStyles();
   const [state, setState] = useContext(Context);
-  let location = useLocation();
+  const location = useLocation();
 
   useEffect(() => {
     setState((state) => {

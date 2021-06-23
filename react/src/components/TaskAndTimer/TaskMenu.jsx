@@ -29,7 +29,6 @@ const getCategories = (reports) => {
   return newCategories;
 };
 
-/** Material-UIのスタイル */
 const useStyles = makeStyles({
   menu: {
     width: "13rem",

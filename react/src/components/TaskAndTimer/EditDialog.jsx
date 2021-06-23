@@ -45,7 +45,6 @@ const filterOptions = createFilterOptions({
   matchFrom: "start",
 });
 
-/** Material-UIのスタイル */
 const useStyles = makeStyles((theme) => ({
   paper: { width: "90%" },
 }));
@@ -56,7 +55,6 @@ let isControlPressed = false;
  * 編集ダイアログのコンポーネントです。
  */
 const EditDialog = memo((props) => {
-  /** Material-UIのスタイル */
   const classes = useStyles();
   const [state, setState] = useContext(Context);
   const theme = useTheme();

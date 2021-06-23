@@ -31,7 +31,7 @@ import CloseIcon from "@material-ui/icons/Close";
 import AssignmentOutlinedIcon from "@material-ui/icons/AssignmentOutlined";
 import { copyTasksToClipboard } from "utils/export";
 import NoteAddOutlinedIcon from "@material-ui/icons/NoteAddOutlined";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import AlarmIcon from "@material-ui/icons/Alarm";
 import FloatingTimer from "./FloatingTimer";
 import FreeBreakfastOutlinedIcon from "@material-ui/icons/FreeBreakfastOutlined";
@@ -247,12 +247,17 @@ const TodoList = memo(() => {
   const [simpleSnackbarMessage, setSimpleSnackbarMessage] = useState("");
   const [playArrowIconTooltipOpen, setPlayArrowIconTooltipOpen] =
     useState(false);
+  const location = useLocation();
 
   /**
    * 再生アイコンのツールチップを扱います。
    */
   const handlePlayArrowIconTooltip = () => {
-    if (!state.isTimerOn && Date.now() - lastMouseMoved > 4000) {
+    if (
+      location.pathname === "/" &&
+      !state.isTimerOn &&
+      Date.now() - lastMouseMoved > 4000
+    ) {
       setPlayArrowIconTooltipOpen(true);
     } else {
       setTimeout(handlePlayArrowIconTooltip, 5000);

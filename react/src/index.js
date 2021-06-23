@@ -9,16 +9,19 @@ import "index.css";
 import { CssBaseline, MuiThemeProvider } from "@material-ui/core";
 import ErrorBoundary from "components/ErrorBoundary";
 import { theme } from "theme";
+import { SettingsContextProvider } from "contexts/SettingsContext";
 
 ReactDOM.render(
   <ErrorBoundary>
     <BrowserRouter>
       <ContextProvider>
-        <MuiThemeProvider theme={theme}>
-          <CssBaseline>
-            <App />
-          </CssBaseline>
-        </MuiThemeProvider>
+        <SettingsContextProvider>
+          <MuiThemeProvider theme={theme}>
+            <CssBaseline>
+              <App />
+            </CssBaseline>
+          </MuiThemeProvider>
+        </SettingsContextProvider>
       </ContextProvider>
     </BrowserRouter>
   </ErrorBoundary>,
