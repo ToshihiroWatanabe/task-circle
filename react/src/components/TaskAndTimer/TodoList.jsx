@@ -50,6 +50,24 @@ let startedAt = null;
 /** 最後にカウントした時刻 */
 let lastCountedAt = null;
 
+/**
+ * 次にタイマーをカウントするまでの時間(ミリ秒)を返します。
+ */
+const getTimeout = () => {
+  const dateNow = Date.now();
+  const timeout =
+    // 現在時刻(ミリ秒)の下3桁が開始時刻(ミリ秒)の下3桁以上の場合
+    // → 1000 + 開始時刻(ミリ秒)の下3桁 - 現在時刻(ミリ秒)の下3桁
+    dateNow % COUNT_INTERVAL >= startedAt % COUNT_INTERVAL
+      ? COUNT_INTERVAL +
+        (startedAt % COUNT_INTERVAL) -
+        (dateNow % COUNT_INTERVAL)
+      : // 現在時刻(ミリ秒)の下3桁が開始時刻(ミリ秒)の下3桁未満の場合
+        // → 開始時刻(ミリ秒)の下3桁 - 現在時刻(ミリ秒)の下3桁
+        (startedAt % COUNT_INTERVAL) - (dateNow % COUNT_INTERVAL);
+  return timeout;
+};
+
 /** 最後にマウスが動いた時刻 */
 let lastMouseMoved = Date.now();
 let playArrowIconTooltipOpenTimeout = null;
@@ -324,24 +342,6 @@ const TodoList = () => {
   };
 
   /**
-   * 次にタイマーをカウントするまでの時間(ミリ秒)を返します。
-   */
-  const getTimeout = () => {
-    const dateNow = Date.now();
-    const timeout =
-      // 現在時刻(ミリ秒)の下3桁が開始時刻(ミリ秒)の下3桁以上の場合
-      // → 1000 + 開始時刻(ミリ秒)の下3桁 - 現在時刻(ミリ秒)の下3桁
-      dateNow % COUNT_INTERVAL >= startedAt % COUNT_INTERVAL
-        ? COUNT_INTERVAL +
-          (startedAt % COUNT_INTERVAL) -
-          (dateNow % COUNT_INTERVAL)
-        : // 現在時刻(ミリ秒)の下3桁が開始時刻(ミリ秒)の下3桁未満の場合
-          // → 開始時刻(ミリ秒)の下3桁 - 現在時刻(ミリ秒)の下3桁
-          (startedAt % COUNT_INTERVAL) - (dateNow % COUNT_INTERVAL);
-    return timeout;
-  };
-
-  /**
    * タイマーのカウント処理です。
    */
   const timerCount = () => {
@@ -390,14 +390,14 @@ const TodoList = () => {
                   state.pomodoroTimerType = "Work";
                   state.pomodoroTimeLeft = state.workTimerLength;
                 }
+                if (state.isBreakAutoStart) {
+                  setTimeout(() => {
+                    onPlayButtonClick("fab");
+                  }, 500);
+                }
               }
               return { ...state };
             });
-            if (state.isBreakAutoStart) {
-              setTimeout(() => {
-                onPlayButtonClick("fab");
-              }, 500);
-            }
           }, 2);
           clearTimeout(timeoutId);
           achievedSound.play();
