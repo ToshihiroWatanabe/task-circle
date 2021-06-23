@@ -29,7 +29,7 @@ export function ContextProvider(props) {
     // タイマーがオンかどうか
     isTimerOn: false,
     // ポモドーロモードがオンかどうか
-    isModePomodoro: false,
+    isPomodoroEnabled: false,
     // 休憩を自動スタートするかどうか
     isBreakAutoStart: true,
     // 作業タイマーの時間(秒)

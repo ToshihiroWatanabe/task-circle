@@ -89,7 +89,7 @@ const TimerPopover = memo((props) => {
               }
               style={{
                 width: "1.25rem",
-                filter: state.isModePomodoro
+                filter: state.isPomodoroEnabled
                   ? "drop-shadow(0px 0px 1.25px #000)"
                   : "contrast(0%)",
               }}
@@ -127,19 +127,22 @@ const TimerPopover = memo((props) => {
               ポモドーロタイマー
               <Switch
                 disabled={state.isTimerOn}
-                checked={state.isModePomodoro}
+                checked={state.isPomodoroEnabled}
                 onChange={() =>
                   setState((state) => {
-                    return { ...state, isModePomodoro: !state.isModePomodoro };
+                    return {
+                      ...state,
+                      isPomodoroEnabled: !state.isPomodoroEnabled,
+                    };
                   })
                 }
-                name="isModePomodoro"
+                name="isPomodoroEnabled"
               />
             </Typography>
             <Typography style={{ padding: "0.5rem 0 0 1rem" }}>
               休憩を自動スタート
               <Switch
-                disabled={!state.isModePomodoro || state.isTimerOn}
+                disabled={!state.isPomodoroEnabled || state.isTimerOn}
                 checked={state.isBreakAutoStart}
                 onChange={() =>
                   setState((state) => {
@@ -156,7 +159,7 @@ const TimerPopover = memo((props) => {
               作業タイマー
               <Select
                 native
-                disabled={!state.isModePomodoro || state.isTimerOn}
+                disabled={!state.isPomodoroEnabled || state.isTimerOn}
                 value={state.workTimerLength}
                 IconComponent={() => <></>}
                 onChange={(e) => {
@@ -178,7 +181,7 @@ const TimerPopover = memo((props) => {
               休憩タイマー
               <Select
                 native
-                disabled={!state.isModePomodoro || state.isTimerOn}
+                disabled={!state.isPomodoroEnabled || state.isTimerOn}
                 value={state.breakTimerLength}
                 IconComponent={() => <></>}
                 onChange={(e) => {

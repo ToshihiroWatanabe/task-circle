@@ -89,7 +89,7 @@ const FloatingTimer = (props) => {
 
   return (
     <div className={classes.root}>
-      {state.isModePomodoro && (
+      {state.isPomodoroEnabled && (
         <Zoom
           timeout={transitionDuration}
           in={true}

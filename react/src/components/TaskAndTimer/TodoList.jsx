@@ -39,7 +39,7 @@ import FloatingTimer from "./FloatingTimer";
 const NUMBER_OF_ITEMS_MAX = 32;
 
 /** 一度にカウントする秒数 */
-const ONCE_COUNT = 1;
+const ONCE_COUNT = 100;
 /** カウントの間隔(ミリ秒) */
 const COUNT_INTERVAL = 1000;
 /** setTimeoutのID */
@@ -319,7 +319,7 @@ const TodoList = () => {
         // ポモドーロが休憩タイマーなら作業に切り替える
         if (
           type === "task" &&
-          state.isModePomodoro &&
+          state.isPomodoroEnabled &&
           state.pomodoroTimerType === "Break"
         ) {
           state.pomodoroTimerType = "Work";
@@ -362,16 +362,18 @@ const TodoList = () => {
           spendTime(count);
           lastCountedAt = Date.now();
           setTimeout(() => {
-            // 目標時間を超えた かつ 目標時間を超えたときに停止する設定のとき
+            /** 選択しているタスク */
             const selectedItem = Object.values(columns)[0].items.filter(
               (item, index) => {
                 return item.isSelected;
               }
             )[0];
+            // 目標時間を超えた かつ 目標時間を超えたときに停止する設定のとき
             if (
               selectedItem.spentSecond >= selectedItem.estimatedSecond &&
               selectedItem.achievedThenStop
             ) {
+              // 目標時間を超えたときに停止する設定をオフにする
               Object.values(columns)[0].items.map((item, index) => {
                 if (item.isSelected && item.achievedThenStop) {
                   item.achievedThenStop = false;
@@ -381,7 +383,7 @@ const TodoList = () => {
               setState((state) => {
                 state.isTimerOn = false;
                 // ポモドーロの作業休憩切り替え
-                if (state.isModePomodoro) {
+                if (state.isPomodoroEnabled) {
                   if (state.pomodoroTimerType === "Work") {
                     state.pomodoroTimerType = "Break";
                     state.pomodoroTimeLeft = state.breakTimerLength;
@@ -399,8 +401,35 @@ const TodoList = () => {
               });
               clearTimeout(timeoutId);
               achievedSound.play();
+            } else if (state.isPomodoroEnabled && state.pomodoroTimeLeft <= 0) {
+              // ポモドーロタイマーのカウントが0以下のとき
+              setState((state) => {
+                state.isTimerOn = false;
+                // ポモドーロの作業休憩切り替え
+                if (state.isPomodoroEnabled) {
+                  if (state.pomodoroTimerType === "Work") {
+                    state.pomodoroTimerType = "Break";
+                    state.pomodoroTimeLeft = state.breakTimerLength;
+                  } else if (state.pomodoroTimerType === "Break") {
+                    state.pomodoroTimerType = "Work";
+                    state.pomodoroTimeLeft = state.workTimerLength;
+                  }
+                  if (
+                    state.isBreakAutoStart &&
+                    state.pomodoroTimerType === "Break"
+                  ) {
+                    setTimeout(() => {
+                      onPlayButtonClick("fab");
+                    }, 100);
+                  }
+                }
+                return { ...state };
+              });
+              clearTimeout(timeoutId);
+              achievedSound.play();
+            } else {
+              tickSound.play();
             }
-            tickSound.play();
           }, 2);
         } else if (!state.isTimerOn) {
           clearTimeout(timeoutId);
@@ -417,7 +446,7 @@ const TodoList = () => {
   const spendTime = (count) => {
     setTimeout(() => {
       setState((state) => {
-        if (!state.isModePomodoro || state.pomodoroTimerType !== "Break") {
+        if (!state.isPomodoroEnabled || state.pomodoroTimerType !== "Break") {
           setColumns((columns) => {
             Object.values(columns)[0].items.map((item, index) => {
               if (item.isSelected) {
@@ -429,8 +458,8 @@ const TodoList = () => {
             return { ...columns };
           });
         }
-        if (state.isModePomodoro) {
-          state.pomodoroTimeLeft--;
+        if (state.isPomodoroEnabled) {
+          state.pomodoroTimeLeft -= ONCE_COUNT * count;
         }
         return { ...state };
       });
@@ -729,7 +758,7 @@ const TodoList = () => {
                                     backgroundColor:
                                       item.isSelected &&
                                       state.isTimerOn &&
-                                      (!state.isModePomodoro ||
+                                      (!state.isPomodoroEnabled ||
                                         state.pomodoroTimerType !== "Break")
                                         ? theme.palette.primary.main
                                         : snapshot.isDragging
@@ -738,7 +767,7 @@ const TodoList = () => {
                                     color:
                                       item.isSelected &&
                                       state.isTimerOn &&
-                                      (!state.isModePomodoro ||
+                                      (!state.isPomodoroEnabled ||
                                         state.pomodoroTimerType !== "Break")
                                         ? "#FFF"
                                         : snapshot.isDragging
@@ -765,7 +794,7 @@ const TodoList = () => {
                                           marginRight: "0.25rem",
                                           visibility:
                                             item.isSelected &&
-                                            (!state.isModePomodoro ||
+                                            (!state.isPomodoroEnabled ||
                                               state.pomodoroTimerType !==
                                                 "Break" ||
                                               !state.isTimerOn)
