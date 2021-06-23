@@ -9,6 +9,22 @@ import VolumeUp from "@material-ui/icons/VolumeUp";
 /** setTimeoutのID */
 let changeTimeout = 0;
 
+/** チクタク音の音量 */
+const faintTickMarks = [
+  {
+    value: 0,
+    label: "0",
+  },
+  {
+    value: 10,
+    label: "1",
+  },
+  {
+    value: 100,
+    label: "100",
+  },
+];
+
 const useStyles = makeStyles({
   root: {
     width: 200,
@@ -64,9 +80,17 @@ export default function VolumeSlider(props) {
             }
             onChange={handleChange}
             aria-labelledby="continuous-slider"
+            valueLabelFormat={(x) => {
+              if (props.helperText.match(/.*チクタク.*/) && x === 10) {
+                return 1;
+              }
+              return x;
+            }}
             valueLabelDisplay="auto"
-            step={props.helperText.match(/.*チクタク.*/) ? 1 : 10}
-            marks
+            step={props.helperText.match(/.*チクタク.*/) ? null : 10}
+            marks={
+              props.helperText.match(/.*チクタク.*/) ? faintTickMarks : true
+            }
             min={0}
             max={100}
           />

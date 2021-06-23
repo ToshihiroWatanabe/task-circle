@@ -18,7 +18,7 @@ export function SettingsContextProvider(props) {
     /** 休憩用BGMの音量(%) */
     breakVideoVolume: 100,
     /** チクタク音の音量(%) */
-    tickVolume: 1,
+    tickVolume: 10,
     /** 開始・停止・アラーム音量(%) */
     volume: 100,
   });

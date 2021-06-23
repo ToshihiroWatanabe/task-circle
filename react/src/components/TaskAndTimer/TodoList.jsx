@@ -21,6 +21,7 @@ import StopIcon from "@material-ui/icons/Stop";
 import { secondToHHMMSS, taskItemsToReport } from "utils/convert";
 import startedAudio from "audio/notification_simple-01.mp3";
 import stoppedAudio from "audio/notification_simple-02.mp3";
+import faintTickAudio from "audio/faintTick.mp3";
 import tickAudio from "audio/tick.mp3";
 import achievedAudio from "audio/sound02.mp3";
 import TaskMenu from "./TaskMenu";
@@ -36,6 +37,7 @@ import AlarmIcon from "@material-ui/icons/Alarm";
 import FloatingTimer from "./FloatingTimer";
 import FreeBreakfastOutlinedIcon from "@material-ui/icons/FreeBreakfastOutlined";
 import { changeFaviconTo } from "utils/changeFavicon";
+import { SettingsContext } from "contexts/SettingsContext";
 
 /** タスクの最大数 */
 const NUMBER_OF_ITEMS_MAX = 32;
@@ -84,6 +86,8 @@ const stoppedSound = new Audio(stoppedAudio);
 /** タイマーのチクタク音 */
 const tickSound = new Audio(tickAudio);
 tickSound.volume = 1;
+const faintTickSound = new Audio(faintTickAudio);
+faintTickSound.volume = 1;
 const achievedSound = new Audio(achievedAudio);
 
 const itemsFrom = [
@@ -235,6 +239,7 @@ const TodoList = memo(() => {
   const classes = useStyles();
   const theme = useTheme();
   const [state, setState] = useContext(Context);
+  const [settings] = useContext(SettingsContext);
   const [columns, setColumns] = useState(columnsFrom);
   const [categoryInput, setCategoryInput] = useState([]);
   const [isTagsInputFocused, setIsTagsInputFocused] = useState(false);
@@ -345,7 +350,8 @@ const TodoList = memo(() => {
         ) {
           changeFaviconTo("coffee");
         }
-        // 効果音
+        // 開始の効果音
+        startedSound.volume = settings.volume * 0.01;
         startedSound.play();
       } else {
         // タイマー終了
@@ -359,6 +365,8 @@ const TodoList = memo(() => {
         // faviconをデフォルトに戻す
         const link = document.querySelector("link[rel*='icon']");
         link.href = "/favicon.ico";
+        // 停止の効果音
+        stoppedSound.volume = settings.volume * 0.01;
         stoppedSound.play();
       }
       return { ...state };
@@ -427,6 +435,7 @@ const TodoList = memo(() => {
               // faviconをデフォルトに戻す
               const link = document.querySelector("link[rel*='icon']");
               link.href = "/favicon.ico";
+              achievedSound.volume = settings.volume * 0.01;
               achievedSound.play();
             } else if (state.isPomodoroEnabled && state.pomodoroTimeLeft <= 0) {
               // ポモドーロタイマーのカウントが0以下のとき
@@ -456,9 +465,11 @@ const TodoList = memo(() => {
               // faviconをデフォルトに戻す
               const link = document.querySelector("link[rel*='icon']");
               link.href = "/favicon.ico";
+              achievedSound.volume = settings.volume * 0.01;
               achievedSound.play();
             } else {
-              tickSound.play();
+              achievedSound.volume = settings.volume * 0.01;
+              faintTickSound.play();
             }
           }, 2);
         } else if (!state.isTimerOn) {
