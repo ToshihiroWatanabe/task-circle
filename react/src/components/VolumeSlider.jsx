@@ -31,7 +31,7 @@ const faintTickMarks = [
 
 const useStyles = makeStyles({
   root: {
-    width: 200,
+    width: "16rem",
   },
 });
 

@@ -20,6 +20,8 @@ import YouTube from "react-youtube";
 import { SettingsContext } from "contexts/SettingsContext";
 import VolumeSlider from "./VolumeSlider";
 import YouTubeIcon from "@material-ui/icons/YouTube";
+import NotificationsNoneOutlinedIcon from "@material-ui/icons/NotificationsNoneOutlined";
+import AddAlertIcon from "@material-ui/icons/AddAlert";
 
 /**
  * YouTube動画再生オプション
@@ -54,7 +56,7 @@ const useStyles = makeStyles((theme) => ({
   urlField: {
     width: "100%",
   },
-  musicVideoIcon: {
+  iconMarginBottom: {
     marginBottom: "-0.4rem",
   },
   youTubeIcon: {
@@ -148,11 +150,23 @@ const Settings = () => {
     }
   };
 
+  /**
+   * 通知をオンにするボタンがクリックされたときの処理です。
+   */
+  const addAlertButtonClick = () => {
+    Notification.requestPermission().then(() => {
+      const options = {
+        body: "アプリを使っていただき、ありがとうございます！",
+      };
+      new Notification("通知はオンです", options);
+    });
+  };
+
   return (
     <>
       <Card className={classes.card}>
         <Typography>
-          <MusicVideoIcon className={classes.musicVideoIcon} />
+          <MusicVideoIcon className={classes.iconMarginBottom} />
           サウンド設定
         </Typography>
         <FormHelperText>
@@ -296,6 +310,26 @@ const Settings = () => {
           )}
         </FormControl>
       </Card>
+      {/* 通知設定 */}
+      <Card className={classes.card}>
+        <Typography>
+          <NotificationsNoneOutlinedIcon className={classes.iconMarginBottom} />
+          通知設定
+        </Typography>
+        <Box mt={1} />
+        <Button
+          variant="contained"
+          color="secondary"
+          style={{ width: "16rem" }}
+          onClick={() => {
+            addAlertButtonClick();
+          }}
+        >
+          <AddAlertIcon />
+          デスクトップ通知をオンにする
+        </Button>
+      </Card>
+      {/* Slack連携設定 */}
       <Card
         style={{
           width: "95%",
@@ -320,6 +354,7 @@ const Settings = () => {
             onChange={onSlackUserNameChange}
             className={classes.slackTextField}
             disabled={settingDisabled}
+            style={{ width: "16rem" }}
           />
           <TextField
             label="Slack Webhook URL"

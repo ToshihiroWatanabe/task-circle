@@ -44,7 +44,7 @@ import YouTube from "react-youtube";
 const NUMBER_OF_ITEMS_MAX = 32;
 
 /** 一度にカウントする秒数 */
-const ONCE_COUNT = 1;
+const ONCE_COUNT = 100;
 /** カウントの間隔(ミリ秒) */
 const COUNT_INTERVAL = 1000;
 /** setTimeoutのID */
@@ -597,28 +597,55 @@ const TodoList = memo(() => {
               link.href = "/favicon.ico";
               achievedSound.volume = settings.volume * 0.01;
               achievedSound.play();
+              // 通知
+              if (
+                window.Notification &&
+                Notification.permission === "granted"
+              ) {
+                new Notification("目標時間に到達しました！", {
+                  body: "タイマーを停止しました。",
+                });
+              }
             } else if (state.isPomodoroEnabled && state.pomodoroTimeLeft <= 0) {
               // ポモドーロタイマーのカウントが0以下のとき
               setState((state) => {
                 state.isTimerOn = false;
-                // ポモドーロの作業休憩切り替え
-                if (state.isPomodoroEnabled) {
+                // 通知
+                if (
+                  window.Notification &&
+                  Notification.permission === "granted"
+                ) {
                   if (state.pomodoroTimerType === "work") {
-                    state.pomodoroTimerType = "break";
-                    state.pomodoroTimeLeft = state.breakTimerLength;
+                    new Notification("ポモドーロが終わりました！", {
+                      body: state.isBreakAutoStart
+                        ? "休憩を自動スタートします。"
+                        : "タイマーを停止しました。",
+                      icon: "/favicon/favicon_coffee/apple-touch-icon.png",
+                    });
                   } else if (state.pomodoroTimerType === "break") {
-                    state.pomodoroTimerType = "work";
-                    state.pomodoroTimeLeft = state.workTimerLength;
-                  }
-                  if (
-                    state.isBreakAutoStart &&
-                    state.pomodoroTimerType === "break"
-                  ) {
-                    setTimeout(() => {
-                      onPlayButtonClick("fab");
-                    }, 100);
+                    new Notification("休憩が終わりました！", {
+                      body: "タイマーを停止しました。",
+                      icon: "/favicon/favicon_tomato/apple-touch-icon.png",
+                    });
                   }
                 }
+                // ポモドーロの作業休憩切り替え
+                if (state.pomodoroTimerType === "work") {
+                  state.pomodoroTimerType = "break";
+                  state.pomodoroTimeLeft = state.breakTimerLength;
+                } else if (state.pomodoroTimerType === "break") {
+                  state.pomodoroTimerType = "work";
+                  state.pomodoroTimeLeft = state.workTimerLength;
+                }
+                if (
+                  state.isBreakAutoStart &&
+                  state.pomodoroTimerType === "break"
+                ) {
+                  setTimeout(() => {
+                    onPlayButtonClick("fab");
+                  }, 100);
+                }
+
                 return { ...state };
               });
               clearTimeout(timeoutId);
