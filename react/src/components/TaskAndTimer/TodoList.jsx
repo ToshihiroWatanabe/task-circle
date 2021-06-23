@@ -288,9 +288,10 @@ const TodoList = () => {
 
   /**
    * タイマーの開始・停止ボタンがクリックされたときの処理です。
+   * @param {*} type taskかfab
    * @param {*} index
    */
-  const onPlayButtonClick = (index) => {
+  const onPlayButtonClick = (type, index) => {
     setState((state) => {
       state.isTimerOn = !state.isTimerOn;
       if (state.isTimerOn) {
@@ -299,7 +300,11 @@ const TodoList = () => {
         lastCountedAt = Date.now();
         timeoutId = setTimeout(timerCount, getTimeout());
         // ポモドーロが休憩タイマーなら作業に切り替える
-        if (state.isModePomodoro && state.pomodoroTimerType === "Break") {
+        if (
+          type === "task" &&
+          state.isModePomodoro &&
+          state.pomodoroTimerType === "Break"
+        ) {
           state.pomodoroTimerType = "Work";
           state.pomodoroTimeLeft = state.workTimerLength;
         }
@@ -406,16 +411,18 @@ const TodoList = () => {
    * 時間の加減算をします。
    */
   const spendTime = (count) => {
-    setColumns((columns) => {
-      Object.values(columns)[0].items.map((item, index) => {
-        if (item.isSelected) {
-          item.spentSecond += ONCE_COUNT * count;
-          refreshTitle(item.content, item.spentSecond);
-        }
-        return item;
+    if (!state.isModePomodoro || state.pomodoroTimerType !== "Break") {
+      setColumns((columns) => {
+        Object.values(columns)[0].items.map((item, index) => {
+          if (item.isSelected) {
+            item.spentSecond += ONCE_COUNT * count;
+            refreshTitle(item.content, item.spentSecond);
+          }
+          return item;
+        });
+        return { ...columns };
       });
-      return { ...columns };
-    });
+    }
     setTimeout(() => {
       setState((state) => {
         if (state.isModePomodoro) {
@@ -716,13 +723,19 @@ const TodoList = () => {
                                   className={classes.taskCard}
                                   style={{
                                     backgroundColor:
-                                      item.isSelected && state.isTimerOn
+                                      item.isSelected &&
+                                      state.isTimerOn &&
+                                      (!state.isModePomodoro ||
+                                        state.pomodoroTimerType !== "Break")
                                         ? theme.palette.primary.main
                                         : snapshot.isDragging
                                         ? "lightgray"
                                         : "#FFF",
                                     color:
-                                      item.isSelected && state.isTimerOn
+                                      item.isSelected &&
+                                      state.isTimerOn &&
+                                      (!state.isModePomodoro ||
+                                        state.pomodoroTimerType !== "Break")
                                         ? "#FFF"
                                         : snapshot.isDragging
                                         ? "#000"
@@ -746,11 +759,18 @@ const TodoList = () => {
                                         style={{
                                           marginLeft: "-0.75rem",
                                           marginRight: "0.25rem",
-                                          visibility: item.isSelected
-                                            ? ""
-                                            : "hidden",
+                                          visibility:
+                                            item.isSelected &&
+                                            (!state.isModePomodoro ||
+                                              state.pomodoroTimerType !==
+                                                "Break" ||
+                                              !state.isTimerOn)
+                                              ? ""
+                                              : "hidden",
                                         }}
-                                        onClick={() => onPlayButtonClick(index)}
+                                        onClick={() =>
+                                          onPlayButtonClick("task", index)
+                                        }
                                       >
                                         {state.isTimerOn && <StopIcon />}
                                         {!state.isTimerOn && <PlayArrowIcon />}

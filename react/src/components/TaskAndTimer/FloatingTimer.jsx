@@ -84,7 +84,7 @@ const FloatingTimer = (props) => {
       }
       return item;
     });
-    props.onPlayButtonClick(index);
+    props.onPlayButtonClick(index, "fab");
   };
 
   return (
