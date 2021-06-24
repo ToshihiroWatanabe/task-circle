@@ -5,6 +5,7 @@ import uuid from "uuid/v4";
 import { Context } from "contexts/Context";
 import EnterTheRoom from "./EnterTheRoom";
 import RoomHeader from "./RoomHeader";
+import UserList from "./UserList";
 
 const sessionsFromBackEnd = [
   {
@@ -69,7 +70,7 @@ const Room = memo(() => {
             {/* 入室前 */}
             {!state.isInRoom && <EnterTheRoom />}
             {/* 入室後 */}
-            {state.isInRoom && <>入室後</>}
+            {state.isInRoom && <UserList room={room} />}
           </Card>
         );
       })}

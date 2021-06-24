@@ -1,7 +1,14 @@
 import React, { useContext } from "react";
-import { IconButton, makeStyles, Tooltip, Typography } from "@material-ui/core";
+import {
+  Box,
+  IconButton,
+  makeStyles,
+  Tooltip,
+  Typography,
+} from "@material-ui/core";
 import { Context } from "contexts/Context";
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
+import PersonIcon from "@material-ui/icons/Person";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -26,13 +33,26 @@ const RoomHeader = (props) => {
   };
   return (
     <div className={classes.root}>
-      <Typography style={{ flexGrow: "1" }}>ルーム</Typography>
+      <div style={{ flexGrow: "1", display: "flex" }}>
+        <Typography component="span">ルーム</Typography>
+        <PersonIcon
+          fontSize="inherit"
+          style={{ marginLeft: "1rem", marginTop: "0.3rem" }}
+        />
+        <Typography>{props.room.sessions.length}人</Typography>
+      </div>
       {state.isInRoom && (
-        <Tooltip title="退室する">
-          <IconButton size="small" color="inherit" onClick={onExitButtonClick}>
-            <ExitToAppIcon />
-          </IconButton>
-        </Tooltip>
+        <>
+          <Tooltip title="退室する">
+            <IconButton
+              size="small"
+              color="inherit"
+              onClick={onExitButtonClick}
+            >
+              <ExitToAppIcon />
+            </IconButton>
+          </Tooltip>
+        </>
       )}
     </div>
   );
