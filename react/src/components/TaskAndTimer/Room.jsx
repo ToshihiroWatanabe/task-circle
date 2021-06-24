@@ -49,7 +49,7 @@ const Room = memo(() => {
     <>
       {Object.entries(rooms).map(([roomId, room], index) => {
         return (
-          <Card className={classes.roomCard}>
+          <Card key={index} className={classes.roomCard}>
             <div style={{ display: "flex", alignItems: "center" }}>
               <div style={{ flexGrow: "1", marginLeft: "0.5rem" }}>
                 <Typography>{room.name}</Typography>
