@@ -11,6 +11,8 @@ import Portfolio from "components/Portfolio";
 import About from "components/About";
 import Reports from "components/reports/Reports";
 import TaskAndTimer from "components/TaskAndTimer/TaskAndTimer";
+import { SettingsContext } from "contexts/SettingsContext";
+import uuid from "uuid/v4";
 
 /** ドロワーの横幅 */
 const DRAWER_WIDTH = "15rem";
@@ -23,9 +25,33 @@ if (
   document.title += "(開発中)";
 }
 
+/** ローカルストレージから日報を取得します。 */
 const localStorageGetItemReports = localStorage.getItem("reports")
   ? JSON.parse(localStorage.getItem("reports"))
   : [];
+
+/** ローカルストレージから設定を取得します。 */
+const localStorageGetItemSettings = localStorage.getItem("settings")
+  ? JSON.parse(localStorage.getItem("settings"))
+  : {};
+
+/** デフォルトTodoリスト */
+const defaultColumns = {
+  [uuid()]: {
+    name: "タスク",
+    items: [],
+  },
+};
+
+/** デフォルト設定 */
+const defaultSettings = {
+  workVideoUrl: "",
+  workVideoVolume: 100,
+  breakVideoUrl: "",
+  breakVideoVolume: 100,
+  tickVolume: 10,
+  volume: 100,
+};
 
 const useStyles = makeStyles((theme) => ({
   main: {
@@ -50,12 +76,19 @@ const useStyles = makeStyles((theme) => ({
 const App = () => {
   const classes = useStyles();
   const [state, setState] = useContext(Context);
+  const [settings, setSettings] = useContext(SettingsContext);
   const location = useLocation();
 
   useEffect(() => {
     setState((state) => {
-      const newState = { ...state, reports: localStorageGetItemReports };
+      const newState = {
+        ...state,
+        reports: localStorageGetItemReports,
+      };
       return newState;
+    });
+    setSettings((settings) => {
+      return { ...defaultSettings, ...localStorageGetItemSettings };
     });
   }, []);
 

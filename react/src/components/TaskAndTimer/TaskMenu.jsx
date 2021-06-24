@@ -87,7 +87,7 @@ const TaskMenu = memo((props) => {
    */
   const handleReset = () => {
     props.setColumns((columns) => {
-      return {
+      const newColumns = {
         [Object.keys(columns)[0]]: {
           ...Object.values(columns)[0],
           items: Object.values(columns)[0].items.map((item, index) => {
@@ -105,6 +105,8 @@ const TaskMenu = memo((props) => {
           }),
         },
       };
+      localStorage.setItem("columns", JSON.stringify(newColumns));
+      return newColumns;
     });
     setAnchorEl(null);
   };
@@ -114,7 +116,7 @@ const TaskMenu = memo((props) => {
    */
   const handleDelete = () => {
     props.setColumns((columns) => {
-      return {
+      const newColumns = {
         [Object.keys(columns)[0]]: {
           ...Object.values(columns)[0],
           items: Object.values(columns)[0].items.filter((value, index) => {
@@ -131,6 +133,8 @@ const TaskMenu = memo((props) => {
           }),
         },
       };
+      localStorage.setItem("columns", JSON.stringify(newColumns));
+      return newColumns;
     });
     setAnchorEl(null);
   };

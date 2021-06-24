@@ -25,9 +25,7 @@ import NotificationsNoneOutlinedIcon from "@material-ui/icons/NotificationsNoneO
 import AddAlertIcon from "@material-ui/icons/AddAlert";
 import slackMark from "image/slackMark.svg";
 
-/**
- * YouTube動画再生オプション
- */
+/** YouTube動画再生オプション */
 const playerOptions = {
   height: "1",
   width: "1",

@@ -159,6 +159,19 @@ const columnsFromBackEnd = {
   },
 };
 
+/** デフォルトTodoリスト */
+const defaultColumns = {
+  [uuid()]: {
+    name: "タスク",
+    items: [],
+  },
+};
+
+/** ローカルストレージからTodoリストを取得します。 */
+const localStorageGetItemColumns = localStorage.getItem("columns")
+  ? JSON.parse(localStorage.getItem("columns"))
+  : { ...defaultColumns };
+
 /**
  * ドラッグが終わったときの処理です。
  * @param {*} result
@@ -177,7 +190,7 @@ const onDragEnd = (result, columns, setColumns) => {
     const destItems = [...destColumn.items];
     const [removed] = sourceItems.splice(source.index, 1);
     destItems.splice(destination.index, 0, removed);
-    setColumns({
+    const newColumns = {
       ...columns,
       [source.droppableId]: {
         ...sourceColumn,
@@ -187,19 +200,23 @@ const onDragEnd = (result, columns, setColumns) => {
         ...destColumn,
         items: destItems,
       },
-    });
+    };
+    setColumns(newColumns);
+    localStorage.setItem("columns", JSON.stringify(newColumns));
   } else {
     const column = columns[source.droppableId];
     const copiedItems = [...column.items];
     const [removed] = copiedItems.splice(source.index, 1);
     copiedItems.splice(destination.index, 0, removed);
-    setColumns({
+    const newColumns = {
       ...columns,
       [source.droppableId]: {
         ...column,
         items: copiedItems,
       },
-    });
+    };
+    setColumns(newColumns);
+    localStorage.setItem("columns", JSON.stringify(newColumns));
   }
 };
 
@@ -254,7 +271,9 @@ const TodoList = memo(() => {
   const theme = useTheme();
   const [state, setState] = useContext(Context);
   const [settings] = useContext(SettingsContext);
-  const [columns, setColumns] = useState(columnsFromBackEnd);
+  const [columns, setColumns] = useState({
+    ...localStorageGetItemColumns,
+  });
   const [categoryInput, setCategoryInput] = useState([]);
   const [isTagsInputFocused, setIsTagsInputFocused] = useState(false);
   const [inputValue, setInputValue] = useState("");
@@ -469,6 +488,7 @@ const TodoList = memo(() => {
           }
           return item;
         });
+        localStorage.setItem("columns", JSON.stringify({ ...columns }));
         return { ...columns };
       });
     }
@@ -669,6 +689,7 @@ const TodoList = memo(() => {
         } else if (!state.isTimerOn) {
           clearTimeout(timeoutId);
         }
+        localStorage.setItem("columns", JSON.stringify(columns));
         return columns;
       });
       return state;
@@ -681,7 +702,6 @@ const TodoList = memo(() => {
   const spendTime = (count) => {
     setTimeout(() => {
       setState((state) => {
-        // if (!state.isPomodoroEnabled || state.pomodoroTimerType !== "break") {
         setColumns((columns) => {
           Object.values(columns)[0].items.map((item, index) => {
             if (item.isSelected) {
@@ -694,7 +714,6 @@ const TodoList = memo(() => {
           });
           return { ...columns };
         });
-        // }
         if (state.isPomodoroEnabled) {
           state.pomodoroTimeLeft -= ONCE_COUNT * count;
         }
@@ -740,6 +759,7 @@ const TodoList = memo(() => {
           isSelected: false,
           achievedThenStop: false,
         });
+        localStorage.setItem("columns", JSON.stringify(columns));
         return { ...columns };
       });
       setCategoryInput([]);
@@ -810,19 +830,21 @@ const TodoList = memo(() => {
           0,
           lastActivity.item
         );
-        return {
+        const newColumns = {
           [Object.keys(columns)[0]]: {
             ...Object.values(columns)[0],
             items: Object.values(columns)[0].items,
           },
         };
+        localStorage.setItem("columns", JSON.stringify(newColumns));
+        return newColumns;
       });
       setLastActivity({});
       setSimpleSnackbarMessage("削除を取り消しました");
       // 経過時間のリセットを取り消す
     } else if (lastActivity.type === "resetSpentSecond") {
       setColumns((columns) => {
-        return {
+        const newColumns = {
           [Object.keys(columns)[0]]: {
             ...Object.values(columns)[0],
             items: Object.values(columns)[0].items.map((item, index) => {
@@ -833,30 +855,36 @@ const TodoList = memo(() => {
             }),
           },
         };
+        localStorage.setItem("columns", JSON.stringify(newColumns));
+        return newColumns;
       });
       setLastActivity({});
       setSimpleSnackbarMessage("経過時間のリセットを取り消しました");
       // 全て削除を取り消す
     } else if (lastActivity.type === "deleteAll") {
       setColumns((columns) => {
-        return {
+        const newColumns = {
           [Object.keys(columns)[0]]: {
             ...Object.values(columns)[0],
             items: lastActivity.items,
           },
         };
+        localStorage.setItem("columns", JSON.stringify(newColumns));
+        return newColumns;
       });
       setLastActivity({});
       setSimpleSnackbarMessage("削除を取り消しました");
       // 全ての時間をリセットを取り消す
     } else if (lastActivity.type === "resetAllTime") {
       setColumns((columns) => {
-        return {
+        const newColumns = {
           [Object.keys(columns)[0]]: {
             ...Object.values(columns)[0],
             items: lastActivity.items,
           },
         };
+        localStorage.setItem("columns", JSON.stringify(newColumns));
+        return newColumns;
       });
       setLastActivity({});
       setSimpleSnackbarMessage("時間のリセットを取り消しました");
@@ -899,6 +927,7 @@ const TodoList = memo(() => {
       setColumns((columns) => {
         Object.values(columns)[0].items[index].achievedThenStop =
           !Object.values(columns)[0].items[index].achievedThenStop;
+        localStorage.setItem("columns", JSON.stringify(columns));
         return { ...columns };
       });
     }
