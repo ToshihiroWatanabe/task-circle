@@ -1073,7 +1073,8 @@ const TodoList = memo(() => {
                                       open={
                                         playArrowIconTooltipOpen &&
                                         item.isSelected &&
-                                        item.spentSecond === 0
+                                        (item.spentSecond === 0 ||
+                                          isPlayButtonFocused)
                                       }
                                     >
                                       <IconButton
@@ -1159,7 +1160,8 @@ const TodoList = memo(() => {
                                             )}
                                           </span>
                                         )}
-                                        {item.estimatedSecond > 0 && (
+                                        {item.estimatedSecond >
+                                          item.spentSecond && (
                                           <Tooltip title="目標時間のアラーム">
                                             <IconButton
                                               size="small"
@@ -1206,6 +1208,7 @@ const TodoList = memo(() => {
                                           ? "primary"
                                           : "secondary"
                                       }
+                                      thickness={5}
                                     />
                                   )}
                                 </Card>

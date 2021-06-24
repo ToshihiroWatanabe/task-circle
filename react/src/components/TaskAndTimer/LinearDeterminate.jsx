@@ -16,6 +16,7 @@ const LinearDeterminate = memo((props) => {
         variant="determinate"
         value={props.progress}
         color={props.color}
+        style={{ height: props.thickness }}
       />
     </div>
   );
