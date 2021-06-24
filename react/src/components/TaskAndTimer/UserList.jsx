@@ -1,4 +1,4 @@
-import React, { Fragment, memo } from "react";
+import React, { Fragment, memo, useState } from "react";
 import {
   Avatar,
   Divider,
@@ -10,6 +10,9 @@ import {
   Typography,
 } from "@material-ui/core";
 import { getAvatarColor } from "utils/color";
+
+/** 更新のsetInterval ID */
+let refreshInterval = 0;
 
 const useStyles = makeStyles((theme) => ({
   list: {
@@ -27,6 +30,11 @@ const useStyles = makeStyles((theme) => ({
  */
 const UserList = memo((props) => {
   const classes = useStyles();
+  const [dateNow, setDateNow] = useState(Date.now());
+
+  refreshInterval = setInterval(() => {
+    setDateNow(Date.now());
+  }, 5000);
 
   return (
     <>
@@ -61,12 +69,11 @@ const UserList = memo((props) => {
                           ? "☕休憩中"
                           : ""}
                       </Typography>
-                      {/* {key.remaining !== 0 && session.isTimerOn
-                        ? " — 残り" +
-                          parseInt(key.remaining / 60 + 0.999) +
-                          "分"
-                        : ""} */}{" "}
-                      - 残り1分
+                      {" - 残り"}
+                      {session.finishAt - dateNow > 0
+                        ? Math.ceil((session.finishAt - dateNow) / 1000 / 60)
+                        : 0}
+                      {"分"}
                     </Fragment>
                   }
                 />

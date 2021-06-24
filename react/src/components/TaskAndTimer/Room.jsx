@@ -14,6 +14,7 @@ const sessionsFromBackEnd = [
     isTimerOn: true,
     sessionType: "work",
     content: "《Java》課題",
+    imageUrl: "",
     startedAt: Date.now(),
     finishAt: Date.now() + 10 * 1000,
   },
@@ -23,6 +24,7 @@ const sessionsFromBackEnd = [
     isTimerOn: true,
     sessionType: "break",
     content: "《Java》課題",
+    imageUrl: "",
     startedAt: Date.now(),
     finishAt: Date.now() + 60 * 1000,
   },
@@ -36,8 +38,9 @@ for (let i = 0; i < 20; i++) {
     sessionType: "work",
     content:
       "《１２３４５６７８９０１２３４５６７８９０１２３４５６７８９０１２３４５６７８９０１２３４５》１２３４５６７８９０１２３４５６７８９０１２３４５６７８９０１２３４５６７８９０１２３４５",
+    imageUrl: "",
     startedAt: Date.now() - 20,
-    finishAt: Date.now() + i * 1000,
+    finishAt: Date.now() + i * 60 * 1000,
   });
 }
 
