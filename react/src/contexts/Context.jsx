@@ -30,6 +30,8 @@ export function ContextProvider(props) {
     pomodoroTimeLeft: 25 * 60,
     /** ポモドーロタイマーのタイプ */
     pomodoroTimerType: "work",
+    /** 入室しているかどうか */
+    isInRoom: false,
   });
 
   return (

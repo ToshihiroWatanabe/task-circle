@@ -1,7 +1,9 @@
-import React, { memo, useState } from "react";
+import React, { memo, useContext, useState } from "react";
 import { makeStyles, Typography, useTheme } from "@material-ui/core";
 import { Card } from "@material-ui/core";
 import uuid from "uuid/v4";
+import { Context } from "contexts/Context";
+import EnterTheRoom from "./EnterTheRoom";
 
 const sessionsFromBackEnd = [
   {
@@ -33,6 +35,7 @@ const useStyles = makeStyles((theme) => ({
   roomCard: {
     width: 320,
     // height: "76vh",
+    height: "fit-content",
     margin: 8,
     [theme.breakpoints.down("sm")]: {
       width: "calc(100vw - 2rem)",
@@ -51,6 +54,7 @@ const useStyles = makeStyles((theme) => ({
 const Room = memo(() => {
   const classes = useStyles();
   const theme = useTheme();
+  const [state, setState] = useContext(Context);
   const [rooms, setRooms] = useState({ ...roomsFromBackEnd });
 
   return (
@@ -60,7 +64,8 @@ const Room = memo(() => {
           <Card key={index} className={classes.roomCard}>
             <div style={{ display: "flex", alignItems: "center" }}>
               <div style={{ flexGrow: "1", marginLeft: "0.5rem" }}>
-                <Typography>{room.name}</Typography>
+                <Typography>ルーム: {room.name}</Typography>
+                {!state.isInRoom && <EnterTheRoom />}
               </div>
             </div>
           </Card>
