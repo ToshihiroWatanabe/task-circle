@@ -14,6 +14,7 @@ import preval from "preval.macro";
 const useStyles = makeStyles({
   card: {
     display: "flex",
+    textAlign: "center",
     flexDirection: "column",
     width: "95%",
     padding: "1rem",
@@ -30,8 +31,10 @@ const About = () => {
   return (
     <>
       <Card className={classes.card}>
-        <Typography variant="h5">Task Circle（タスクサークル）</Typography>
-        <Typography variant="caption">
+        <Typography variant="h5" style={{ margin: "1rem 0" }}>
+          Task Circle（タスクサークル）
+        </Typography>
+        <Typography variant="caption" style={{ margin: "1rem 0" }}>
           ビルド時刻{" "}
           {format(preval`module.exports = Date.now();`, "yyyy/MM/dd HH:mm:ss")}
           <Tooltip title="GitHubでリポジトリを見る">
@@ -47,7 +50,7 @@ const About = () => {
           </Tooltip>
         </Typography>
 
-        <Typography>
+        <Typography style={{ margin: "1rem 0" }}>
           Copyright © {new Date().getFullYear()} ワタナベトシヒロ All Rights
           Reserved.
         </Typography>
