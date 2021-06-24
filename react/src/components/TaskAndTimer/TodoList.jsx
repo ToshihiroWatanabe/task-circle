@@ -55,6 +55,9 @@ let startedAt = null;
 /** 最後にカウントした時刻 */
 let lastCountedAt = null;
 
+/** タイマー再生ボタンにカーソルが合っているかどうか */
+let isPlayButtonFocused = false;
+
 /**
  * 次にタイマーをカウントするまでの時間(ミリ秒)を返します。
  */
@@ -443,7 +446,7 @@ const TodoList = memo(() => {
   };
 
   // マウスが動いたとき
-  window.addEventListener("mousemove", () => {
+  window.addEventListener("mousemove", (e) => {
     handleOperation();
   });
 
@@ -462,12 +465,18 @@ const TodoList = memo(() => {
    */
   const handleOperation = () => {
     lastMouseMoved = Date.now();
-    setPlayArrowIconTooltipOpen(false);
-    clearTimeout(playArrowIconTooltipOpenTimeout);
-    playArrowIconTooltipOpenTimeout = setTimeout(
-      handlePlayArrowIconTooltip,
-      5000
-    );
+    if (isPlayButtonFocused) {
+      if (!playArrowIconTooltipOpen) {
+        setPlayArrowIconTooltipOpen(true);
+      }
+    } else {
+      setPlayArrowIconTooltipOpen(false);
+      clearTimeout(playArrowIconTooltipOpenTimeout);
+      playArrowIconTooltipOpenTimeout = setTimeout(
+        handlePlayArrowIconTooltip,
+        5000
+      );
+    }
   };
 
   /**
@@ -1080,6 +1089,12 @@ const TodoList = memo(() => {
                                         onClick={() =>
                                           onPlayButtonClick("task")
                                         }
+                                        onMouseEnter={(e) => {
+                                          isPlayButtonFocused = true;
+                                        }}
+                                        onMouseLeave={(e) => {
+                                          isPlayButtonFocused = false;
+                                        }}
                                       >
                                         {/* タイマーがオフのときは再生アイコン */}
                                         {!state.isTimerOn && <PlayArrowIcon />}
