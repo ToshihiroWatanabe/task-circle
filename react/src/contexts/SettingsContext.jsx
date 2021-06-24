@@ -9,6 +9,14 @@ export const SettingsContext = createContext([{}, () => {}]);
 export function SettingsContextProvider(props) {
   // 設定
   const [settings, setSettings] = useState({
+    /** ポモドーロモードがオンかどうか */
+    isPomodoroEnabled: false,
+    /** 休憩を自動スタートするかどうか */
+    isBreakAutoStart: true,
+    /** 作業タイマーの時間(秒) */
+    workTimerLength: 25 * 60,
+    /** 休憩タイマーの時間(秒) */
+    breakTimerLength: 5 * 60,
     /** 作業用BGMのURL */
     workVideoUrl: "",
     /** 作業用BGMの音量(%) */

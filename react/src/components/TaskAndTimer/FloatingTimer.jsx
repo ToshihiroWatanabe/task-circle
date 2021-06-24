@@ -7,6 +7,7 @@ import { Context } from "contexts/Context";
 import { useTheme, Zoom } from "@material-ui/core";
 import StopIcon from "@material-ui/icons/Stop";
 import CircularDeterminate from "./CircularDeterminate";
+import { SettingsContext } from "contexts/SettingsContext";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -67,7 +68,8 @@ const useStyles = makeStyles((theme) => ({
 const FloatingTimer = memo((props) => {
   const classes = useStyles();
   const theme = useTheme();
-  const [state, setState] = useContext(Context);
+  const [state] = useContext(Context);
+  const [settings] = useContext(SettingsContext);
 
   const transitionDuration = {
     enter: theme.transitions.duration.enteringScreen,
@@ -90,7 +92,7 @@ const FloatingTimer = memo((props) => {
 
   return (
     <div className={classes.root}>
-      {state.isPomodoroEnabled && (
+      {settings.isPomodoroEnabled && (
         <Zoom
           timeout={transitionDuration}
           in={true}

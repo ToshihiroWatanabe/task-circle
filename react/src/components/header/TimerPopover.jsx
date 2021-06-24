@@ -1,6 +1,5 @@
 import React, { memo, useContext, useState } from "react";
 import {
-  Button,
   Icon,
   IconButton,
   makeStyles,
@@ -13,6 +12,7 @@ import {
 import "./TimerPopover.css";
 import { Context } from "contexts/Context";
 import ToggleButton from "./ToggleButton";
+import { SettingsContext } from "contexts/SettingsContext";
 
 const workTimerLength = [];
 workTimerLength.push({ label: "5", value: 5 * 60 });
@@ -38,6 +38,7 @@ const useStyles = makeStyles((theme) => ({}));
 const TimerPopover = memo((props) => {
   const classes = useStyles();
   const [state, setState] = useContext(Context);
+  const [settings, setSettings] = useContext(SettingsContext);
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
 
@@ -53,15 +54,48 @@ const TimerPopover = memo((props) => {
   };
 
   /**
+   * ポモドーロタイマーのオンオフが切り替わったときの処理です。
+   */
+  const onPomodoroEnabledChanged = () => {
+    setSettings((settings) => {
+      const newSettings = {
+        ...settings,
+        isPomodoroEnabled: !settings.isPomodoroEnabled,
+      };
+      localStorage.setItem("settings", JSON.stringify(newSettings));
+      return newSettings;
+    });
+  };
+
+  /**
+   * 自動スタートのオンオフが切り替わったときの処理です。
+   */
+  const onBreakAutoStartChanged = () => {
+    setSettings((settings) => {
+      const newSettings = {
+        ...settings,
+        isBreakAutoStart: !settings.isBreakAutoStart,
+      };
+      localStorage.setItem("settings", JSON.stringify(newSettings));
+      return newSettings;
+    });
+  };
+
+  /**
    * 作業タイマーの時間の選択肢が選ばれたときの処理です。
    * @param {*} event
    */
   const onWorkTimerLengthChange = (event) => {
-    setState((state) => {
-      if (state.pomodoroTimerType === "work") {
-        state.pomodoroTimeLeft = event.target.value;
-      }
-      return { ...state, workTimerLength: event.target.value };
+    setSettings((settings) => {
+      setState((state) => {
+        if (state.pomodoroTimerType === "work") {
+          state.pomodoroTimeLeft = event.target.value;
+        }
+        return state;
+      });
+      const newSettings = { ...settings, workTimerLength: event.target.value };
+      localStorage.setItem("settings", JSON.stringify(newSettings));
+      return newSettings;
     });
   };
 
@@ -70,11 +104,16 @@ const TimerPopover = memo((props) => {
    * @param {*} event
    */
   const onBreakTimerLengthChange = (event) => {
-    setState((state) => {
-      if (state.pomodoroTimerType === "break") {
-        state.pomodoroTimeLeft = event.target.value;
-      }
-      return { ...state, breakTimerLength: event.target.value };
+    setSettings((settings) => {
+      setState((state) => {
+        if (state.pomodoroTimerType === "break") {
+          state.pomodoroTimeLeft = event.target.value;
+        }
+        return state;
+      });
+      const newSettings = { ...settings, breakTimerLength: event.target.value };
+      localStorage.setItem("settings", JSON.stringify(newSettings));
+      return newSettings;
     });
   };
 
@@ -91,7 +130,7 @@ const TimerPopover = memo((props) => {
               }
               style={{
                 width: "1.25rem",
-                filter: state.isPomodoroEnabled
+                filter: settings.isPomodoroEnabled
                   ? "drop-shadow(0px 0px 1.25px #000)"
                   : "contrast(0%)",
               }}
@@ -129,31 +168,21 @@ const TimerPopover = memo((props) => {
               ポモドーロタイマー
               <Switch
                 disabled={state.isTimerOn}
-                checked={state.isPomodoroEnabled}
-                onChange={() =>
-                  setState((state) => {
-                    return {
-                      ...state,
-                      isPomodoroEnabled: !state.isPomodoroEnabled,
-                    };
-                  })
-                }
+                checked={settings.isPomodoroEnabled}
+                onChange={() => {
+                  onPomodoroEnabledChanged();
+                }}
                 name="isPomodoroEnabled"
               />
             </Typography>
             <Typography style={{ padding: "0.5rem 0 0 1rem" }}>
               休憩を自動スタート
               <Switch
-                disabled={!state.isPomodoroEnabled || state.isTimerOn}
-                checked={state.isBreakAutoStart}
-                onChange={() =>
-                  setState((state) => {
-                    return {
-                      ...state,
-                      isBreakAutoStart: !state.isBreakAutoStart,
-                    };
-                  })
-                }
+                disabled={!settings.isPomodoroEnabled || state.isTimerOn}
+                checked={settings.isBreakAutoStart}
+                onChange={() => {
+                  onBreakAutoStartChanged();
+                }}
                 name="isBreakAutoStart"
               />
             </Typography>
@@ -161,8 +190,8 @@ const TimerPopover = memo((props) => {
               作業タイマー
               <Select
                 native
-                disabled={!state.isPomodoroEnabled || state.isTimerOn}
-                value={state.workTimerLength}
+                disabled={!settings.isPomodoroEnabled || state.isTimerOn}
+                value={settings.workTimerLength}
                 IconComponent={() => <></>}
                 onChange={(e) => {
                   onWorkTimerLengthChange(e);
@@ -182,8 +211,8 @@ const TimerPopover = memo((props) => {
               休憩タイマー
               <Select
                 native
-                disabled={!state.isPomodoroEnabled || state.isTimerOn}
-                value={state.breakTimerLength}
+                disabled={!settings.isPomodoroEnabled || state.isTimerOn}
+                value={settings.breakTimerLength}
                 IconComponent={() => <></>}
                 onChange={(e) => {
                   onBreakTimerLengthChange(e);

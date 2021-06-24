@@ -45,6 +45,10 @@ const defaultColumns = {
 
 /** デフォルト設定 */
 const defaultSettings = {
+  isPomodoroEnabled: false,
+  isBreakAutoStart: true,
+  workTimerLength: 25 * 60,
+  breakTimerLength: 5 * 60,
   workVideoUrl: "",
   workVideoVolume: 100,
   breakVideoUrl: "",

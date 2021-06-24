@@ -2,6 +2,7 @@ import React, { useContext, memo } from "react";
 import { Context } from "contexts/Context";
 import { Button } from "@material-ui/core";
 import stoppedAudio from "audio/notification_simple-02.mp3";
+import { SettingsContext } from "contexts/SettingsContext";
 
 const stoppedSound = new Audio(stoppedAudio);
 
@@ -10,6 +11,7 @@ const stoppedSound = new Audio(stoppedAudio);
  */
 const ToggleButton = memo(() => {
   const [state, setState] = useContext(Context);
+  const [settings] = useContext(SettingsContext);
 
   /**
    * 切り替えボタンがクリックされたときの処理です。
@@ -23,10 +25,10 @@ const ToggleButton = memo(() => {
       }
       if (state.pomodoroTimerType === "work") {
         state.pomodoroTimerType = "break";
-        state.pomodoroTimeLeft = state.breakTimerLength;
+        state.pomodoroTimeLeft = settings.breakTimerLength;
       } else {
         state.pomodoroTimerType = "work";
-        state.pomodoroTimeLeft = state.workTimerLength;
+        state.pomodoroTimeLeft = settings.workTimerLength;
       }
       return { ...state };
     });

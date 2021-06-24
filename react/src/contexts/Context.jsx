@@ -26,14 +26,6 @@ export function ContextProvider(props) {
     waitingReport: {},
     /** タイマーがオンかどうか */
     isTimerOn: false,
-    /** ポモドーロモードがオンかどうか */
-    isPomodoroEnabled: false,
-    /** 休憩を自動スタートするかどうか */
-    isBreakAutoStart: true,
-    /** 作業タイマーの時間(秒) */
-    workTimerLength: 25 * 60,
-    /** 休憩タイマーの時間(秒) */
-    breakTimerLength: 5 * 60,
     /** ポモドーロタイマーの残り時間 */
     pomodoroTimeLeft: 25 * 60,
     /** ポモドーロタイマーのタイプ */

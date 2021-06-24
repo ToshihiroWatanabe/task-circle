@@ -2,6 +2,7 @@ import React, { memo, useContext } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import { Context } from "contexts/Context";
+import { SettingsContext } from "contexts/SettingsContext";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -33,6 +34,7 @@ const useStyles = makeStyles((theme) => ({
 const CircularDeterminate = memo(() => {
   const classes = useStyles();
   const [state] = useContext(Context);
+  const [settings] = useContext(SettingsContext);
 
   return (
     <div className={classes.root}>
@@ -41,8 +43,8 @@ const CircularDeterminate = memo(() => {
         variant="determinate"
         value={
           state.pomodoroTimerType === "work"
-            ? (state.pomodoroTimeLeft / state.workTimerLength) * -100
-            : (state.pomodoroTimeLeft / state.breakTimerLength) * -100
+            ? (state.pomodoroTimeLeft / settings.workTimerLength) * -100
+            : (state.pomodoroTimeLeft / settings.breakTimerLength) * -100
         }
         thickness={1}
         style={{ color: state.pomodoroTimerType === "work" ? "red" : "yellow" }}
