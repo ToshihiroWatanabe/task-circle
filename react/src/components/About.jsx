@@ -1,53 +1,57 @@
 import React from "react";
-import { IconButton, Link, Tooltip, Typography } from "@material-ui/core";
+import {
+  Card,
+  IconButton,
+  Link,
+  makeStyles,
+  Tooltip,
+  Typography,
+} from "@material-ui/core";
 import GitHubIcon from "@material-ui/icons/GitHub";
 import format from "date-fns/format";
 import preval from "preval.macro";
+
+const useStyles = makeStyles({
+  card: {
+    display: "flex",
+    flexDirection: "column",
+    width: "95%",
+    padding: "1rem",
+    marginBottom: "1rem",
+  },
+});
 
 /**
  * 「～について」ページのコンポーネントです。
  */
 const About = () => {
+  const classes = useStyles();
+
   return (
     <>
-      <div
-        style={
-          {
-            // display: "flex",
-            // alignItems: "center",
-            // margin: "0 1rem",
-          }
-        }
-      >
+      <Card className={classes.card}>
         <Typography variant="h5">Task Circle（タスクサークル）</Typography>
-        <Typography
-          variant="caption"
-          style={{ margin: "0 1rem", marginTop: "0.5rem" }}
-        >
+        <Typography variant="caption">
           ビルド時刻{" "}
           {format(preval`module.exports = Date.now();`, "yyyy/MM/dd HH:mm:ss")}
+          <Tooltip title="GitHubでリポジトリを見る">
+            <Link
+              href="https://github.com/ToshihiroWatanabe/task-circle"
+              target="_blank"
+              rel="noopener"
+            >
+              <IconButton size="small" style={{ color: "black" }}>
+                <GitHubIcon />
+              </IconButton>
+            </Link>
+          </Tooltip>
         </Typography>
-        <Tooltip title="GitHubでリポジトリを見る">
-          <Link
-            href="https://github.com/ToshihiroWatanabe/task-circle"
-            target="_blank"
-            rel="noopener"
-          >
-            <IconButton size="small">
-              <GitHubIcon />
-            </IconButton>
-          </Link>
-        </Tooltip>
-      </div>
-      <Typography
-        component="p"
-        style={{
-          margin: "0 1rem",
-        }}
-      >
-        Copyright © {new Date().getFullYear()} ワタナベトシヒロ All Rights
-        Reserved.
-      </Typography>
+
+        <Typography>
+          Copyright © {new Date().getFullYear()} ワタナベトシヒロ All Rights
+          Reserved.
+        </Typography>
+      </Card>
     </>
   );
 };
