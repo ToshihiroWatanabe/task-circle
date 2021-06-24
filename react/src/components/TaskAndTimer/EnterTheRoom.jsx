@@ -5,7 +5,9 @@ import { Context } from "contexts/Context";
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    // margin: theme.spacing(1),
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "baseline",
   },
 }));
 
@@ -66,6 +68,7 @@ const EnterTheRoom = memo(() => {
       <TextField
         label="名前"
         variant="outlined"
+        margin="dense"
         onChange={onTextFieldChange}
         helperText={helperText}
         error={helperText !== ""}
