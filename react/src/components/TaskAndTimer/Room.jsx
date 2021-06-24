@@ -32,7 +32,7 @@ const roomsFromBackEnd = {
 const useStyles = makeStyles((theme) => ({
   roomCard: {
     width: 320,
-    height: "76vh",
+    // height: "76vh",
     margin: 8,
     [theme.breakpoints.down("sm")]: {
       width: "calc(100vw - 2rem)",
