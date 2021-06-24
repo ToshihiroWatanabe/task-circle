@@ -1,6 +1,25 @@
-import React, { memo } from "react";
-import { makeStyles, useTheme } from "@material-ui/core";
+import React, { memo, useState } from "react";
+import { makeStyles, Typography, useTheme } from "@material-ui/core";
 import { Card } from "@material-ui/core";
+import uuid from "uuid/v4";
+
+const sessionsFromBackEnd = [
+  {
+    id: uuid(),
+    name: "ユーザー1",
+    sessionType: "work",
+    content: "《Java》課題",
+    startedAt: Date.now(),
+    finishAt: Date.now() + 10 * 1000,
+  },
+];
+
+const roomsFromBackEnd = {
+  [uuid()]: {
+    name: "RaiseTech",
+    sessions: sessionsFromBackEnd,
+  },
+};
 
 const useStyles = makeStyles((theme) => ({
   roomCard: {
@@ -24,11 +43,21 @@ const useStyles = makeStyles((theme) => ({
 const Room = memo(() => {
   const classes = useStyles();
   const theme = useTheme();
+  const [rooms, setRooms] = useState({ ...roomsFromBackEnd });
+
   return (
     <>
-      <Card className={classes.roomCard}>
-        ここにユーザーリストが表示されます
-      </Card>
+      {Object.entries(rooms).map(([roomId, room], index) => {
+        return (
+          <Card className={classes.roomCard}>
+            <div style={{ display: "flex", alignItems: "center" }}>
+              <div style={{ flexGrow: "1", marginLeft: "0.5rem" }}>
+                <Typography>{room.name}</Typography>
+              </div>
+            </div>
+          </Card>
+        );
+      })}
     </>
   );
 });
