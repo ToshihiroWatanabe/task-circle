@@ -1,10 +1,11 @@
 import React, { useContext } from "react";
-import { makeStyles, Typography } from "@material-ui/core";
+import { IconButton, makeStyles, Tooltip, Typography } from "@material-ui/core";
 import { Context } from "contexts/Context";
+import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    // margin: theme.spacing(1),
+    display: "flex",
   },
 }));
 
@@ -14,9 +15,25 @@ const useStyles = makeStyles((theme) => ({
 const RoomHeader = (props) => {
   const classes = useStyles();
   const [state, setState] = useContext(Context);
+
+  /**
+   * 退室ボタンがクリックされたときの処理です。
+   */
+  const onExitButtonClick = () => {
+    setState((state) => {
+      return { ...state, isInRoom: false };
+    });
+  };
   return (
     <div className={classes.root}>
-      <Typography>ルーム</Typography>
+      <Typography style={{ flexGrow: "1" }}>ルーム</Typography>
+      {state.isInRoom && (
+        <Tooltip title="退室する">
+          <IconButton size="small" color="inherit" onClick={onExitButtonClick}>
+            <ExitToAppIcon />
+          </IconButton>
+        </Tooltip>
+      )}
     </div>
   );
 };

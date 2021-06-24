@@ -3,6 +3,36 @@ import { makeStyles, useTheme } from "@material-ui/core/styles";
 import { Button, TextField } from "@material-ui/core";
 import { Context } from "contexts/Context";
 
+/** 使用できない名前 */
+const NG_NAMES = [
+  "You",
+  "you",
+  "あなた",
+  "Name",
+  "name",
+  "Username",
+  "userName",
+  "username",
+  "名前",
+  "運営",
+  "TaskCircle",
+  "Taskcircle",
+  "taskCircle",
+  "taskcircle",
+  "Task Circle",
+  "Task circle",
+  "task Circle",
+  "task circle",
+  "Task-Circle",
+  "Task-circle",
+  "task-Circle",
+  "task-circle",
+  "Task_Circle",
+  "Task_circle",
+  "task_Circle",
+  "task_circle",
+];
+
 const useStyles = makeStyles((theme) => ({
   root: {
     display: "flex",
@@ -58,6 +88,9 @@ const EnterTheRoom = memo(() => {
   const validate = (name) => {
     if (name.trim() === "") {
       setHelperText("名前を入力してください");
+      return false;
+    } else if (NG_NAMES.includes(name.trim())) {
+      setHelperText("その名前は使えません");
       return false;
     }
     return true;
