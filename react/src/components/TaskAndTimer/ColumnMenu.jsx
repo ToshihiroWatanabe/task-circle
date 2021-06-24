@@ -43,7 +43,7 @@ const ColumnMenu = memo((props) => {
         type: "resetAllTime",
         items: JSON.parse(JSON.stringify(Object.values(columns)[0].items)),
       });
-      return {
+      const newColumns = {
         [Object.keys(columns)[0]]: {
           ...Object.values(columns)[0],
           items: Object.values(columns)[0].items.map((item, index) => {
@@ -53,6 +53,8 @@ const ColumnMenu = memo((props) => {
           }),
         },
       };
+      localStorage.setItem("columns", JSON.stringify(newColumns));
+      return newColumns;
     });
     props.setUndoSnackbarMessage("経過時間をリセットしました");
     props.setUndoSnackbarOpen(true);
@@ -70,9 +72,11 @@ const ColumnMenu = memo((props) => {
       });
       props.setUndoSnackbarMessage("削除しました");
       props.setUndoSnackbarOpen(true);
-      return {
+      const newColumns = {
         [Object.keys(columns)[0]]: { ...Object.values(columns)[0], items: [] },
       };
+      localStorage.setItem("columns", JSON.stringify(newColumns));
+      return newColumns;
     });
     setAnchorEl(null);
   };
