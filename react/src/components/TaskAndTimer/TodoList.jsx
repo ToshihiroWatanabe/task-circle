@@ -1072,6 +1072,7 @@ const TodoList = memo(() => {
                                       title="タイマーを開始"
                                       open={
                                         playArrowIconTooltipOpen &&
+                                        !state.isTimerOn &&
                                         item.isSelected &&
                                         (item.spentSecond === 0 ||
                                           isPlayButtonFocused)

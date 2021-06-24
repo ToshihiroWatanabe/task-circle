@@ -12,6 +12,14 @@ const sessionsFromBackEnd = [
     startedAt: Date.now(),
     finishAt: Date.now() + 10 * 1000,
   },
+  {
+    id: uuid(),
+    name: "ユーザー2.000000",
+    sessionType: "break",
+    content: "《Java》課題",
+    startedAt: Date.now(),
+    finishAt: Date.now() + 60 * 1000,
+  },
 ];
 
 const roomsFromBackEnd = {
