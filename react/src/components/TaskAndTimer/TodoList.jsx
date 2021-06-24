@@ -1145,23 +1145,25 @@ const TodoList = memo(() => {
                                           </span>
                                         )}
                                         {item.estimatedSecond > 0 && (
-                                          <IconButton
-                                            size="small"
-                                            style={{
-                                              color: item.achievedThenStop
-                                                ? "inherit"
-                                                : "#BBB",
-                                            }}
-                                            onClick={() =>
-                                              onAlarmIconClick(index)
-                                            }
-                                          >
-                                            <AlarmIcon
+                                          <Tooltip title="目標時間のアラーム">
+                                            <IconButton
+                                              size="small"
                                               style={{
-                                                pointerEvents: "none",
+                                                color: item.achievedThenStop
+                                                  ? "inherit"
+                                                  : "#BBB",
                                               }}
-                                            />
-                                          </IconButton>
+                                              onClick={() =>
+                                                onAlarmIconClick(index)
+                                              }
+                                            >
+                                              <AlarmIcon
+                                                style={{
+                                                  pointerEvents: "none",
+                                                }}
+                                              />
+                                            </IconButton>
+                                          </Tooltip>
                                         )}
                                       </div>
                                     </div>
@@ -1245,12 +1247,14 @@ const TodoList = memo(() => {
                     height: "2.5rem",
                   }}
                 />
-                <IconButton
-                  onClick={onAddButtonClick}
-                  style={{ marginLeft: "1rem" }}
-                >
-                  <AddIcon />
-                </IconButton>
+                <Tooltip title="タスクを追加">
+                  <IconButton
+                    onClick={onAddButtonClick}
+                    style={{ marginLeft: "1rem" }}
+                  >
+                    <AddIcon />
+                  </IconButton>
+                </Tooltip>
               </div>
             </div>
           );
