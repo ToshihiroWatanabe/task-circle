@@ -964,7 +964,7 @@ const TodoList = memo(() => {
             >
               <div
                 style={{
-                  backgroundColor: "lightgrey",
+                  backgroundColor: "#ebecf0",
                   padding: 4,
                   width: "100%",
                   marginBottom: "-0.2rem",
@@ -1024,7 +1024,7 @@ const TodoList = memo(() => {
                       style={{
                         background: snapshot.isDraggingOver
                           ? "lightblue"
-                          : "lightgrey",
+                          : "#ebecf0",
                       }}
                       className={classes.columnCard}
                     >
@@ -1052,7 +1052,7 @@ const TodoList = memo(() => {
                                         state.pomodoroTimerType !== "break")
                                         ? theme.palette.primary.main
                                         : snapshot.isDragging
-                                        ? "lightgray"
+                                        ? "#ebecf0"
                                         : "#FFF",
                                     color:
                                       item.isSelected &&
@@ -1130,6 +1130,7 @@ const TodoList = memo(() => {
                                                 fontSize: "0.75rem",
                                                 height: "1.2rem",
                                                 maxWidth: "4rem",
+                                                backgroundColor: "#ebecf0",
                                               }}
                                             />
                                           </Tooltip>
@@ -1228,7 +1229,7 @@ const TodoList = memo(() => {
                 style={{
                   display: "flex",
                   justifyContent: "space-between",
-                  backgroundColor: "lightgray",
+                  backgroundColor: "#ebecf0",
                   width: "100%",
                   marginTop: "-2px",
                   paddingLeft: "0.5rem",
@@ -1261,7 +1262,7 @@ const TodoList = memo(() => {
                     width: "105%",
                     marginTop: "0.25rem",
                     marginLeft: "0.2rem",
-                    backgroundColor: isTagsInputFocused ? "white" : "lightgrey",
+                    backgroundColor: isTagsInputFocused ? "white" : "#ebecf0",
                     borderRadius: "4px",
                     height: "2.5rem",
                   }}

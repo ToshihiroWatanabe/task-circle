@@ -1,16 +1,23 @@
 import React, { useContext } from "react";
-import { Typography } from "@material-ui/core";
+import { makeStyles, Typography } from "@material-ui/core";
 import { Context } from "contexts/Context";
+
+const useStyles = makeStyles((theme) => ({
+  root: {
+    // margin: theme.spacing(1),
+  },
+}));
 
 /**
  * ルームのヘッダーのコンポーネントです。
  */
 const RoomHeader = (props) => {
+  const classes = useStyles();
   const [state, setState] = useContext(Context);
   return (
-    <>
-      <Typography>ルーム: {props.room.name}</Typography>
-    </>
+    <div className={classes.root}>
+      <Typography>ルーム</Typography>
+    </div>
   );
 };
 

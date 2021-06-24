@@ -3,7 +3,11 @@ import { makeStyles, useTheme } from "@material-ui/core/styles";
 import { Button, TextField } from "@material-ui/core";
 import { Context } from "contexts/Context";
 
-const useStyles = makeStyles((theme) => ({}));
+const useStyles = makeStyles((theme) => ({
+  root: {
+    // margin: theme.spacing(1),
+  },
+}));
 
 /**
  * ルームに入室する前に表示されるコンポーネントです。
@@ -58,7 +62,7 @@ const EnterTheRoom = memo(() => {
   };
 
   return (
-    <>
+    <div className={classes.root}>
       <TextField
         label="名前"
         variant="outlined"
@@ -70,7 +74,7 @@ const EnterTheRoom = memo(() => {
       <Button variant="contained" color="primary" onClick={onEnterButtonClick}>
         入室
       </Button>
-    </>
+    </div>
   );
 });
 

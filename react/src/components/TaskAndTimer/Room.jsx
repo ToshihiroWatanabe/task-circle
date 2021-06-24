@@ -1,5 +1,5 @@
 import React, { memo, useContext, useState } from "react";
-import { makeStyles, Typography, useTheme } from "@material-ui/core";
+import { Divider, makeStyles, Typography, useTheme } from "@material-ui/core";
 import { Card } from "@material-ui/core";
 import uuid from "uuid/v4";
 import { Context } from "contexts/Context";
@@ -27,7 +27,7 @@ const sessionsFromBackEnd = [
 
 const roomsFromBackEnd = {
   [uuid()]: {
-    name: "RaiseTech",
+    name: "ルーム",
     sessions: sessionsFromBackEnd,
   },
 };
@@ -38,6 +38,7 @@ const useStyles = makeStyles((theme) => ({
     // height: "76vh",
     height: "fit-content",
     margin: 8,
+    padding: 8,
     [theme.breakpoints.down("sm")]: {
       width: "calc(100vw - 2rem)",
       maxWidth: "480px",
@@ -64,6 +65,7 @@ const Room = memo(() => {
         return (
           <Card key={index} className={classes.roomCard}>
             <RoomHeader room={room} />
+            <Divider style={{ margin: "0.25rem 0" }} />
             {/* 入室前 */}
             {!state.isInRoom && <EnterTheRoom />}
             {/* 入室後 */}
