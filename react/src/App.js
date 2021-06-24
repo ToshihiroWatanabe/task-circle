@@ -61,6 +61,9 @@ const useStyles = makeStyles((theme) => ({
   main: {
     marginTop: "5rem",
     paddingLeft: theme.spacing(2),
+    [theme.breakpoints.down("xs")]: {
+      marginTop: "4rem",
+    },
     [theme.breakpoints.down("sm")]: {
       paddingLeft: theme.spacing(0),
       display: "flex",
