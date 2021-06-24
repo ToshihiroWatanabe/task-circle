@@ -1,6 +1,7 @@
-import React, { memo, useState } from "react";
+import React, { memo, useContext, useState } from "react";
 import { makeStyles, useTheme } from "@material-ui/core/styles";
 import { Button, TextField } from "@material-ui/core";
+import { Context } from "contexts/Context";
 
 const useStyles = makeStyles((theme) => ({}));
 
@@ -10,15 +11,62 @@ const useStyles = makeStyles((theme) => ({}));
 const EnterTheRoom = memo(() => {
   const classes = useStyles();
   const theme = useTheme();
+  const [state, setState] = useContext(Context);
+  const [nameInput, setNameInput] = useState("");
+  const [helperText, setHelperText] = useState("");
+
+  /**
+   * 入力欄の値が変化したときの処理です。
+   * @param {*} event
+   */
+  const onTextFieldChange = (event) => {
+    setNameInput(event.target.value);
+    setHelperText("");
+  };
+
+  /**
+   * キーが押されたときの処理です。
+   * @param {*} event
+   */
+  const onKeyDown = (event) => {
+    if (event.key === "Enter") {
+      onEnterButtonClick();
+    }
+  };
 
   /**
    * 入室ボタンがクリックされたときの処理です。
    */
-  const onEnterButtonClick = () => {};
+  const onEnterButtonClick = () => {
+    if (validate(nameInput)) {
+      // 入室
+      setState((state) => {
+        return { ...state, nameInRoom: nameInput.trim(), isInRoom: true };
+      });
+    }
+  };
+
+  /**
+   * 入力された名前を検証します。
+   */
+  const validate = (name) => {
+    if (name.trim() === "") {
+      setHelperText("名前を入力してください");
+      return false;
+    }
+    return true;
+  };
 
   return (
     <>
-      <TextField label="名前" variant="outlined" />
+      <TextField
+        label="名前"
+        variant="outlined"
+        onChange={onTextFieldChange}
+        helperText={helperText}
+        error={helperText !== ""}
+        onKeyDown={onKeyDown}
+      />
       <Button variant="contained" color="primary" onClick={onEnterButtonClick}>
         入室
       </Button>

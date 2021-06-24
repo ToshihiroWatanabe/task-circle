@@ -4,6 +4,7 @@ import { Card } from "@material-ui/core";
 import uuid from "uuid/v4";
 import { Context } from "contexts/Context";
 import EnterTheRoom from "./EnterTheRoom";
+import RoomHeader from "./RoomHeader";
 
 const sessionsFromBackEnd = [
   {
@@ -62,12 +63,11 @@ const Room = memo(() => {
       {Object.entries(rooms).map(([roomId, room], index) => {
         return (
           <Card key={index} className={classes.roomCard}>
-            <div style={{ display: "flex", alignItems: "center" }}>
-              <div style={{ flexGrow: "1", marginLeft: "0.5rem" }}>
-                <Typography>ルーム: {room.name}</Typography>
-                {!state.isInRoom && <EnterTheRoom />}
-              </div>
-            </div>
+            <RoomHeader room={room} />
+            {/* 入室前 */}
+            {!state.isInRoom && <EnterTheRoom />}
+            {/* 入室後 */}
+            {state.isInRoom && <>入室後</>}
           </Card>
         );
       })}
