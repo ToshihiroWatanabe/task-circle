@@ -11,6 +11,7 @@ const sessionsFromBackEnd = [
   {
     id: uuid(),
     name: "ユーザー1",
+    isTimerOn: true,
     sessionType: "work",
     content: "《Java》課題",
     startedAt: Date.now(),
@@ -19,12 +20,26 @@ const sessionsFromBackEnd = [
   {
     id: uuid(),
     name: "ユーザー2.000000",
+    isTimerOn: true,
     sessionType: "break",
     content: "《Java》課題",
     startedAt: Date.now(),
     finishAt: Date.now() + 60 * 1000,
   },
 ];
+
+for (let i = 0; i < 20; i++) {
+  sessionsFromBackEnd.push({
+    id: uuid(),
+    name: "１２３４５６７８９０１２３４５６７８９０",
+    isTimerOn: true,
+    sessionType: "work",
+    content:
+      "《１２３４５６７８９０１２３４５６７８９０１２３４５６７８９０１２３４５６７８９０１２３４５》１２３４５６７８９０１２３４５６７８９０１２３４５６７８９０１２３４５６７８９０１２３４５",
+    startedAt: Date.now() - 20,
+    finishAt: Date.now() + i * 1000,
+  });
+}
 
 const roomsFromBackEnd = {
   [uuid()]: {
@@ -36,7 +51,6 @@ const roomsFromBackEnd = {
 const useStyles = makeStyles((theme) => ({
   roomCard: {
     width: 320,
-    // height: "76vh",
     height: "fit-content",
     margin: 8,
     padding: 8,

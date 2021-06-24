@@ -92,6 +92,9 @@ const EnterTheRoom = memo(() => {
     } else if (NG_NAMES.includes(name.trim())) {
       setHelperText("その名前は使えません");
       return false;
+    } else if (name.trim().length > 20) {
+      setHelperText("名前が長すぎます");
+      return false;
     }
     return true;
   };

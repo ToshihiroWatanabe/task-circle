@@ -35,11 +35,15 @@ const RoomHeader = (props) => {
     <div className={classes.root}>
       <div style={{ flexGrow: "1", display: "flex" }}>
         <Typography component="span">ルーム</Typography>
-        <PersonIcon
-          fontSize="inherit"
-          style={{ marginLeft: "1rem", marginTop: "0.3rem" }}
-        />
-        <Typography>{props.room.sessions.length}人</Typography>
+        {state.isInRoom && (
+          <>
+            <PersonIcon
+              fontSize="inherit"
+              style={{ marginLeft: "1rem", marginTop: "0.3rem" }}
+            />
+            <Typography>{props.room.sessions.length}人</Typography>
+          </>
+        )}
       </div>
       {state.isInRoom && (
         <>
