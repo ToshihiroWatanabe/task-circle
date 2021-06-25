@@ -32,7 +32,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 /**
- * アカウントアイコンメニューのコンポーネントです。
+ * ファイルポップオーバーのコンポーネントです。
  */
 const FilePopover = memo((props) => {
   const classes = useStyles();

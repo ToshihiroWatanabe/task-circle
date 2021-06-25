@@ -26,6 +26,7 @@ import FilePopover from "components/header/FilePopover";
 import AccountPopover from "components/header/AccountPopover";
 import TimerPopover from "./TimerPopover";
 import { DRAWER_WIDTH } from "utils/constant";
+import AnalyticsFilePopover from "components/AnalyticsFilePopover";
 
 const pages = [
   { label: "タスク＆タイマー", path: "/" },
@@ -166,8 +167,10 @@ const ResponsiveDrawer = memo((props) => {
               <TimerPopover />
             </>
           )}
-          {/* データ移行のファイルアイコン */}
+          {/* 日報をインポート・エクスポートするファイルアイコン */}
           {location.pathname === "/reports" && <FilePopover />}
+          {/* 分析レポートをエクスポートするファイルアイコン */}
+          {/* {location.pathname === "/analytics" && <AnalyticsFilePopover />} */}
           <AccountPopover onSyncButtonClick={props.onSyncButtonClick} />
         </Toolbar>
       </AppBar>
