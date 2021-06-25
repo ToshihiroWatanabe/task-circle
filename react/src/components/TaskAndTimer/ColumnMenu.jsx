@@ -99,7 +99,13 @@ const ColumnMenu = memo((props) => {
         onClose={handleClose}
         className={classes.menu}
       >
-        <MenuItem onClick={handleReset} disabled={state.isTimerOn}>
+        <MenuItem
+          onClick={handleReset}
+          disabled={
+            state.isTimerOn ||
+            Object.values(props.columns)[0].items.length === 0
+          }
+        >
           <Box
             style={{
               fontSize: "0.8rem",
@@ -114,7 +120,10 @@ const ColumnMenu = memo((props) => {
         <MenuItem
           style={{ color: "red" }}
           onClick={handleDelete}
-          disabled={state.isTimerOn}
+          disabled={
+            state.isTimerOn ||
+            Object.values(props.columns)[0].items.length === 0
+          }
         >
           <DeleteIcon />
           全て削除
