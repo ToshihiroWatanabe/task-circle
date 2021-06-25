@@ -744,19 +744,22 @@ const TodoList = memo(() => {
    * 入力された値を検証します。
    */
   const validate = () => {
+    const content = inputValue
+      .trim()
+      .split(inputValue.match(/\d+:[0-5]*[0-9]:[0-5]*[0-9]/)[0])[0];
     if (Object.values(columns)[0].items.length > NUMBER_OF_ITEMS_MAX) {
       setHelperText("これ以上タスクを追加できません");
       return false;
-    }
-    if (inputValue.trim().length < 1) {
+    } else if (content.length < 1) {
       setHelperText("タスク名を入力してください");
       return false;
-    }
-    if (inputValue.trim().length > 45) {
+    } else if (content.length > 45) {
       setHelperText("タスク名は45文字以内にしてください");
       return false;
-    }
-    if (categoryInput.length > 0 && categoryInput[0].trim().length > 45) {
+    } else if (
+      categoryInput.length > 0 &&
+      categoryInput[0].trim().length > 45
+    ) {
       setHelperText("カテゴリー名は45文字以内にしてください");
       return false;
     }
