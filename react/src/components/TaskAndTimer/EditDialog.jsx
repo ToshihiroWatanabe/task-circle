@@ -1,4 +1,4 @@
-import React, { memo, useContext, useEffect, useState } from "react";
+import React, { memo, useEffect, useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import {
   Button,
@@ -16,13 +16,14 @@ import {
 import Autocomplete, {
   createFilterOptions,
 } from "@material-ui/lab/Autocomplete";
-import { Context } from "contexts/Context";
 
+/** 時間 */
 const hours = [];
 for (let i = 0; i <= 24; i++) {
   hours.push({ label: i.toString(), value: i });
 }
 
+/** 分 */
 const minutes = [];
 minutes.push({ label: "0", value: 0 });
 minutes.push({ label: "15", value: 15 });
@@ -32,6 +33,7 @@ for (let i = 0; i <= 59; i++) {
   minutes.push({ label: i.toString(), value: i });
 }
 
+/** 秒 */
 const seconds = [];
 seconds.push({ label: "0", value: 0 });
 seconds.push({ label: "15", value: 15 });
@@ -56,7 +58,6 @@ let isControlPressed = false;
  */
 const EditDialog = memo((props) => {
   const classes = useStyles();
-  const [state, setState] = useContext(Context);
   const theme = useTheme();
   const isBreakPointsDownXs = useMediaQuery(theme.breakpoints.down("xs"));
   const [value, setValue] = useState({
@@ -137,7 +138,6 @@ const EditDialog = memo((props) => {
    * カテゴリーの選択肢が選ばれたときの処理です。
    */
   const onCategoryChange = (categoryValue, reason) => {
-    console.log(categoryValue);
     if (categoryValue === undefined) {
       document.activeElement.blur();
     }
