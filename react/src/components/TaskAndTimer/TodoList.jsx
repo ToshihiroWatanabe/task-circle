@@ -1,4 +1,5 @@
 import React, { memo, useContext, useEffect, useState } from "react";
+import { Link, useLocation } from "react-router-dom";
 import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
 import {
   Chip,
@@ -32,7 +33,6 @@ import CloseIcon from "@material-ui/icons/Close";
 import AssignmentOutlinedIcon from "@material-ui/icons/AssignmentOutlined";
 import { copyTasksToClipboard } from "utils/export";
 import NoteAddOutlinedIcon from "@material-ui/icons/NoteAddOutlined";
-import { Link, useLocation } from "react-router-dom";
 import AlarmIcon from "@material-ui/icons/Alarm";
 import FloatingTimer from "./FloatingTimer";
 import FreeBreakfastOutlinedIcon from "@material-ui/icons/FreeBreakfastOutlined";
@@ -90,8 +90,10 @@ const stoppedSound = new Audio(stoppedAudio);
 /** タイマーのチクタク音 */
 const tickSound = new Audio(tickAudio);
 tickSound.volume = 1;
+/** かすかなチクタク音 */
 const faintTickSound = new Audio(faintTickAudio);
 faintTickSound.volume = 1;
+/** 目標時間タイマー達成音 */
 const achievedSound = new Audio(achievedAudio);
 
 /** YouTube動作再生オプション */
@@ -103,7 +105,9 @@ const playerOptions = {
   },
 };
 
+/** 作業用BGM動画プレーヤー */
 let workVideoPlayer = null;
+/** 休憩用BGM動画プレーヤー */
 let breakVideoPlayer = null;
 let videoPlayDone = true;
 
@@ -223,6 +227,7 @@ const onDragEnd = (result, columns, setColumns) => {
   }
 };
 
+/** Bootstrap風ツールチップのスタイル */
 const useStylesBootstrap = makeStyles((theme) => ({
   arrow: {
     color: theme.palette.common.black,
@@ -233,6 +238,9 @@ const useStylesBootstrap = makeStyles((theme) => ({
   },
 }));
 
+/**
+ * Bootstrap風ツールチップのコンポーネントです。
+ */
 function BootstrapTooltip(props) {
   const classes = useStylesBootstrap();
 
