@@ -50,11 +50,13 @@ const TagsInput = memo((props) => {
     // 半角スペースか全角スペースが素早く2回押されるとカテゴリーとして追加する
     if (
       props.categoryInput.length === 0 &&
-      (event.keyCode === 32 || event.keyCode === 229)
+      (event.keyCode === 32 ||
+        (event.keyCode === 229 && event.code === "Space"))
     ) {
       if (
         (event.keyCode === 32 && Date.now() - lastSpacePressed < 1000) ||
         (event.keyCode === 229 &&
+          event.code === "Space" &&
           event.target.value.endsWith("　") &&
           Date.now() - lastSpacePressed < 1000)
       ) {
