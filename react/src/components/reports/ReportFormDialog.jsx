@@ -22,6 +22,12 @@ import Autocomplete, {
 import AddCircleOutlineIcon from "@material-ui/icons/AddCircleOutline";
 import DeleteIcon from "@material-ui/icons/Delete";
 import "components/reports/ReportFormDialog.css";
+import {
+  REPORT_ITEMS_MAX,
+  REPORT_ITEMS_CATEGORY_MAX,
+  REPORT_ITEMS_CONTENT_MAX,
+  REPORT_CONTENT_MAX,
+} from "utils/constant";
 
 const useStyles = makeStyles((theme) => ({
   reportItem: {
@@ -50,15 +56,6 @@ const filterOptions = createFilterOptions({
 });
 
 let isControlPressed = false;
-
-/** タスク数の上限 */
-const REPORT_ITEMS_MAX = 32;
-/** カテゴリーの文字数制限 */
-const REPORT_ITEMS_CATEGORY_MAX = 45;
-/** 内容の文字数制限 */
-const REPORT_ITEMS_CONTENT_MAX = 45;
-/** 感想の文字数制限 */
-const REPORT_CONTENT_MAX = 304;
 
 /**
  * 日報データを入力するダイアログのコンポーネントです。

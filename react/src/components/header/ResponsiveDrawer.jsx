@@ -28,9 +28,7 @@ import { Context } from "contexts/Context";
 import FilePopover from "components/header/FilePopover";
 import AccountPopover from "components/header/AccountPopover";
 import TimerPopover from "./TimerPopover";
-
-/** ドロワーの横幅 */
-const DRAWER_WIDTH = "15rem";
+import { DRAWER_WIDTH } from "utils/constant";
 
 const pages = [
   { label: "タスク＆タイマー", path: "/" },
