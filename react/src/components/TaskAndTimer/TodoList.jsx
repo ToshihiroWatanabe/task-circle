@@ -1078,6 +1078,7 @@ const TodoList = memo(() => {
                                     <BootstrapTooltip
                                       title="タイマーを開始"
                                       open={
+                                        location.pathname === "/" &&
                                         playArrowIconTooltipOpen &&
                                         !state.isTimerOn &&
                                         item.isSelected &&
