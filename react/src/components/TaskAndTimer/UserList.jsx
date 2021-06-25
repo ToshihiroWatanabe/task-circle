@@ -1,6 +1,7 @@
 import React, { Fragment, memo, useState } from "react";
 import {
   Avatar,
+  Box,
   Divider,
   List,
   ListItem,
@@ -10,6 +11,7 @@ import {
   Typography,
 } from "@material-ui/core";
 import { getAvatarColor } from "utils/color";
+import { Skeleton } from "@material-ui/lab";
 
 /** 更新のsetInterval ID */
 let refreshInterval = 0;
@@ -19,7 +21,6 @@ const useStyles = makeStyles((theme) => ({
     overflow: "auto",
     maxHeight: "77vh",
   },
-  listItem: {},
   inline: {
     display: "inline",
   },
@@ -44,42 +45,55 @@ const UserList = memo((props) => {
           return (
             <Fragment key={index}>
               {index !== 0 && <Divider />}
-              <ListItem alignItems="flex-start" className={classes.listItem}>
+              <ListItem alignItems="flex-start">
                 <ListItemAvatar style={{ marginLeft: "-0.4rem" }}>
-                  <Avatar
-                    style={{
-                      backgroundColor: getAvatarColor(session.userName),
-                    }}
-                    src={session.imageUrl}
-                  >
-                    {session.userName.charAt(0).toUpperCase()}
-                  </Avatar>
+                  {index === 0 && (
+                    <Skeleton variant="circle" width={40} height={40} />
+                  )}
+                  {index > 0 && (
+                    <Avatar
+                      style={{
+                        backgroundColor: getAvatarColor(session.userName),
+                      }}
+                      src={session.imageUrl}
+                    >
+                      {session.userName.charAt(0).toUpperCase()}
+                    </Avatar>
+                  )}
                 </ListItemAvatar>
-                <ListItemText
-                  primary={session.userName}
-                  secondary={
-                    <Fragment>
-                      <Typography
-                        component="span"
-                        variant="body2"
-                        className={classes.inline}
-                        color="textPrimary"
-                      >
-                        {session.sessionType === "work" && session.isTimerOn
-                          ? "🍅" + session.content
-                          : ""}
-                        {session.sessionType === "break" && session.isTimerOn
-                          ? "☕休憩中"
-                          : ""}
-                      </Typography>
-                      {" - 残り"}
-                      {session.finishAt - dateNow > 0
-                        ? Math.ceil((session.finishAt - dateNow) / 1000 / 60)
-                        : 0}
-                      {"分"}
-                    </Fragment>
-                  }
-                />
+                {index === 0 && (
+                  <div style={{ display: "inline-block", width: "100%" }}>
+                    <Skeleton variant="text" />
+                    <Skeleton variant="text" />
+                  </div>
+                )}
+                {index > 0 && (
+                  <ListItemText
+                    primary={session.userName}
+                    secondary={
+                      <Fragment>
+                        <Typography
+                          component="span"
+                          variant="body2"
+                          className={classes.inline}
+                          color="textPrimary"
+                        >
+                          {session.sessionType === "work" && session.isTimerOn
+                            ? "🍅" + session.content
+                            : ""}
+                          {session.sessionType === "break" && session.isTimerOn
+                            ? "☕休憩中"
+                            : ""}
+                        </Typography>
+                        {" - 残り"}
+                        {session.finishAt - dateNow > 0
+                          ? Math.ceil((session.finishAt - dateNow) / 1000 / 60)
+                          : 0}
+                        {"分"}
+                      </Fragment>
+                    }
+                  />
+                )}
               </ListItem>
             </Fragment>
           );
