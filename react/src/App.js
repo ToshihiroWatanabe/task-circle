@@ -12,7 +12,6 @@ import About from "components/About";
 import Reports from "components/reports/Reports";
 import TaskAndTimer from "components/TaskAndTimer/TaskAndTimer";
 import { SettingsContext } from "contexts/SettingsContext";
-import uuid from "uuid/v4";
 import { DRAWER_WIDTH } from "utils/constant";
 
 // 開発中はページタイトルを変更
@@ -32,14 +31,6 @@ const localStorageGetItemReports = localStorage.getItem("reports")
 const localStorageGetItemSettings = localStorage.getItem("settings")
   ? JSON.parse(localStorage.getItem("settings"))
   : {};
-
-/** デフォルトTodoリスト */
-const defaultColumns = {
-  [uuid()]: {
-    name: "タスク",
-    items: [],
-  },
-};
 
 /** デフォルト設定 */
 const defaultSettings = {

@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 import {
   Avatar,
   Button,
@@ -15,19 +15,19 @@ import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import { makeStyles } from "@material-ui/core/styles";
 import VisibilityIcon from "@material-ui/icons/Visibility";
 import VisibilityOffIcon from "@material-ui/icons/VisibilityOff";
-import { Context } from "contexts/Context";
 import { Link } from "react-router-dom";
-
-const USER_ID_LENGTH_MIN = 5;
-const USER_ID_LENGTH_MAX = 32;
-const PASSWORD_LENGTH_MIN = 12;
-const PASSWORD_LENGTH_MAX = 100;
+import {
+  USER_ID_LENGTH_MIN,
+  USER_ID_LENGTH_MAX,
+  PASSWORD_LENGTH_MIN,
+  PASSWORD_LENGTH_MAX,
+} from "utils/constant";
 
 function Copyright() {
   return (
     <Typography variant="body2" color="textSecondary" align="center">
       {"Copyright © "}
-      {"日報管理アプリ "}
+      {"Task Circle "}
       {new Date().getFullYear()}
       {"."}
     </Typography>
@@ -59,11 +59,8 @@ const useStyles = makeStyles((theme) => ({
  */
 export default function Signup() {
   const classes = useStyles();
-
-  const [state, setState] = useContext(Context);
   const [showPassword, setShowPassword] = useState(false);
   const handleClickShowPassword = () => setShowPassword(!showPassword);
-  const handleMouseDownPassword = () => setShowPassword(!showPassword);
   const [formValue, setFormValue] = useState({ userId: "", password: "" });
   const [userIdHelperText, setUserIdHelperText] = useState("");
   const [passwordHelperText, setPasswordHelperText] = useState("");

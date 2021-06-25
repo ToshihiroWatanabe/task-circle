@@ -1,4 +1,4 @@
-import React, { useState, memo, Fragment, useContext } from "react";
+import React, { useState, memo, Fragment } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { makeStyles, useTheme } from "@material-ui/core/styles";
 import PropTypes from "prop-types";
@@ -15,8 +15,6 @@ import {
   Toolbar,
   Typography,
   SwipeableDrawer,
-  Icon,
-  Tooltip,
 } from "@material-ui/core";
 import MenuIcon from "@material-ui/icons/Menu";
 import DescriptionIcon from "@material-ui/icons/Description";
@@ -24,7 +22,6 @@ import AssessmentIcon from "@material-ui/icons/Assessment";
 import InfoIcon from "@material-ui/icons/Info";
 import SettingsIcon from "@material-ui/icons/Settings";
 import TimerIcon from "@material-ui/icons/Timer";
-import { Context } from "contexts/Context";
 import FilePopover from "components/header/FilePopover";
 import AccountPopover from "components/header/AccountPopover";
 import TimerPopover from "./TimerPopover";
@@ -80,7 +77,6 @@ const ResponsiveDrawer = memo((props) => {
   const classes = useStyles();
   const theme = useTheme();
   const location = useLocation();
-  const [state, setState] = useContext(Context);
   const [mobileOpen, setMobileOpen] = useState(false);
 
   // リストの項目が押されたときの処理です。

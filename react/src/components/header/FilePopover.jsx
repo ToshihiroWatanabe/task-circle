@@ -14,12 +14,22 @@ import AttachFileIcon from "@material-ui/icons/AttachFile";
 import MuiAlert from "@material-ui/lab/Alert";
 import { Context } from "contexts/Context";
 import { exportReportsToTxt, exportReportsToJson } from "utils/export";
+import {
+  REPORT_ITEMS_MAX,
+  REPORT_ITEMS_CATEGORY_MAX,
+  REPORT_ITEMS_CONTENT_MAX,
+  REPORT_CONTENT_MAX,
+} from "utils/constant";
 
 function Alert(props) {
   return <MuiAlert elevation={6} variant="filled" {...props} />;
 }
 
-const useStyles = makeStyles((theme) => ({}));
+const useStyles = makeStyles((theme) => ({
+  button: {
+    marginTop: "0.5rem",
+  },
+}));
 
 /**
  * アカウントアイコンメニューのコンポーネントです。
@@ -56,7 +66,6 @@ const FilePopover = memo((props) => {
   const onDropzoneChange = useCallback((acceptedFiles) => {
     acceptedFiles.forEach((file) => {
       const reader = new FileReader();
-
       reader.onabort = () =>
         console.error("ファイルの読み込みが中止されました");
       reader.onerror = () => console.error("ファイルの読み込みに失敗しました");
@@ -80,13 +89,27 @@ const FilePopover = memo((props) => {
   const importReportsFromJson = (data) => {
     // TODO: データのフォーマットが正しいか検証する処理を入れる？例外処理
     let additionalReports = [];
-    // データの数だけ繰り返す
+    // 日報の数だけ繰り返す
     for (let i = 0; i < data.length; i++) {
       let additionalReportItems = [];
-      for (let j = 0; j < data[i].report_items.length; j++) {
+      // 日報のタスクの数だけ繰り返す(最大数を超えている場合は最大数)
+      for (
+        let j = 0;
+        j <
+        (data[i].report_items.length > REPORT_ITEMS_MAX
+          ? REPORT_ITEMS_MAX
+          : data[i].report_items.length);
+        j++
+      ) {
         additionalReportItems.push({
-          category: data[i].report_items[j].category,
-          content: data[i].report_items[j].content,
+          category: data[i].report_items[j].category.substring(
+            0,
+            REPORT_ITEMS_CATEGORY_MAX
+          ),
+          content: data[i].report_items[j].content.substring(
+            0,
+            REPORT_ITEMS_CONTENT_MAX
+          ),
           hour: data[i].report_items[j].hour,
           minute: data[i].report_items[j].minute,
         });
@@ -94,7 +117,7 @@ const FilePopover = memo((props) => {
       additionalReports.push({
         date: data[i].date,
         report_items: additionalReportItems,
-        content: data[i].content,
+        content: data[i].content.substring(0, REPORT_CONTENT_MAX),
         updatedAt: data[i].updatedAt,
       });
     }
@@ -176,14 +199,14 @@ const FilePopover = memo((props) => {
         <Button
           onClick={onExportReportsToJsonButtonClick}
           variant="outlined"
-          style={{ marginTop: "0.5rem" }}
+          className={classes.button}
         >
           JSON形式でエクスポート
         </Button>
         <Button
           onClick={onExportReportsToTxtButtonClick}
           variant="outlined"
-          style={{ marginTop: "0.5rem" }}
+          className={classes.button}
         >
           テキスト形式でエクスポート
         </Button>
