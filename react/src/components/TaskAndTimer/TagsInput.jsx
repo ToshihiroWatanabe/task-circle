@@ -45,11 +45,19 @@ const TagsInput = memo((props) => {
   /**
    * キーが押されたときの処理です。
    * @param {*} event
-   * @returns
    */
   function handleKeyDown(event) {
-    if (event.keyCode === 32 && props.categoryInput.length === 0) {
-      if (Date.now() - lastSpacePressed < 1000) {
+    // 半角スペースか全角スペースが素早く2回押されるとカテゴリーとして追加する
+    if (
+      props.categoryInput.length === 0 &&
+      (event.keyCode === 32 || event.keyCode === 229)
+    ) {
+      if (
+        (event.keyCode === 32 && Date.now() - lastSpacePressed < 1000) ||
+        (event.keyCode === 229 &&
+          event.target.value.endsWith("　") &&
+          Date.now() - lastSpacePressed < 1000)
+      ) {
         const newSelectedItem = [...props.categoryInput];
         const duplicatedValues = newSelectedItem.indexOf(
           event.target.value.trim()
