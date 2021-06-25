@@ -111,61 +111,6 @@ let workVideoPlayer = null;
 let breakVideoPlayer = null;
 let videoPlayDone = true;
 
-const itemsFromBackEnd = [
-  {
-    id: uuid(),
-    category: "",
-    content: "予習",
-    spentSecond: 0,
-    estimatedSecond: 3 * 60,
-    isSelected: true,
-    achievedThenStop: false,
-  },
-  {
-    id: uuid(),
-    category: "",
-    content: "復習",
-    spentSecond: 0,
-    estimatedSecond: 3,
-    isSelected: false,
-    achievedThenStop: true,
-  },
-  {
-    id: uuid(),
-    category: "Java",
-    content: "JUnitのテストコードを書く",
-    spentSecond: 0,
-    estimatedSecond: 15 * 60,
-    isSelected: false,
-    achievedThenStop: true,
-  },
-  {
-    id: uuid(),
-    category: "",
-    content: "ふりかえり",
-    spentSecond: 0,
-    estimatedSecond: 60 * 60,
-    isSelected: false,
-    achievedThenStop: false,
-  },
-  {
-    id: uuid(),
-    category: "カテゴリ",
-    content: "課題",
-    spentSecond: 0,
-    estimatedSecond: 60 * 60,
-    isSelected: false,
-    achievedThenStop: true,
-  },
-];
-
-const columnsFromBackEnd = {
-  [uuid()]: {
-    name: "タスク",
-    items: itemsFromBackEnd,
-  },
-};
-
 /** デフォルトTodoリスト */
 const defaultColumns = {
   [uuid()]: {

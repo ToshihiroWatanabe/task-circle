@@ -32,6 +32,7 @@ const UserList = memo((props) => {
   const classes = useStyles();
   const [dateNow, setDateNow] = useState(Date.now());
 
+  // 現在時刻を更新
   refreshInterval = setInterval(() => {
     setDateNow(Date.now());
   }, 5000);
@@ -46,14 +47,16 @@ const UserList = memo((props) => {
               <ListItem alignItems="flex-start" className={classes.listItem}>
                 <ListItemAvatar style={{ marginLeft: "-0.4rem" }}>
                   <Avatar
-                    style={{ backgroundColor: getAvatarColor(session.name) }}
+                    style={{
+                      backgroundColor: getAvatarColor(session.userName),
+                    }}
                     src={session.imageUrl}
                   >
-                    {session.name.charAt(0).toUpperCase()}
+                    {session.userName.charAt(0).toUpperCase()}
                   </Avatar>
                 </ListItemAvatar>
                 <ListItemText
-                  primary={session.name}
+                  primary={session.userName}
                   secondary={
                     <Fragment>
                       <Typography

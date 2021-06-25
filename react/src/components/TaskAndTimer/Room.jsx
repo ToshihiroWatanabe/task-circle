@@ -1,5 +1,5 @@
 import React, { memo, useContext, useState } from "react";
-import { Divider, makeStyles, Typography, useTheme } from "@material-ui/core";
+import { Divider, makeStyles, useTheme } from "@material-ui/core";
 import { Card } from "@material-ui/core";
 import uuid from "uuid/v4";
 import { Context } from "contexts/Context";
@@ -10,7 +10,7 @@ import UserList from "./UserList";
 const sessionsFromBackEnd = [
   {
     id: uuid(),
-    name: "ユーザー1",
+    userName: "ユーザー1",
     isTimerOn: true,
     sessionType: "work",
     content: "《Java》課題",
@@ -20,7 +20,7 @@ const sessionsFromBackEnd = [
   },
   {
     id: uuid(),
-    name: "ユーザー2.000000",
+    userName: "ユーザー2.000000",
     isTimerOn: true,
     sessionType: "break",
     content: "《Java》課題",
@@ -33,7 +33,7 @@ const sessionsFromBackEnd = [
 for (let i = 0; i < 20; i++) {
   sessionsFromBackEnd.push({
     id: uuid(),
-    name: "１２３４５６７８９０１２３４５６７８９０",
+    userName: "１２３４５６７８９０１２３４５６７８９０",
     isTimerOn: true,
     sessionType: "work",
     content:
