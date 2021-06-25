@@ -15,7 +15,7 @@ import MuiAlert from "@material-ui/lab/Alert";
 import { Context } from "contexts/Context";
 import { exportReportsToTxt, exportReportsToJson } from "utils/export";
 import {
-  REPORT_ITEMS_MAX,
+  NUMBER_OF_TASKS_MAX,
   REPORT_ITEMS_CATEGORY_MAX,
   REPORT_ITEMS_CONTENT_MAX,
   REPORT_CONTENT_MAX,
@@ -96,8 +96,8 @@ const FilePopover = memo((props) => {
       for (
         let j = 0;
         j <
-        (data[i].report_items.length > REPORT_ITEMS_MAX
-          ? REPORT_ITEMS_MAX
+        (data[i].report_items.length > NUMBER_OF_TASKS_MAX
+          ? NUMBER_OF_TASKS_MAX
           : data[i].report_items.length);
         j++
       ) {

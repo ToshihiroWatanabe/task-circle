@@ -23,7 +23,7 @@ import AddCircleOutlineIcon from "@material-ui/icons/AddCircleOutline";
 import DeleteIcon from "@material-ui/icons/Delete";
 import "components/reports/ReportFormDialog.css";
 import {
-  REPORT_ITEMS_MAX,
+  NUMBER_OF_TASKS_MAX,
   REPORT_ITEMS_CATEGORY_MAX,
   REPORT_ITEMS_CONTENT_MAX,
   REPORT_CONTENT_MAX,
@@ -556,7 +556,7 @@ const ReportFormDialog = memo((props) => {
                     size="small"
                     style={{
                       visibility:
-                        report.report_items.length > REPORT_ITEMS_MAX
+                        report.report_items.length > NUMBER_OF_TASKS_MAX
                           ? "hidden"
                           : "",
                       margin: "0 0.5rem",

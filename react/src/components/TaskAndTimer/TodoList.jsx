@@ -40,9 +40,7 @@ import { changeFaviconTo } from "utils/changeFavicon";
 import { SettingsContext } from "contexts/SettingsContext";
 import YouTube from "react-youtube";
 import { StatisticsContext } from "contexts/StatisticsContext";
-
-/** タスクの最大数 */
-const NUMBER_OF_ITEMS_MAX = 32;
+import { NUMBER_OF_TASKS_MAX } from "utils/constant";
 
 /** 一度にカウントする秒数 */
 const ONCE_COUNT = 1;
@@ -194,6 +192,10 @@ function BootstrapTooltip(props) {
 }
 
 const useStyles = makeStyles((theme) => ({
+  root: {
+    display: "flex",
+    height: "100%",
+  },
   column: {
     width: 320,
     [theme.breakpoints.down("sm")]: {
@@ -323,7 +325,9 @@ const TodoList = memo(() => {
     }
   };
 
-  // 動画プレーヤーの状態が変わったときの処理です。
+  /**
+   * 動画プレーヤーの状態が変わったときの処理です。
+   */
   const onPlayerStateChange = (event) => {
     if (event.data === 1) {
       videoPlayDone = false;
@@ -790,7 +794,7 @@ const TodoList = memo(() => {
     const content = inputValue
       .trim()
       .split(inputValue.match(/\d+:[0-5]*[0-9]:[0-5]*[0-9]/)[0])[0];
-    if (Object.values(columns)[0].items.length > NUMBER_OF_ITEMS_MAX) {
+    if (Object.values(columns)[0].items.length > NUMBER_OF_TASKS_MAX) {
       setHelperText("これ以上タスクを追加できません");
       return false;
     } else if (content.length < 1) {
@@ -953,7 +957,7 @@ const TodoList = memo(() => {
   };
 
   return (
-    <div style={{ display: "flex", height: "100%" }}>
+    <div className={classes.root}>
       <DragDropContext
         onDragEnd={(result) => onDragEnd(result, columns, setColumns)}
       >

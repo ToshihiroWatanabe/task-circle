@@ -1,5 +1,5 @@
-/** タスク数の上限 */
-export const REPORT_ITEMS_MAX = 32;
+/** タスクの最大数 */
+export const NUMBER_OF_TASKS_MAX = 32;
 /** カテゴリーの文字数制限 */
 export const REPORT_ITEMS_CATEGORY_MAX = 45;
 /** 内容の文字数制限 */
