@@ -13,6 +13,7 @@ import Reports from "components/reports/Reports";
 import TaskAndTimer from "components/TaskAndTimer/TaskAndTimer";
 import { SettingsContext } from "contexts/SettingsContext";
 import { DRAWER_WIDTH } from "utils/constant";
+import { StatisticsContext } from "contexts/StatisticsContext";
 
 // 開発中はページタイトルを変更
 if (
@@ -32,19 +33,10 @@ const localStorageGetItemSettings = localStorage.getItem("settings")
   ? JSON.parse(localStorage.getItem("settings"))
   : {};
 
-/** デフォルト設定 */
-const defaultSettings = {
-  isPomodoroEnabled: false,
-  isBreakAutoStart: true,
-  workTimerLength: 25 * 60,
-  breakTimerLength: 5 * 60,
-  workVideoUrl: "",
-  workVideoVolume: 100,
-  breakVideoUrl: "",
-  breakVideoVolume: 100,
-  tickVolume: 10,
-  volume: 100,
-};
+/** ローカルストレージから統計を取得します。 */
+const localStorageGetItemStatistics = localStorage.getItem("statistics")
+  ? JSON.parse(localStorage.getItem("statistics"))
+  : {};
 
 const useStyles = makeStyles((theme) => ({
   main: {
@@ -73,18 +65,22 @@ const App = () => {
   const classes = useStyles();
   const [state, setState] = useContext(Context);
   const [settings, setSettings] = useContext(SettingsContext);
+  const [statistics, setStatistics] = useContext(StatisticsContext);
   const location = useLocation();
 
   useEffect(() => {
+    // 初期値とローカルストレージからの値を統合
     setState((state) => {
-      const newState = {
+      return {
         ...state,
         reports: localStorageGetItemReports,
       };
-      return newState;
     });
     setSettings((settings) => {
-      return { ...defaultSettings, ...localStorageGetItemSettings };
+      return { ...settings, ...localStorageGetItemSettings };
+    });
+    setStatistics((statistics) => {
+      return { ...statistics, ...localStorageGetItemStatistics };
     });
   }, []);
 
