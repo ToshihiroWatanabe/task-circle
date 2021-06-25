@@ -1,4 +1,4 @@
-/** タスクの最大数 */
+/** 1つのToDoリストまたは日報のタスクの最大数 */
 export const NUMBER_OF_TASKS_MAX = 32;
 /** カテゴリーの文字数制限 */
 export const REPORT_ITEMS_CATEGORY_MAX = 45;
