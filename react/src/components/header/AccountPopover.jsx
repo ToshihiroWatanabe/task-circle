@@ -1,5 +1,6 @@
 import React, { memo, useContext, useState } from "react";
 import {
+  Box,
   Button,
   IconButton,
   List,
@@ -19,9 +20,6 @@ import { StatisticsContext } from "contexts/StatisticsContext";
 import { secondToHHMMSS } from "utils/convert";
 
 const useStyles = makeStyles((theme) => ({
-  button: {
-    margin: "0.5rem 1rem",
-  },
   link: {
     color: "inherit",
     textDecoration: "none",
@@ -34,7 +32,7 @@ const useStyles = makeStyles((theme) => ({
 const AccountPopover = memo((props) => {
   const classes = useStyles();
   const [state, setState] = useContext(Context);
-  const [statistics, setStatistics] = useContext(StatisticsContext);
+  const [statistics] = useContext(StatisticsContext);
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
 
@@ -69,6 +67,7 @@ const AccountPopover = memo((props) => {
         </IconButton>
       </Tooltip>
       <Popover
+        id="acountPopover"
         disableScrollLock={true}
         anchorEl={anchorEl}
         open={open}
@@ -82,39 +81,32 @@ const AccountPopover = memo((props) => {
           horizontal: "center",
         }}
         getContentAnchorEl={null}
+        className={classes.popover}
       >
         <Tooltip
           title={
-            "昨日の合計作業時間:" +
+            "昨日の合計作業時間 " +
             secondToHHMMSS(statistics.yesterdaySpentSecond)
           }
           placement="top"
         >
-          <Typography style={{ padding: "1rem 1rem 0 1rem" }}>
-            {new Date(statistics.updatedAt).toLocaleDateString()}の合計作業時間:{" "}
+          <Typography>
+            {new Date(statistics.updatedAt).toLocaleDateString()}の合計作業時間{" "}
             {secondToHHMMSS(statistics.todaySpentSecond)}
           </Typography>
         </Tooltip>
+        <Box mt={"1rem"} />
         {state.userId === "" && (
           <>
-            <Typography style={{ padding: "1rem 1rem 0 1rem" }}>
-              ログインしていません
-            </Typography>
+            <Typography>ログインしていません</Typography>
             <Link onClick={handleClose} to="/login" className={classes.link}>
-              <Button
-                className={classes.button}
-                variant="outlined"
-                size="small"
-              >
+              <Button variant="outlined" size="small">
                 <ListItemText primary="ログイン" />
               </Button>
             </Link>
+            <span style={{ marginRight: "0.5rem" }} />
             <Link onClick={handleClose} to="/signup" className={classes.link}>
-              <Button
-                className={classes.button}
-                variant="outlined"
-                size="small"
-              >
+              <Button variant="outlined" size="small">
                 <ListItemText primary="新規登録" />
               </Button>
             </Link>
@@ -122,23 +114,16 @@ const AccountPopover = memo((props) => {
         )}
         {state.userId !== "" && (
           <>
-            <Button
-              className={classes.button}
-              variant="outlined"
-              onClick={onSyncButtonClick}
-            >
+            <Button variant="outlined" onClick={onSyncButtonClick}>
               <SyncIcon />
               日報をサーバーと同期
             </Button>
             {state.reportUpdatedAt !== "" && (
               <>
-                <Typography style={{ marginLeft: "1rem" }}>
-                  最終更新: {state.reportUpdatedAt}
-                </Typography>
+                <Typography>最終更新: {state.reportUpdatedAt}</Typography>
               </>
             )}
             <Button
-              className={classes.button}
               variant="outlined"
               size="small"
               onClick={onLogoutButtonClick}
