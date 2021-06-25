@@ -463,6 +463,7 @@ const TodoList = memo(() => {
    * @param {*} type taskかfab
    */
   const onPlayButtonClick = (type) => {
+    isPlayButtonFocused = false;
     setState((state) => {
       state.isTimerOn = !state.isTimerOn;
       if (state.isTimerOn) {
