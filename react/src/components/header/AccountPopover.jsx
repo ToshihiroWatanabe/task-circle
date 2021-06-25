@@ -15,6 +15,8 @@ import SettingsIcon from "@material-ui/icons/Settings";
 import SyncIcon from "@material-ui/icons/Sync";
 import { Link } from "react-router-dom";
 import { Context } from "contexts/Context";
+import { StatisticsContext } from "contexts/StatisticsContext";
+import { secondToHHMMSS } from "utils/convert";
 
 const useStyles = makeStyles((theme) => ({
   button: {
@@ -32,6 +34,7 @@ const useStyles = makeStyles((theme) => ({
 const AccountPopover = memo((props) => {
   const classes = useStyles();
   const [state, setState] = useContext(Context);
+  const [statistics, setStatistics] = useContext(StatisticsContext);
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
 
@@ -80,6 +83,18 @@ const AccountPopover = memo((props) => {
         }}
         getContentAnchorEl={null}
       >
+        <Tooltip
+          title={
+            "昨日の合計作業時間:" +
+            secondToHHMMSS(statistics.yesterdaySpentSecond)
+          }
+          placement="top"
+        >
+          <Typography style={{ padding: "1rem 1rem 0 1rem" }}>
+            {new Date(statistics.updatedAt).toLocaleDateString()}の合計作業時間:{" "}
+            {secondToHHMMSS(statistics.todaySpentSecond)}
+          </Typography>
+        </Tooltip>
         {state.userId === "" && (
           <>
             <Typography style={{ padding: "1rem 1rem 0 1rem" }}>

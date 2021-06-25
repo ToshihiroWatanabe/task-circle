@@ -10,17 +10,20 @@ import { CssBaseline, MuiThemeProvider } from "@material-ui/core";
 import ErrorBoundary from "components/ErrorBoundary";
 import { theme } from "theme";
 import { SettingsContextProvider } from "contexts/SettingsContext";
+import { StatisticsContextProvider } from "contexts/StatisticsContext";
 
 ReactDOM.render(
   <ErrorBoundary>
     <BrowserRouter>
       <ContextProvider>
         <SettingsContextProvider>
-          <MuiThemeProvider theme={theme}>
-            <CssBaseline>
-              <App />
-            </CssBaseline>
-          </MuiThemeProvider>
+          <StatisticsContextProvider>
+            <MuiThemeProvider theme={theme}>
+              <CssBaseline>
+                <App />
+              </CssBaseline>
+            </MuiThemeProvider>
+          </StatisticsContextProvider>
         </SettingsContextProvider>
       </ContextProvider>
     </BrowserRouter>
