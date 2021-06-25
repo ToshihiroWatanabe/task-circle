@@ -591,8 +591,9 @@ const TodoList = memo(() => {
             )[0];
             // 目標時間を超えた かつ 目標時間を超えたときに停止する設定のとき
             if (
-              selectedItem.spentSecond >= selectedItem.estimatedSecond &&
-              selectedItem.achievedThenStop
+              selectedItem &&
+              selectedItem.achievedThenStop &&
+              selectedItem.spentSecond >= selectedItem.estimatedSecond
             ) {
               // 目標時間を超えたときに停止する設定をオフにする
               Object.values(columns)[0].items.map((item, index) => {
@@ -768,7 +769,11 @@ const TodoList = memo(() => {
           content: retrievedInputValue.content,
           spentSecond: 0,
           estimatedSecond: retrievedInputValue.estimatedSecond,
-          isSelected: false,
+          // タスクがまだない かつ タイマー停止中のときは初めから選択された状態で追加
+          isSelected:
+            Object.values(columns)[0].items.length === 0 && !state.isTimerOn
+              ? true
+              : false,
           achievedThenStop: false,
         });
         localStorage.setItem("columns", JSON.stringify(columns));

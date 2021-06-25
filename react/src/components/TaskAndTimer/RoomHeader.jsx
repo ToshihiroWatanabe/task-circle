@@ -48,7 +48,7 @@ const RoomHeader = (props) => {
       </div>
       {state.isInRoom && (
         <>
-          <Button size="small">離席</Button>
+          {/* <Button size="small">離席</Button> */}
           <Tooltip title="退室する">
             <IconButton
               size="small"
