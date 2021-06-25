@@ -29,6 +29,9 @@ import {
   REPORT_CONTENT_MAX,
 } from "utils/constant";
 
+/** ユーザーエージェント */
+const userAgent = window.navigator.userAgent.toLowerCase();
+
 const useStyles = makeStyles((theme) => ({
   reportItem: {
     alignItems: "center",
@@ -37,11 +40,13 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+/** 時間の選択肢 */
 const hours = [];
 for (let i = 0; i <= 24; i++) {
   hours.push({ label: i.toString(), value: i });
 }
 
+/** 分の選択肢 */
 const minutes = [];
 minutes.push({ label: "0", value: 0 });
 minutes.push({ label: "15", value: 15 });
@@ -600,13 +605,24 @@ const ReportFormDialog = memo((props) => {
           <Button onClick={onCancelButtonClick} color="primary">
             キャンセル
           </Button>
-          <Button
-            onClick={onCreateButtonClick}
-            variant="contained"
-            color="primary"
+          <Tooltip
+            title={
+              (report.updatedAt === 0 ? "作成" : "更新") +
+              (userAgent.indexOf("windows nt") !== -1
+                ? " (Ctrl + Enter)"
+                : userAgent.indexOf("mac os") !== -1
+                ? " (Cmd + Enter)"
+                : "")
+            }
           >
-            {report.updatedAt === 0 ? "作成" : "更新"}
-          </Button>
+            <Button
+              onClick={onCreateButtonClick}
+              variant="contained"
+              color="primary"
+            >
+              {report.updatedAt === 0 ? "作成" : "更新"}
+            </Button>
+          </Tooltip>
         </DialogActions>
       </Dialog>
     </>
