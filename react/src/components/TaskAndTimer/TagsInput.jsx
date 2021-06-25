@@ -14,7 +14,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 /**
- * タグ入力のコンポーネントです。
+ * タグ入力可能な入力欄のコンポーネントです。
  */
 const TagsInput = memo((props) => {
   const classes = useStyles();
@@ -46,7 +46,7 @@ const TagsInput = memo((props) => {
    * キーが押されたときの処理です。
    * @param {*} event
    */
-  function handleKeyDown(event) {
+  const handleKeyDown = (event) => {
     // 半角スペースか全角スペースが素早く2回押されるとカテゴリーとして追加する
     if (
       props.categoryInput.length === 0 &&
@@ -92,16 +92,16 @@ const TagsInput = memo((props) => {
         props.categoryInput.slice(0, props.categoryInput.length - 1)
       );
     }
-  }
+  };
 
-  function handleChange(item) {
+  const handleChange = (item) => {
     let newSelectedItem = [...props.categoryInput];
     if (newSelectedItem.indexOf(item) === -1) {
       newSelectedItem = [...newSelectedItem, item];
     }
     props.setInputValue("");
     props.setCategoryInput(newSelectedItem);
-  }
+  };
 
   const handleDelete = (item) => () => {
     const newSelectedItem = [...props.categoryInput];
@@ -109,10 +109,14 @@ const TagsInput = memo((props) => {
     props.setCategoryInput(newSelectedItem);
   };
 
-  function handleInputChange(event) {
+  /**
+   * 入力された値が変化したときの処理です。
+   * @param {*} event
+   */
+  const handleInputChange = (event) => {
     props.setInputValue(event.target.value);
     props.setHelperText("");
-  }
+  };
 
   return (
     <>
