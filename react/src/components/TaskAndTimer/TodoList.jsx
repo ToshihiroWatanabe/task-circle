@@ -486,7 +486,9 @@ const TodoList = memo(() => {
     if (
       ["DIV", "SPAN"].includes(event.target.tagName) &&
       event.target.style.backgroundColor !== "transparent" &&
-      event.target.className !== "MuiIconButton-label"
+      event.target.className !== "MuiIconButton-label" &&
+      !["決定", "キャンセル"].includes(event.target.innerText) &&
+      event.target.style.opacity !== "0"
     ) {
       setColumns((columns) => {
         Object.values(columns)[0].items.map((item, i) => {
