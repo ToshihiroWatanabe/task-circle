@@ -70,8 +70,8 @@ const ReportFormDialog = memo((props) => {
   const classes = useStyles();
   const theme = useTheme();
   const isBreakPointsDownXs = useMediaQuery(theme.breakpoints.down("xs"));
-
   const [report, setReport] = useState(props.defaultReport);
+  const [contentHelperText, setContentHelperText] = useState("");
 
   useEffect(() => {
     if (props.open) {
@@ -109,14 +109,20 @@ const ReportFormDialog = memo((props) => {
     for (let i = 0; i < report.report_items.length; i++) {
       let category = report.report_items[i].category.trim();
       if (category.length > REPORT_ITEMS_CATEGORY_MAX) {
-        console.error(
-          "カテゴリーは" +
-            REPORT_ITEMS_CATEGORY_MAX +
-            "文字以内で入力してください"
-        );
+        // console.error(
+        //   "カテゴリーは" +
+        //     REPORT_ITEMS_CATEGORY_MAX +
+        //     "文字以内で入力してください"
+        // );
       } else if (category.length === 0) {
-        console.error("カテゴリーを入力してください");
+        // console.error("カテゴリーを入力してください");
       }
+    }
+    if (report.content.length > REPORT_CONTENT_MAX) {
+      setContentHelperText(
+        "感想は" + REPORT_CONTENT_MAX + "文字以内にしてください"
+      );
+      return false;
     }
     return true;
   };
@@ -317,6 +323,7 @@ const ReportFormDialog = memo((props) => {
    * @param {*} event
    */
   const onContentChange = (event) => {
+    setContentHelperText("");
     setReport((report) => {
       return { ...report, content: event.target.value };
     });
@@ -587,13 +594,13 @@ const ReportFormDialog = memo((props) => {
             label="感想"
             type="text"
             placeholder="ここに感想を残せます"
+            error={contentHelperText !== ""}
             multiline
             rows={8}
             rowsMax={8}
             fullWidth
             value={report.content}
             onChange={onContentChange}
-            inputProps={{ maxLength: REPORT_CONTENT_MAX }}
           />
           {report.content.length >= REPORT_CONTENT_MAX ? (
             <>感想は{REPORT_CONTENT_MAX}字までです</>
