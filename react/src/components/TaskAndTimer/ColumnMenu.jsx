@@ -53,6 +53,7 @@ const ColumnMenu = memo((props) => {
           }),
         },
       };
+      props.setPreviousColumns({ ...newColumns });
       localStorage.setItem("columns", JSON.stringify(newColumns));
       return newColumns;
     });
@@ -76,6 +77,7 @@ const ColumnMenu = memo((props) => {
       const newColumns = {
         [Object.keys(columns)[0]]: { ...Object.values(columns)[0], items: [] },
       };
+      props.setPreviousColumns({ ...newColumns });
       localStorage.setItem("columns", JSON.stringify(newColumns));
       return newColumns;
     });

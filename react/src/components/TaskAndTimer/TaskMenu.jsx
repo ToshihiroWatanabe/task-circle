@@ -107,6 +107,7 @@ const TaskMenu = memo((props) => {
           ),
         },
       };
+      props.setPreviousColumns({ ...newColumns });
       localStorage.setItem("columns", JSON.stringify(newColumns));
       return newColumns;
     });
@@ -118,7 +119,6 @@ const TaskMenu = memo((props) => {
    */
   const handleDelete = () => {
     props.setColumns((columns) => {
-      console.log(Object.values(columns));
       const newColumns = {
         ...Object.values(columns),
         [Object.keys(columns)[props.columnIndex]]: {
@@ -139,6 +139,7 @@ const TaskMenu = memo((props) => {
           ),
         },
       };
+      props.setPreviousColumns({ ...newColumns });
       localStorage.setItem("columns", JSON.stringify(newColumns));
       return newColumns;
     });

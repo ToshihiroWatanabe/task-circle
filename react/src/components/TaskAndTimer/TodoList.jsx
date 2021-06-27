@@ -236,6 +236,7 @@ const TodoList = memo(() => {
   const [isTagsInputFocused, setIsTagsInputFocused] = useState(-1);
   const [helperText, setHelperText] = useState("");
   const [lastActivity, setLastActivity] = useState({});
+  const [previousColumns, setPreviousColumns] = useState({});
   const [undoSnackbarOpen, setUndoSnackbarOpen] = useState(false);
   const [undoSnackbarMessage, setUndoSnackbarMessage] = useState("");
   const [simpleSnackbarOpen, setSimpleSnackbarOpen] = useState(false);
@@ -786,72 +787,82 @@ const TodoList = memo(() => {
    * 取り消しボタンがクリックされたときの処理です。
    */
   const onUndoButtonClick = () => {
-    // タスクの削除を取り消す
-    if (lastActivity.type === "itemDelete") {
-      setColumns((columns) => {
-        Object.values(columns)[0].items.splice(
-          lastActivity.index,
-          0,
-          lastActivity.item
-        );
-        const newColumns = {
-          [Object.keys(columns)[0]]: {
-            ...Object.values(columns)[0],
-            items: Object.values(columns)[0].items,
-          },
-        };
-        localStorage.setItem("columns", JSON.stringify(newColumns));
-        return newColumns;
+    // // タスクの削除を取り消す
+    // if (lastActivity.type === "itemDelete") {
+    //   setColumns((columns) => {
+    //     Object.values(columns)[0].items.splice(
+    //       lastActivity.index,
+    //       0,
+    //       lastActivity.item
+    //     );
+    //     const newColumns = {
+    //       [Object.keys(columns)[0]]: {
+    //         ...Object.values(columns)[0],
+    //         items: Object.values(columns)[0].items,
+    //       },
+    //     };
+    //     localStorage.setItem("columns", JSON.stringify(newColumns));
+    //     return newColumns;
+    //   });
+    //   setLastActivity({});
+    //   setSimpleSnackbarMessage("削除を取り消しました");
+    //   // 経過時間のリセットを取り消す
+    // } else if (lastActivity.type === "resetSpentSecond") {
+    //   setColumns((columns) => {
+    //     const newColumns = {
+    //       [Object.keys(columns)[0]]: {
+    //         ...Object.values(columns)[0],
+    //         items: Object.values(columns)[0].items.map((item, index) => {
+    //           if (index === lastActivity.index) {
+    //             item.spentSecond = lastActivity.spentSecond;
+    //           }
+    //           return item;
+    //         }),
+    //       },
+    //     };
+    //     localStorage.setItem("columns", JSON.stringify(newColumns));
+    //     return newColumns;
+    //   });
+    //   setLastActivity({});
+    //   setSimpleSnackbarMessage("経過時間のリセットを取り消しました");
+    //   // 全て削除を取り消す
+    // } else if (lastActivity.type === "deleteAll") {
+    //   setColumns((columns) => {
+    //     const newColumns = {
+    //       [Object.keys(columns)[0]]: {
+    //         ...Object.values(columns)[0],
+    //         items: lastActivity.items,
+    //       },
+    //     };
+    //     localStorage.setItem("columns", JSON.stringify(newColumns));
+    //     return newColumns;
+    //   });
+    //   setLastActivity({});
+    //   setSimpleSnackbarMessage("削除を取り消しました");
+    //   // 全ての時間をリセットを取り消す
+    // } else if (lastActivity.type === "resetAllTime") {
+    //   setColumns((columns) => {
+    //     const newColumns = {
+    //       [Object.keys(columns)[0]]: {
+    //         ...Object.values(columns)[0],
+    //         items: lastActivity.items,
+    //       },
+    //     };
+    //     localStorage.setItem("columns", JSON.stringify(newColumns));
+    //     return newColumns;
+    //   });
+    //   setLastActivity({});
+    //   setSimpleSnackbarMessage("時間のリセットを取り消しました");
+    if (Object.values(previousColumns).length > 0) {
+      setPreviousColumns((previousColumns) => {
+        setColumns((columns) => {
+          const newColumns = { ...previousColumns };
+          localStorage.setItem("columns", JSON.stringify(newColumns));
+          return newColumns;
+        });
       });
-      setLastActivity({});
-      setSimpleSnackbarMessage("削除を取り消しました");
-      // 経過時間のリセットを取り消す
-    } else if (lastActivity.type === "resetSpentSecond") {
-      setColumns((columns) => {
-        const newColumns = {
-          [Object.keys(columns)[0]]: {
-            ...Object.values(columns)[0],
-            items: Object.values(columns)[0].items.map((item, index) => {
-              if (index === lastActivity.index) {
-                item.spentSecond = lastActivity.spentSecond;
-              }
-              return item;
-            }),
-          },
-        };
-        localStorage.setItem("columns", JSON.stringify(newColumns));
-        return newColumns;
-      });
-      setLastActivity({});
-      setSimpleSnackbarMessage("経過時間のリセットを取り消しました");
-      // 全て削除を取り消す
-    } else if (lastActivity.type === "deleteAll") {
-      setColumns((columns) => {
-        const newColumns = {
-          [Object.keys(columns)[0]]: {
-            ...Object.values(columns)[0],
-            items: lastActivity.items,
-          },
-        };
-        localStorage.setItem("columns", JSON.stringify(newColumns));
-        return newColumns;
-      });
-      setLastActivity({});
-      setSimpleSnackbarMessage("削除を取り消しました");
-      // 全ての時間をリセットを取り消す
-    } else if (lastActivity.type === "resetAllTime") {
-      setColumns((columns) => {
-        const newColumns = {
-          [Object.keys(columns)[0]]: {
-            ...Object.values(columns)[0],
-            items: lastActivity.items,
-          },
-        };
-        localStorage.setItem("columns", JSON.stringify(newColumns));
-        return newColumns;
-      });
-      setLastActivity({});
-      setSimpleSnackbarMessage("時間のリセットを取り消しました");
+      setPreviousColumns({});
+      setSimpleSnackbarMessage("操作を元に戻しました");
     } else {
       setSimpleSnackbarMessage("操作を元に戻せませんでした");
     }
@@ -967,6 +978,7 @@ const TodoList = memo(() => {
                     columns={columns}
                     setColumns={setColumns}
                     setLastActivity={setLastActivity}
+                    setPreviousColumns={setPreviousColumns}
                     setUndoSnackbarOpen={setUndoSnackbarOpen}
                     setUndoSnackbarMessage={setUndoSnackbarMessage}
                   />
@@ -1154,6 +1166,7 @@ const TodoList = memo(() => {
                                       columns={columns}
                                       setColumns={setColumns}
                                       setLastActivity={setLastActivity}
+                                      setPreviousColumns={setPreviousColumns}
                                       setUndoSnackbarOpen={setUndoSnackbarOpen}
                                       setUndoSnackbarMessage={
                                         setUndoSnackbarMessage

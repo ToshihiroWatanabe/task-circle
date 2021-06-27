@@ -152,7 +152,6 @@ const TagsInput = memo((props) => {
    * 入力された値を検証します。
    */
   const validate = () => {
-    console.log(inputValue);
     const estimatedTimeInput =
       inputValue.match(/\d+:[0-5]*[0-9]:[0-5]*[0-9]/) !== null
         ? inputValue.match(/\d+:[0-5]*[0-9]:[0-5]*[0-9]/)[0]
@@ -161,7 +160,6 @@ const TagsInput = memo((props) => {
       estimatedTimeInput !== null
         ? inputValue.trim().split(estimatedTimeInput)[0]
         : inputValue.trim();
-    console.log(content);
     if (
       Object.values(props.columns)[props.index].items.length >
       NUMBER_OF_TASKS_MAX
