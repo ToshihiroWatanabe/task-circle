@@ -30,8 +30,8 @@ import AnalyticsFilePopover from "components/AnalyticsFilePopover";
 
 const pages = [
   { label: "タスク＆タイマー", path: "/" },
-  { label: "日報管理", path: "/reports" },
-  { label: "分析レポート", path: "/analytics" },
+  // { label: "日報管理", path: "/reports" },
+  // { label: "分析レポート", path: "/analytics" },
   { label: "設定", path: "/settings" },
   { label: "このアプリについて", path: "/about" },
 ];
@@ -115,8 +115,8 @@ const ResponsiveDrawer = memo((props) => {
               >
                 <ListItemIcon>
                   {page.label === "タスク＆タイマー" ? <TimerIcon /> : ""}
-                  {page.label === "日報管理" ? <DescriptionIcon /> : ""}
-                  {page.label === "分析レポート" ? <AssessmentIcon /> : ""}
+                  {/* {page.label === "日報管理" ? <DescriptionIcon /> : ""}
+                  {page.label === "分析レポート" ? <AssessmentIcon /> : ""} */}
                   {page.label === "設定" ? <SettingsIcon /> : ""}
                   {page.label === "このアプリについて" ? <InfoIcon /> : ""}
                 </ListItemIcon>
