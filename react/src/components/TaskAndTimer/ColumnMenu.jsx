@@ -39,10 +39,7 @@ const ColumnMenu = memo((props) => {
    */
   const handleReset = () => {
     props.setColumns((columns) => {
-      props.setLastActivity({
-        type: "resetAllTime",
-        items: JSON.parse(JSON.stringify(Object.values(columns)[0].items)),
-      });
+      props.setPreviousColumns({ ...columns });
       const newColumns = {
         [Object.keys(columns)[0]]: {
           ...Object.values(columns)[0],
@@ -53,7 +50,6 @@ const ColumnMenu = memo((props) => {
           }),
         },
       };
-      props.setPreviousColumns({ ...newColumns });
       localStorage.setItem("columns", JSON.stringify(newColumns));
       return newColumns;
     });
@@ -66,18 +62,13 @@ const ColumnMenu = memo((props) => {
    * 削除がクリックされたときの処理です。
    */
   const handleDelete = () => {
-    console.log(props.index + " + 1番目のリストを削除します");
     props.setColumns((columns) => {
-      props.setLastActivity({
-        type: "deleteAll",
-        items: Object.values(columns)[0].items,
-      });
+      props.setPreviousColumns({ ...columns });
       props.setUndoSnackbarMessage("削除しました");
       props.setUndoSnackbarOpen(true);
       const newColumns = {
         [Object.keys(columns)[0]]: { ...Object.values(columns)[0], items: [] },
       };
-      props.setPreviousColumns({ ...newColumns });
       localStorage.setItem("columns", JSON.stringify(newColumns));
       return newColumns;
     });

@@ -87,17 +87,13 @@ const TaskMenu = memo((props) => {
    */
   const handleReset = () => {
     props.setColumns((columns) => {
+      props.setPreviousColumns({ ...columns });
       const newColumns = {
         [Object.keys(columns)[props.columnIndex]]: {
           ...Object.values(columns)[props.columnIndex],
           items: Object.values(columns)[props.columnIndex].items.map(
             (item, index) => {
               if (index === props.index) {
-                props.setLastActivity({
-                  type: "resetSpentSecond",
-                  spentSecond: item.spentSecond,
-                  index: index,
-                });
                 item.spentSecond = 0;
                 props.setUndoSnackbarMessage("経過時間をリセットしました");
                 props.setUndoSnackbarOpen(true);
@@ -107,7 +103,6 @@ const TaskMenu = memo((props) => {
           ),
         },
       };
-      props.setPreviousColumns({ ...newColumns });
       localStorage.setItem("columns", JSON.stringify(newColumns));
       return newColumns;
     });
@@ -119,6 +114,7 @@ const TaskMenu = memo((props) => {
    */
   const handleDelete = () => {
     props.setColumns((columns) => {
+      props.setPreviousColumns({ ...columns });
       const newColumns = {
         ...Object.values(columns),
         [Object.keys(columns)[props.columnIndex]]: {
@@ -126,11 +122,6 @@ const TaskMenu = memo((props) => {
           items: Object.values(columns)[props.columnIndex].items.filter(
             (value, index) => {
               if (index === props.index) {
-                props.setLastActivity({
-                  type: "itemDelete",
-                  item: Object.values(columns)[props.columnIndex].items[index],
-                  index: index,
-                });
                 props.setUndoSnackbarMessage("削除しました");
                 props.setUndoSnackbarOpen(true);
               }
@@ -139,7 +130,6 @@ const TaskMenu = memo((props) => {
           ),
         },
       };
-      props.setPreviousColumns({ ...newColumns });
       localStorage.setItem("columns", JSON.stringify(newColumns));
       return newColumns;
     });
