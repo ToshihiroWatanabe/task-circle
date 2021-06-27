@@ -51,10 +51,10 @@ const useStyles = makeStyles((theme) => ({
       alignItems: "center",
       flexDirection: "column",
     },
-    [theme.breakpoints.up("lg")]: {
-      width: `calc(100% - ${DRAWER_WIDTH}px)`,
-      marginLeft: DRAWER_WIDTH,
-    },
+    // [theme.breakpoints.up("lg")]: {
+    //   width: `calc(100% - ${DRAWER_WIDTH}px)`,
+    //   marginLeft: DRAWER_WIDTH,
+    // },
   },
 }));
 

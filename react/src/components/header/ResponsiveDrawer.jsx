@@ -15,10 +15,13 @@ import {
   Toolbar,
   Typography,
   SwipeableDrawer,
+  useMediaQuery,
+  Button,
 } from "@material-ui/core";
 import MenuIcon from "@material-ui/icons/Menu";
 import DescriptionIcon from "@material-ui/icons/Description";
 import AssessmentIcon from "@material-ui/icons/Assessment";
+import HomeIcon from "@material-ui/icons/Home";
 import InfoIcon from "@material-ui/icons/Info";
 import SettingsIcon from "@material-ui/icons/Settings";
 import TimerIcon from "@material-ui/icons/Timer";
@@ -29,7 +32,7 @@ import { DRAWER_WIDTH } from "utils/constant";
 import AnalyticsFilePopover from "components/AnalyticsFilePopover";
 
 const pages = [
-  { label: "タスク＆タイマー", path: "/" },
+  { label: "ホーム", path: "/" },
   // { label: "日報管理", path: "/reports" },
   // { label: "分析レポート", path: "/analytics" },
   { label: "設定", path: "/settings" },
@@ -40,22 +43,22 @@ const useStyles = makeStyles((theme) => ({
   root: {
     display: "flex",
   },
-  drawer: {
-    [theme.breakpoints.up("lg")]: {
-      width: DRAWER_WIDTH,
-      flexShrink: 0,
-    },
-  },
-  appBar: {
-    zIndex: theme.zIndex.drawer + 1,
-    [theme.breakpoints.up("lg")]: {
-      width: `calc(100%)`,
-      marginLeft: DRAWER_WIDTH,
-    },
-  },
+  // drawer: {
+  //   [theme.breakpoints.up("lg")]: {
+  //     width: DRAWER_WIDTH,
+  //     flexShrink: 0,
+  //   },
+  // },
+  // appBar: {
+  //   zIndex: theme.zIndex.drawer + 1,
+  //   [theme.breakpoints.up("lg")]: {
+  //     width: `calc(100%)`,
+  //     marginLeft: DRAWER_WIDTH,
+  //   },
+  // },
   menuButton: {
     marginRight: theme.spacing(2),
-    [theme.breakpoints.up("lg")]: {
+    [theme.breakpoints.up("md")]: {
       display: "none",
     },
   },
@@ -114,7 +117,7 @@ const ResponsiveDrawer = memo((props) => {
                 data-num={index.toString()}
               >
                 <ListItemIcon>
-                  {page.label === "タスク＆タイマー" ? <TimerIcon /> : ""}
+                  {page.label === "ホーム" ? <HomeIcon /> : ""}
                   {/* {page.label === "日報管理" ? <DescriptionIcon /> : ""}
                   {page.label === "分析レポート" ? <AssessmentIcon /> : ""} */}
                   {page.label === "設定" ? <SettingsIcon /> : ""}
@@ -154,13 +157,34 @@ const ResponsiveDrawer = memo((props) => {
             {pages.map(
               (page, index) =>
                 location.pathname === page.path && (
-                  <Fragment key={index}>{page.label}</Fragment>
+                  <Fragment key={index}>Task Circle</Fragment>
                 )
             )}
             {location.pathname === "/login" && <>ログイン</>}
             {location.pathname === "/signup" && <>新規登録</>}
           </Typography>
           <span style={{ flexGrow: 1 }}></span>
+          {useMediaQuery(theme.breakpoints.up("md")) && (
+            <Link to="/" style={{ color: "inherit", textDecoration: "none" }}>
+              <Button color="inherit">ホーム</Button>
+            </Link>
+          )}
+          {useMediaQuery(theme.breakpoints.up("md")) && (
+            <Link
+              to="settings"
+              style={{ color: "inherit", textDecoration: "none" }}
+            >
+              <Button color="inherit">設定</Button>
+            </Link>
+          )}
+          {useMediaQuery(theme.breakpoints.up("md")) && (
+            <Link
+              to="about"
+              style={{ color: "inherit", textDecoration: "none" }}
+            >
+              <Button color="inherit">このアプリについて</Button>
+            </Link>
+          )}
           {/* ポモドーロ切り替えアイコン */}
           {location.pathname === "/" && (
             <>
@@ -195,7 +219,7 @@ const ResponsiveDrawer = memo((props) => {
           </SwipeableDrawer>
         </Hidden>
         <Hidden mdDown implementation="css">
-          <Drawer
+          {/* <Drawer
             classes={{
               paper: classes.drawerPaper,
             }}
@@ -203,7 +227,7 @@ const ResponsiveDrawer = memo((props) => {
             open
           >
             {drawer}
-          </Drawer>
+          </Drawer> */}
         </Hidden>
       </nav>
     </div>
