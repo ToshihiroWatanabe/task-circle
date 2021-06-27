@@ -199,11 +199,11 @@ const useStyles = makeStyles((theme) => ({
     height: "100%",
   },
   column: {
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    margin: 8,
     width: 320,
-    // [theme.breakpoints.down("sm")]: {
-    //   width: "calc(100vw - 2rem)",
-    //   maxWidth: "480px",
-    // },
     [theme.breakpoints.down("xs")]: {
       width: "calc(100vw - 2rem)",
       maxWidth: "600px",
@@ -881,16 +881,7 @@ const TodoList = memo(() => {
       >
         {Object.entries(columns).map(([columnId, column], index) => {
           return (
-            <div
-              style={{
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-                margin: 8,
-              }}
-              className={classes.column}
-              key={columnId}
-            >
+            <div className={classes.column} key={columnId}>
               <div
                 style={{
                   backgroundColor: "#ebecf0",

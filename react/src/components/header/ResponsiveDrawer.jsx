@@ -24,7 +24,6 @@ import AssessmentIcon from "@material-ui/icons/Assessment";
 import HomeIcon from "@material-ui/icons/Home";
 import InfoIcon from "@material-ui/icons/Info";
 import SettingsIcon from "@material-ui/icons/Settings";
-import TimerIcon from "@material-ui/icons/Timer";
 import FilePopover from "components/header/FilePopover";
 import AccountPopover from "components/header/AccountPopover";
 import TimerPopover from "./TimerPopover";
