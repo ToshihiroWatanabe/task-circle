@@ -872,8 +872,8 @@ const TodoList = memo(() => {
   /**
    * タスクから日報を作成するボタンがクリックされたときの処理です。
    */
-  const onCreateReportButtonClick = () => {
-    const report = taskItemsToReport(Object.values(columns)[0].items);
+  const onCreateReportButtonClick = (index) => {
+    const report = taskItemsToReport(Object.values(columns)[index].items);
     setState({ ...state, waitingReport: report });
     setTimeout(() => {
       document.getElementById("linkToReports").click();
@@ -941,7 +941,7 @@ const TodoList = memo(() => {
                       size="small"
                       color="inherit"
                       onClick={() => {
-                        onCreateReportButtonClick();
+                        onCreateReportButtonClick(columnIndex);
                       }}
                     >
                       <NoteAddOutlinedIcon />
