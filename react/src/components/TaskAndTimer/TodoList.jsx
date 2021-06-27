@@ -39,6 +39,7 @@ import { changeFaviconTo } from "utils/changeFavicon";
 import { SettingsContext } from "contexts/SettingsContext";
 import YouTube from "react-youtube";
 import { StatisticsContext } from "contexts/StatisticsContext";
+import AddCircleOutlineIcon from "@material-ui/icons/AddCircleOutline";
 
 /** 一度にカウントする秒数 */
 const ONCE_COUNT = 1;
@@ -112,10 +113,6 @@ let videoPlayDone = true;
 const defaultColumns = {
   [uuid()]: {
     name: "タスク1",
-    items: [],
-  },
-  [uuid()]: {
-    name: "タスク2",
     items: [],
   },
 };
@@ -874,6 +871,21 @@ const TodoList = memo(() => {
     }
   };
 
+  /**
+   * ToDoリストを追加するボタンがクリックされたときの処理です。
+   */
+  const onAddListButtonClick = () => {
+    setColumns((columns) => {
+      return {
+        ...columns,
+        [uuid()]: {
+          name: "タスク" + (Object.keys(columns).length + 1),
+          items: [],
+        },
+      };
+    });
+  };
+
   return (
     <div className={classes.root}>
       <DragDropContext
@@ -1190,6 +1202,14 @@ const TodoList = memo(() => {
           );
         })}
       </DragDropContext>
+      {/* ToDoリストを追加 */}
+      {Object.keys(columns).length < 4 && (
+        <Tooltip id="addListTooltip" title="ToDoリストを追加" placement="top">
+          <IconButton onClick={onAddListButtonClick}>
+            <AddCircleOutlineIcon />
+          </IconButton>
+        </Tooltip>
+      )}
       <Snackbar
         open={undoSnackbarOpen}
         onClose={() => setUndoSnackbarOpen(false)}
