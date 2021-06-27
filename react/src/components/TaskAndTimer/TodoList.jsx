@@ -548,11 +548,17 @@ const TodoList = memo(() => {
           lastCountedAt = Date.now();
           setTimeout(() => {
             /** 選択しているタスク */
-            const selectedItem = Object.values(columns)[0].items.filter(
-              (item, index) => {
+            const selectedItem = Object.values(columns)
+              .filter((column, index) => {
+                return (
+                  column.items.filter((item, index) => {
+                    return item.isSelected;
+                  })[0] !== undefined
+                );
+              })[0]
+              .items.filter((item, index) => {
                 return item.isSelected;
-              }
-            )[0];
+              })[0];
             // 目標時間を超えた かつ 目標時間を超えたときに停止する設定のとき
             if (
               selectedItem &&
@@ -560,12 +566,20 @@ const TodoList = memo(() => {
               selectedItem.spentSecond >= selectedItem.estimatedSecond
             ) {
               // 目標時間を超えたときに停止する設定をオフにする
-              Object.values(columns)[0].items.map((item, index) => {
-                if (item.isSelected && item.achievedThenStop) {
-                  item.achievedThenStop = false;
-                }
-                return item;
-              });
+              Object.values(columns)
+                .filter((column, index) => {
+                  return (
+                    column.items.filter((item, index) => {
+                      return item.isSelected;
+                    })[0] !== undefined
+                  );
+                })[0]
+                .items.map((item, index) => {
+                  if (item.isSelected && item.achievedThenStop) {
+                    item.achievedThenStop = false;
+                  }
+                  return item;
+                });
               setState((state) => {
                 state.isTimerOn = false;
                 // ポモドーロの作業休憩切り替え
@@ -680,15 +694,23 @@ const TodoList = memo(() => {
     setTimeout(() => {
       setState((state) => {
         setColumns((columns) => {
-          Object.values(columns)[0].items.map((item, index) => {
-            if (item.isSelected) {
-              item.spentSecond += ONCE_COUNT * count;
-              setTimeout(() => {
-                refreshTitle(item.content, item.spentSecond);
-              }, 2);
-            }
-            return item;
-          });
+          Object.values(columns)
+            .filter((column, index) => {
+              return (
+                column.items.filter((item, index) => {
+                  return item.isSelected;
+                })[0] !== undefined
+              );
+            })[0]
+            .items.map((item, index) => {
+              if (item.isSelected) {
+                item.spentSecond += ONCE_COUNT * count;
+                setTimeout(() => {
+                  refreshTitle(item.content, item.spentSecond);
+                }, 2);
+              }
+              return item;
+            });
           return { ...columns };
         });
         if (settings.isPomodoroEnabled) {
@@ -840,8 +862,8 @@ const TodoList = memo(() => {
   /**
    * クリップボードボタンがクリックされたときの処理です。
    */
-  const onClipboardButtonClick = () => {
-    if (copyTasksToClipboard(Object.values(columns)[0].items)) {
+  const onClipboardButtonClick = (index) => {
+    if (copyTasksToClipboard(Object.values(columns)[index].items)) {
       setSimpleSnackbarMessage("タスクをコピーしました！");
       setSimpleSnackbarOpen(true);
     }
@@ -933,7 +955,7 @@ const TodoList = memo(() => {
                       size="small"
                       color="inherit"
                       onClick={() => {
-                        onClipboardButtonClick();
+                        onClipboardButtonClick(columnIndex);
                       }}
                     >
                       <AssignmentOutlinedIcon />
