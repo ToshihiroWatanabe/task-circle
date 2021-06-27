@@ -113,7 +113,11 @@ let videoPlayDone = true;
 /** デフォルトTodoリスト */
 const defaultColumns = {
   [uuid()]: {
-    name: "タスク",
+    name: "タスク1",
+    items: [],
+  },
+  [uuid()]: {
+    name: "タスク2",
     items: [],
   },
 };
@@ -235,7 +239,7 @@ const TodoList = memo(() => {
     ...localStorageGetItemColumns,
   });
   const [categoryInput, setCategoryInput] = useState([]);
-  const [isTagsInputFocused, setIsTagsInputFocused] = useState(false);
+  const [isTagsInputFocused, setIsTagsInputFocused] = useState(-1);
   const [inputValue, setInputValue] = useState("");
   const [helperText, setHelperText] = useState("");
   const [lastActivity, setLastActivity] = useState({});
@@ -1267,6 +1271,7 @@ const TodoList = memo(() => {
                   setCategoryInput={setCategoryInput}
                   isTagsInputFocused={isTagsInputFocused}
                   setIsTagsInputFocused={setIsTagsInputFocused}
+                  index={index}
                   inputValue={inputValue}
                   setInputValue={setInputValue}
                   onAddButtonClick={onAddButtonClick}
@@ -1274,7 +1279,8 @@ const TodoList = memo(() => {
                     width: "105%",
                     marginTop: "0.25rem",
                     marginLeft: "0.2rem",
-                    backgroundColor: isTagsInputFocused ? "white" : "#ebecf0",
+                    backgroundColor:
+                      isTagsInputFocused === index ? "white" : "#ebecf0",
                     borderRadius: "4px",
                     height: "2.5rem",
                   }}

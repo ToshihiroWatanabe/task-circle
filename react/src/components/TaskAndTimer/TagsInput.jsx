@@ -26,6 +26,7 @@ const TagsInput = memo((props) => {
     setCategoryInput,
     isTagsInputFocused,
     setIsTagsInputFocused,
+    index,
     inputValue,
     setInputValue,
     onAddButtonClick,
@@ -146,14 +147,14 @@ const TagsInput = memo((props) => {
                     />
                   )),
                   onBlur: () => {
-                    props.setIsTagsInputFocused(false);
+                    props.setIsTagsInputFocused(-1);
                   },
                   onChange: (event) => {
                     handleInputChange(event);
                     onChange(event);
                   },
                   onFocus: () => {
-                    props.setIsTagsInputFocused(true);
+                    props.setIsTagsInputFocused(props.index);
                   },
                 }}
                 helperText={props.helperText}
