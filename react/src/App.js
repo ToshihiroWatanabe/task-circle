@@ -12,7 +12,6 @@ import About from "components/About";
 import Reports from "components/reports/Reports";
 import TaskAndTimer from "components/TaskAndTimer/TaskAndTimer";
 import { SettingsContext } from "contexts/SettingsContext";
-import { DRAWER_WIDTH } from "utils/constant";
 import { StatisticsContext } from "contexts/StatisticsContext";
 
 // 開発中はページタイトルを変更
@@ -41,7 +40,7 @@ const localStorageGetItemStatistics = localStorage.getItem("statistics")
 const useStyles = makeStyles((theme) => ({
   main: {
     marginTop: "5rem",
-    paddingLeft: theme.spacing(2),
+    paddingLeft: theme.spacing(1),
     [theme.breakpoints.down("xs")]: {
       marginTop: "4rem",
     },
