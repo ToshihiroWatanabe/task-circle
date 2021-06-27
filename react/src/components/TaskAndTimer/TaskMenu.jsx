@@ -87,6 +87,7 @@ const TaskMenu = memo((props) => {
    */
   const handleReset = () => {
     props.setColumns((columns) => {
+      console.log(columns);
       props.setPreviousColumns({ ...columns });
       const newColumns = {
         ...Object.values(columns),

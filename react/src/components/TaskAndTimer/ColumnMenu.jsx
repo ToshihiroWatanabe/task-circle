@@ -39,8 +39,8 @@ const ColumnMenu = memo((props) => {
    */
   const handleReset = () => {
     props.setColumns((columns) => {
+      console.log(columns);
       props.setPreviousColumns({ ...columns });
-      console.log({ ...columns });
       const newColumns = {
         ...Object.values(columns),
         [Object.keys(columns)[props.index]]: {
