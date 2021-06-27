@@ -42,19 +42,19 @@ const useStyles = makeStyles((theme) => ({
   root: {
     display: "flex",
   },
-  // drawer: {
-  //   [theme.breakpoints.up("lg")]: {
-  //     width: DRAWER_WIDTH,
-  //     flexShrink: 0,
-  //   },
-  // },
-  // appBar: {
-  //   zIndex: theme.zIndex.drawer + 1,
-  //   [theme.breakpoints.up("lg")]: {
-  //     width: `calc(100%)`,
-  //     marginLeft: DRAWER_WIDTH,
-  //   },
-  // },
+  drawer: {
+    // [theme.breakpoints.up("lg")]: {
+    //   width: DRAWER_WIDTH,
+    //   flexShrink: 0,
+    // },
+  },
+  appBar: {
+    // zIndex: theme.zIndex.drawer + 1,
+    // [theme.breakpoints.up("lg")]: {
+    //   width: `calc(100%)`,
+    //   marginLeft: DRAWER_WIDTH,
+    // },
+  },
   menuButton: {
     marginRight: theme.spacing(2),
     [theme.breakpoints.up("md")]: {
