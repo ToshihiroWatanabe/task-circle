@@ -891,7 +891,7 @@ const TodoList = memo(() => {
       <DragDropContext
         onDragEnd={(result) => onDragEnd(result, columns, setColumns)}
       >
-        {Object.entries(columns).map(([columnId, column], index) => {
+        {Object.entries(columns).map(([columnId, column], columnIndex) => {
           return (
             <div className={classes.column} key={columnId}>
               <div
@@ -937,7 +937,7 @@ const TodoList = memo(() => {
                   </Tooltip>
                   {/* カラムメニュー */}
                   <ColumnMenu
-                    index={index}
+                    index={columnIndex}
                     columns={columns}
                     setColumns={setColumns}
                     setLastActivity={setLastActivity}
@@ -1122,6 +1122,7 @@ const TodoList = memo(() => {
                                     {/* タスクメニュー */}
                                     <TaskMenu
                                       index={index}
+                                      columnIndex={columnIndex}
                                       columns={columns}
                                       setColumns={setColumns}
                                       setLastActivity={setLastActivity}
@@ -1182,13 +1183,13 @@ const TodoList = memo(() => {
                   setIsTagsInputFocused={setIsTagsInputFocused}
                   columns={columns}
                   setColumns={setColumns}
-                  index={index}
+                  index={columnIndex}
                   style={{
                     width: "105%",
                     marginTop: "0.25rem",
                     marginLeft: "0.2rem",
                     backgroundColor:
-                      isTagsInputFocused === index ? "white" : "#ebecf0",
+                      isTagsInputFocused === columnIndex ? "white" : "#ebecf0",
                     borderRadius: "4px",
                     height: "2.5rem",
                   }}

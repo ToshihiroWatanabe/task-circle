@@ -116,21 +116,25 @@ const TaskMenu = memo((props) => {
    */
   const handleDelete = () => {
     props.setColumns((columns) => {
+      console.log(Object.values(columns));
       const newColumns = {
-        [Object.keys(columns)[0]]: {
-          ...Object.values(columns)[0],
-          items: Object.values(columns)[0].items.filter((value, index) => {
-            if (index === props.index) {
-              props.setLastActivity({
-                type: "itemDelete",
-                item: Object.values(columns)[0].items[index],
-                index: index,
-              });
-              props.setUndoSnackbarMessage("削除しました");
-              props.setUndoSnackbarOpen(true);
+        ...Object.values(columns),
+        [Object.keys(columns)[props.columnIndex]]: {
+          ...Object.values(columns)[props.columnIndex],
+          items: Object.values(columns)[props.columnIndex].items.filter(
+            (value, index) => {
+              if (index === props.index) {
+                props.setLastActivity({
+                  type: "itemDelete",
+                  item: Object.values(columns)[props.columnIndex].items[index],
+                  index: index,
+                });
+                props.setUndoSnackbarMessage("削除しました");
+                props.setUndoSnackbarOpen(true);
+              }
+              return index !== props.index;
             }
-            return index !== props.index;
-          }),
+          ),
         },
       };
       localStorage.setItem("columns", JSON.stringify(newColumns));
