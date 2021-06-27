@@ -1167,16 +1167,12 @@ const TodoList = memo(() => {
                   width: "100%",
                   marginTop: "-2px",
                   paddingLeft: "0.5rem",
-                  paddingTop: helperText !== "" ? "0" : "0.5rem",
-                  paddingBottom: helperText !== "" ? "0" : "0.5rem",
                   borderRadius: "4px",
-                  height: helperText ? "4rem" : "",
                   boxShadow:
                     "0px 2px 1px -1px rgb(0 0 0 / 20%), 0px 1px 1px 0px rgb(0 0 0 / 14%), 0px 1px 3px 0px rgb(0 0 0 / 12%)",
                 }}
               >
                 <TagsInput
-                  error={helperText !== "" ? true : false}
                   fullWidth
                   variant="outlined"
                   name="tags"

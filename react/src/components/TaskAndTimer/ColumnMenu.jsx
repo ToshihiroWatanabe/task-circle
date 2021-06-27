@@ -65,6 +65,7 @@ const ColumnMenu = memo((props) => {
    * 削除がクリックされたときの処理です。
    */
   const handleDelete = () => {
+    console.log(props.index + " + 1番目のリストを削除します");
     props.setColumns((columns) => {
       props.setLastActivity({
         type: "deleteAll",
@@ -120,13 +121,10 @@ const ColumnMenu = memo((props) => {
         <MenuItem
           style={{ color: "red" }}
           onClick={handleDelete}
-          disabled={
-            state.isTimerOn ||
-            Object.values(props.columns)[0].items.length === 0
-          }
+          disabled={state.isTimerOn}
         >
           <DeleteIcon />
-          全て削除
+          リストを削除
         </MenuItem>
       </Menu>
     </>

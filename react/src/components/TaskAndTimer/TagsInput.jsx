@@ -159,7 +159,7 @@ const TagsInput = memo((props) => {
     const content =
       estimatedTimeInput !== null
         ? inputValue.trim().split(estimatedTimeInput)[0]
-        : inputValue;
+        : inputValue.trim();
     console.log(content);
     if (
       Object.values(props.columns)[props.index].items.length >
@@ -225,8 +225,15 @@ const TagsInput = memo((props) => {
             placeholder,
           });
           return (
-            <div>
+            <div
+              style={{
+                paddingTop: helperText !== "" ? "0" : "0.5rem",
+                paddingBottom: helperText !== "" ? "0" : "0.5rem",
+                height: helperText ? "4rem" : "",
+              }}
+            >
               <TextField
+                error={helperText !== "" ? true : false}
                 InputProps={{
                   maxLength: "4",
                   startAdornment: categoryInput.map((item) => (
