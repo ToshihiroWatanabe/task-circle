@@ -254,10 +254,6 @@ const TodoList = memo(() => {
     settings.breakVideoUrl.split(/v=|\//).slice(-1)[0]
   );
 
-  React.useEffect(() => {
-    console.log(columns);
-  }, [columns]);
-
   // 設定の動画URLに変化があったとき
   useEffect(() => {
     // タイマーが作動していないとき
