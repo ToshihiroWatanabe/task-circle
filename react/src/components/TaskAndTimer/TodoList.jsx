@@ -438,7 +438,7 @@ const TodoList = memo(() => {
   /**
    * タスクがクリックされたときの処理です。
    */
-  const onItemClick = (event, index) => {
+  const onItemClick = (event, columnIndex, taskIndex) => {
     if (
       ["DIV", "SPAN"].includes(event.target.tagName) &&
       event.target.style.backgroundColor !== "transparent" &&
@@ -447,13 +447,17 @@ const TodoList = memo(() => {
       event.target.style.opacity !== "0"
     ) {
       setColumns((columns) => {
-        Object.values(columns)[0].items.map((item, i) => {
-          if (i === index) {
-            item.isSelected = true;
-          } else {
-            item.isSelected = false;
-          }
-          return item;
+        // クリックされたタスクだけisSelectedをtrueにする
+        Object.values(columns).map((column, columnI) => {
+          column.items.map((item, itemI) => {
+            if (columnI === columnIndex && itemI === taskIndex) {
+              item.isSelected = true;
+            } else {
+              item.isSelected = false;
+            }
+            return item;
+          });
+          return column;
         });
         localStorage.setItem("columns", JSON.stringify({ ...columns }));
         return { ...columns };
@@ -997,7 +1001,9 @@ const TodoList = memo(() => {
                                         : "#000",
                                     ...provided.draggableProps.style,
                                   }}
-                                  onClick={(event) => onItemClick(event, index)}
+                                  onClick={(event) =>
+                                    onItemClick(event, columnIndex, index)
+                                  }
                                 >
                                   <div style={{ display: "flex" }}>
                                     <BootstrapTooltip

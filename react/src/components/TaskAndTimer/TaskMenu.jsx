@@ -88,21 +88,23 @@ const TaskMenu = memo((props) => {
   const handleReset = () => {
     props.setColumns((columns) => {
       const newColumns = {
-        [Object.keys(columns)[0]]: {
-          ...Object.values(columns)[0],
-          items: Object.values(columns)[0].items.map((item, index) => {
-            if (index === props.index) {
-              props.setLastActivity({
-                type: "resetSpentSecond",
-                spentSecond: item.spentSecond,
-                index: index,
-              });
-              item.spentSecond = 0;
-              props.setUndoSnackbarMessage("経過時間をリセットしました");
-              props.setUndoSnackbarOpen(true);
+        [Object.keys(columns)[props.columnIndex]]: {
+          ...Object.values(columns)[props.columnIndex],
+          items: Object.values(columns)[props.columnIndex].items.map(
+            (item, index) => {
+              if (index === props.index) {
+                props.setLastActivity({
+                  type: "resetSpentSecond",
+                  spentSecond: item.spentSecond,
+                  index: index,
+                });
+                item.spentSecond = 0;
+                props.setUndoSnackbarMessage("経過時間をリセットしました");
+                props.setUndoSnackbarOpen(true);
+              }
+              return item;
             }
-            return item;
-          }),
+          ),
         },
       };
       localStorage.setItem("columns", JSON.stringify(newColumns));
@@ -167,10 +169,11 @@ const TaskMenu = memo((props) => {
         <MenuItem
           onClick={handleReset}
           disabled={
-            (Object.values(props.columns)[0].items[props.index].isSelected ===
-              true &&
+            (Object.values(props.columns)[props.columnIndex].items[props.index]
+              .isSelected === true &&
               state.isTimerOn) ||
-            Object.values(props.columns)[0].items[props.index].spentSecond === 0
+            Object.values(props.columns)[props.columnIndex].items[props.index]
+              .spentSecond === 0
           }
         >
           <RotateLeftIcon />
@@ -180,8 +183,8 @@ const TaskMenu = memo((props) => {
           style={{ color: "red" }}
           onClick={handleDelete}
           disabled={
-            Object.values(props.columns)[0].items[props.index].isSelected ===
-              true && state.isTimerOn
+            Object.values(props.columns)[props.columnIndex].items[props.index]
+              .isSelected === true && state.isTimerOn
           }
         >
           <DeleteIcon />
@@ -192,6 +195,7 @@ const TaskMenu = memo((props) => {
         open={editOpen}
         setOpen={setEditOpen}
         index={props.index}
+        columnIndex={props.columnIndex}
         columns={props.columns}
         setColumns={props.setColumns}
         categories={categories}

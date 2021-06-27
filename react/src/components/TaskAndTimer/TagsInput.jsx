@@ -126,17 +126,18 @@ const TagsInput = memo((props) => {
     if (validate()) {
       const retrievedInputValue = retrieveEstimatedSecond(inputValue.trim());
       props.setColumns((columns) => {
-        Object.values(columns)[0].items.push({
+        Object.values(columns)[props.index].items.push({
           id: uuid(),
           category: categoryInput.length > 0 ? categoryInput[0] : "",
           content: retrievedInputValue.content,
           spentSecond: 0,
           estimatedSecond: retrievedInputValue.estimatedSecond,
-          // タスクがまだない かつ タイマー停止中のときは初めから選択された状態で追加
+          // TODO: タスクがまだない かつ タイマー停止中のときは初めから選択された状態で追加したい
           isSelected:
-            Object.values(columns)[0].items.length === 0 && !state.isTimerOn
-              ? true
-              : false,
+            // Object.values(columns)[props.index].items.length === 0 &&
+            // !state.isTimerOn
+            //   ? true :
+            false,
           achievedThenStop: false,
         });
         localStorage.setItem("columns", JSON.stringify(columns));

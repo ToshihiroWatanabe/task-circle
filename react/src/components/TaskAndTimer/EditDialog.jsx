@@ -70,23 +70,25 @@ const EditDialog = memo((props) => {
 
   useEffect(() => {
     setValue((value) => {
-      value.category = Object.values(props.columns)[0].items[
+      value.category = Object.values(props.columns)[props.columnIndex].items[
         props.index
       ].category;
-      value.content = Object.values(props.columns)[0].items[
+      value.content = Object.values(props.columns)[props.columnIndex].items[
         props.index
       ].content;
       value.hour = Math.floor(
-        Object.values(props.columns)[0].items[props.index].estimatedSecond /
-          3600
+        Object.values(props.columns)[props.columnIndex].items[props.index]
+          .estimatedSecond / 3600
       );
       value.minute = Math.floor(
-        (Object.values(props.columns)[0].items[props.index].estimatedSecond /
+        (Object.values(props.columns)[props.columnIndex].items[props.index]
+          .estimatedSecond /
           60) %
           60
       );
       value.second = Math.floor(
-        Object.values(props.columns)[0].items[props.index].estimatedSecond % 60
+        Object.values(props.columns)[props.columnIndex].items[props.index]
+          .estimatedSecond % 60
       );
       return { ...value };
     });
@@ -105,17 +107,20 @@ const EditDialog = memo((props) => {
   const handleAccept = () => {
     props.setColumns((columns) => {
       return {
-        [Object.keys(columns)[0]]: {
-          ...Object.values(columns)[0],
-          items: Object.values(columns)[0].items.map((item, index) => {
-            if (index === props.index) {
-              item.category = value.category;
-              item.content = value.content;
-              item.estimatedSecond =
-                value.hour * 3600 + value.minute * 60 + value.second;
+        ...Object.values(columns),
+        [Object.keys(columns)[props.columnIndex]]: {
+          ...Object.values(columns)[props.columnIndex],
+          items: Object.values(columns)[props.columnIndex].items.map(
+            (item, index) => {
+              if (index === props.index) {
+                item.category = value.category;
+                item.content = value.content;
+                item.estimatedSecond =
+                  value.hour * 3600 + value.minute * 60 + value.second;
+              }
+              return item;
             }
-            return item;
-          }),
+          ),
         },
       };
     });
