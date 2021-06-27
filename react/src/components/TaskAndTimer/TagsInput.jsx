@@ -29,6 +29,8 @@ const TagsInput = memo((props) => {
   const {
     placeholder,
     tags,
+    columns,
+    setColumns,
     isTagsInputFocused,
     setIsTagsInputFocused,
     index,
@@ -149,10 +151,20 @@ const TagsInput = memo((props) => {
    * 入力された値を検証します。
    */
   const validate = () => {
-    const content = inputValue
-      .trim()
-      .split(inputValue.match(/\d+:[0-5]*[0-9]:[0-5]*[0-9]/)[0])[0];
-    if (Object.values(props.columns)[0].items.length > NUMBER_OF_TASKS_MAX) {
+    console.log(inputValue);
+    const estimatedTimeInput =
+      inputValue.match(/\d+:[0-5]*[0-9]:[0-5]*[0-9]/) !== null
+        ? inputValue.match(/\d+:[0-5]*[0-9]:[0-5]*[0-9]/)[0]
+        : null;
+    const content =
+      estimatedTimeInput !== null
+        ? inputValue.trim().split(estimatedTimeInput)[0]
+        : inputValue;
+    console.log(content);
+    if (
+      Object.values(props.columns)[props.index].items.length >
+      NUMBER_OF_TASKS_MAX
+    ) {
       setHelperText("これ以上タスクを追加できません");
       return false;
     } else if (content.length < 1) {

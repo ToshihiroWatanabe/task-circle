@@ -61,14 +61,6 @@ const useStyles = makeStyles((theme) => ({
       minWidth: "calc(100vw - 2rem)",
       maxWidth: "600px",
     },
-    // [theme.breakpoints.down("sm")]: {
-    //   width: "calc(100vw - 2rem)",
-    //   maxWidth: "480px",
-    // },
-    // [theme.breakpoints.down("xs")]: {
-    //   width: "calc(100vw - 2rem)",
-    //   maxWidth: "600px",
-    // },
   },
 }));
 
