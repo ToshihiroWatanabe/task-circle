@@ -89,6 +89,7 @@ const TaskMenu = memo((props) => {
     props.setColumns((columns) => {
       props.setPreviousColumns({ ...columns });
       const newColumns = {
+        ...Object.values(columns),
         [Object.keys(columns)[props.columnIndex]]: {
           ...Object.values(columns)[props.columnIndex],
           items: Object.values(columns)[props.columnIndex].items.map(

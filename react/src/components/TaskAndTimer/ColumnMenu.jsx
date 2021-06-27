@@ -35,19 +35,23 @@ const ColumnMenu = memo((props) => {
   };
 
   /**
-   * リセットがクリックされたときの処理です。
+   * 全ての経過時間をリセットがクリックされたときの処理です。
    */
   const handleReset = () => {
     props.setColumns((columns) => {
       props.setPreviousColumns({ ...columns });
+      console.log({ ...columns });
       const newColumns = {
-        [Object.keys(columns)[0]]: {
-          ...Object.values(columns)[0],
-          items: Object.values(columns)[0].items.map((item, index) => {
-            item.spentSecond = 0;
-            item.estimatedSecond = 0;
-            return item;
-          }),
+        ...Object.values(columns),
+        [Object.keys(columns)[props.index]]: {
+          ...Object.values(columns)[props.index],
+          items: Object.values(columns)[props.index].items.map(
+            (item, index) => {
+              item.spentSecond = 0;
+              item.estimatedSecond = 0;
+              return item;
+            }
+          ),
         },
       };
       localStorage.setItem("columns", JSON.stringify(newColumns));
@@ -67,8 +71,9 @@ const ColumnMenu = memo((props) => {
       props.setUndoSnackbarMessage("削除しました");
       props.setUndoSnackbarOpen(true);
       const newColumns = {
-        [Object.keys(columns)[0]]: { ...Object.values(columns)[0], items: [] },
+        ...Object.values(columns),
       };
+      delete newColumns[Object.keys(columns)[props.index]];
       localStorage.setItem("columns", JSON.stringify(newColumns));
       return newColumns;
     });
@@ -97,7 +102,7 @@ const ColumnMenu = memo((props) => {
           onClick={handleReset}
           disabled={
             state.isTimerOn ||
-            Object.values(props.columns)[0].items.length === 0
+            Object.values(props.columns)[props.index].items.length === 0
           }
         >
           <Box

@@ -710,6 +710,7 @@ const TodoList = memo(() => {
               }
               return item;
             });
+            console.log({...columns})
           return { ...columns };
         });
         if (settings.isPomodoroEnabled) {
