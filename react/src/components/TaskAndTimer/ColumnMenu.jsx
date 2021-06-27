@@ -25,6 +25,10 @@ const ColumnMenu = memo((props) => {
    */
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
+    props.setColumns((columns) => {
+      props.setPreviousColumns(JSON.parse(JSON.stringify({ ...columns })));
+      return columns;
+    });
   };
 
   /**
@@ -39,8 +43,6 @@ const ColumnMenu = memo((props) => {
    */
   const handleReset = () => {
     props.setColumns((columns) => {
-      console.log(columns);
-      props.setPreviousColumns({ ...columns });
       const newColumns = {
         ...Object.values(columns),
         [Object.keys(columns)[props.index]]: {
@@ -67,13 +69,12 @@ const ColumnMenu = memo((props) => {
    */
   const handleDelete = () => {
     props.setColumns((columns) => {
-      props.setPreviousColumns({ ...columns });
-      props.setUndoSnackbarMessage("削除しました");
-      props.setUndoSnackbarOpen(true);
       const newColumns = {
         ...Object.values(columns),
       };
       delete newColumns[Object.keys(columns)[props.index]];
+      props.setUndoSnackbarMessage("削除しました");
+      props.setUndoSnackbarOpen(true);
       localStorage.setItem("columns", JSON.stringify(newColumns));
       return newColumns;
     });

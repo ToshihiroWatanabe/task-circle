@@ -276,7 +276,6 @@ TagsInput.defaultProps = {
   tags: [],
 };
 TagsInput.propTypes = {
-  selectedTags: PropTypes.func.isRequired,
   tags: PropTypes.arrayOf(PropTypes.string),
 };
 
