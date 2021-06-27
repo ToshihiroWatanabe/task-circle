@@ -27,7 +27,6 @@ import tickAudio from "audio/tick.mp3";
 import achievedAudio from "audio/sound02.mp3";
 import TaskMenu from "./TaskMenu";
 import ColumnMenu from "./ColumnMenu";
-import AddIcon from "@material-ui/icons/Add";
 import TagsInput from "./TagsInput";
 import CloseIcon from "@material-ui/icons/Close";
 import AssignmentOutlinedIcon from "@material-ui/icons/AssignmentOutlined";
@@ -40,7 +39,6 @@ import { changeFaviconTo } from "utils/changeFavicon";
 import { SettingsContext } from "contexts/SettingsContext";
 import YouTube from "react-youtube";
 import { StatisticsContext } from "contexts/StatisticsContext";
-import { NUMBER_OF_TASKS_MAX } from "utils/constant";
 
 /** 一度にカウントする秒数 */
 const ONCE_COUNT = 1;
@@ -238,9 +236,7 @@ const TodoList = memo(() => {
   const [columns, setColumns] = useState({
     ...localStorageGetItemColumns,
   });
-  const [categoryInput, setCategoryInput] = useState([]);
   const [isTagsInputFocused, setIsTagsInputFocused] = useState(-1);
-  const [inputValue, setInputValue] = useState("");
   const [helperText, setHelperText] = useState("");
   const [lastActivity, setLastActivity] = useState({});
   const [undoSnackbarOpen, setUndoSnackbarOpen] = useState(false);
@@ -764,88 +760,6 @@ const TodoList = memo(() => {
   };
 
   /**
-   * 追加ボタンがクリックされたときの処理です。
-   */
-  const onAddButtonClick = () => {
-    if (validate()) {
-      const retrievedInputValue = retrieveEstimatedSecond(inputValue.trim());
-      setColumns((columns) => {
-        Object.values(columns)[0].items.push({
-          id: uuid(),
-          category: categoryInput.length > 0 ? categoryInput[0] : "",
-          content: retrievedInputValue.content,
-          spentSecond: 0,
-          estimatedSecond: retrievedInputValue.estimatedSecond,
-          // タスクがまだない かつ タイマー停止中のときは初めから選択された状態で追加
-          isSelected:
-            Object.values(columns)[0].items.length === 0 && !state.isTimerOn
-              ? true
-              : false,
-          achievedThenStop: false,
-        });
-        localStorage.setItem("columns", JSON.stringify(columns));
-        return { ...columns };
-      });
-      setCategoryInput([]);
-      setInputValue("");
-    }
-  };
-
-  /**
-   * 入力された値を検証します。
-   */
-  const validate = () => {
-    const content = inputValue
-      .trim()
-      .split(inputValue.match(/\d+:[0-5]*[0-9]:[0-5]*[0-9]/)[0])[0];
-    if (Object.values(columns)[0].items.length > NUMBER_OF_TASKS_MAX) {
-      setHelperText("これ以上タスクを追加できません");
-      return false;
-    } else if (content.length < 1) {
-      setHelperText("タスク名を入力してください");
-      return false;
-    } else if (content.length > 45) {
-      setHelperText("タスク名は45文字以内にしてください");
-      return false;
-    } else if (
-      categoryInput.length > 0 &&
-      categoryInput[0].trim().length > 45
-    ) {
-      setHelperText("カテゴリー名は45文字以内にしてください");
-      return false;
-    }
-    return true;
-  };
-
-  /**
-   * 入力された文字列を、文字列と目標時間に分割します。
-   * @param {*} input
-   * @returns
-   */
-  const retrieveEstimatedSecond = (input) => {
-    const matched = input.match(/\d+:[0-5]*[0-9]:[0-5]*[0-9]/);
-    if (matched) {
-      let matchedSplit = matched[0].split(":");
-      let estimatedSecond =
-        parseInt(matchedSplit[0]) * 3600 +
-        parseInt(matchedSplit[1]) * 60 +
-        parseInt(matchedSplit[2]);
-      return {
-        content: input.split(matched[0])[0],
-        estimatedSecond: estimatedSecond,
-      };
-    }
-    return { content: input, estimatedSecond: 0 };
-  };
-
-  /**
-   * カテゴリーの入力を反映させます。
-   */
-  const handleSelecetedTags = (category) => {
-    setCategoryInput(category);
-  };
-
-  /**
    * 取り消しボタンがクリックされたときの処理です。
    */
   const onUndoButtonClick = () => {
@@ -1240,6 +1154,7 @@ const TodoList = memo(() => {
                   );
                 }}
               </Droppable>
+              {/* タスク追加の入力欄 */}
               <div
                 id="addInputArea"
                 style={{
@@ -1259,22 +1174,16 @@ const TodoList = memo(() => {
               >
                 <TagsInput
                   error={helperText !== "" ? true : false}
-                  helperText={helperText}
-                  setHelperText={setHelperText}
-                  selectedTags={handleSelecetedTags}
                   fullWidth
                   variant="outlined"
                   name="tags"
                   size="small"
                   placeholder="タスクを追加"
-                  categoryInput={categoryInput}
-                  setCategoryInput={setCategoryInput}
                   isTagsInputFocused={isTagsInputFocused}
                   setIsTagsInputFocused={setIsTagsInputFocused}
+                  columns={columns}
+                  setColumns={setColumns}
                   index={index}
-                  inputValue={inputValue}
-                  setInputValue={setInputValue}
-                  onAddButtonClick={onAddButtonClick}
                   style={{
                     width: "105%",
                     marginTop: "0.25rem",
@@ -1285,14 +1194,6 @@ const TodoList = memo(() => {
                     height: "2.5rem",
                   }}
                 />
-                <Tooltip title="タスクを追加">
-                  <IconButton
-                    onClick={onAddButtonClick}
-                    style={{ marginLeft: "1rem" }}
-                  >
-                    <AddIcon />
-                  </IconButton>
-                </Tooltip>
               </div>
             </div>
           );

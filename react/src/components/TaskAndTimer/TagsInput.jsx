@@ -1,8 +1,12 @@
-import React, { memo, useEffect } from "react";
+import React, { memo, useContext, useEffect, useState } from "react";
 import PropTypes from "prop-types";
-import { Chip, TextField } from "@material-ui/core";
+import { Chip, IconButton, TextField, Tooltip } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import Downshift from "downshift";
+import AddIcon from "@material-ui/icons/Add";
+import uuid from "uuid/v4";
+import { NUMBER_OF_TASKS_MAX } from "utils/constant";
+import { Context } from "contexts/Context";
 
 let lastSpacePressed = 0;
 
@@ -18,30 +22,26 @@ const useStyles = makeStyles((theme) => ({
  */
 const TagsInput = memo((props) => {
   const classes = useStyles();
+  const [state] = useContext(Context);
+  const [helperText, setHelperText] = useState("");
+  const [inputValue, setInputValue] = useState("");
+  const [categoryInput, setCategoryInput] = useState([]);
   const {
-    selectedTags,
     placeholder,
     tags,
-    categoryInput,
-    setCategoryInput,
     isTagsInputFocused,
     setIsTagsInputFocused,
     index,
-    inputValue,
-    setInputValue,
-    onAddButtonClick,
-    helperText,
-    setHelperText,
     ...other
   } = props;
 
   useEffect(() => {
-    props.setCategoryInput(tags);
+    setCategoryInput(tags);
   }, [tags]);
 
   useEffect(() => {
-    selectedTags(props.categoryInput);
-  }, [props.categoryInput, selectedTags]);
+    selectedTags(categoryInput);
+  }, [categoryInput]);
 
   /**
    * キーが押されたときの処理です。
@@ -50,7 +50,7 @@ const TagsInput = memo((props) => {
   const handleKeyDown = (event) => {
     // 半角スペースか全角スペースが素早く2回押されるとカテゴリーとして追加する
     if (
-      props.categoryInput.length === 0 &&
+      categoryInput.length === 0 &&
       (event.keyCode === 32 ||
         (event.keyCode === 229 && event.code === "Space"))
     ) {
@@ -61,20 +61,20 @@ const TagsInput = memo((props) => {
           event.target.value.endsWith("　") &&
           Date.now() - lastSpacePressed < 1000)
       ) {
-        const newSelectedItem = [...props.categoryInput];
+        const newSelectedItem = [...categoryInput];
         const duplicatedValues = newSelectedItem.indexOf(
           event.target.value.trim()
         );
 
         if (duplicatedValues !== -1) {
-          props.setInputValue("");
+          setInputValue("");
           return;
         }
         if (!event.target.value.replace(/\s/g, "").length) return;
 
         newSelectedItem.push(event.target.value.trim());
-        props.setCategoryInput(newSelectedItem);
-        props.setInputValue("");
+        setCategoryInput(newSelectedItem);
+        setInputValue("");
       } else {
         lastSpacePressed = Date.now();
       }
@@ -82,32 +82,30 @@ const TagsInput = memo((props) => {
       lastSpacePressed = 0;
     }
     if (event.key === "Enter") {
-      props.onAddButtonClick();
+      onAddButtonClick();
     }
     if (
-      props.categoryInput.length &&
-      !props.inputValue.length &&
+      categoryInput.length &&
+      !inputValue.length &&
       event.key === "Backspace"
     ) {
-      props.setCategoryInput(
-        props.categoryInput.slice(0, props.categoryInput.length - 1)
-      );
+      setCategoryInput(categoryInput.slice(0, categoryInput.length - 1));
     }
   };
 
   const handleChange = (item) => {
-    let newSelectedItem = [...props.categoryInput];
+    let newSelectedItem = [...categoryInput];
     if (newSelectedItem.indexOf(item) === -1) {
       newSelectedItem = [...newSelectedItem, item];
     }
-    props.setInputValue("");
-    props.setCategoryInput(newSelectedItem);
+    setInputValue("");
+    setCategoryInput(newSelectedItem);
   };
 
   const handleDelete = (item) => () => {
-    const newSelectedItem = [...props.categoryInput];
+    const newSelectedItem = [...categoryInput];
     newSelectedItem.splice(newSelectedItem.indexOf(item), 1);
-    props.setCategoryInput(newSelectedItem);
+    setCategoryInput(newSelectedItem);
   };
 
   /**
@@ -115,17 +113,99 @@ const TagsInput = memo((props) => {
    * @param {*} event
    */
   const handleInputChange = (event) => {
-    props.setInputValue(event.target.value);
-    props.setHelperText("");
+    setInputValue(event.target.value);
+    setHelperText("");
+  };
+
+  /**
+   * 追加ボタンがクリックされたときの処理です。
+   */
+  const onAddButtonClick = () => {
+    if (validate()) {
+      const retrievedInputValue = retrieveEstimatedSecond(inputValue.trim());
+      props.setColumns((columns) => {
+        Object.values(columns)[0].items.push({
+          id: uuid(),
+          category: categoryInput.length > 0 ? categoryInput[0] : "",
+          content: retrievedInputValue.content,
+          spentSecond: 0,
+          estimatedSecond: retrievedInputValue.estimatedSecond,
+          // タスクがまだない かつ タイマー停止中のときは初めから選択された状態で追加
+          isSelected:
+            Object.values(columns)[0].items.length === 0 && !state.isTimerOn
+              ? true
+              : false,
+          achievedThenStop: false,
+        });
+        localStorage.setItem("columns", JSON.stringify(columns));
+        return { ...columns };
+      });
+      setCategoryInput([]);
+      setInputValue("");
+    }
+  };
+
+  /**
+   * 入力された値を検証します。
+   */
+  const validate = () => {
+    const content = inputValue
+      .trim()
+      .split(inputValue.match(/\d+:[0-5]*[0-9]:[0-5]*[0-9]/)[0])[0];
+    if (Object.values(props.columns)[0].items.length > NUMBER_OF_TASKS_MAX) {
+      setHelperText("これ以上タスクを追加できません");
+      return false;
+    } else if (content.length < 1) {
+      setHelperText("タスク名を入力してください");
+      return false;
+    } else if (content.length > 45) {
+      setHelperText("タスク名は45文字以内にしてください");
+      return false;
+    } else if (
+      categoryInput.length > 0 &&
+      categoryInput[0].trim().length > 45
+    ) {
+      setHelperText("カテゴリー名は45文字以内にしてください");
+      return false;
+    }
+    return true;
+  };
+
+  /**
+   * 入力された文字列を、文字列と目標時間に分割します。
+   * @param {*} input
+   * @returns
+   */
+  const retrieveEstimatedSecond = (input) => {
+    const matched = input.match(/\d+:[0-5]*[0-9]:[0-5]*[0-9]/);
+    if (matched) {
+      let matchedSplit = matched[0].split(":");
+      let estimatedSecond =
+        parseInt(matchedSplit[0]) * 3600 +
+        parseInt(matchedSplit[1]) * 60 +
+        parseInt(matchedSplit[2]);
+      return {
+        content: input.split(matched[0])[0],
+        estimatedSecond: estimatedSecond,
+      };
+    }
+    return { content: input, estimatedSecond: 0 };
+  };
+
+  /**
+   * カテゴリーの入力を反映させます。
+   */
+  const selectedTags = (category) => {
+    setCategoryInput(category);
   };
 
   return (
     <>
       <Downshift
         id="downshift-multiple"
-        inputValue={props.inputValue}
+        inputValue={inputValue}
         onChange={handleChange}
-        selectedItem={props.categoryInput}
+        selectedItem={categoryInput}
       >
         {({ getInputProps }) => {
           const { onBlur, onChange, onFocus, ...inputProps } = getInputProps({
@@ -137,7 +217,7 @@ const TagsInput = memo((props) => {
               <TextField
                 InputProps={{
                   maxLength: "4",
-                  startAdornment: props.categoryInput.map((item) => (
+                  startAdornment: categoryInput.map((item) => (
                     <Chip
                       key={item}
                       tabIndex={-1}
@@ -157,7 +237,7 @@ const TagsInput = memo((props) => {
                     props.setIsTagsInputFocused(props.index);
                   },
                 }}
-                helperText={props.helperText}
+                helperText={helperText}
                 {...other}
                 {...inputProps}
               />
@@ -165,6 +245,11 @@ const TagsInput = memo((props) => {
           );
         }}
       </Downshift>
+      <Tooltip title="タスクを追加">
+        <IconButton onClick={onAddButtonClick} style={{ marginLeft: "1rem" }}>
+          <AddIcon />
+        </IconButton>
+      </Tooltip>
     </>
   );
 });
