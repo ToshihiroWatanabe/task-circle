@@ -5,9 +5,7 @@ import Room from "./Room";
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    [theme.breakpoints.up("md")]: {
-      display: "flex",
-    },
+    display: "flex",
   },
 }));
 

@@ -12,12 +12,18 @@ import format from "date-fns/format";
 import preval from "preval.macro";
 
 const useStyles = makeStyles({
+  // card: {
+  //   display: "flex",
+  //   textAlign: "center",
+  //   flexDirection: "column",
+  //   width: "95%",
+  //   padding: "1rem",
+  //   marginBottom: "1rem",
+  // },
   card: {
-    display: "flex",
-    textAlign: "center",
-    flexDirection: "column",
     width: "95%",
     padding: "1rem",
+    // marginLeft: "1rem",
     marginBottom: "1rem",
   },
 });

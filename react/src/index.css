@@ -2,3 +2,7 @@
     /* ボタンをクリックしたときの枠線を消す */
     outline: none !important;
 }
+
+#app {
+    width: fit-content;
+}

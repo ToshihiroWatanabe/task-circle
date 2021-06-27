@@ -45,12 +45,12 @@ const useStyles = makeStyles((theme) => ({
     [theme.breakpoints.down("xs")]: {
       marginTop: "4rem",
     },
-    [theme.breakpoints.down("sm")]: {
-      paddingLeft: theme.spacing(0),
-      display: "flex",
-      alignItems: "center",
-      flexDirection: "column",
-    },
+    // [theme.breakpoints.down("sm")]: {
+    //   paddingLeft: theme.spacing(0),
+    //   display: "flex",
+    //   alignItems: "center",
+    //   flexDirection: "column",
+    // },
     // [theme.breakpoints.up("lg")]: {
     //   width: `calc(100% - ${DRAWER_WIDTH}px)`,
     //   marginLeft: DRAWER_WIDTH,

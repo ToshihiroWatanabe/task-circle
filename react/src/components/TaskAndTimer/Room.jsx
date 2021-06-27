@@ -57,14 +57,18 @@ const useStyles = makeStyles((theme) => ({
     height: "fit-content",
     margin: 8,
     padding: 8,
-    [theme.breakpoints.down("sm")]: {
-      width: "calc(100vw - 2rem)",
-      maxWidth: "480px",
-    },
     [theme.breakpoints.down("xs")]: {
       width: "calc(100vw - 2rem)",
       maxWidth: "600px",
     },
+    // [theme.breakpoints.down("sm")]: {
+    //   width: "calc(100vw - 2rem)",
+    //   maxWidth: "480px",
+    // },
+    // [theme.breakpoints.down("xs")]: {
+    //   width: "calc(100vw - 2rem)",
+    //   maxWidth: "600px",
+    // },
   },
 }));
 
