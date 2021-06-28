@@ -439,6 +439,12 @@ const TodoList = memo(() => {
    */
   const onItemClick = (event, columnIndex, taskIndex) => {
     if (
+      [
+        event.target.id,
+        event.target.parentNode.id,
+        event.target.parentNode.parentNode.id,
+        event.target.parentNode.parentNode.parentNode.id,
+      ].includes("taskCard") &&
       ["DIV", "SPAN"].includes(event.target.tagName) &&
       event.target.style.backgroundColor !== "transparent" &&
       event.target.className !== "MuiIconButton-label" &&
@@ -941,6 +947,7 @@ const TodoList = memo(() => {
                             {(provided, snapshot) => {
                               return (
                                 <Card
+                                  id="taskCard"
                                   color="primary"
                                   ref={provided.innerRef}
                                   {...provided.draggableProps}
