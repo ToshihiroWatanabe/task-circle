@@ -4,7 +4,7 @@ import React, { useContext, useState } from "react";
 import { Rnd } from "react-rnd";
 import PlayArrowIcon from "@material-ui/icons/PlayArrow";
 import StopIcon from "@material-ui/icons/Stop";
-import { IconButton } from "@material-ui/core";
+import { Fab, IconButton } from "@material-ui/core";
 
 const DEFAULT_WIDTH = 320;
 const DEFAULT_HEIGHT = 144;
