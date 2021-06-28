@@ -133,7 +133,8 @@ const TimerFab = memo((props) => {
           width={props.width}
           height={props.height}
         />
-        <div style={{ transform: `scale(calc(${props.width}/180))` }}>
+        <div style={{ transform: `scale(calc(${parseInt(props.width)}/180))` }}>
+          {/* <div style={{ transform: `scale(2)` }}> */}
           {/* カウント */}
           <div className={classes.timerCount}>
             {settings.isPomodoroEnabled &&
