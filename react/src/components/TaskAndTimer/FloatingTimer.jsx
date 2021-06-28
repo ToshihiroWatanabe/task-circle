@@ -4,10 +4,11 @@ import Fab from "@material-ui/core/Fab";
 import PlayArrowIcon from "@material-ui/icons/PlayArrow";
 import "./FloatingTimer.css";
 import { Context } from "contexts/Context";
-import { useTheme, Zoom } from "@material-ui/core";
+import { useTheme, Zoom, useMediaQuery } from "@material-ui/core";
 import StopIcon from "@material-ui/icons/Stop";
 import CircularDeterminate from "./CircularDeterminate";
 import { SettingsContext } from "contexts/SettingsContext";
+import { secondToHHMMSS, secondToHHMMSS_ja } from "utils/convert";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -33,12 +34,13 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   timerCount: {
-    [theme.breakpoints.up("sm")]: {
+    [theme.breakpoints.up("md")]: {
       fontSize: "2.75rem",
       marginBottom: "-0.7rem",
     },
     [theme.breakpoints.down("sm")]: {
       fontSize: "2rem",
+      marginBottom: "-0.5rem",
     },
     [theme.breakpoints.down("xs")]: {
       fontSize: "1rem",
@@ -70,6 +72,15 @@ const FloatingTimer = memo((props) => {
   const theme = useTheme();
   const [state] = useContext(Context);
   const [settings] = useContext(SettingsContext);
+  const useMediaQueryThemeBreakpointsUpMd = useMediaQuery(
+    theme.breakpoints.up("md")
+  );
+  const useMediaQueryThemeBreakpointsDownSm = useMediaQuery(
+    theme.breakpoints.down("sm")
+  );
+  const useMediaQueryThemeBreakpointsDownXs = useMediaQuery(
+    theme.breakpoints.down("xs")
+  );
 
   const transitionDuration = {
     enter: theme.transitions.duration.enteringScreen,
@@ -129,11 +140,33 @@ const FloatingTimer = memo((props) => {
           <CircularDeterminate columns={props.columns} />
           {/* カウント */}
           <div className={classes.timerCount}>
-            {Math.floor(state.pomodoroTimeLeft / 60) +
-              ":" +
-              (Math.floor(state.pomodoroTimeLeft % 60) < 10
-                ? "0" + Math.floor(state.pomodoroTimeLeft % 60)
-                : Math.floor(state.pomodoroTimeLeft % 60))}
+            {settings.isPomodoroEnabled &&
+              Math.floor(state.pomodoroTimeLeft / 60) +
+                ":" +
+                (Math.floor(state.pomodoroTimeLeft % 60) < 10
+                  ? "0" + Math.floor(state.pomodoroTimeLeft % 60)
+                  : Math.floor(state.pomodoroTimeLeft % 60))}
+            {/* ポモドーロモードじゃないとき */}
+            {!settings.isPomodoroEnabled && selectedTask !== null && (
+              <span
+                style={{
+                  fontSize:
+                    selectedTask.spentSecond > 3600
+                      ? useMediaQueryThemeBreakpointsUpMd
+                        ? "2rem"
+                        : useMediaQueryThemeBreakpointsDownXs
+                        ? "0.8rem"
+                        : useMediaQueryThemeBreakpointsDownSm
+                        ? "1.4rem"
+                        : ""
+                      : "",
+                }}
+              >
+                {selectedTask.spentSecond < 3600
+                  ? secondToHHMMSS(selectedTask.spentSecond).substring(3)
+                  : secondToHHMMSS(selectedTask.spentSecond)}
+              </span>
+            )}
           </div>
           {/* タスク名 */}
           <div className={classes.content}>
@@ -149,13 +182,35 @@ const FloatingTimer = memo((props) => {
               state.pomodoroTimerType === "work" &&
               selectedTask === null && (
                 <>
-                  <p style={{ marginBottom: "0" }}>タスクが選択</p>
+                  <p style={{ margin: "0" }}>タスクが選択</p>
                   されていません
                 </>
               )}
             {settings.isPomodoroEnabled && state.pomodoroTimerType === "break"
               ? "休憩"
               : ""}
+            {/* ポモドーロモードじゃないとき */}
+            {!settings.isPomodoroEnabled &&
+              selectedTask !== null &&
+              selectedTask.estimatedSecond - selectedTask.spentSecond > 0 && (
+                <p style={{ margin: "0" }}>
+                  残り
+                  {secondToHHMMSS_ja(
+                    selectedTask.estimatedSecond - selectedTask.spentSecond
+                  )}
+                </p>
+              )}
+            {!settings.isPomodoroEnabled && selectedTask !== null
+              ? selectedTask.content.length > 10
+                ? selectedTask.content.slice(0, 10) + "..."
+                : selectedTask.content
+              : ""}
+            {!settings.isPomodoroEnabled && selectedTask === null && (
+              <>
+                <p style={{ margin: "0" }}>タスクが選択</p>
+                されていません
+              </>
+            )}
           </div>
           {/* 再生・停止アイコン */}
           <div>

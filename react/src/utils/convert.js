@@ -19,6 +19,31 @@ export const secondToHHMMSS = (second) => {
 };
 
 /**
+ * 秒を「HH時間MM分SS秒」の文字列に変換します。
+ * @param {*} second 秒
+ * @returns 「HH時間MM分SS秒」の文字列
+ */
+export const secondToHHMMSS_ja = (second) => {
+  let output = "";
+  let hour = Math.floor(second / 3600);
+  let minute = Math.floor((second / 60) % 60);
+  let remainderSecond = Math.floor(second % 60);
+  if (hour > 0) {
+    output += hour;
+    output += "時間";
+  }
+  if (minute > 0) {
+    output += minute;
+    output += "分";
+  }
+  if (remainderSecond > 0) {
+    output += remainderSecond;
+    output += "秒";
+  }
+  return output;
+};
+
+/**
  * タスクの配列を日報に変換します。
  * @param {*} items タスクの配列
  */
