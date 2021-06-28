@@ -108,66 +108,70 @@ const FloatingTimer = memo((props) => {
 
   return (
     <div className={classes.root}>
-      {settings.isPomodoroEnabled && (
-        <Zoom
-          timeout={transitionDuration}
-          in={true}
-          style={{
-            transitionDelay: `${transitionDuration.exit}ms`,
+      <Zoom
+        timeout={transitionDuration}
+        in={true}
+        style={{
+          transitionDelay: `${transitionDuration.exit}ms`,
+        }}
+        unmountOnExit
+      >
+        <Fab
+          color="primary"
+          aria-label="timer"
+          className={classes.fab}
+          id="floatingTimer"
+          onClick={() => {
+            onFabClick();
           }}
-          unmountOnExit
         >
-          <Fab
-            color="primary"
-            aria-label="timer"
-            className={classes.fab}
-            id="floatingTimer"
-            onClick={() => {
-              onFabClick();
-            }}
-          >
-            {/* 進行状況サークル */}
-            <CircularDeterminate />
-            {/* カウント */}
-            <div className={classes.timerCount}>
-              {Math.floor(state.pomodoroTimeLeft / 60) +
-                ":" +
-                (Math.floor(state.pomodoroTimeLeft % 60) < 10
-                  ? "0" + Math.floor(state.pomodoroTimeLeft % 60)
-                  : Math.floor(state.pomodoroTimeLeft % 60))}
-            </div>
-            {/* タスク名 */}
-            <div className={classes.content}>
-              {state.pomodoroTimerType === "work" && selectedTask !== null ? (
-                selectedTask.content.length > 10 ? (
-                  selectedTask.content.slice(0, 10) + "..."
-                ) : (
-                  selectedTask.content
-                )
-              ) : (
+          {/* 進行状況サークル */}
+          <CircularDeterminate columns={props.columns} />
+          {/* カウント */}
+          <div className={classes.timerCount}>
+            {Math.floor(state.pomodoroTimeLeft / 60) +
+              ":" +
+              (Math.floor(state.pomodoroTimeLeft % 60) < 10
+                ? "0" + Math.floor(state.pomodoroTimeLeft % 60)
+                : Math.floor(state.pomodoroTimeLeft % 60))}
+          </div>
+          {/* タスク名 */}
+          <div className={classes.content}>
+            {/* ポモドーロがオン かつ 作業タイマー かつ 選択しているタスクが存在する */}
+            {settings.isPomodoroEnabled &&
+            state.pomodoroTimerType === "work" &&
+            selectedTask !== null
+              ? selectedTask.content.length > 10
+                ? selectedTask.content.slice(0, 10) + "..."
+                : selectedTask.content
+              : ""}
+            {settings.isPomodoroEnabled &&
+              state.pomodoroTimerType === "work" &&
+              selectedTask === null && (
                 <>
                   <p style={{ marginBottom: "0" }}>タスクが選択</p>
                   されていません
                 </>
               )}
-              {state.pomodoroTimerType === "break" ? "休憩" : ""}
-            </div>
-            {/* 再生・停止アイコン */}
-            <div>
-              {selectedTask !== null && !state.isTimerOn && (
-                <>
-                  <PlayArrowIcon className={classes.playStopIcon} />
-                </>
-              )}
-              {selectedTask !== null && state.isTimerOn && (
-                <>
-                  <StopIcon className={classes.playStopIcon} />
-                </>
-              )}
-            </div>
-          </Fab>
-        </Zoom>
-      )}
+            {settings.isPomodoroEnabled && state.pomodoroTimerType === "break"
+              ? "休憩"
+              : ""}
+          </div>
+          {/* 再生・停止アイコン */}
+          <div>
+            {selectedTask !== null && !state.isTimerOn && (
+              <>
+                <PlayArrowIcon className={classes.playStopIcon} />
+              </>
+            )}
+            {selectedTask !== null && state.isTimerOn && (
+              <>
+                <StopIcon className={classes.playStopIcon} />
+              </>
+            )}
+          </div>
+        </Fab>
+      </Zoom>
     </div>
   );
 });

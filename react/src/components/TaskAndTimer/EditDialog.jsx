@@ -107,7 +107,7 @@ const EditDialog = memo((props) => {
   const handleAccept = () => {
     props.setColumns((columns) => {
       return {
-        ...Object.values(columns),
+        ...columns,
         [Object.keys(columns)[props.columnIndex]]: {
           ...Object.values(columns)[props.columnIndex],
           items: Object.values(columns)[props.columnIndex].items.map(

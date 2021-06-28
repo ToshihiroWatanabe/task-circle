@@ -31,10 +31,31 @@ const useStyles = makeStyles((theme) => ({
 /**
  * 進行状況サークルのコンポーネントです。
  */
-const CircularDeterminate = memo(() => {
+const CircularDeterminate = memo((props) => {
   const classes = useStyles();
   const [state] = useContext(Context);
   const [settings] = useContext(SettingsContext);
+
+  const selectedTask =
+    Object.values(props.columns).filter((column, index) => {
+      return (
+        column.items.filter((item, index) => {
+          return item.isSelected;
+        })[0] !== undefined
+      );
+    }).length > 0
+      ? Object.values(props.columns)
+          .filter((column, index) => {
+            return (
+              column.items.filter((item, index) => {
+                return item.isSelected;
+              })[0] !== undefined
+            );
+          })[0]
+          .items.filter((item, index) => {
+            return item.isSelected;
+          })[0]
+      : null;
 
   return (
     <div className={classes.root}>
@@ -42,12 +63,22 @@ const CircularDeterminate = memo(() => {
         className={classes.fab}
         variant="determinate"
         value={
-          state.pomodoroTimerType === "work"
-            ? (state.pomodoroTimeLeft / settings.workTimerLength) * -100
-            : (state.pomodoroTimeLeft / settings.breakTimerLength) * -100
+          settings.isPomodoroEnabled
+            ? state.pomodoroTimerType === "work"
+              ? (state.pomodoroTimeLeft / settings.workTimerLength) * -100
+              : (state.pomodoroTimeLeft / settings.breakTimerLength) * -100
+            : selectedTask !== null && selectedTask.estimatedSecond > 0
+            ? (selectedTask.spentSecond / selectedTask.estimatedSecond) * 100
+            : 0
         }
         thickness={1}
-        style={{ color: state.pomodoroTimerType === "work" ? "red" : "yellow" }}
+        style={{
+          color: settings.isPomodoroEnabled
+            ? state.pomodoroTimerType === "work"
+              ? "red"
+              : "yellow"
+            : "orange",
+        }}
       />
     </div>
   );
