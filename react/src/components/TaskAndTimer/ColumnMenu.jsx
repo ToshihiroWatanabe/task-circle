@@ -41,7 +41,7 @@ const ColumnMenu = memo((props) => {
     props.setColumns((columns) => {
       props.setPreviousColumns(JSON.parse(JSON.stringify({ ...columns })));
       const newColumns = {
-        ...Object.values(columns),
+        ...columns,
         [Object.keys(columns)[props.index]]: {
           ...Object.values(columns)[props.index],
           items: Object.values(columns)[props.index].items.map(

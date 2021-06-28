@@ -87,9 +87,11 @@ const TaskMenu = memo((props) => {
    */
   const handleReset = () => {
     props.setColumns((columns) => {
+      console.log(columns);
+      console.log(Object.keys(columns)[props.columnIndex]);
       props.setPreviousColumns(JSON.parse(JSON.stringify({ ...columns })));
       const newColumns = {
-        ...Object.values(columns),
+        ...columns,
         [Object.keys(columns)[props.columnIndex]]: {
           ...Object.values(columns)[props.columnIndex],
           items: Object.values(columns)[props.columnIndex].items.map(
@@ -104,6 +106,7 @@ const TaskMenu = memo((props) => {
           ),
         },
       };
+      console.log(newColumns);
       localStorage.setItem("columns", JSON.stringify(newColumns));
       return newColumns;
     });
@@ -117,7 +120,7 @@ const TaskMenu = memo((props) => {
     props.setColumns((columns) => {
       props.setPreviousColumns(JSON.parse(JSON.stringify({ ...columns })));
       const newColumns = {
-        ...Object.values(columns),
+        ...columns,
         [Object.keys(columns)[props.columnIndex]]: {
           ...Object.values(columns)[props.columnIndex],
           items: Object.values(columns)[props.columnIndex].items.filter(
