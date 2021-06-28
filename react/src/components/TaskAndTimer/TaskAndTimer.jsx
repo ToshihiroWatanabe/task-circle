@@ -14,6 +14,7 @@ import YouTube from "react-youtube";
 import { secondToHHMMSS } from "utils/convert";
 import uuid from "uuid/v4";
 import { StatisticsContext } from "contexts/StatisticsContext";
+import FloatingTimer from "./FloatingTimer";
 
 /** 一度にカウントする秒数 */
 const ONCE_COUNT = 1;
@@ -92,11 +93,7 @@ const localStorageGetItemColumns = localStorage.getItem("columns")
   ? JSON.parse(localStorage.getItem("columns"))
   : { ...defaultColumns };
 
-const useStyles = makeStyles((theme) => ({
-  root: {
-    display: "flex",
-  },
-}));
+const useStyles = makeStyles((theme) => ({}));
 
 /**
  * タスク＆タイマーページのコンポーネントです。
@@ -572,7 +569,7 @@ const TaskAndTimer = memo(() => {
 
   return (
     <>
-      <div className={classes.root}>
+      <div style={{ display: "flex" }}>
         <TodoList
           columns={columns}
           setColumns={setColumns}
@@ -580,6 +577,8 @@ const TaskAndTimer = memo(() => {
         />
         <Room />
       </div>
+      {/* フローティングタイマー */}
+      <FloatingTimer columns={columns} onPlayButtonClick={onPlayButtonClick} />
       {/* 作業用BGM動画 */}
       {workVideoId !== "" && (
         <>

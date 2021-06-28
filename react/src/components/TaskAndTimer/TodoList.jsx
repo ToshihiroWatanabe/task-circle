@@ -699,11 +699,6 @@ const TodoList = memo((props) => {
           </>
         }
       />
-      {/* フローティングタイマー */}
-      <FloatingTimer
-        columns={props.columns}
-        onPlayButtonClick={props.onPlayButtonClick}
-      />
       <Link to="/reports" id="linkToReports" />
     </div>
   );
