@@ -335,7 +335,7 @@ const Settings = () => {
         </Button>
       </Card>
       {/* Slack連携設定 */}
-      <Card
+      {/* <Card
         style={{
           width: "95%",
           padding: "1rem",
@@ -389,7 +389,7 @@ const Settings = () => {
             適用する
           </Button>
         </form>
-      </Card>
+      </Card> */}
       <SimpleSnackbar
         open={snackbarOpen}
         setOpen={setSnackbarOpen}

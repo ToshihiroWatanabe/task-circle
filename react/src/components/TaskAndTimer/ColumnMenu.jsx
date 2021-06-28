@@ -68,7 +68,7 @@ const ColumnMenu = memo((props) => {
     props.setColumns((columns) => {
       props.setPreviousColumns(JSON.parse(JSON.stringify({ ...columns })));
       const newColumns = {
-        ...Object.values(columns),
+        ...columns,
       };
       delete newColumns[Object.keys(columns)[props.index]];
       props.setUndoSnackbarMessage("削除しました");
