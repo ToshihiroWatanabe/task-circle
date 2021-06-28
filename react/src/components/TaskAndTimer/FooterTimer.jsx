@@ -1,15 +1,22 @@
-import React, { useState } from "react";
+import { Context } from "contexts/Context";
+import { SettingsContext } from "contexts/SettingsContext";
+import React, { useContext, useState } from "react";
 import { Rnd } from "react-rnd";
+import PlayArrowIcon from "@material-ui/icons/PlayArrow";
+import StopIcon from "@material-ui/icons/Stop";
+import { IconButton } from "@material-ui/core";
 
 const DEFAULT_WIDTH = 320;
 const DEFAULT_HEIGHT = 144;
 const MIN_WIDTH = 320;
-const MIN_HEIGHT = 48;
+const MIN_HEIGHT = 144;
 
 /**
  * フッタータイマーのコンポーネントです。
  */
 const FooterTimer = (props) => {
+  const [state] = useContext(Context);
+  const [settings] = useContext(SettingsContext);
   const selectedTask =
     Object.values(props.columns).filter((column, index) => {
       return (
@@ -104,9 +111,10 @@ const FooterTimer = (props) => {
           alignItems: "center",
           justifyContent: "center",
           border: "solid 1px #ddd",
-          borderRadius: "4px",
+          borderRadius: "8px",
           background: "#f0f0f0",
           zIndex: "1",
+          padding: "8px",
         }}
       >
         {selectedTask !== null
@@ -122,6 +130,13 @@ const FooterTimer = (props) => {
                 return item.isSelected;
               })[0].content
           : "タスクが選択されていません"}
+        <IconButton
+          onClick={() => {
+            props.onPlayButtonClick(0, "fab");
+          }}
+        >
+          {state.isTimerOn ? <StopIcon /> : <PlayArrowIcon />}
+        </IconButton>
       </Rnd>
     </>
   );

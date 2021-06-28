@@ -581,7 +581,7 @@ const TaskAndTimer = memo(() => {
       {/* フローティングタイマー */}
       <FloatingTimer columns={columns} onPlayButtonClick={onPlayButtonClick} />
       {/* 新フッタータイマー */}
-      <FooterTimer columns={columns} onPlayButtonClick={onPlayButtonClick} />
+      {/* <FooterTimer columns={columns} onPlayButtonClick={onPlayButtonClick} /> */}
       {/* 作業用BGM動画 */}
       {workVideoId !== "" && (
         <>

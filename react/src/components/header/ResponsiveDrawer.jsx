@@ -185,11 +185,11 @@ const ResponsiveDrawer = memo((props) => {
             </Link>
           )}
           {/* ポモドーロ切り替えアイコン */}
-          {location.pathname === "/" && (
-            <>
-              <TimerPopover />
-            </>
-          )}
+          <div
+            style={{ visibility: location.pathname === "/" ? "" : "hidden" }}
+          >
+            <TimerPopover />
+          </div>
           {/* 日報をインポート・エクスポートするファイルアイコン */}
           {location.pathname === "/reports" && <FilePopover />}
           {/* 分析レポートをエクスポートするファイルアイコン */}

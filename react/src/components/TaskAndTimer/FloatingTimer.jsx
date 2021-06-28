@@ -80,14 +80,7 @@ const FloatingTimer = memo((props) => {
    * Fabがクリックされたときの処理です。
    */
   const onFabClick = () => {
-    let index = 0;
-    Object.values(props.columns)[0].items.map((item, i) => {
-      if (item.isSelected) {
-        index = i;
-      }
-      return item;
-    });
-    props.onPlayButtonClick(index, "fab");
+    props.onPlayButtonClick(0, "fab");
   };
 
   return (
