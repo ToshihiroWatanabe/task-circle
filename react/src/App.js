@@ -43,6 +43,9 @@ const useStyles = makeStyles((theme) => ({
     paddingLeft: theme.spacing(1),
     maxWidth: "100vw",
     overflow: "auto",
+    [theme.breakpoints.up("md")]: {
+      height: "100wh",
+    },
     [theme.breakpoints.down("xs")]: {
       marginTop: "4rem",
     },
