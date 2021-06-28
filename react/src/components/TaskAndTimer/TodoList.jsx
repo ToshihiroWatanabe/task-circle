@@ -28,11 +28,8 @@ import AssignmentOutlinedIcon from "@material-ui/icons/AssignmentOutlined";
 import { copyTasksToClipboard } from "utils/export";
 import NoteAddOutlinedIcon from "@material-ui/icons/NoteAddOutlined";
 import AlarmIcon from "@material-ui/icons/Alarm";
-import FloatingTimer from "./FloatingTimer";
 import FreeBreakfastOutlinedIcon from "@material-ui/icons/FreeBreakfastOutlined";
 import { SettingsContext } from "contexts/SettingsContext";
-import YouTube from "react-youtube";
-import { StatisticsContext } from "contexts/StatisticsContext";
 import AddCircleOutlineIcon from "@material-ui/icons/AddCircleOutline";
 
 /** タイマー再生ボタンにカーソルが合っているかどうか */

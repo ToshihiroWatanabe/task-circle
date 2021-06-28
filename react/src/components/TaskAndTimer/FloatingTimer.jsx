@@ -123,24 +123,51 @@ const FloatingTimer = memo((props) => {
             {/* タスク名 */}
             <div className={classes.content}>
               {state.pomodoroTimerType === "work" &&
-              Object.values(props.columns)[0].items.filter((item, index) => {
-                return item.isSelected;
-              }).length > 0
-                ? Object.values(props.columns)[0].items.filter(
-                    (item, index) => {
+              Object.values(props.columns)
+                .filter((column, index) => {
+                  return (
+                    column.items.filter((item, index) => {
                       return item.isSelected;
-                    }
-                  )[0].content.length > 10
-                  ? Object.values(props.columns)[0]
+                    })[0] !== undefined
+                  );
+                })[0]
+                .items.filter((item, index) => {
+                  return item.isSelected;
+                }).length > 0
+                ? Object.values(props.columns)
+                    .filter((column, index) => {
+                      return (
+                        column.items.filter((item, index) => {
+                          return item.isSelected;
+                        })[0] !== undefined
+                      );
+                    })[0]
+                    .items.filter((item, index) => {
+                      return item.isSelected;
+                    })[0].content.length > 10
+                  ? Object.values(props.columns)
+                      .filter((column, index) => {
+                        return (
+                          column.items.filter((item, index) => {
+                            return item.isSelected;
+                          })[0] !== undefined
+                        );
+                      })[0]
                       .items.filter((item, index) => {
                         return item.isSelected;
                       })[0]
                       .content.slice(0, 10) + "..."
-                  : Object.values(props.columns)[0].items.filter(
-                      (item, index) => {
+                  : Object.values(props.columns)
+                      .filter((column, index) => {
+                        return (
+                          column.items.filter((item, index) => {
+                            return item.isSelected;
+                          })[0] !== undefined
+                        );
+                      })[0]
+                      .items.filter((item, index) => {
                         return item.isSelected;
-                      }
-                    )[0].content
+                      })[0].content
                 : ""}
               {state.pomodoroTimerType === "break" ? "休憩" : ""}
             </div>
