@@ -76,11 +76,34 @@ const FloatingTimer = memo((props) => {
     exit: theme.transitions.duration.leavingScreen,
   };
 
+  const selectedTask =
+    Object.values(props.columns).filter((column, index) => {
+      return (
+        column.items.filter((item, index) => {
+          return item.isSelected;
+        })[0] !== undefined
+      );
+    }).length > 0
+      ? Object.values(props.columns)
+          .filter((column, index) => {
+            return (
+              column.items.filter((item, index) => {
+                return item.isSelected;
+              })[0] !== undefined
+            );
+          })[0]
+          .items.filter((item, index) => {
+            return item.isSelected;
+          })[0]
+      : null;
+
   /**
    * Fabがクリックされたときの処理です。
    */
   const onFabClick = () => {
-    props.onPlayButtonClick(0, "fab");
+    if (selectedTask !== null) {
+      props.onPlayButtonClick(0, "fab");
+    }
   };
 
   return (
@@ -115,63 +138,21 @@ const FloatingTimer = memo((props) => {
             </div>
             {/* タスク名 */}
             <div className={classes.content}>
-              {state.pomodoroTimerType === "work" &&
-              Object.values(props.columns)
-                .filter((column, index) => {
-                  return (
-                    column.items.filter((item, index) => {
-                      return item.isSelected;
-                    })[0] !== undefined
-                  );
-                })[0]
-                .items.filter((item, index) => {
-                  return item.isSelected;
-                }).length > 0
-                ? Object.values(props.columns)
-                    .filter((column, index) => {
-                      return (
-                        column.items.filter((item, index) => {
-                          return item.isSelected;
-                        })[0] !== undefined
-                      );
-                    })[0]
-                    .items.filter((item, index) => {
-                      return item.isSelected;
-                    })[0].content.length > 10
-                  ? Object.values(props.columns)
-                      .filter((column, index) => {
-                        return (
-                          column.items.filter((item, index) => {
-                            return item.isSelected;
-                          })[0] !== undefined
-                        );
-                      })[0]
-                      .items.filter((item, index) => {
-                        return item.isSelected;
-                      })[0]
-                      .content.slice(0, 10) + "..."
-                  : Object.values(props.columns)
-                      .filter((column, index) => {
-                        return (
-                          column.items.filter((item, index) => {
-                            return item.isSelected;
-                          })[0] !== undefined
-                        );
-                      })[0]
-                      .items.filter((item, index) => {
-                        return item.isSelected;
-                      })[0].content
-                : ""}
+              {state.pomodoroTimerType === "work" && selectedTask !== null
+                ? selectedTask.content.length > 10
+                  ? selectedTask.content.slice(0, 10) + "..."
+                  : selectedTask.content
+                : "選択されていません"}
               {state.pomodoroTimerType === "break" ? "休憩" : ""}
             </div>
             {/* 再生・停止アイコン */}
             <div>
-              {!state.isTimerOn && (
+              {selectedTask !== null && !state.isTimerOn && (
                 <>
                   <PlayArrowIcon className={classes.playStopIcon} />
                 </>
               )}
-              {state.isTimerOn && (
+              {selectedTask !== null && state.isTimerOn && (
                 <>
                   <StopIcon className={classes.playStopIcon} />
                 </>
