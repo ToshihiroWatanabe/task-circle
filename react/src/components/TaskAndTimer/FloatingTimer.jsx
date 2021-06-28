@@ -5,10 +5,10 @@ import { useTheme, Zoom, useMediaQuery } from "@material-ui/core";
 import { Rnd } from "react-rnd";
 import TimerFab from "./TimerFab";
 
-const DEFAULT_WIDTH = 160;
-const DEFAULT_HEIGHT = 160;
-const MIN_WIDTH = 160;
-const MIN_HEIGHT = 160;
+const DEFAULT_WIDTH = 180;
+const DEFAULT_HEIGHT = 180;
+const MIN_WIDTH = 180;
+const MIN_HEIGHT = 180;
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -139,7 +139,7 @@ const FloatingTimer = memo((props) => {
             borderRadius: "8px",
             background: "#f0f0f0",
             zIndex: "1",
-            padding: "8px",
+            // padding: "8px",
           }}
         >
           <TimerFab

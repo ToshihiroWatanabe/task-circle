@@ -12,8 +12,8 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   fab: {
-    width: "10rem !important",
-    height: "10rem !important",
+    // width: "10rem !important",
+    // height: "10rem !important",
     position: "absolute",
     right: 0,
     bottom: 0,
@@ -73,6 +73,8 @@ const CircularDeterminate = memo((props) => {
         }
         thickness={1}
         style={{
+          width: props.width !== "undifined" ? props.width : "",
+          height: props.height !== "undifined" ? props.height : "",
           color: settings.isPomodoroEnabled
             ? state.pomodoroTimerType === "work"
               ? "red"
