@@ -1,27 +1,16 @@
-import { useState } from "react";
+import { Context } from "contexts/Context";
+import { useContext, useState } from "react";
 import { Rnd } from "react-rnd";
 
-const DEFAULT_WIDTH = 360;
+const DEFAULT_WIDTH = 320;
 const DEFAULT_HEIGHT = 144;
-const MIN_WIDTH = 100;
-const MIN_HEIGHT = 100;
-
-const style = {
-  display: "flex",
-  posision: "fixed",
-  bottom: "0",
-  alignItems: "center",
-  justifyContent: "center",
-  border: "solid 1px #ddd",
-  borderRadius: "4px",
-  background: "#f0f0f0",
-  zIndex: "9999",
-};
+const MIN_WIDTH = 320;
+const MIN_HEIGHT = 48;
 
 /**
  * フッタータイマーのコンポーネントです。
  */
-const FooterTimer = () => {
+const FooterTimer = (props) => {
   const [positionX, setPositionX] = useState(
     document.documentElement.clientWidth / 2 - DEFAULT_WIDTH / 2
   );
@@ -76,7 +65,6 @@ const FooterTimer = () => {
   return (
     <>
       <Rnd
-        style={style}
         dragAxis="x"
         minWidth={MIN_WIDTH}
         minHeight={MIN_HEIGHT}
@@ -90,8 +78,41 @@ const FooterTimer = () => {
           width: DEFAULT_WIDTH,
           height: DEFAULT_HEIGHT,
         }}
+        style={{
+          display: "flex",
+          posision: "fixed",
+          bottom: "0",
+          alignItems: "center",
+          justifyContent: "center",
+          border: "solid 1px #ddd",
+          borderRadius: "4px",
+          background: "#f0f0f0",
+          zIndex: "9999",
+        }}
       >
-        Rnd
+        {Object.values(props.columns)
+          .filter((column, index) => {
+            return (
+              column.items.filter((item, index) => {
+                return item.isSelected;
+              })[0] !== undefined
+            );
+          })[0]
+          .items.filter((item, index) => {
+            return item.isSelected;
+          }).length > 0
+          ? Object.values(props.columns)
+              .filter((column, index) => {
+                return (
+                  column.items.filter((item, index) => {
+                    return item.isSelected;
+                  })[0] !== undefined
+                );
+              })[0]
+              .items.filter((item, index) => {
+                return item.isSelected;
+              })[0].content
+          : ""}
       </Rnd>
     </>
   );
