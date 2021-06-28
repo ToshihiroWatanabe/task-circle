@@ -5,10 +5,10 @@ import { useTheme, Zoom, useMediaQuery } from "@material-ui/core";
 import { Rnd } from "react-rnd";
 import TimerFab from "./TimerFab";
 
-const DEFAULT_WIDTH = 180;
-const DEFAULT_HEIGHT = 180;
-const MIN_WIDTH = 180;
-const MIN_HEIGHT = 180;
+const DEFAULT_WIDTH = 160;
+const DEFAULT_HEIGHT = 160;
+const MIN_WIDTH = 160;
+const MIN_HEIGHT = 160;
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -70,12 +70,10 @@ const FloatingTimer = memo((props) => {
           ? window.innerWidth * 0.9
           : position.x;
       });
-      console.log(width, delta.width);
       width =
         width + delta.width > window.innerWidth * 0.9
           ? window.innerWidth * 0.9
           : width + delta.width;
-      console.log(width);
       return width;
     });
   };
@@ -148,6 +146,8 @@ const FloatingTimer = memo((props) => {
             columns={props.columns}
             isDragging={isDragging}
             onPlayButtonClick={props.onPlayButtonClick}
+            width={width}
+            height={height}
           />
         </Rnd>
       )}

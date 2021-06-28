@@ -122,6 +122,10 @@ const TimerFab = memo((props) => {
         onClick={() => {
           onFabClick();
         }}
+        style={{
+          width: props.width !== "undifined" ? props.width : "",
+          height: props.height !== "undifined" ? props.height : "",
+        }}
       >
         {/* 進行状況サークル */}
         <CircularDeterminate columns={props.columns} />
