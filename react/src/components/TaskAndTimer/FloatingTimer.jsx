@@ -138,11 +138,18 @@ const FloatingTimer = memo((props) => {
             </div>
             {/* タスク名 */}
             <div className={classes.content}>
-              {state.pomodoroTimerType === "work" && selectedTask !== null
-                ? selectedTask.content.length > 10
-                  ? selectedTask.content.slice(0, 10) + "..."
-                  : selectedTask.content
-                : "選択されていません"}
+              {state.pomodoroTimerType === "work" && selectedTask !== null ? (
+                selectedTask.content.length > 10 ? (
+                  selectedTask.content.slice(0, 10) + "..."
+                ) : (
+                  selectedTask.content
+                )
+              ) : (
+                <>
+                  <p style={{ marginBottom: "0" }}>タスクが選択</p>
+                  されていません
+                </>
+              )}
               {state.pomodoroTimerType === "break" ? "休憩" : ""}
             </div>
             {/* 再生・停止アイコン */}

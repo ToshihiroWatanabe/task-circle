@@ -54,6 +54,7 @@ const roomsFromBackEnd = {
 const useStyles = makeStyles((theme) => ({
   roomCard: {
     minWidth: 320,
+    maxWidth: 320,
     height: "fit-content",
     margin: 8,
     padding: 8,

@@ -47,19 +47,21 @@ const UserList = memo((props) => {
               {index !== 0 && <Divider />}
               <ListItem alignItems="flex-start">
                 <ListItemAvatar style={{ marginLeft: "-0.4rem" }}>
-                  {index === 0 && (
-                    <Skeleton variant="circle" width={40} height={40} />
-                  )}
-                  {index > 0 && (
-                    <Avatar
-                      style={{
-                        backgroundColor: getAvatarColor(session.userName),
-                      }}
-                      src={session.imageUrl}
-                    >
-                      {session.userName.charAt(0).toUpperCase()}
-                    </Avatar>
-                  )}
+                  <>
+                    {index === 0 && (
+                      <Skeleton variant="circle" width={40} height={40} />
+                    )}
+                    {index > 0 && (
+                      <Avatar
+                        style={{
+                          backgroundColor: getAvatarColor(session.userName),
+                        }}
+                        src={session.imageUrl}
+                      >
+                        {session.userName.charAt(0).toUpperCase()}
+                      </Avatar>
+                    )}
+                  </>
                 </ListItemAvatar>
                 {index === 0 && (
                   <div style={{ display: "inline-block", width: "100%" }}>
