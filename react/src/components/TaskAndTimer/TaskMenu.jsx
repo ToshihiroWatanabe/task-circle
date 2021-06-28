@@ -65,10 +65,6 @@ const TaskMenu = memo((props) => {
    */
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
-    props.setColumns((columns) => {
-      props.setPreviousColumns(JSON.parse(JSON.stringify({ ...columns })));
-      return columns;
-    });
   };
 
   /**
@@ -91,6 +87,7 @@ const TaskMenu = memo((props) => {
    */
   const handleReset = () => {
     props.setColumns((columns) => {
+      props.setPreviousColumns(JSON.parse(JSON.stringify({ ...columns })));
       const newColumns = {
         ...Object.values(columns),
         [Object.keys(columns)[props.columnIndex]]: {
@@ -118,6 +115,7 @@ const TaskMenu = memo((props) => {
    */
   const handleDelete = () => {
     props.setColumns((columns) => {
+      props.setPreviousColumns(JSON.parse(JSON.stringify({ ...columns })));
       const newColumns = {
         ...Object.values(columns),
         [Object.keys(columns)[props.columnIndex]]: {
