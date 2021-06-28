@@ -1,5 +1,4 @@
-import { Context } from "contexts/Context";
-import { useContext, useState } from "react";
+import React, { useState } from "react";
 import { Rnd } from "react-rnd";
 
 const DEFAULT_WIDTH = 320;
@@ -11,6 +10,26 @@ const MIN_HEIGHT = 48;
  * フッタータイマーのコンポーネントです。
  */
 const FooterTimer = (props) => {
+  const selectedTask =
+    Object.values(props.columns).filter((column, index) => {
+      return (
+        column.items.filter((item, index) => {
+          return item.isSelected;
+        })[0] !== undefined
+      );
+    }).length > 0
+      ? Object.values(props.columns)
+          .filter((column, index) => {
+            return (
+              column.items.filter((item, index) => {
+                return item.isSelected;
+              })[0] !== undefined
+            );
+          })[0]
+          .items.filter((item, index) => {
+            return item.isSelected;
+          })[0]
+      : null;
   const [positionX, setPositionX] = useState(
     document.documentElement.clientWidth / 2 - DEFAULT_WIDTH / 2
   );
@@ -87,20 +106,10 @@ const FooterTimer = (props) => {
           border: "solid 1px #ddd",
           borderRadius: "4px",
           background: "#f0f0f0",
-          zIndex: "9999",
+          zIndex: "1",
         }}
       >
-        {Object.values(props.columns)
-          .filter((column, index) => {
-            return (
-              column.items.filter((item, index) => {
-                return item.isSelected;
-              })[0] !== undefined
-            );
-          })[0]
-          .items.filter((item, index) => {
-            return item.isSelected;
-          }).length > 0
+        {selectedTask !== null
           ? Object.values(props.columns)
               .filter((column, index) => {
                 return (
@@ -112,7 +121,7 @@ const FooterTimer = (props) => {
               .items.filter((item, index) => {
                 return item.isSelected;
               })[0].content
-          : ""}
+          : "タスクが選択されていません"}
       </Rnd>
     </>
   );
