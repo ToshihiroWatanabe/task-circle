@@ -286,14 +286,15 @@ const TodoList = memo((props) => {
   /**
    * アラームアイコンがクリックされたときの処理です。
    */
-  const onAlarmIconClick = (index) => {
+  const onAlarmIconClick = (columnIndex, taskIndex) => {
     if (
-      Object.values(props.columns)[0].items[index].spentSecond <
-      Object.values(props.columns)[0].items[index].estimatedSecond
+      Object.values(props.columns)[columnIndex].items[taskIndex].spentSecond <
+      Object.values(props.columns)[columnIndex].items[taskIndex].estimatedSecond
     ) {
       props.setColumns((columns) => {
-        Object.values(columns)[0].items[index].achievedThenStop =
-          !Object.values(columns)[0].items[index].achievedThenStop;
+        Object.values(columns)[columnIndex].items[taskIndex].achievedThenStop =
+          !Object.values(columns)[columnIndex].items[taskIndex]
+            .achievedThenStop;
         localStorage.setItem("columns", JSON.stringify(columns));
         return { ...columns };
       });
@@ -544,7 +545,10 @@ const TodoList = memo((props) => {
                                                     : "#BBB",
                                                 }}
                                                 onClick={() =>
-                                                  onAlarmIconClick(index)
+                                                  onAlarmIconClick(
+                                                    columnIndex,
+                                                    index
+                                                  )
                                                 }
                                               >
                                                 <AlarmIcon
