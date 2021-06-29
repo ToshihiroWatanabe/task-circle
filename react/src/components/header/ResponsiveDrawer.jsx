@@ -95,8 +95,9 @@ const ResponsiveDrawer = memo((props) => {
    * ヘッダーのタイトルがクリックされたときの処理です。
    */
   const onHeaderTitleClick = () => {
+    document.getElementsByClassName("links")[0].click();
     // ページトップへ移動
-    window.scrollTo(0, 0);
+    // window.scrollTo(0, 0);
   };
 
   const drawer = (
@@ -108,6 +109,7 @@ const ResponsiveDrawer = memo((props) => {
           <Fragment key={index}>
             <Link
               to={page.path}
+              className="links"
               style={{ color: "inherit", textDecoration: "none" }}
             >
               <ListItem
