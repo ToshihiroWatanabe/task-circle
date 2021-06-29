@@ -28,10 +28,12 @@ const RoomHeader = (props) => {
    * 退室ボタンがクリックされたときの処理です。
    */
   const onExitButtonClick = () => {
+    props.onLeave();
     setState((state) => {
       return { ...state, isInRoom: false };
     });
   };
+
   return (
     <div className={classes.root}>
       <div style={{ flexGrow: "1", display: "flex" }}>

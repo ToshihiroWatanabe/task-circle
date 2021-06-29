@@ -26,4 +26,12 @@ public class SessionWebSocketController {
         System.out.println("enter: " + message.getSessionId() + " " + message.getUserName());
         return message;
     }
+
+    @MessageMapping("/session/leave")
+    @SendTo("/topic/session/leave")
+    public Session leave(@Payload Session message, SimpMessageHeaderAccessor headerAccessor) throws Exception {
+        message.setSessionId(headerAccessor.getSessionId());
+        System.out.println("leave: " + message.getSessionId());
+        return message;
+    }
 }

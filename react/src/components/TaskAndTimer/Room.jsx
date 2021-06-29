@@ -9,6 +9,7 @@ import UserList from "./UserList";
 import SockJsClient from "react-stomp";
 import { SOCKET_URL } from "utils/constant";
 
+let myUserName = "";
 let mySessionId = "";
 let isConnected = false;
 
@@ -89,13 +90,20 @@ const Room = memo(() => {
   const onDisconnected = () => {
     console.log("サーバーとの接続が切れました。");
     isConnected = false;
+    myUserName = "";
     mySessionId = "";
   };
 
   const onSessionMessageReceived = (message) => {
     console.log(message);
+    if (mySessionId === "" && message.userName === myUserName) {
+      mySessionId = message.sessionId;
+    }
     setSessions((sessions) => {
-      return [...sessions, { userName: message.userName }];
+      return [
+        ...sessions,
+        { sessionId: message.sessionId, userName: message.userName },
+      ];
     });
   };
 
@@ -110,16 +118,23 @@ const Room = memo(() => {
   };
 
   const onEnter = (name) => {
+    myUserName = name;
     $websocket.current.sendMessage(
       "/session/enter",
       JSON.stringify({ userName: name })
     );
   };
 
+  const onLeave = () => {
+    myUserName = "";
+    mySessionId = "";
+    $websocket.current.sendMessage("/session/leave", JSON.stringify({}));
+  };
+
   return (
     <>
       <Card className={classes.roomCard}>
-        <RoomHeader sessions={sessions} />
+        <RoomHeader sessions={sessions} onLeave={onLeave} />
         <Divider style={{ margin: "0.25rem 0" }} />
         {/* 入室前 */}
         {!state.isInRoom && <EnterTheRoom onEnter={onEnter} />}
