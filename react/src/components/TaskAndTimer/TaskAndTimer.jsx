@@ -15,7 +15,6 @@ import { secondToHHMMSS } from "utils/convert";
 import uuid from "uuid/v4";
 import { StatisticsContext } from "contexts/StatisticsContext";
 import FloatingTimer from "./FloatingTimer";
-import FooterTimer from "./FooterTimer";
 
 /** 一度にカウントする秒数 */
 const ONCE_COUNT = 1;
@@ -489,7 +488,11 @@ const TaskAndTimer = memo(() => {
               );
             })[0]
             .items.map((item, index) => {
-              if (item.isSelected) {
+              if (
+                item.isSelected &&
+                (!settings.isPomodoroEnabled ||
+                  state.pomodoroTimerType !== "break")
+              ) {
                 item.spentSecond += ONCE_COUNT * count;
                 setTimeout(() => {
                   refreshTitle(item.content, item.spentSecond);

@@ -82,25 +82,31 @@ const Room = memo(() => {
   const $websocket = useRef(null);
 
   const onConnected = () => {
-    console.log("Connected!!");
+    console.log("サーバーに接続しました。");
     isConnected = true;
   };
 
   const onDisconnected = () => {
-    console.log("Disonnected!!");
+    console.log("サーバーとの接続が切れました。");
     isConnected = false;
     mySessionId = "";
   };
 
   const onSessionMessageReceived = (message) => {
+    console.log(message);
     setSessions((sessions) => {
       return [...sessions, { userName: message.userName }];
     });
-    console.log(message);
   };
 
   const onLeaveMessageReceived = (message) => {
     console.log(message);
+    setSessions((sessions) => {
+      const newSessions = sessions.filter((session, index) => {
+        return session.sessionId !== message.sessionId;
+      });
+      return [...newSessions];
+    });
   };
 
   const onEnter = (name) => {
