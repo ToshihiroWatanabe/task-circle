@@ -87,11 +87,17 @@ const UserList = memo((props) => {
                           ? "☕休憩中"
                           : ""}
                       </Typography>
-                      {" - 残り"}
-                      {session.finishAt - dateNow > 0
-                        ? Math.ceil((session.finishAt - dateNow) / 1000 / 60)
-                        : 0}
-                      {"分"}
+                      {session.startedAt > 0 && (
+                        <>
+                          {" - 残り"}
+                          {session.finishAt - dateNow > 0
+                            ? Math.ceil(
+                                (session.finishAt - dateNow) / 1000 / 60
+                              )
+                            : 0}
+                          {"分"}
+                        </>
+                      )}
                     </Fragment>
                   }
                 />
