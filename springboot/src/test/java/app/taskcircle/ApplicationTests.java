@@ -1,10 +1,10 @@
-package app.taskcircle.demo;
+package app.taskcircle;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class DemoApplicationTests {
+class ApplicationTests {
 
 	@Test
 	void contextLoads() {
