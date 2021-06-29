@@ -684,6 +684,9 @@ const TaskAndTimer = memo(() => {
           finishAt:
             settings.isPomodoroEnabled && state.isTimerOn
               ? Date.now() + state.pomodoroTimeLeft * 1000
+              : selectedTask.estimatedSecond > 0
+              ? Date.now() +
+                (selectedTask.estimatedSecond - selectedTask.spentSecond) * 1000
               : 0,
         })
       );

@@ -89,10 +89,10 @@ const UserList = memo((props) => {
                           : ""}
                         {session.sessionType === "normalWork" &&
                         session.isTimerOn
-                          ? session.content
+                          ? "💡" + session.content
                           : ""}
                       </Typography>
-                      {session.startedAt > 0 && (
+                      {session.isTimerOn && session.finishAt > 0 && (
                         <>
                           {" - 残り"}
                           {session.finishAt - dateNow > 0
