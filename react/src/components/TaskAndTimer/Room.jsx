@@ -39,7 +39,7 @@ const Room = memo(() => {
   const onDisconnected = () => {
     console.log("サーバーとの接続が切れました。");
     setState((state) => {
-      return { ...state, userName: "" };
+      return { ...state, nameInRoom: "" };
     });
     setSessions([]);
   };
@@ -47,10 +47,27 @@ const Room = memo(() => {
   const onSessionMessageReceived = (message) => {
     console.log(message);
     setSessions((sessions) => {
-      return [
+      let newSessions = [
         ...sessions,
-        { sessionId: message.sessionId, userName: message.userName },
+        {
+          sessionId: message.sessionId,
+          userName: message.userName,
+          sessionType: message.sessionType,
+          content: message.content,
+          isTimerOn: message.isTimerOn,
+          startedAt: message.startedAt,
+          finishAt: message.finishAt,
+        },
       ];
+      // sessionIdの重複を削除
+      newSessions = newSessions.filter((element, index, array) => {
+        return (
+          array.findIndex(
+            (element2) => element.sessionId === element2.sessionId
+          ) === index
+        );
+      });
+      return newSessions;
     });
   };
 
@@ -66,7 +83,7 @@ const Room = memo(() => {
 
   const onEnter = (name) => {
     setState((state) => {
-      return { ...state, userName: name };
+      return { ...state, nameInRoom: name };
     });
     $websocket.current.sendMessage(
       "/session/enter",
@@ -76,7 +93,7 @@ const Room = memo(() => {
 
   const onLeave = () => {
     setState((state) => {
-      return { ...state, userName: "" };
+      return { ...state, nameInRoom: "" };
     });
     setSessions([]);
     $websocket.current.sendMessage("/session/leave", JSON.stringify({}));

@@ -77,9 +77,9 @@ const EnterTheRoom = memo((props) => {
     if (validate(nameInput)) {
       // 入室
       setState((state) => {
-        props.onEnter(nameInput.trim());
         return { ...state, nameInRoom: nameInput.trim(), isInRoom: true };
       });
+      props.onEnter(nameInput.trim());
     }
   };
 

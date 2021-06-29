@@ -1,4 +1,4 @@
-import React, { memo, useContext, useEffect, useState } from "react";
+import React, { memo, useContext, useEffect, useRef, useState } from "react";
 import { makeStyles, Typography, useTheme } from "@material-ui/core";
 import TodoList from "./TodoList";
 import Room from "./Room";
@@ -15,6 +15,8 @@ import { secondToHHMMSS } from "utils/convert";
 import uuid from "uuid/v4";
 import { StatisticsContext } from "contexts/StatisticsContext";
 import FloatingTimer from "./FloatingTimer";
+import SockJsClient from "react-stomp";
+import { SOCKET_URL } from "utils/constant";
 
 /** 一度にカウントする秒数 */
 const ONCE_COUNT = 1;
@@ -118,6 +120,7 @@ const TaskAndTimer = memo(() => {
   const [breakVideoId, setBreakVideoId] = useState(
     settings.breakVideoUrl.split(/v=|\//).slice(-1)[0]
   );
+  const $websocket = useRef(null);
 
   // 設定の動画URLに変化があったとき
   useEffect(() => {
@@ -306,6 +309,7 @@ const TaskAndTimer = memo(() => {
         // 動画IDを更新
         updateVideoId();
       }
+      sendMessage();
       return { ...state };
     });
   };
@@ -571,6 +575,16 @@ const TaskAndTimer = memo(() => {
     });
   };
 
+  /**
+   * WebSocketのメッセージを送信します。
+   */
+  const sendMessage = () => {
+    $websocket.current.sendMessage(
+      "/session",
+      JSON.stringify({ userName: "test更新userName" })
+    );
+  };
+
   return (
     <>
       <div style={{ display: "flex" }}>
@@ -621,6 +635,14 @@ const TaskAndTimer = memo(() => {
           </Typography>
         </>
       )}
+      <SockJsClient
+        url={SOCKET_URL}
+        topics={["/topic/session"]}
+        onConnect={() => {}}
+        onDisconnect={() => {}}
+        onMessage={(msg) => {}}
+        ref={$websocket}
+      />
     </>
   );
 });
