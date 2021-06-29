@@ -109,6 +109,7 @@ const TaskAndTimer = memo(() => {
   });
   const [settings] = useContext(SettingsContext);
   const [statistics, setStatistics] = useContext(StatisticsContext);
+  const [sessions, setSessions] = useState([]);
   // 動画の読み込みが終わったかどうか
   const [workVideoOnReady, setWorkVideoOnReady] = useState(false);
   const [breakVideoOnReady, setBreakVideoOnReady] = useState(false);
@@ -575,6 +576,73 @@ const TaskAndTimer = memo(() => {
     });
   };
 
+  const onConnected = () => {
+    console.log("サーバーに接続しました。");
+  };
+
+  const onDisconnected = () => {
+    console.log("サーバーとの接続が切れました。");
+    setState((state) => {
+      return { ...state, nameInRoom: "" };
+    });
+    setSessions([]);
+  };
+
+  const onSessionMessageReceived = (message) => {
+    console.log(message);
+    setSessions((sessions) => {
+      let newSessions = [
+        ...sessions,
+        {
+          sessionId: message.sessionId,
+          userName: message.userName,
+          sessionType: message.sessionType,
+          content: message.content,
+          isTimerOn: message.isTimerOn,
+          startedAt: message.startedAt,
+          finishAt: message.finishAt,
+        },
+      ];
+      // sessionIdの重複を削除(後に出てきたほうが消える)
+      newSessions = newSessions
+        .slice()
+        .reverse()
+        .filter(
+          (v, i, a) => a.findIndex((t) => t.sessionId === v.sessionId) === i
+        )
+        .reverse();
+      return newSessions;
+    });
+  };
+
+  const onLeaveMessageReceived = (message) => {
+    console.log(message);
+    setSessions((sessions) => {
+      const newSessions = sessions.filter((session, index) => {
+        return session.sessionId !== message.sessionId;
+      });
+      return [...newSessions];
+    });
+  };
+
+  const onEnter = (name) => {
+    setState((state) => {
+      return { ...state, nameInRoom: name };
+    });
+    $websocket.current.sendMessage(
+      "/session/enter",
+      JSON.stringify({ userName: name })
+    );
+  };
+
+  const onLeave = () => {
+    setState((state) => {
+      return { ...state, nameInRoom: "" };
+    });
+    setSessions([]);
+    $websocket.current.sendMessage("/session/leave", JSON.stringify({}));
+  };
+
   /**
    * WebSocketのメッセージを送信します。
    */
@@ -593,7 +661,7 @@ const TaskAndTimer = memo(() => {
           setColumns={setColumns}
           onPlayButtonClick={onPlayButtonClick}
         />
-        <Room />
+        <Room sessions={sessions} onEnter={onEnter} onLeave={onLeave} />
       </div>
       {/* フローティングタイマー */}
       <FloatingTimer columns={columns} onPlayButtonClick={onPlayButtonClick} />
@@ -638,10 +706,15 @@ const TaskAndTimer = memo(() => {
       <SockJsClient
         url={SOCKET_URL}
         topics={["/topic/session"]}
-        onConnect={() => {}}
-        onDisconnect={() => {}}
-        onMessage={(msg) => {}}
+        onConnect={onConnected}
+        onDisconnect={onDisconnected}
+        onMessage={(msg) => onSessionMessageReceived(msg)}
         ref={$websocket}
+      />
+      <SockJsClient
+        url={SOCKET_URL}
+        topics={["/topic/session/leave"]}
+        onMessage={(msg) => onLeaveMessageReceived(msg)}
       />
     </>
   );
