@@ -31,11 +31,12 @@ const useStyles = makeStyles((theme) => ({
  */
 const UserList = memo((props) => {
   const classes = useStyles();
-  const [dateNow, setDateNow] = useState(Date.now());
+  const [dateNow, setDateNow] = useState(Date.now() + 1000);
 
   // 現在時刻を更新
+  clearInterval(refreshInterval);
   refreshInterval = setInterval(() => {
-    setDateNow(Date.now());
+    setDateNow(Date.now() + 1000);
   }, 1000);
 
   return (
@@ -96,7 +97,7 @@ const UserList = memo((props) => {
                           {" - 残り"}
                           {session.finishAt - dateNow > 0
                             ? Math.ceil(
-                                (session.finishAt - dateNow - 1) / 1000 / 60
+                                (session.finishAt - dateNow) / 1000 / 60
                               )
                             : 0}
                           {"分"}
