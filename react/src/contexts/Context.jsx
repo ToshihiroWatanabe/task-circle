@@ -12,6 +12,8 @@ export function ContextProvider(props) {
     slackUserName: "",
     /** Slack Webhook URL */
     slackWebhookUrl: "",
+    /** ユーザー名 */
+    userName: "",
     /** ユーザーID */
     userId: "",
     /** パスワード */
