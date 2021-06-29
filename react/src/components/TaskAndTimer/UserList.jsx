@@ -36,7 +36,7 @@ const UserList = memo((props) => {
   // 現在時刻を更新
   refreshInterval = setInterval(() => {
     setDateNow(Date.now());
-  }, 5000);
+  }, 1000);
 
   return (
     <>
@@ -96,7 +96,7 @@ const UserList = memo((props) => {
                           {" - 残り"}
                           {session.finishAt - dateNow > 0
                             ? Math.ceil(
-                                (session.finishAt - dateNow) / 1000 / 60
+                                (session.finishAt - dateNow - 1) / 1000 / 60
                               )
                             : 0}
                           {"分"}
