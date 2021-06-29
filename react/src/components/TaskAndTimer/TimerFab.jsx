@@ -34,10 +34,10 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   timerCount: {
-    // [theme.breakpoints.up("md")]: {
-    //   fontSize: "2.75rem",
-    //   marginBottom: "-0.7rem",
-    // },
+    [theme.breakpoints.up("md")]: {
+      fontSize: "2.75rem",
+      marginBottom: "-0.7rem",
+    },
     [theme.breakpoints.down("sm")]: {
       fontSize: "2rem",
       marginBottom: "-0.5rem",
@@ -156,6 +156,12 @@ const TimerFab = memo((props) => {
                         : useMediaQueryThemeBreakpointsDownSm
                         ? "1.4rem"
                         : ""
+                      : useMediaQueryThemeBreakpointsUpMd
+                      ? "2.5rem"
+                      : useMediaQueryThemeBreakpointsDownXs
+                      ? "1rem"
+                      : useMediaQueryThemeBreakpointsDownSm
+                      ? "1.7rem"
                       : "",
                 }}
               >

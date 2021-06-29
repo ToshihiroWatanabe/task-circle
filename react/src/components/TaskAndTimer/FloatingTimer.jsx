@@ -53,7 +53,6 @@ const FloatingTimer = memo((props) => {
   };
 
   const onResizeStop = (e, dir, refToElement, delta, position) => {
-    console.log(dir);
     setPositionX(dir.match(/.*Left/) ? positionX - delta.width : positionX);
     setPositionY(dir.match(/top.*/) ? positionY - delta.height : positionY);
   };

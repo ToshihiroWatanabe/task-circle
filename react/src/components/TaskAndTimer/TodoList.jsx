@@ -417,7 +417,7 @@ const TodoList = memo((props) => {
                                           state.pomodoroTimerType !== "break")
                                           ? theme.palette.primary.main
                                           : snapshot.isDragging
-                                          ? "#ebecf0"
+                                          ? "#F8F8F8"
                                           : "#FFF",
                                       color:
                                         item.isSelected &&
@@ -582,8 +582,8 @@ const TodoList = memo((props) => {
                                         color={
                                           item.spentSecond <
                                           item.estimatedSecond
-                                            ? "primary"
-                                            : "secondary"
+                                            ? "secondary"
+                                            : "primary"
                                         }
                                         thickness={5}
                                       />

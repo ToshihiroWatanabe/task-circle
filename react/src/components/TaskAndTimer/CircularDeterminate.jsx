@@ -79,6 +79,8 @@ const CircularDeterminate = memo((props) => {
             ? state.pomodoroTimerType === "work"
               ? "red"
               : "yellow"
+            : selectedTask.spentSecond > selectedTask.estimatedSecond
+            ? "LightSeaGreen"
             : "orange",
         }}
       />
