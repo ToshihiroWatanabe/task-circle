@@ -22,7 +22,7 @@ public class SessionDisconnectListener implements ApplicationListener<SessionDis
     @EventListener
     @Override
     public void onApplicationEvent(SessionDisconnectEvent applicationEvent) {
-        System.out.println("切断 セッションID: " + applicationEvent.getSessionId());
+        System.out.println("切断: " + applicationEvent.getSessionId());
         Session session = new Session();
         session.setSessionId(applicationEvent.getSessionId());
         simpMessagingTemplate.convertAndSend("/topic/session/leave", session);

@@ -41,61 +41,61 @@ const UserList = memo((props) => {
   return (
     <>
       <List className={classes.list}>
-        {props.room.sessions.map((session, index) => {
+        {props.sessions.map((session, index) => {
           return (
             <Fragment key={index}>
               {index !== 0 && <Divider />}
               <ListItem alignItems="flex-start">
                 <ListItemAvatar style={{ marginLeft: "-0.4rem" }}>
                   <>
-                    {index === 0 && (
+                    {/* {index === 0 && (
                       <Skeleton variant="circle" width={40} height={40} />
                     )}
-                    {index > 0 && (
-                      <Avatar
-                        style={{
-                          backgroundColor: getAvatarColor(session.userName),
-                        }}
-                        src={session.imageUrl}
-                      >
-                        {session.userName.charAt(0).toUpperCase()}
-                      </Avatar>
-                    )}
+                    {index > 0 && ( */}
+                    <Avatar
+                      style={{
+                        backgroundColor: getAvatarColor(session.userName),
+                      }}
+                      src={session.imageUrl}
+                    >
+                      {session.userName.charAt(0).toUpperCase()}
+                    </Avatar>
+                    {/* )} */}
                   </>
                 </ListItemAvatar>
-                {index === 0 && (
+                {/* {index === 0 && (
                   <div style={{ display: "inline-block", width: "100%" }}>
                     <Skeleton variant="text" />
                     <Skeleton variant="text" />
                   </div>
-                )}
-                {index > 0 && (
-                  <ListItemText
-                    primary={session.userName}
-                    secondary={
-                      <Fragment>
-                        <Typography
-                          component="span"
-                          variant="body2"
-                          className={classes.inline}
-                          color="textPrimary"
-                        >
-                          {session.sessionType === "work" && session.isTimerOn
-                            ? "🍅" + session.content
-                            : ""}
-                          {session.sessionType === "break" && session.isTimerOn
-                            ? "☕休憩中"
-                            : ""}
-                        </Typography>
-                        {" - 残り"}
-                        {session.finishAt - dateNow > 0
-                          ? Math.ceil((session.finishAt - dateNow) / 1000 / 60)
-                          : 0}
-                        {"分"}
-                      </Fragment>
-                    }
-                  />
-                )}
+                )} */}
+                {/* {index > 0 && ( */}
+                <ListItemText
+                  primary={session.userName}
+                  secondary={
+                    <Fragment>
+                      <Typography
+                        component="span"
+                        variant="body2"
+                        className={classes.inline}
+                        color="textPrimary"
+                      >
+                        {session.sessionType === "work" && session.isTimerOn
+                          ? "🍅" + session.content
+                          : ""}
+                        {session.sessionType === "break" && session.isTimerOn
+                          ? "☕休憩中"
+                          : ""}
+                      </Typography>
+                      {" - 残り"}
+                      {session.finishAt - dateNow > 0
+                        ? Math.ceil((session.finishAt - dateNow) / 1000 / 60)
+                        : 0}
+                      {"分"}
+                    </Fragment>
+                  }
+                />
+                {/* )} */}
               </ListItem>
             </Fragment>
           );

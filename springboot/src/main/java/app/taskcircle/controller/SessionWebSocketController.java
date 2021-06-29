@@ -18,4 +18,12 @@ public class SessionWebSocketController {
         System.out.println(message.getSessionId() + " " + message.getUserName());
         return message;
     }
+
+    @MessageMapping("/session/enter")
+    @SendTo("/topic/session")
+    public Session enter(@Payload Session message, SimpMessageHeaderAccessor headerAccessor) throws Exception {
+        message.setSessionId(headerAccessor.getSessionId());
+        System.out.println("enter: " + message.getSessionId() + " " + message.getUserName());
+        return message;
+    }
 }

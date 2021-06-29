@@ -42,7 +42,7 @@ const RoomHeader = (props) => {
               fontSize="inherit"
               style={{ marginLeft: "1rem", marginTop: "0.3rem" }}
             />
-            <Typography>{props.room.sessions.length}人</Typography>
+            <Typography>{props.sessions.length}人</Typography>
           </>
         )}
       </div>

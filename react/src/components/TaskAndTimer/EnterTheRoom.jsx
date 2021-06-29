@@ -44,7 +44,7 @@ const useStyles = makeStyles((theme) => ({
 /**
  * ルームに入室する前に表示されるコンポーネントです。
  */
-const EnterTheRoom = memo(() => {
+const EnterTheRoom = memo((props) => {
   const classes = useStyles();
   const theme = useTheme();
   const [state, setState] = useContext(Context);
@@ -77,6 +77,7 @@ const EnterTheRoom = memo(() => {
     if (validate(nameInput)) {
       // 入室
       setState((state) => {
+        props.onEnter(nameInput.trim());
         return { ...state, nameInRoom: nameInput.trim(), isInRoom: true };
       });
     }

@@ -78,7 +78,7 @@ const Room = memo(() => {
   const classes = useStyles();
   const theme = useTheme();
   const [state, setState] = useContext(Context);
-  const [rooms, setRooms] = useState({ ...roomsFromBackEnd });
+  const [sessions, setSessions] = useState([]);
   const $websocket = useRef(null);
 
   const onConnected = () => {
@@ -92,7 +92,10 @@ const Room = memo(() => {
     mySessionId = "";
   };
 
-  const onMessageReceived = (message) => {
+  const onSessionMessageReceived = (message) => {
+    setSessions((sessions) => {
+      return [...sessions, { userName: message.userName }];
+    });
     console.log(message);
   };
 
@@ -100,26 +103,30 @@ const Room = memo(() => {
     console.log(message);
   };
 
+  const onEnter = (name) => {
+    $websocket.current.sendMessage(
+      "/session/enter",
+      JSON.stringify({ userName: name })
+    );
+  };
+
   return (
     <>
-      {Object.entries(rooms).map(([roomId, room], index) => {
-        return (
-          <Card key={index} className={classes.roomCard}>
-            <RoomHeader room={room} />
-            <Divider style={{ margin: "0.25rem 0" }} />
-            {/* 入室前 */}
-            {!state.isInRoom && <EnterTheRoom />}
-            {/* 入室後 */}
-            {state.isInRoom && <UserList room={room} />}
-          </Card>
-        );
-      })}
+      <Card className={classes.roomCard}>
+        <RoomHeader sessions={sessions} />
+        <Divider style={{ margin: "0.25rem 0" }} />
+        {/* 入室前 */}
+        {!state.isInRoom && <EnterTheRoom onEnter={onEnter} />}
+        {/* 入室後 */}
+        {state.isInRoom && <UserList sessions={sessions} />}
+      </Card>
+
       <SockJsClient
         url={SOCKET_URL}
         topics={["/topic/session"]}
         onConnect={onConnected}
         onDisconnect={onDisconnected}
-        onMessage={(msg) => onMessageReceived(msg)}
+        onMessage={(msg) => onSessionMessageReceived(msg)}
         ref={$websocket}
       />
       <SockJsClient
