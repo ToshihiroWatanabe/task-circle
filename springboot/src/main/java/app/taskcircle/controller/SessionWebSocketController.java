@@ -1,6 +1,7 @@
 package app.taskcircle.controller;
 
 import app.taskcircle.model.Session;
+import app.taskcircle.payload.request.SessionMessage;
 
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
@@ -13,8 +14,9 @@ public class SessionWebSocketController {
 
     @MessageMapping("/session")
     @SendTo("/topic/session")
-    public Session SendToMessage(@Payload Session message, SimpMessageHeaderAccessor headerAccessor) throws Exception {
-        message.setSessionId(headerAccessor.getSessionId());
+    public SessionMessage SendToMessage(@Payload SessionMessage message, SimpMessageHeaderAccessor headerAcessor)
+            throws Exception {
+        message.setSessionId(headerAcessor.getSessionId());
         System.out.println(message.getSessionId() + " " + message.getUserName());
         return message;
     }

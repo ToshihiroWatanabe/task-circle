@@ -86,6 +86,10 @@ const UserList = memo((props) => {
                         {session.sessionType === "break" && session.isTimerOn
                           ? "☕休憩中"
                           : ""}
+                        {session.sessionType === "normalWork" &&
+                        session.isTimerOn
+                          ? session.content
+                          : ""}
                       </Typography>
                       {session.startedAt > 0 && (
                         <>

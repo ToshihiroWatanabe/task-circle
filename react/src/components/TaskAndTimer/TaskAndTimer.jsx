@@ -647,9 +647,42 @@ const TaskAndTimer = memo(() => {
    * WebSocketのメッセージを送信します。
    */
   const sendMessage = () => {
+    const selectedTask =
+      Object.values(columns).filter((column, index) => {
+        return (
+          column.items.filter((item, index) => {
+            return item.isSelected;
+          })[0] !== undefined
+        );
+      }).length > 0
+        ? Object.values(columns)
+            .filter((column, index) => {
+              return (
+                column.items.filter((item, index) => {
+                  return item.isSelected;
+                })[0] !== undefined
+              );
+            })[0]
+            .items.filter((item, index) => {
+              return item.isSelected;
+            })[0]
+        : null;
+
     $websocket.current.sendMessage(
       "/session",
-      JSON.stringify({ userName: "test更新userName" })
+      JSON.stringify({
+        userName: state.nameInRoom,
+        sessionType: settings.isPomodoroEnabled
+          ? state.pomodoroTimerType
+          : "normalWork",
+        content: selectedTask.content,
+        isTimerOn: state.isTimerOn,
+        startedAt: state.isTimerOn ? Date.now() : 0,
+        finishAt:
+          settings.isPomodoroEnabled && state.isTimerOn
+            ? Date.now() + state.pomodoroTimeLeft * 1000
+            : 0,
+      })
     );
   };
 
