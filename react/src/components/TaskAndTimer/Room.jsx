@@ -34,7 +34,12 @@ const Room = memo((props) => {
         <RoomHeader sessions={props.sessions} onLeave={props.onLeave} />
         <Divider style={{ margin: "0.25rem 0" }} />
         {/* 入室前 */}
-        {!state.isInRoom && <EnterTheRoom onEnter={props.onEnter} />}
+        {!state.isInRoom && (
+          <EnterTheRoom
+            onEnter={props.onEnter}
+            isConnected={props.isConnected}
+          />
+        )}
         {/* 入室後 */}
         {state.isInRoom && <UserList sessions={props.sessions} />}
       </Card>

@@ -122,6 +122,7 @@ const TaskAndTimer = memo(() => {
     settings.breakVideoUrl.split(/v=|\//).slice(-1)[0]
   );
   const $websocket = useRef(null);
+  const [isConnected, setIsConnected] = useState(false);
 
   // 設定の動画URLに変化があったとき
   useEffect(() => {
@@ -577,10 +578,12 @@ const TaskAndTimer = memo(() => {
   };
 
   const onConnected = () => {
+    setIsConnected(true);
     console.log("サーバーに接続しました。");
   };
 
   const onDisconnected = () => {
+    setIsConnected(false);
     console.log("サーバーとの接続が切れました。");
     setState((state) => {
       return { ...state, nameInRoom: "" };
@@ -647,6 +650,7 @@ const TaskAndTimer = memo(() => {
    * WebSocketのメッセージを送信します。
    */
   const sendMessage = () => {
+    if (!isConnected) return;
     const selectedTask =
       Object.values(columns).filter((column, index) => {
         return (
@@ -694,7 +698,12 @@ const TaskAndTimer = memo(() => {
           setColumns={setColumns}
           onPlayButtonClick={onPlayButtonClick}
         />
-        <Room sessions={sessions} onEnter={onEnter} onLeave={onLeave} />
+        <Room
+          sessions={sessions}
+          onEnter={onEnter}
+          onLeave={onLeave}
+          isConnected={isConnected}
+        />
       </div>
       {/* フローティングタイマー */}
       <FloatingTimer columns={columns} onPlayButtonClick={onPlayButtonClick} />

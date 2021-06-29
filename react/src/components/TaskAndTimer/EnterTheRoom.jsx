@@ -111,7 +111,12 @@ const EnterTheRoom = memo((props) => {
         error={helperText !== ""}
         onKeyDown={onKeyDown}
       />
-      <Button variant="contained" color="primary" onClick={onEnterButtonClick}>
+      <Button
+        variant="contained"
+        color="primary"
+        onClick={onEnterButtonClick}
+        disabled={!props.isConnected}
+      >
         入室
       </Button>
     </div>
