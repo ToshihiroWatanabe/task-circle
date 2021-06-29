@@ -311,7 +311,9 @@ const TaskAndTimer = memo(() => {
         // 動画IDを更新
         updateVideoId();
       }
-      sendMessage();
+      if (state.isInRoom) {
+        sendMessage();
+      }
       return { ...state };
     });
   };
