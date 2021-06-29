@@ -92,6 +92,7 @@ const Room = memo(() => {
     isConnected = false;
     myUserName = "";
     mySessionId = "";
+    setSessions([]);
   };
 
   const onSessionMessageReceived = (message) => {
@@ -128,6 +129,7 @@ const Room = memo(() => {
   const onLeave = () => {
     myUserName = "";
     mySessionId = "";
+    setSessions([]);
     $websocket.current.sendMessage("/session/leave", JSON.stringify({}));
   };
 
