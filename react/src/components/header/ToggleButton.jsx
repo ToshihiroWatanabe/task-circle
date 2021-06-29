@@ -18,7 +18,7 @@ const ToggleButton = memo(() => {
    */
   const onClick = () => {
     setState((state) => {
-      if (state.isTimerOn === true) {
+      if (state.isTimerOn && settings.isPomodoroEnabled) {
         state.isTimerOn = false;
         // 効果音
         stoppedSound.play();
