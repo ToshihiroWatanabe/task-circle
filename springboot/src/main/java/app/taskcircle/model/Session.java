@@ -1,5 +1,7 @@
 package app.taskcircle.model;
 
+import java.time.LocalDateTime;
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -8,10 +10,10 @@ import lombok.Setter;
 public class Session {
     private String sessionId;
     private String userName;
-    private String userId;
+    private String email;
     private String sessionType;
     private String content;
     private Boolean isTimerOn;
-    private Long startedAt;
-    private Long finishAt;
+    private LocalDateTime startedAt;
+    private LocalDateTime finishAt;
 }
