@@ -16,3 +16,8 @@ export const PASSWORD_LENGTH_MIN = 12;
 export const PASSWORD_LENGTH_MAX = 100;
 /** ドロワーの横幅 */
 export const DRAWER_WIDTH = "15rem";
+/** WebSocketのURL */
+export const SOCKET_URL =
+  process.env.NODE_ENV === "production"
+    ? "/websocket"
+    : "http://localhost:8160/websocket";

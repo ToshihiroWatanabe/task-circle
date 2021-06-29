@@ -1,4 +1,4 @@
-import React, { memo, useContext, useState } from "react";
+import React, { memo, useContext, useRef, useState } from "react";
 import { Divider, makeStyles, useTheme } from "@material-ui/core";
 import { Card } from "@material-ui/core";
 import uuid from "uuid/v4";
@@ -6,6 +6,11 @@ import { Context } from "contexts/Context";
 import EnterTheRoom from "./EnterTheRoom";
 import RoomHeader from "./RoomHeader";
 import UserList from "./UserList";
+import SockJsClient from "react-stomp";
+import { SOCKET_URL } from "utils/constant";
+
+let mySessionId = "";
+let isConnected = false;
 
 const sessionsFromBackEnd = [
   {
@@ -47,7 +52,8 @@ for (let i = 0; i < 20; i++) {
 const roomsFromBackEnd = {
   [uuid()]: {
     name: "ルーム",
-    sessions: sessionsFromBackEnd,
+    // sessions: sessionsFromBackEnd,
+    sessions: [],
   },
 };
 
@@ -73,6 +79,26 @@ const Room = memo(() => {
   const theme = useTheme();
   const [state, setState] = useContext(Context);
   const [rooms, setRooms] = useState({ ...roomsFromBackEnd });
+  const $websocket = useRef(null);
+
+  const onConnected = () => {
+    console.log("Connected!!");
+    isConnected = true;
+  };
+
+  const onDisconnected = () => {
+    console.log("Disonnected!!");
+    isConnected = false;
+    mySessionId = "";
+  };
+
+  const onMessageReceived = (message) => {
+    console.log(message);
+  };
+
+  const onLeaveMessageReceived = (message) => {
+    console.log(message);
+  };
 
   return (
     <>
@@ -88,6 +114,19 @@ const Room = memo(() => {
           </Card>
         );
       })}
+      <SockJsClient
+        url={SOCKET_URL}
+        topics={["/topic/session"]}
+        onConnect={onConnected}
+        onDisconnect={onDisconnected}
+        onMessage={(msg) => onMessageReceived(msg)}
+        ref={$websocket}
+      />
+      <SockJsClient
+        url={SOCKET_URL}
+        topics={["/topic/session/leave"]}
+        onMessage={(msg) => onLeaveMessageReceived(msg)}
+      />
     </>
   );
 });
