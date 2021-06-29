@@ -1,0 +1,21 @@
+package app.taskcircle.controller;
+
+import app.taskcircle.model.Session;
+
+import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.handler.annotation.Payload;
+import org.springframework.messaging.handler.annotation.SendTo;
+import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+public class SessionWebSocketController {
+
+    @MessageMapping("/session")
+    @SendTo("/topic/session")
+    public Session SendToMessage(@Payload Session message, SimpMessageHeaderAccessor headerAccessor) throws Exception {
+        message.setSessionId(headerAccessor.getSessionId());
+        System.out.println(message.getSessionId() + " " + message.getUserName());
+        return message;
+    }
+}
