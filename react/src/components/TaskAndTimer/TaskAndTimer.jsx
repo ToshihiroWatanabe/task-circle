@@ -634,10 +634,7 @@ const TaskAndTimer = memo(() => {
     setState((state) => {
       return { ...state, nameInRoom: name };
     });
-    $websocket.current.sendMessage(
-      "/session/enter",
-      JSON.stringify({ userName: name })
-    );
+    sendMessage();
   };
 
   const onLeave = () => {
@@ -653,43 +650,45 @@ const TaskAndTimer = memo(() => {
    */
   const sendMessage = () => {
     if (!isConnected) return;
-    const selectedTask =
-      Object.values(columns).filter((column, index) => {
-        return (
-          column.items.filter((item, index) => {
-            return item.isSelected;
-          })[0] !== undefined
-        );
-      }).length > 0
-        ? Object.values(columns)
-            .filter((column, index) => {
-              return (
-                column.items.filter((item, index) => {
-                  return item.isSelected;
-                })[0] !== undefined
-              );
-            })[0]
-            .items.filter((item, index) => {
+    setState((state) => {
+      const selectedTask =
+        Object.values(columns).filter((column, index) => {
+          return (
+            column.items.filter((item, index) => {
               return item.isSelected;
-            })[0]
-        : null;
-
-    $websocket.current.sendMessage(
-      "/session",
-      JSON.stringify({
-        userName: state.nameInRoom,
-        sessionType: settings.isPomodoroEnabled
-          ? state.pomodoroTimerType
-          : "normalWork",
-        content: selectedTask.content,
-        isTimerOn: state.isTimerOn,
-        startedAt: state.isTimerOn ? Date.now() : 0,
-        finishAt:
-          settings.isPomodoroEnabled && state.isTimerOn
-            ? Date.now() + state.pomodoroTimeLeft * 1000
-            : 0,
-      })
-    );
+            })[0] !== undefined
+          );
+        }).length > 0
+          ? Object.values(columns)
+              .filter((column, index) => {
+                return (
+                  column.items.filter((item, index) => {
+                    return item.isSelected;
+                  })[0] !== undefined
+                );
+              })[0]
+              .items.filter((item, index) => {
+                return item.isSelected;
+              })[0]
+          : null;
+      $websocket.current.sendMessage(
+        "/session",
+        JSON.stringify({
+          userName: state.nameInRoom,
+          sessionType: settings.isPomodoroEnabled
+            ? state.pomodoroTimerType
+            : "normalWork",
+          content: selectedTask.content,
+          isTimerOn: state.isTimerOn,
+          startedAt: state.isTimerOn ? Date.now() : 0,
+          finishAt:
+            settings.isPomodoroEnabled && state.isTimerOn
+              ? Date.now() + state.pomodoroTimeLeft * 1000
+              : 0,
+        })
+      );
+      return state;
+    });
   };
 
   return (
