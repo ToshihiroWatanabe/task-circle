@@ -98,7 +98,7 @@ const AccountPopover = memo((props) => {
         <Box mt={"1rem"} />
         {state.userId === "" && (
           <>
-            <Typography>ログインしていません</Typography>
+            {/* <Typography>ログインしていません</Typography>
             <Link onClick={handleClose} to="/login" className={classes.link}>
               <Button variant="outlined" size="small">
                 <ListItemText primary="ログイン" />
@@ -109,7 +109,7 @@ const AccountPopover = memo((props) => {
               <Button variant="outlined" size="small">
                 <ListItemText primary="新規登録" />
               </Button>
-            </Link>
+            </Link> */}
           </>
         )}
         {state.userId !== "" && (
