@@ -345,9 +345,6 @@ const EditDialog = memo((props) => {
             label="タスク名"
             type="text"
             style={{ width: "97%" }}
-            // defaultValue={
-            //   Object.values(props.columns)[0].items[props.index].content
-            // }
             value={value.content}
             onChange={(e) => {
               setValue((value) => {

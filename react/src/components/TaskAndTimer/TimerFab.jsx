@@ -67,6 +67,9 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+/**
+ * タイマーのフローティングアクションボタンのコンポーネントです。
+ */
 const TimerFab = memo((props) => {
   const classes = useStyles();
   const theme = useTheme();

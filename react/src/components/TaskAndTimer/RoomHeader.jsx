@@ -65,6 +65,7 @@ const RoomHeader = (props) => {
             variant={state.isAfk ? "contained" : "outlined"}
             onClick={onAfkButtonClick}
             disabled={state.isTimerOn}
+            style={{ marginRight: "0.2rem" }}
             color={state.isAfk ? "primary" : "default"}
           >
             {state.isAfk ? "離席解除" : "離席する"}
