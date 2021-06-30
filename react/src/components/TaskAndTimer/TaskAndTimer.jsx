@@ -428,12 +428,12 @@ const TaskAndTimer = memo(() => {
                       body: settings.isBreakAutoStart
                         ? "休憩を自動スタートします。"
                         : "タイマーを停止しました。",
-                      icon: "/favicon/favicon_coffee/apple-touch-icon.png",
+                      icon: "/favicon/coffee/apple-touch-icon.png",
                     });
                   } else if (state.pomodoroTimerType === "break") {
                     new Notification("休憩が終わりました！", {
                       body: "タイマーを停止しました。",
-                      icon: "/favicon/favicon_tomato/apple-touch-icon.png",
+                      icon: "/favicon/tomato/apple-touch-icon.png",
                     });
                   }
                 }

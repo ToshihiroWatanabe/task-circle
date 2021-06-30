@@ -125,8 +125,7 @@ const TimerPopover = memo((props) => {
             <img
               alt="tomato"
               src={
-                process.env.PUBLIC_URL +
-                "/favicon/favicon_tomato/apple-touch-icon.png"
+                process.env.PUBLIC_URL + "/favicon/tomato/apple-touch-icon.png"
               }
               style={{
                 width: "1.25rem",
