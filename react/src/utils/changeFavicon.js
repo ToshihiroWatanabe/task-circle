@@ -8,7 +8,7 @@ const icons = ["tomato", "coffee"];
 export function changeFaviconTo(icon) {
   if (icons.includes(icon)) {
     const link = document.querySelector("link[rel*='icon']");
-    link.href = "/favicon/favicon_" + icon + "/favicon.ico";
+    link.href = "/favicon/" + icon + "/favicon.ico";
     return true;
   } else {
     return false;

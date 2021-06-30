@@ -592,7 +592,7 @@ const TaskAndTimer = memo(() => {
     setIsConnected(false);
     console.log("サーバーとの接続が切れました。");
     setState((state) => {
-      return { ...state, nameInRoom: "", isInRoom: false };
+      return { ...state, nameInRoom: "", isAfk: false, isInRoom: false };
     });
     setSessions([]);
   };
@@ -650,7 +650,7 @@ const TaskAndTimer = memo(() => {
 
   const onLeave = () => {
     setState((state) => {
-      return { ...state, nameInRoom: "" };
+      return { ...state, nameInRoom: "", isAfk: false };
     });
     setSessions([]);
     $websocket.current.sendMessage("/session/leave", JSON.stringify({}));

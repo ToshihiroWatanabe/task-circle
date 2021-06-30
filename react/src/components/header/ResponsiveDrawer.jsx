@@ -158,7 +158,7 @@ const ResponsiveDrawer = memo((props) => {
             {pages.map(
               (page, index) =>
                 location.pathname === page.path && (
-                  <Fragment key={index}>Task Circle</Fragment>
+                  <Fragment key={index}>TaskCircle</Fragment>
                 )
             )}
             {location.pathname === "/login" && <>ログイン</>}

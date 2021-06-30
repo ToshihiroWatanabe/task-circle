@@ -37,7 +37,7 @@ const About = () => {
   return (
     <>
       <Card className={classes.card}>
-        <Typography variant="h5">Task Circle（タスクサークル）</Typography>
+        <Typography variant="h5">TaskCircle（タスクサークル）</Typography>
         <Typography variant="caption">
           ビルド時刻{" "}
           {format(preval`module.exports = Date.now();`, "yyyy/MM/dd HH:mm:ss")}

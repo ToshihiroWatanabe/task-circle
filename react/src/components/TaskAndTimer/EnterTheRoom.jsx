@@ -34,7 +34,8 @@ const NG_NAMES = [
 ];
 
 const useStyles = makeStyles((theme) => ({
-  root: {
+  root: {},
+  form: {
     display: "flex",
     justifyContent: "center",
     alignItems: "baseline",
@@ -73,7 +74,7 @@ const EnterTheRoom = memo((props) => {
   /**
    * 入室ボタンがクリックされたときの処理です。
    */
-  const onEnterButtonClick = () => {
+  const onEnterButtonClick = (event) => {
     if (validate(nameInput)) {
       // 入室
       setState((state) => {
@@ -102,30 +103,37 @@ const EnterTheRoom = memo((props) => {
 
   return (
     <div className={classes.root}>
-      <TextField
-        label="名前"
-        variant="outlined"
-        margin="dense"
-        onChange={onTextFieldChange}
-        helperText={helperText}
-        error={helperText !== ""}
-        onKeyDown={onKeyDown}
-      />
-      <Tooltip
-        placement="top"
-        title={props.isConnected ? "" : "接続されていません"}
-      >
-        <span>
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={onEnterButtonClick}
-            disabled={!props.isConnected}
-          >
-            入室
-          </Button>
-        </span>
-      </Tooltip>
+      <form className={classes.form}>
+        <TextField
+          label="名前"
+          id="nameInRoom"
+          name="nameInRoom"
+          defaultValue=""
+          variant="outlined"
+          margin="dense"
+          onChange={onTextFieldChange}
+          helperText={helperText}
+          error={helperText !== ""}
+          onKeyDown={onKeyDown}
+          autoComplete="on"
+        />
+        <Tooltip
+          placement="top"
+          title={props.isConnected ? "" : "接続されていません"}
+        >
+          <div style={{ position: "relative", bottom: "0.15rem" }}>
+            <Button
+              type="submit"
+              variant="contained"
+              color="primary"
+              onClick={onEnterButtonClick}
+              disabled={!props.isConnected}
+            >
+              入室
+            </Button>
+          </div>
+        </Tooltip>
+      </form>
     </div>
   );
 });

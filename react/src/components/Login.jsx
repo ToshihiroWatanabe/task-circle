@@ -29,7 +29,7 @@ function Copyright() {
   return (
     <Typography variant="body2" color="textSecondary" align="center">
       {"Copyright © "}
-      {"Task Circle "}
+      {"TaskCircle "}
       {new Date().getFullYear()}
       {"."}
     </Typography>
