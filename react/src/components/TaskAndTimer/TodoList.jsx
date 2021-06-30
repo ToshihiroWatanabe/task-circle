@@ -342,7 +342,10 @@ const TodoList = memo((props) => {
                     <div style={{ flexGrow: "1", marginLeft: "0.5rem" }}>
                       <Typography>{column.name}</Typography>
                     </div>
-                    <Tooltip title="タスクから日報を作成" placement="top">
+                    <Tooltip
+                      title={column.name + "から日報を作成"}
+                      placement="top"
+                    >
                       <IconButton
                         disabled={state.isTimerOn}
                         size="small"

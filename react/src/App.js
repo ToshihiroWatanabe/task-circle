@@ -47,6 +47,7 @@ const useStyles = makeStyles((theme) => ({
       height: "100wh",
     },
     [theme.breakpoints.down("xs")]: {
+      marginRight: theme.spacing(1),
       marginTop: "4rem",
     },
   },
