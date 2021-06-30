@@ -26,7 +26,7 @@
         WHERE session_id = #{sessionId}
     </update>
 
-    <delete id="delete">
+    <delete id="delete" parameterType="Session">
         DELETE FROM sessions
         WHERE session_id = #{sessionId}
     </delete>

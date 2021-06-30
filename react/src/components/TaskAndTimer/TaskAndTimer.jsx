@@ -636,7 +636,7 @@ const TaskAndTimer = memo(() => {
     setState((state) => {
       return { ...state, nameInRoom: name };
     });
-    sendMessage();
+    sendMessage("enter");
   };
 
   const onLeave = () => {
@@ -650,7 +650,7 @@ const TaskAndTimer = memo(() => {
   /**
    * WebSocketのメッセージを送信します。
    */
-  const sendMessage = () => {
+  const sendMessage = (messageType) => {
     if (!isConnected) return;
     setState((state) => {
       const selectedTask =
@@ -674,7 +674,7 @@ const TaskAndTimer = memo(() => {
               })[0]
           : null;
       $websocket.current.sendMessage(
-        "/session",
+        messageType !== undefined ? "/session/" + messageType : "/session",
         JSON.stringify({
           userName: state.nameInRoom,
           sessionType: state.isAfk

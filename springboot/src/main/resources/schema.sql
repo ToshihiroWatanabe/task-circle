@@ -1,7 +1,7 @@
 -- セッションテーブル
 CREATE TABLE IF NOT EXISTS sessions(
-    session_id VARCHAR(36),
-    user_name VARCHAR(24),
+    session_id VARCHAR(36) NOT NULL PRIMARY KEY,
+    user_name VARCHAR(24) NOT NULL,
     email VARCHAR(100) UNIQUE,
     session_type VARCHAR(50),
     content VARCHAR(100),
