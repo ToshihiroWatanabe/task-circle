@@ -590,7 +590,7 @@ const TaskAndTimer = memo(() => {
     setIsConnected(false);
     console.log("サーバーとの接続が切れました。");
     setState((state) => {
-      return { ...state, nameInRoom: "" };
+      return { ...state, nameInRoom: "", isInRoom: false };
     });
     setSessions([]);
   };

@@ -4,6 +4,10 @@ import app.taskcircle.model.Session;
 import app.taskcircle.payload.request.SessionMessage;
 import app.taskcircle.service.SessionService;
 
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
@@ -26,6 +30,9 @@ public class SessionWebSocketController {
     public SessionMessage SendToMessage(@Payload SessionMessage message, SimpMessageHeaderAccessor headerAccessor)
             throws Exception {
         message.setSessionId(headerAccessor.getSessionId());
+        Session session = sessionService.messageToSession(message);
+        session.setSessionId(headerAccessor.getSessionId());
+        sessionService.update(session);
         System.out.println(message.getSessionId() + " " + message.getUserName());
         return message;
     }
@@ -35,9 +42,8 @@ public class SessionWebSocketController {
     public SessionMessage enter(@Payload SessionMessage message, SimpMessageHeaderAccessor headerAccessor)
             throws Exception {
         message.setSessionId(headerAccessor.getSessionId());
-        Session session = new Session();
+        Session session = sessionService.messageToSession(message);
         session.setSessionId(headerAccessor.getSessionId());
-        session.setUserName(message.getUserName());
         sessionService.create(session);
         System.out.println("enter: " + message.getSessionId() + " " + message.getUserName());
         return message;
