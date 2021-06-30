@@ -1,6 +1,6 @@
 import React, { memo, useContext, useState } from "react";
 import { makeStyles, useTheme } from "@material-ui/core/styles";
-import { Button, TextField } from "@material-ui/core";
+import { Button, TextField, Tooltip } from "@material-ui/core";
 import { Context } from "contexts/Context";
 
 /** 使用できない名前 */
@@ -111,14 +111,21 @@ const EnterTheRoom = memo((props) => {
         error={helperText !== ""}
         onKeyDown={onKeyDown}
       />
-      <Button
-        variant="contained"
-        color="primary"
-        onClick={onEnterButtonClick}
-        disabled={!props.isConnected}
+      <Tooltip
+        placement="top"
+        title={props.isConnected ? "" : "接続されていません"}
       >
-        入室
-      </Button>
+        <span>
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={onEnterButtonClick}
+            disabled={!props.isConnected}
+          >
+            入室
+          </Button>
+        </span>
+      </Tooltip>
     </div>
   );
 });
