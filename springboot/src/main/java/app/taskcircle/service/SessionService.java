@@ -38,6 +38,10 @@ public class SessionService {
         return sessionMapper.delete(session);
     }
 
+    public boolean deleteAll() {
+        return sessionMapper.deleteAll();
+    }
+
     public Session messageToSession(SessionMessage message) {
         Session session = new Session();
         session.setUserName(message.getUserName());

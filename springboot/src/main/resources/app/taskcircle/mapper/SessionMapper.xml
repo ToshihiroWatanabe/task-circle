@@ -31,4 +31,8 @@
         WHERE session_id = #{sessionId}
     </delete>
 
+    <delete id="deleteAll">
+        DELETE FROM sessions
+    </delete>
+
 </mapper>

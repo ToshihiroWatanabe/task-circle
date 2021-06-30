@@ -16,4 +16,6 @@ public interface SessionMapper {
     public boolean update(Session session);
 
     public boolean delete(Session session);
+
+    public boolean deleteAll();
 }
