@@ -21,7 +21,7 @@
         session_type = #{sessionType},
         content = #{content},
         is_timer_on = #{isTimerOn},
-        started_at = #{startedAt}
+        started_at = #{startedAt},
         finish_at = #{finishAt}
         WHERE session_id = #{sessionId}
     </update>
