@@ -34,6 +34,16 @@ const RoomHeader = (props) => {
     });
   };
 
+  /**
+   * 離席ボタンがクリックされたときの処理です。
+   */
+  const onAfkButtonClick = () => {
+    setState((state) => {
+      return { ...state, isAfk: !state.isAfk };
+    });
+    props.sendMessage();
+  };
+
   return (
     <div className={classes.root}>
       <div style={{ flexGrow: "1", display: "flex" }}>
@@ -50,8 +60,16 @@ const RoomHeader = (props) => {
       </div>
       {state.isInRoom && (
         <>
-          {/* <Button size="small">離席</Button> */}
-          <Tooltip title="退室する">
+          <Button
+            size="small"
+            variant={state.isAfk ? "contained" : "outlined"}
+            onClick={onAfkButtonClick}
+            disabled={state.isTimerOn}
+            color={state.isAfk ? "primary" : "default"}
+          >
+            {state.isAfk ? "離席解除" : "離席する"}
+          </Button>
+          <Tooltip title="退室する" placement="top">
             <IconButton
               size="small"
               color="inherit"

@@ -268,6 +268,8 @@ const TaskAndTimer = memo(() => {
         startedAt = Date.now();
         lastCountedAt = Date.now();
         timeoutId = setTimeout(timerCount, getTimeout());
+        // 離席解除
+        state.isAfk = false;
         // ポモドーロが休憩タイマーなら作業に切り替える
         if (
           type === "task" &&
@@ -675,7 +677,9 @@ const TaskAndTimer = memo(() => {
         "/session",
         JSON.stringify({
           userName: state.nameInRoom,
-          sessionType: settings.isPomodoroEnabled
+          sessionType: state.isAfk
+            ? "afk"
+            : settings.isPomodoroEnabled
             ? state.pomodoroTimerType
             : "normalWork",
           content: selectedTask.content,
@@ -707,6 +711,7 @@ const TaskAndTimer = memo(() => {
           onEnter={onEnter}
           onLeave={onLeave}
           isConnected={isConnected}
+          sendMessage={sendMessage}
         />
       </div>
       {/* フローティングタイマー */}

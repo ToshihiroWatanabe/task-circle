@@ -31,7 +31,11 @@ const Room = memo((props) => {
   return (
     <>
       <Card className={classes.roomCard}>
-        <RoomHeader sessions={props.sessions} onLeave={props.onLeave} />
+        <RoomHeader
+          sessions={props.sessions}
+          onLeave={props.onLeave}
+          sendMessage={props.sendMessage}
+        />
         <Divider style={{ margin: "0.25rem 0" }} />
         {/* 入室前 */}
         {!state.isInRoom && (

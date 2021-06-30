@@ -91,6 +91,7 @@ const UserList = memo((props) => {
                         session.isTimerOn
                           ? "💡" + session.content
                           : ""}
+                        {session.sessionType === "afk" ? "🪑離席中" : ""}
                       </Typography>
                       {session.isTimerOn && session.finishAt > 0 && (
                         <>
