@@ -82,6 +82,8 @@ let workVideoPlayer = null;
 let breakVideoPlayer = null;
 let videoPlayDone = true;
 
+const sessionFindAllTopicsId = uuid();
+
 /** デフォルトTodoリスト */
 const defaultColumns = {
   [uuid()]: {
@@ -632,6 +634,13 @@ const TaskAndTimer = memo(() => {
     });
   };
 
+  const onFindAllMessageReceived = (message) => {
+    console.log(message);
+    setSessions((sessions) => {
+      return [...sessions, ...message];
+    });
+  };
+
   const onEnter = (name) => {
     setState((state) => {
       return { ...state, nameInRoom: name };
@@ -673,6 +682,12 @@ const TaskAndTimer = memo(() => {
                 return item.isSelected;
               })[0]
           : null;
+      if (messageType === "enter") {
+        $websocket.current.sendMessage(
+          "/session/findall",
+          sessionFindAllTopicsId
+        );
+      }
       $websocket.current.sendMessage(
         messageType !== undefined ? "/session/" + messageType : "/session",
         JSON.stringify({
@@ -682,13 +697,13 @@ const TaskAndTimer = memo(() => {
             : settings.isPomodoroEnabled
             ? state.pomodoroTimerType
             : "normalWork",
-          content: selectedTask.content,
+          content: selectedTask !== null ? selectedTask.content : "",
           isTimerOn: state.isTimerOn,
           startedAt: state.isTimerOn ? Date.now() : 0,
           finishAt:
             settings.isPomodoroEnabled && state.isTimerOn
               ? Date.now() + state.pomodoroTimeLeft * 1000
-              : selectedTask.estimatedSecond > 0
+              : selectedTask && selectedTask.estimatedSecond > 0
               ? Date.now() +
                 (selectedTask.estimatedSecond - selectedTask.spentSecond) * 1000
               : 0,
@@ -766,6 +781,11 @@ const TaskAndTimer = memo(() => {
         url={SOCKET_URL}
         topics={["/topic/session/leave"]}
         onMessage={(msg) => onLeaveMessageReceived(msg)}
+      />
+      <SockJsClient
+        url={SOCKET_URL}
+        topics={["/topic/session/findall/" + sessionFindAllTopicsId]}
+        onMessage={(msg) => onFindAllMessageReceived(msg)}
       />
     </>
   );
