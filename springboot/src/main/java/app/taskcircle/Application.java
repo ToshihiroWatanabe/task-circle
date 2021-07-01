@@ -20,7 +20,7 @@ public class Application {
 	public static void main(String[] args) {
 		ConfigurableApplicationContext ctx = SpringApplication.run(Application.class, args);
 		Application app = ctx.getBean(Application.class);
-		app.execStartup(args);
+		System.out.println("deleteAll: " + app.execStartup(args));
 	}
 
 	/**
@@ -28,7 +28,7 @@ public class Application {
 	 * 
 	 * @param args
 	 */
-	public void execStartup(String[] args) {
-		sessionService.deleteAll();
+	public boolean execStartup(String[] args) {
+		return sessionService.deleteAll();
 	}
 }
