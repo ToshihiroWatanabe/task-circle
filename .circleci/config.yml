@@ -1,13 +1,14 @@
 version: 2.1
 jobs:
   deploy:
-    machine:
-      image: circleci/classic:edge
+    docker:
+      - image: circleci/openjdk:11-jdk-buster-node-browsers
+        user: root
     steps:
       - add_ssh_keys:
           fingerprints:
             - 5a:c1:e7:38:9d:1f:4b:35:3d:e2:b4:bc:9b:15:19:7f
-      - run: ssh -p $SSH_PORT $SSH_USER@$SSH_HOST "sudo su && /home/ec2-user/deploy-me.sh"
+      - run: ssh -p $SSH_PORT $SSH_USER@$SSH_HOST "/home/ec2-user/deploy-me.sh"
 workflows:
   version: 2
   deploy:
