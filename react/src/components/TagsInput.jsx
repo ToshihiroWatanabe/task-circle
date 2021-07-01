@@ -27,7 +27,7 @@ export default function TagsInput({ ...props }) {
   }, [props.skillSet, selectedTags]);
 
   function handleKeyDown(event) {
-    if (event.key === "Enter") {
+    if (event.keyCode === 13) {
       const newSelectedItem = [...props.skillSet];
       const duplicatedValues = newSelectedItem.indexOf(
         event.target.value.trim()

@@ -349,7 +349,7 @@ const ReportFormDialog = memo((props) => {
     if (event.key === "Control") {
       isControlPressed = true;
     }
-    if (event.key === "Enter" && isControlPressed) {
+    if (event.keyCode === 13 && isControlPressed) {
       document.activeElement.blur();
       isControlPressed = false;
       onCreateButtonClick();

@@ -83,7 +83,7 @@ const TagsInput = memo((props) => {
     } else {
       lastSpacePressed = 0;
     }
-    if (event.key === "Enter") {
+    if (event.keyCode === 13) {
       onAddButtonClick();
     }
     if (
