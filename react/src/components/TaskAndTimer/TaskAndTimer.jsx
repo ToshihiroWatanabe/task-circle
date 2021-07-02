@@ -64,9 +64,6 @@ faintTickSound.volume = 1;
 /** 目標時間タイマー達成音 */
 const achievedSound = new Audio(achievedAudio);
 
-/** タイマー再生ボタンにカーソルが合っているかどうか */
-let isPlayButtonFocused = false;
-
 /** YouTube動作再生オプション */
 const playerOptions = {
   height: "1",
@@ -262,7 +259,6 @@ const TaskAndTimer = memo(() => {
    * @param {*} type taskかfab
    */
   const onPlayButtonClick = (type) => {
-    isPlayButtonFocused = false;
     setState((state) => {
       state.isTimerOn = !state.isTimerOn;
       if (state.isTimerOn) {
