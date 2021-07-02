@@ -49,8 +49,18 @@ const localStorageGetItemColumns = localStorage.getItem("columns")
   ? JSON.parse(localStorage.getItem("columns"))
   : {
       [uuid()]: {
-        name: "タスク1",
-        items: [],
+        name: "リスト1",
+        items: [
+          {
+            id: uuid(),
+            category: "",
+            content: "タスク",
+            spentSecond: 0,
+            estimatedSecond: 3600,
+            isSelected: true,
+            achievedThenStop: false,
+          },
+        ],
       },
     };
 

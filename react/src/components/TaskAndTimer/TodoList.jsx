@@ -320,7 +320,7 @@ const TodoList = memo((props) => {
       return {
         ...columns,
         [uuid()]: {
-          name: "タスク" + (Object.keys(columns).length + 1),
+          name: "リスト" + (Object.keys(columns).length + 1),
           items: [],
         },
       };
