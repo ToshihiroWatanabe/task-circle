@@ -32,13 +32,16 @@ const ToggleButton = memo((props) => {
       }
       return { ...state };
     });
-    props.sendMessage();
+    if (state.isInRoom) {
+      props.sendMessage();
+    }
   };
 
   return (
     <>
       <Button
         onClick={onClick}
+        disabled={!settings.isPomodoroEnabled}
         variant="contained"
         style={{
           backgroundColor: "whitesmoke",
