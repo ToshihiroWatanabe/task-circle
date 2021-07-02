@@ -41,7 +41,7 @@ const Room = memo((props) => {
         {!state.isInRoom && (
           <EnterTheRoom
             onEnter={props.onEnter}
-            isConnected={props.isConnected}
+            isConnected={state.isConnected}
           />
         )}
         {/* 入室後 */}

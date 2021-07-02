@@ -121,7 +121,6 @@ const TaskAndTimer = memo(() => {
     settings.breakVideoUrl.split(/v=|\//).slice(-1)[0]
   );
   const $websocket = useRef(null);
-  const [isConnected, setIsConnected] = useState(false);
 
   // 設定の動画URLに変化があったとき
   useEffect(() => {
@@ -579,13 +578,23 @@ const TaskAndTimer = memo(() => {
     });
   };
 
+  /**
+   * WebSocketで接続されたときの処理です。
+   */
   const onConnected = () => {
-    setIsConnected(true);
+    setState((state) => {
+      return { ...state, isConnected: true };
+    });
     console.log("サーバーに接続しました。");
   };
 
+  /**
+   * WebSocketが切断されたときの処理です。
+   */
   const onDisconnected = () => {
-    setIsConnected(false);
+    setState((state) => {
+      return { ...state, isConnected: false };
+    });
     console.log("サーバーとの接続が切れました。");
     setState((state) => {
       return { ...state, nameInRoom: "", isAfk: false, isInRoom: false };
@@ -593,6 +602,10 @@ const TaskAndTimer = memo(() => {
     setSessions([]);
   };
 
+  /**
+   * セッションのメッセージを受信したときの処理です。
+   * @param {*} message
+   */
   const onSessionMessageReceived = (message) => {
     console.log(message);
     setSessions((sessions) => {
@@ -620,6 +633,10 @@ const TaskAndTimer = memo(() => {
     });
   };
 
+  /**
+   * 退室メッセージを受信したときの処理です。
+   * @param {*} message
+   */
   const onLeaveMessageReceived = (message) => {
     console.log(message);
     setSessions((sessions) => {
@@ -630,6 +647,9 @@ const TaskAndTimer = memo(() => {
     });
   };
 
+  /**
+   * findAllのメッセージを受信したときの処理です。
+   */
   const onFindAllMessageReceived = (message) => {
     console.log(message);
     setSessions((sessions) => {
@@ -637,6 +657,10 @@ const TaskAndTimer = memo(() => {
     });
   };
 
+  /**
+   * 入室時の処理です。
+   * @param {*} name
+   */
   const onEnter = (name) => {
     setState((state) => {
       return { ...state, nameInRoom: name };
@@ -644,6 +668,9 @@ const TaskAndTimer = memo(() => {
     sendMessage("enter");
   };
 
+  /**
+   * 退室時の処理です。
+   */
   const onLeave = () => {
     setState((state) => {
       return { ...state, nameInRoom: "", isAfk: false };
@@ -656,7 +683,7 @@ const TaskAndTimer = memo(() => {
    * WebSocketのメッセージを送信します。
    */
   const sendMessage = (messageType) => {
-    if (!isConnected) return;
+    if (!state.isConnected) return;
     setState((state) => {
       const selectedTask =
         Object.values(columns).filter((column, index) => {
@@ -721,7 +748,6 @@ const TaskAndTimer = memo(() => {
           sessions={sessions}
           onEnter={onEnter}
           onLeave={onLeave}
-          isConnected={isConnected}
           sendMessage={sendMessage}
         />
       </div>
