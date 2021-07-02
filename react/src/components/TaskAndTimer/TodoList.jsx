@@ -375,6 +375,7 @@ const TodoList = memo((props) => {
                     <ColumnMenu
                       index={columnIndex}
                       columns={props.columns}
+                      column={column}
                       setColumns={props.setColumns}
                       setPreviousColumns={setPreviousColumns}
                       setUndoSnackbarOpen={setUndoSnackbarOpen}

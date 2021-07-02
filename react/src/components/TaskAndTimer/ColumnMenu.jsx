@@ -4,7 +4,9 @@ import { IconButton, Menu, MenuItem } from "@material-ui/core";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
 import DeleteIcon from "@material-ui/icons/Delete";
 import RotateLeftIcon from "@material-ui/icons/RotateLeft";
+import EditIcon from "@material-ui/icons/Edit";
 import { Context } from "contexts/Context";
+import SimpleFormDialog from "./SimpleFormDialog";
 
 const useStyles = makeStyles({
   menu: {
@@ -19,6 +21,7 @@ const ColumnMenu = memo((props) => {
   const classes = useStyles();
   const [state, setState] = useContext(Context);
   const [anchorEl, setAnchorEl] = useState(null);
+  const [editOpen, setEditOpen] = useState(false);
 
   /**
    * メニューアイコンがクリックされたときの処理です。
@@ -32,6 +35,13 @@ const ColumnMenu = memo((props) => {
    */
   const handleClose = () => {
     setAnchorEl(null);
+  };
+
+  /**
+   * リスト名を変更がクリックされたときの処理です。
+   */
+  const handleEdit = () => {
+    setEditOpen(true);
   };
 
   /**
@@ -97,6 +107,10 @@ const ColumnMenu = memo((props) => {
         onClose={handleClose}
         className={classes.menu}
       >
+        <MenuItem onClick={handleEdit} disabled={state.isTimerOn}>
+          <EditIcon />
+          リスト名を変更
+        </MenuItem>
         <MenuItem
           onClick={handleReset}
           disabled={
@@ -124,6 +138,14 @@ const ColumnMenu = memo((props) => {
           リストを削除
         </MenuItem>
       </Menu>
+      <SimpleFormDialog
+        open={editOpen}
+        setOpen={setEditOpen}
+        index={props.index}
+        defaultValue={props.column.name}
+        formDialogTitle="リスト名を変更"
+        label="リスト名"
+      />
     </>
   );
 });
