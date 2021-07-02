@@ -11,6 +11,8 @@ import ErrorBoundary from "components/ErrorBoundary";
 import { theme } from "theme";
 import { SettingsContextProvider } from "contexts/SettingsContext";
 import { StatisticsContextProvider } from "contexts/StatisticsContext";
+import { SessionsContextProvider } from "contexts/SessionsContext";
+import { ColumnsContextProvider } from "contexts/ColumnsContext";
 
 ReactDOM.render(
   <ErrorBoundary>
@@ -18,11 +20,15 @@ ReactDOM.render(
       <ContextProvider>
         <SettingsContextProvider>
           <StatisticsContextProvider>
-            <MuiThemeProvider theme={theme}>
-              <CssBaseline>
-                <App />
-              </CssBaseline>
-            </MuiThemeProvider>
+            <SessionsContextProvider>
+              <ColumnsContextProvider>
+                <MuiThemeProvider theme={theme}>
+                  <CssBaseline>
+                    <App />
+                  </CssBaseline>
+                </MuiThemeProvider>
+              </ColumnsContextProvider>
+            </SessionsContextProvider>
           </StatisticsContextProvider>
         </SettingsContextProvider>
       </ContextProvider>
