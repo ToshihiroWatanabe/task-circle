@@ -16,7 +16,7 @@ import { StatisticsContext } from "contexts/StatisticsContext";
 import FloatingTimer from "./FloatingTimer";
 import { SessionsContext } from "contexts/SessionsContext";
 import { ColumnsContext } from "contexts/ColumnsContext";
-import { ONCE_COUNT, COUNT_INTERVAL } from "utils/constant";
+import { DEFAULT_TITLE, ONCE_COUNT, COUNT_INTERVAL } from "utils/constant";
 
 /** setTimeoutのID */
 let timeoutId = null;
@@ -43,9 +43,6 @@ const getTimeout = () => {
         (startedAt % COUNT_INTERVAL) - (dateNow % COUNT_INTERVAL);
   return timeout;
 };
-
-/** デフォルトタイトル */
-const defaultTitle = document.title;
 
 /** タイマー開始の効果音 */
 const startedSound = new Audio(startedAudio);
@@ -276,7 +273,7 @@ const TaskAndTimer = memo((props) => {
         if (state.pomodoroTimerType === "break") {
           state.pomodoroTimeLeft = settings.breakTimerLength;
         }
-        document.title = defaultTitle;
+        document.title = DEFAULT_TITLE;
         // faviconをデフォルトに戻す
         const link = document.querySelector("link[rel*='icon']");
         link.href = "/favicon.ico";
@@ -476,12 +473,13 @@ const TaskAndTimer = memo((props) => {
               );
             })[0]
             .items.map((item, index) => {
-              if (
-                item.isSelected &&
-                (!settings.isPomodoroEnabled ||
-                  state.pomodoroTimerType !== "break")
-              ) {
-                item.spentSecond += ONCE_COUNT * count;
+              if (item.isSelected) {
+                if (
+                  !settings.isPomodoroEnabled ||
+                  state.pomodoroTimerType !== "break"
+                ) {
+                  item.spentSecond += ONCE_COUNT * count;
+                }
                 setTimeout(() => {
                   refreshTitle(item.content, item.spentSecond);
                 }, 2);
@@ -550,10 +548,10 @@ const TaskAndTimer = memo((props) => {
           ") " +
           (state.pomodoroTimerType === "work" ? content : "休憩中") +
           " | " +
-          defaultTitle;
+          DEFAULT_TITLE;
       } else {
         document.title =
-          content + " (" + secondToHHMMSS(spentSecond) + ") | " + defaultTitle;
+          content + " (" + secondToHHMMSS(spentSecond) + ") | " + DEFAULT_TITLE;
       }
       return state;
     });

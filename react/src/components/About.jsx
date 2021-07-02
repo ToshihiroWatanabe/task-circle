@@ -21,7 +21,7 @@ const useStyles = makeStyles({
   //   marginBottom: "1rem",
   // },
   card: {
-    width: "95%",
+    width: "calc(100% - 2rem)",
     padding: "1rem",
     // marginLeft: "1rem",
     marginBottom: "1rem",

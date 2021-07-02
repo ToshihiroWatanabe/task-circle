@@ -38,7 +38,7 @@ const useStyles = makeStyles((theme) => ({
   card: {
     display: "flex",
     flexDirection: "column",
-    width: "95%",
+    width: "calc(100% - 2rem)",
     padding: "1rem",
     marginBottom: "1rem",
   },
@@ -337,7 +337,7 @@ const Settings = () => {
       {/* Slack連携設定 */}
       {/* <Card
         style={{
-          width: "95%",
+          width: "calc(100% - 2rem)",
           padding: "1rem",
           // marginLeft: "1rem",
           marginBottom: "1rem",

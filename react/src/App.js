@@ -49,8 +49,18 @@ const localStorageGetItemColumns = localStorage.getItem("columns")
   ? JSON.parse(localStorage.getItem("columns"))
   : {
       [uuid()]: {
-        name: "タスク1",
-        items: [],
+        name: "リスト1",
+        items: [
+          {
+            id: uuid(),
+            category: "",
+            content: "タスク",
+            spentSecond: 0,
+            estimatedSecond: 3600,
+            isSelected: true,
+            achievedThenStop: false,
+          },
+        ],
       },
     };
 
@@ -58,11 +68,11 @@ const useStyles = makeStyles((theme) => ({
   main: {
     marginTop: "5rem",
     paddingLeft: theme.spacing(1),
+    width: "100vw",
     maxWidth: "100vw",
+    height: "calc(100vh - 5rem)",
     overflow: "auto",
-    [theme.breakpoints.up("md")]: {
-      height: "100wh",
-    },
+    [theme.breakpoints.up("md")]: {},
     [theme.breakpoints.down("xs")]: {
       marginRight: theme.spacing(1),
       marginTop: "4rem",
@@ -85,23 +95,23 @@ const App = () => {
 
   useEffect(() => {
     // 初期値とローカルストレージからの値を統合
-    setSettings((settings) => {
-      const newSettings = { ...settings, ...localStorageGetItemSettings };
-      setState((state) => {
-        return {
-          ...state,
-          reports: localStorageGetItemReports,
-          pomodoroTimeLeft: newSettings.workTimerLength,
-        };
-      });
-      return newSettings;
+    setColumns((columns) => {
+      return { ...columns, ...localStorageGetItemColumns };
     });
     setStatistics((statistics) => {
       return { ...statistics, ...localStorageGetItemStatistics };
     });
     setTimeout(() => {
-      setColumns((columns) => {
-        return { ...columns, ...localStorageGetItemColumns };
+      setSettings((settings) => {
+        const newSettings = { ...settings, ...localStorageGetItemSettings };
+        setState((state) => {
+          return {
+            ...state,
+            reports: localStorageGetItemReports,
+            pomodoroTimeLeft: newSettings.workTimerLength,
+          };
+        });
+        return newSettings;
       });
     }, 1);
   }, []);

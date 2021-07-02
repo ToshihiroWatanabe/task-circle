@@ -36,7 +36,6 @@ const Room = memo((props) => {
           onLeave={props.onLeave}
           sendMessage={props.sendMessage}
         />
-        <Divider style={{ margin: "0.25rem 0" }} />
         {/* 入室前 */}
         {!state.isInRoom && (
           <EnterTheRoom

@@ -1,5 +1,6 @@
 import React, { memo, useContext, useState } from "react";
 import {
+  Divider,
   Icon,
   IconButton,
   makeStyles,
@@ -131,7 +132,7 @@ const TimerPopover = memo((props) => {
                 width: "1.25rem",
                 filter: settings.isPomodoroEnabled
                   ? "drop-shadow(0px 0px 1.25px #000)"
-                  : "contrast(0%)",
+                  : "contrast(20%)",
               }}
             />
           </Icon>
@@ -163,7 +164,11 @@ const TimerPopover = memo((props) => {
                 タイマー作動中は変更できません
               </Typography>
             )}
-            <Typography style={{ padding: "0.5rem 0 0 1rem" }}>
+            <Typography
+              style={{
+                padding: state.isTimerOn ? "0rem 0 0 1rem" : "0.5rem 0 0 1rem",
+              }}
+            >
               ポモドーロタイマー
               <Switch
                 disabled={state.isTimerOn}
@@ -227,6 +232,7 @@ const TimerPopover = memo((props) => {
               </Select>
               分
             </Typography>
+            <Divider style={{ margin: "0.5rem 0.5rem 0 0.5rem" }} />
             <Typography component="div" style={{ padding: "0.5rem 0 0 1rem" }}>
               <ToggleButton sendMessage={props.sendMessage} />
             </Typography>

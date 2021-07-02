@@ -56,7 +56,7 @@ const PortfolioSettings = () => {
     <>
       <Card
         style={{
-          width: "95%",
+          width: "calc(100% - 2rem)",
           padding: "1rem",
           marginLeft: "1rem",
           marginBottom: "1rem",
@@ -120,7 +120,7 @@ const PortfolioSettings = () => {
       </Card>
       <Card
         style={{
-          width: "95%",
+          width: "calc(100% - 2rem)",
           padding: "1rem",
           marginLeft: "1rem",
           marginBottom: "1rem",

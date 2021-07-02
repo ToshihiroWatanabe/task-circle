@@ -10,6 +10,7 @@ import {
 import { Context } from "contexts/Context";
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 import PersonIcon from "@material-ui/icons/Person";
+import HelpPopover from "components/TaskAndTimer/HelpPopover";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -58,6 +59,13 @@ const RoomHeader = (props) => {
           </>
         )}
       </div>
+      {!state.isInRoom && (
+        <>
+          <HelpPopover
+            message={"入室すると今のタイマーの状況を仲間と共有できます。"}
+          />
+        </>
+      )}
       {state.isInRoom && (
         <>
           <Button

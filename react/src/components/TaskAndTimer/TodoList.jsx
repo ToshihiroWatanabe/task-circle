@@ -12,6 +12,7 @@ import {
   Snackbar,
   Button,
   useTheme,
+  Box,
 } from "@material-ui/core";
 import uuid from "uuid/v4";
 import PlayArrowIcon from "@material-ui/icons/PlayArrow";
@@ -21,7 +22,7 @@ import { Context } from "contexts/Context";
 import StopIcon from "@material-ui/icons/Stop";
 import { secondToHHMMSS, taskItemsToReport } from "utils/convert";
 import TaskMenu from "./TaskMenu";
-import ColumnMenu from "./ColumnMenu";
+import ColumnMenu from "./TodoListMenu";
 import TagsInput from "./TagsInput";
 import CloseIcon from "@material-ui/icons/Close";
 import AssignmentOutlinedIcon from "@material-ui/icons/AssignmentOutlined";
@@ -31,6 +32,7 @@ import AlarmIcon from "@material-ui/icons/Alarm";
 import FreeBreakfastOutlinedIcon from "@material-ui/icons/FreeBreakfastOutlined";
 import { SettingsContext } from "contexts/SettingsContext";
 import AddCircleOutlineIcon from "@material-ui/icons/AddCircleOutline";
+import { NUMBER_OF_TASKS_MAX } from "utils/constant";
 
 /** タイマー再生ボタンにカーソルが合っているかどうか */
 let isPlayButtonFocused = false;
@@ -38,54 +40,6 @@ let isPlayButtonFocused = false;
 /** 最後にマウスが動いた時刻 */
 let lastMouseMoved = Date.now();
 let playArrowIconTooltipOpenTimeout = null;
-
-/**
- * ドラッグが終わったときの処理です。
- * @param {*} result
- * @param {*} columns
- * @param {*} props.setColumns
- * @returns
- */
-const onDragEnd = (result, columns, setColumns) => {
-  if (!result.destination) return;
-  const { source, destination } = result;
-
-  if (source.droppableId !== destination.droppableId) {
-    const sourceColumn = columns[source.droppableId];
-    const destColumn = columns[destination.droppableId];
-    const sourceItems = [...sourceColumn.items];
-    const destItems = [...destColumn.items];
-    const [removed] = sourceItems.splice(source.index, 1);
-    destItems.splice(destination.index, 0, removed);
-    const newColumns = {
-      ...columns,
-      [source.droppableId]: {
-        ...sourceColumn,
-        items: sourceItems,
-      },
-      [destination.droppableId]: {
-        ...destColumn,
-        items: destItems,
-      },
-    };
-    setColumns(newColumns);
-    localStorage.setItem("columns", JSON.stringify(newColumns));
-  } else {
-    const column = columns[source.droppableId];
-    const copiedItems = [...column.items];
-    const [removed] = copiedItems.splice(source.index, 1);
-    copiedItems.splice(destination.index, 0, removed);
-    const newColumns = {
-      ...columns,
-      [source.droppableId]: {
-        ...column,
-        items: copiedItems,
-      },
-    };
-    setColumns(newColumns);
-    localStorage.setItem("columns", JSON.stringify(newColumns));
-  }
-};
 
 /** Bootstrap風ツールチップのスタイル */
 const useStylesBootstrap = makeStyles((theme) => ({
@@ -126,7 +80,7 @@ const useStyles = makeStyles((theme) => ({
   columnCard: {
     padding: 4,
     width: "100%",
-    maxHeight: "calc(100vh - 15rem)",
+    maxHeight: "calc(100vh - 13.5rem)",
     overflow: "auto",
   },
   taskCard: {
@@ -155,6 +109,68 @@ const TodoList = memo((props) => {
   const [playArrowIconTooltipOpen, setPlayArrowIconTooltipOpen] =
     useState(false);
   const location = useLocation();
+  const [addListTooltipPosition, setAddListTooltipPosition] = useState({
+    x: undefined,
+    y: undefined,
+  });
+
+  /**
+   * ドラッグが終わったときの処理です。
+   * @param {*} result
+   * @param {*} columns
+   * @param {*} props.setColumns
+   * @returns
+   */
+  const onDragEnd = (result, columns, setColumns) => {
+    if (!result.destination) return;
+    const { source, destination } = result;
+
+    // 違うカラムに移動したとき
+    if (source.droppableId !== destination.droppableId) {
+      const sourceColumn = columns[source.droppableId];
+      const destColumn = columns[destination.droppableId];
+      const sourceItems = [...sourceColumn.items];
+      const destItems = [...destColumn.items];
+      // 移動先のタスク数が最大数を超えていた場合
+      if (destItems.length > NUMBER_OF_TASKS_MAX) {
+        setSimpleSnackbarMessage(
+          destColumn.name + "にはこれ以上タスクを増やせません"
+        );
+        setSimpleSnackbarOpen(true);
+        return;
+      }
+      const [removed] = sourceItems.splice(source.index, 1);
+      destItems.splice(destination.index, 0, removed);
+      const newColumns = {
+        ...columns,
+        [source.droppableId]: {
+          ...sourceColumn,
+          items: sourceItems,
+        },
+        [destination.droppableId]: {
+          ...destColumn,
+          items: destItems,
+        },
+      };
+      setColumns(newColumns);
+      localStorage.setItem("columns", JSON.stringify(newColumns));
+    } else {
+      // 同じカラムでの移動だったとき
+      const column = columns[source.droppableId];
+      const copiedItems = [...column.items];
+      const [removed] = copiedItems.splice(source.index, 1);
+      copiedItems.splice(destination.index, 0, removed);
+      const newColumns = {
+        ...columns,
+        [source.droppableId]: {
+          ...column,
+          items: copiedItems,
+        },
+      };
+      setColumns(newColumns);
+      localStorage.setItem("columns", JSON.stringify(newColumns));
+    }
+  };
 
   /**
    * 再生アイコンのツールチップを扱います。
@@ -309,7 +325,7 @@ const TodoList = memo((props) => {
       return {
         ...columns,
         [uuid()]: {
-          name: "タスク" + (Object.keys(columns).length + 1),
+          name: "リスト" + (Object.keys(columns).length + 1),
           items: [],
         },
       };
@@ -327,9 +343,15 @@ const TodoList = memo((props) => {
           ([columnId, column], columnIndex) => {
             return (
               <div className={classes.column} key={columnId}>
+                {/* ToDoリストのヘッダー */}
                 <div
                   style={{
-                    backgroundColor: "#ebecf0",
+                    backgroundColor:
+                      column.items.filter((item) => {
+                        return item.isSelected;
+                      }).length > 0
+                        ? "#ebecf0"
+                        : "#fafafa",
                     padding: 4,
                     width: "100%",
                     marginBottom: "-0.2rem",
@@ -375,13 +397,13 @@ const TodoList = memo((props) => {
                     <ColumnMenu
                       index={columnIndex}
                       columns={props.columns}
+                      column={column}
                       setColumns={props.setColumns}
                       setPreviousColumns={setPreviousColumns}
                       setUndoSnackbarOpen={setUndoSnackbarOpen}
                       setUndoSnackbarMessage={setUndoSnackbarMessage}
                     />
                   </div>
-                  <Divider style={{ margin: "0.25rem 0" }} />
                 </div>
                 <Droppable droppableId={columnId} key={columnId}>
                   {(provided, snapshot) => {
@@ -390,9 +412,14 @@ const TodoList = memo((props) => {
                         {...provided.droppableProps}
                         ref={provided.innerRef}
                         style={{
+                          paddingTop: "0.5rem",
                           background: snapshot.isDraggingOver
                             ? "lightblue"
-                            : "#ebecf0",
+                            : column.items.filter((item) => {
+                                return item.isSelected;
+                              }).length > 0
+                            ? "#ebecf0"
+                            : "#fafafa",
                         }}
                         className={classes.columnCard}
                       >
@@ -439,7 +466,7 @@ const TodoList = memo((props) => {
                                     }
                                   >
                                     <div style={{ display: "flex" }}>
-                                      <BootstrapTooltip
+                                      {/* <BootstrapTooltip
                                         title="タイマーを開始"
                                         open={
                                           location.pathname === "/" &&
@@ -449,45 +476,42 @@ const TodoList = memo((props) => {
                                           (item.spentSecond === 0 ||
                                             isPlayButtonFocused)
                                         }
+                                      > */}
+                                      <IconButton
+                                        size="small"
+                                        color="inherit"
+                                        style={{
+                                          marginLeft: "-0.75rem",
+                                          marginRight: "0.25rem",
+                                          visibility: item.isSelected
+                                            ? ""
+                                            : "hidden",
+                                        }}
+                                        onClick={() =>
+                                          props.onPlayButtonClick("task")
+                                        }
+                                        onMouseEnter={(e) => {
+                                          isPlayButtonFocused = true;
+                                        }}
+                                        onMouseLeave={(e) => {
+                                          isPlayButtonFocused = false;
+                                        }}
                                       >
-                                        <IconButton
-                                          size="small"
-                                          color="inherit"
-                                          style={{
-                                            marginLeft: "-0.75rem",
-                                            marginRight: "0.25rem",
-                                            visibility: item.isSelected
-                                              ? ""
-                                              : "hidden",
-                                          }}
-                                          onClick={() =>
-                                            props.onPlayButtonClick("task")
-                                          }
-                                          onMouseEnter={(e) => {
-                                            isPlayButtonFocused = true;
-                                          }}
-                                          onMouseLeave={(e) => {
-                                            isPlayButtonFocused = false;
-                                          }}
-                                        >
-                                          {/* タイマーがオフのときは再生アイコン */}
-                                          {!state.isTimerOn && (
-                                            <PlayArrowIcon />
+                                        {/* タイマーがオフのときは再生アイコン */}
+                                        {!state.isTimerOn && <PlayArrowIcon />}
+                                        {/* 停止アイコン */}
+                                        {(!settings.isPomodoroEnabled ||
+                                          state.pomodoroTimerType !==
+                                            "break") &&
+                                          state.isTimerOn && <StopIcon />}
+                                        {/* コーヒーアイコン */}
+                                        {settings.isPomodoroEnabled &&
+                                          state.pomodoroTimerType === "break" &&
+                                          state.isTimerOn && (
+                                            <FreeBreakfastOutlinedIcon />
                                           )}
-                                          {/* 停止アイコン */}
-                                          {(!settings.isPomodoroEnabled ||
-                                            state.pomodoroTimerType !==
-                                              "break") &&
-                                            state.isTimerOn && <StopIcon />}
-                                          {/* コーヒーアイコン */}
-                                          {settings.isPomodoroEnabled &&
-                                            state.pomodoroTimerType ===
-                                              "break" &&
-                                            state.isTimerOn && (
-                                              <FreeBreakfastOutlinedIcon />
-                                            )}
-                                        </IconButton>
-                                      </BootstrapTooltip>
+                                      </IconButton>
+                                      {/* </BootstrapTooltip> */}
                                       <div style={{ flexGrow: "1" }}>
                                         <div style={{ marginBottom: "0.2rem" }}>
                                           {item.category !== "" && (
@@ -612,7 +636,12 @@ const TodoList = memo((props) => {
                   style={{
                     display: "flex",
                     justifyContent: "space-between",
-                    backgroundColor: "#ebecf0",
+                    backgroundColor:
+                      column.items.filter((item) => {
+                        return item.isSelected;
+                      }).length > 0
+                        ? "#ebecf0"
+                        : "#fafafa",
                     width: "100%",
                     marginTop: "-2px",
                     paddingLeft: "0.5rem",
@@ -639,7 +668,11 @@ const TodoList = memo((props) => {
                       backgroundColor:
                         isTagsInputFocused === columnIndex
                           ? "white"
-                          : "#ebecf0",
+                          : column.items.filter((item) => {
+                              return item.isSelected;
+                            }).length > 0
+                          ? "#ebecf0"
+                          : "#fafafa",
                       borderRadius: "4px",
                       height: "2.5rem",
                     }}
@@ -652,7 +685,26 @@ const TodoList = memo((props) => {
       </DragDropContext>
       {/* ToDoリストを追加 */}
       {Object.keys(props.columns).length < 4 && (
-        <Tooltip id="addListTooltip" title="ToDoリストを追加" placement="top">
+        <Tooltip
+          title="ToDoリストを追加"
+          onMouseMove={(e) =>
+            setAddListTooltipPosition({ x: e.pageX, y: e.pageY + 10 })
+          }
+          PopperProps={{
+            anchorEl: {
+              clientHeight: 0,
+              clientWidth: 0,
+              getBoundingClientRect: () => ({
+                top: addListTooltipPosition.y,
+                left: addListTooltipPosition.x,
+                right: addListTooltipPosition.x,
+                bottom: addListTooltipPosition.y,
+                width: 0,
+                height: 0,
+              }),
+            },
+          }}
+        >
           <IconButton onClick={onAddListButtonClick}>
             <AddCircleOutlineIcon />
           </IconButton>
