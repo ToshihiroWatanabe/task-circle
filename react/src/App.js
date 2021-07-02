@@ -84,23 +84,23 @@ const App = () => {
 
   useEffect(() => {
     // 初期値とローカルストレージからの値を統合
-    setSettings((settings) => {
-      const newSettings = { ...settings, ...localStorageGetItemSettings };
-      setState((state) => {
-        return {
-          ...state,
-          reports: localStorageGetItemReports,
-          pomodoroTimeLeft: newSettings.workTimerLength,
-        };
-      });
-      return newSettings;
+    setColumns((columns) => {
+      return { ...columns, ...localStorageGetItemColumns };
     });
     setStatistics((statistics) => {
       return { ...statistics, ...localStorageGetItemStatistics };
     });
     setTimeout(() => {
-      setColumns((columns) => {
-        return { ...columns, ...localStorageGetItemColumns };
+      setSettings((settings) => {
+        const newSettings = { ...settings, ...localStorageGetItemSettings };
+        setState((state) => {
+          return {
+            ...state,
+            reports: localStorageGetItemReports,
+            pomodoroTimeLeft: newSettings.workTimerLength,
+          };
+        });
+        return newSettings;
       });
     }, 1);
   }, []);

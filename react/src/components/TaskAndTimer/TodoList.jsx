@@ -31,6 +31,7 @@ import AlarmIcon from "@material-ui/icons/Alarm";
 import FreeBreakfastOutlinedIcon from "@material-ui/icons/FreeBreakfastOutlined";
 import { SettingsContext } from "contexts/SettingsContext";
 import AddCircleOutlineIcon from "@material-ui/icons/AddCircleOutline";
+import { NUMBER_OF_TASKS_MAX } from "utils/constant";
 
 /** タイマー再生ボタンにカーソルが合っているかどうか */
 let isPlayButtonFocused = false;
@@ -38,54 +39,6 @@ let isPlayButtonFocused = false;
 /** 最後にマウスが動いた時刻 */
 let lastMouseMoved = Date.now();
 let playArrowIconTooltipOpenTimeout = null;
-
-/**
- * ドラッグが終わったときの処理です。
- * @param {*} result
- * @param {*} columns
- * @param {*} props.setColumns
- * @returns
- */
-const onDragEnd = (result, columns, setColumns) => {
-  if (!result.destination) return;
-  const { source, destination } = result;
-
-  if (source.droppableId !== destination.droppableId) {
-    const sourceColumn = columns[source.droppableId];
-    const destColumn = columns[destination.droppableId];
-    const sourceItems = [...sourceColumn.items];
-    const destItems = [...destColumn.items];
-    const [removed] = sourceItems.splice(source.index, 1);
-    destItems.splice(destination.index, 0, removed);
-    const newColumns = {
-      ...columns,
-      [source.droppableId]: {
-        ...sourceColumn,
-        items: sourceItems,
-      },
-      [destination.droppableId]: {
-        ...destColumn,
-        items: destItems,
-      },
-    };
-    setColumns(newColumns);
-    localStorage.setItem("columns", JSON.stringify(newColumns));
-  } else {
-    const column = columns[source.droppableId];
-    const copiedItems = [...column.items];
-    const [removed] = copiedItems.splice(source.index, 1);
-    copiedItems.splice(destination.index, 0, removed);
-    const newColumns = {
-      ...columns,
-      [source.droppableId]: {
-        ...column,
-        items: copiedItems,
-      },
-    };
-    setColumns(newColumns);
-    localStorage.setItem("columns", JSON.stringify(newColumns));
-  }
-};
 
 /** Bootstrap風ツールチップのスタイル */
 const useStylesBootstrap = makeStyles((theme) => ({
@@ -155,6 +108,64 @@ const TodoList = memo((props) => {
   const [playArrowIconTooltipOpen, setPlayArrowIconTooltipOpen] =
     useState(false);
   const location = useLocation();
+
+  /**
+   * ドラッグが終わったときの処理です。
+   * @param {*} result
+   * @param {*} columns
+   * @param {*} props.setColumns
+   * @returns
+   */
+  const onDragEnd = (result, columns, setColumns) => {
+    if (!result.destination) return;
+    const { source, destination } = result;
+
+    // 違うカラムに移動したとき
+    if (source.droppableId !== destination.droppableId) {
+      const sourceColumn = columns[source.droppableId];
+      const destColumn = columns[destination.droppableId];
+      const sourceItems = [...sourceColumn.items];
+      const destItems = [...destColumn.items];
+      // 移動先のタスク数が最大数を超えていた場合
+      if (destItems.length > NUMBER_OF_TASKS_MAX) {
+        setSimpleSnackbarMessage(
+          destColumn.name + "にはこれ以上タスクを増やせません"
+        );
+        setSimpleSnackbarOpen(true);
+        return;
+      }
+      const [removed] = sourceItems.splice(source.index, 1);
+      destItems.splice(destination.index, 0, removed);
+      const newColumns = {
+        ...columns,
+        [source.droppableId]: {
+          ...sourceColumn,
+          items: sourceItems,
+        },
+        [destination.droppableId]: {
+          ...destColumn,
+          items: destItems,
+        },
+      };
+      setColumns(newColumns);
+      localStorage.setItem("columns", JSON.stringify(newColumns));
+    } else {
+      // 同じカラムでの移動だったとき
+      const column = columns[source.droppableId];
+      const copiedItems = [...column.items];
+      const [removed] = copiedItems.splice(source.index, 1);
+      copiedItems.splice(destination.index, 0, removed);
+      const newColumns = {
+        ...columns,
+        [source.droppableId]: {
+          ...column,
+          items: copiedItems,
+        },
+      };
+      setColumns(newColumns);
+      localStorage.setItem("columns", JSON.stringify(newColumns));
+    }
+  };
 
   /**
    * 再生アイコンのツールチップを扱います。
