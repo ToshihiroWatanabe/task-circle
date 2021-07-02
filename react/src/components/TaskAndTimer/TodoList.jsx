@@ -12,6 +12,7 @@ import {
   Snackbar,
   Button,
   useTheme,
+  Box,
 } from "@material-ui/core";
 import uuid from "uuid/v4";
 import PlayArrowIcon from "@material-ui/icons/PlayArrow";
@@ -342,9 +343,15 @@ const TodoList = memo((props) => {
           ([columnId, column], columnIndex) => {
             return (
               <div className={classes.column} key={columnId}>
+                {/* ToDoリストのヘッダー */}
                 <div
                   style={{
-                    backgroundColor: "#ebecf0",
+                    backgroundColor:
+                      column.items.filter((item) => {
+                        return item.isSelected;
+                      }).length > 0
+                        ? "#ebecf0"
+                        : "#fafafa",
                     padding: 4,
                     width: "100%",
                     marginBottom: "-0.2rem",
@@ -397,7 +404,6 @@ const TodoList = memo((props) => {
                       setUndoSnackbarMessage={setUndoSnackbarMessage}
                     />
                   </div>
-                  <Divider style={{ margin: "0.25rem 0" }} />
                 </div>
                 <Droppable droppableId={columnId} key={columnId}>
                   {(provided, snapshot) => {
@@ -406,9 +412,14 @@ const TodoList = memo((props) => {
                         {...provided.droppableProps}
                         ref={provided.innerRef}
                         style={{
+                          paddingTop: "0.5rem",
                           background: snapshot.isDraggingOver
                             ? "lightblue"
-                            : "#ebecf0",
+                            : column.items.filter((item) => {
+                                return item.isSelected;
+                              }).length > 0
+                            ? "#ebecf0"
+                            : "#fafafa",
                         }}
                         className={classes.columnCard}
                       >
@@ -625,7 +636,12 @@ const TodoList = memo((props) => {
                   style={{
                     display: "flex",
                     justifyContent: "space-between",
-                    backgroundColor: "#ebecf0",
+                    backgroundColor:
+                      column.items.filter((item) => {
+                        return item.isSelected;
+                      }).length > 0
+                        ? "#ebecf0"
+                        : "#fafafa",
                     width: "100%",
                     marginTop: "-2px",
                     paddingLeft: "0.5rem",
@@ -652,7 +668,11 @@ const TodoList = memo((props) => {
                       backgroundColor:
                         isTagsInputFocused === columnIndex
                           ? "white"
-                          : "#ebecf0",
+                          : column.items.filter((item) => {
+                              return item.isSelected;
+                            }).length > 0
+                          ? "#ebecf0"
+                          : "#fafafa",
                       borderRadius: "4px",
                       height: "2.5rem",
                     }}
