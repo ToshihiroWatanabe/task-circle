@@ -16,11 +16,8 @@ import { StatisticsContext } from "contexts/StatisticsContext";
 import FloatingTimer from "./FloatingTimer";
 import { SessionsContext } from "contexts/SessionsContext";
 import { ColumnsContext } from "contexts/ColumnsContext";
+import { ONCE_COUNT, COUNT_INTERVAL } from "utils/constant";
 
-/** 一度にカウントする秒数 */
-const ONCE_COUNT = 1;
-/** カウントの間隔(ミリ秒) */
-const COUNT_INTERVAL = 1000;
 /** setTimeoutのID */
 let timeoutId = null;
 
@@ -387,6 +384,7 @@ const TaskAndTimer = memo((props) => {
                   body: "タイマーを停止しました。",
                 });
               }
+              props.sendMessage();
             } else if (
               settings.isPomodoroEnabled &&
               state.pomodoroTimeLeft <= 0
@@ -438,7 +436,9 @@ const TaskAndTimer = memo((props) => {
               link.href = "/favicon.ico";
               achievedSound.volume = settings.volume * 0.01;
               achievedSound.play();
+              props.sendMessage();
             } else {
+              // チクタク音を鳴らす
               if (settings.tickVolume === 10) {
                 faintTickSound.play();
               } else if (settings.tickVolume === 50) {

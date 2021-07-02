@@ -266,7 +266,7 @@ const App = () => {
       {!window.location.href.match(/.*\/portfolio\/.*/) && (
         <>
           {/* ドロワー */}
-          <ResponsiveDrawer />
+          <ResponsiveDrawer sendMessage={sendMessage} />
           <main className={classes.main}>
             {/* タスク＆タイマー */}
             <div

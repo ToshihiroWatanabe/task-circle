@@ -190,7 +190,7 @@ const ResponsiveDrawer = memo((props) => {
           <div
             style={{ visibility: location.pathname === "/" ? "" : "hidden" }}
           >
-            <TimerPopover />
+            <TimerPopover sendMessage={props.sendMessage} />
           </div>
           {/* 日報をインポート・エクスポートするファイルアイコン */}
           {location.pathname === "/reports" && <FilePopover />}
