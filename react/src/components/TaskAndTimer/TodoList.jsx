@@ -126,7 +126,7 @@ const useStyles = makeStyles((theme) => ({
   columnCard: {
     padding: 4,
     width: "100%",
-    maxHeight: "calc(100vh - 15rem)",
+    maxHeight: "calc(100vh - 13.5rem)",
     overflow: "auto",
   },
   taskCard: {
@@ -440,7 +440,7 @@ const TodoList = memo((props) => {
                                     }
                                   >
                                     <div style={{ display: "flex" }}>
-                                      <BootstrapTooltip
+                                      {/* <BootstrapTooltip
                                         title="タイマーを開始"
                                         open={
                                           location.pathname === "/" &&
@@ -450,45 +450,42 @@ const TodoList = memo((props) => {
                                           (item.spentSecond === 0 ||
                                             isPlayButtonFocused)
                                         }
+                                      > */}
+                                      <IconButton
+                                        size="small"
+                                        color="inherit"
+                                        style={{
+                                          marginLeft: "-0.75rem",
+                                          marginRight: "0.25rem",
+                                          visibility: item.isSelected
+                                            ? ""
+                                            : "hidden",
+                                        }}
+                                        onClick={() =>
+                                          props.onPlayButtonClick("task")
+                                        }
+                                        onMouseEnter={(e) => {
+                                          isPlayButtonFocused = true;
+                                        }}
+                                        onMouseLeave={(e) => {
+                                          isPlayButtonFocused = false;
+                                        }}
                                       >
-                                        <IconButton
-                                          size="small"
-                                          color="inherit"
-                                          style={{
-                                            marginLeft: "-0.75rem",
-                                            marginRight: "0.25rem",
-                                            visibility: item.isSelected
-                                              ? ""
-                                              : "hidden",
-                                          }}
-                                          onClick={() =>
-                                            props.onPlayButtonClick("task")
-                                          }
-                                          onMouseEnter={(e) => {
-                                            isPlayButtonFocused = true;
-                                          }}
-                                          onMouseLeave={(e) => {
-                                            isPlayButtonFocused = false;
-                                          }}
-                                        >
-                                          {/* タイマーがオフのときは再生アイコン */}
-                                          {!state.isTimerOn && (
-                                            <PlayArrowIcon />
+                                        {/* タイマーがオフのときは再生アイコン */}
+                                        {!state.isTimerOn && <PlayArrowIcon />}
+                                        {/* 停止アイコン */}
+                                        {(!settings.isPomodoroEnabled ||
+                                          state.pomodoroTimerType !==
+                                            "break") &&
+                                          state.isTimerOn && <StopIcon />}
+                                        {/* コーヒーアイコン */}
+                                        {settings.isPomodoroEnabled &&
+                                          state.pomodoroTimerType === "break" &&
+                                          state.isTimerOn && (
+                                            <FreeBreakfastOutlinedIcon />
                                           )}
-                                          {/* 停止アイコン */}
-                                          {(!settings.isPomodoroEnabled ||
-                                            state.pomodoroTimerType !==
-                                              "break") &&
-                                            state.isTimerOn && <StopIcon />}
-                                          {/* コーヒーアイコン */}
-                                          {settings.isPomodoroEnabled &&
-                                            state.pomodoroTimerType ===
-                                              "break" &&
-                                            state.isTimerOn && (
-                                              <FreeBreakfastOutlinedIcon />
-                                            )}
-                                        </IconButton>
-                                      </BootstrapTooltip>
+                                      </IconButton>
+                                      {/* </BootstrapTooltip> */}
                                       <div style={{ flexGrow: "1" }}>
                                         <div style={{ marginBottom: "0.2rem" }}>
                                           {item.category !== "" && (

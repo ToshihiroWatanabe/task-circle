@@ -7,8 +7,8 @@ import TimerFab from "./TimerFab";
 
 const DEFAULT_WIDTH = 180;
 const DEFAULT_HEIGHT = 180;
-const MIN_WIDTH = 180;
-const MIN_HEIGHT = 180;
+const MIN_WIDTH = 120;
+const MIN_HEIGHT = 120;
 
 const useStyles = makeStyles((theme) => ({
   root: {
