@@ -184,14 +184,6 @@ const TimerFab = memo((props) => {
                 ? selectedTask.content.slice(0, 10) + "..."
                 : selectedTask.content
               : ""}
-            {settings.isPomodoroEnabled &&
-              state.pomodoroTimerType === "work" &&
-              selectedTask === null && (
-                <>
-                  <p style={{ margin: "0" }}>タスクが選択</p>
-                  されていません
-                </>
-              )}
             {settings.isPomodoroEnabled && state.pomodoroTimerType === "break"
               ? "休憩"
               : ""}
@@ -211,6 +203,17 @@ const TimerFab = memo((props) => {
                 ? selectedTask.content.slice(0, 10) + "..."
                 : selectedTask.content
               : ""}
+          </div>
+          {/* タスクが選択されていません */}
+          <div className={classes.nothingSelected}>
+            {settings.isPomodoroEnabled &&
+              state.pomodoroTimerType === "work" &&
+              selectedTask === null && (
+                <>
+                  <p style={{ margin: "0" }}>タスクが選択</p>
+                  されていません
+                </>
+              )}
             {!settings.isPomodoroEnabled && selectedTask === null && (
               <>
                 <p style={{ margin: "0" }}>タスクが選択</p>

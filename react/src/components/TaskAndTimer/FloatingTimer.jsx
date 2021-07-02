@@ -28,8 +28,12 @@ const FloatingTimer = memo((props) => {
   const useMediaQueryThemeBreakpointsUpMd = useMediaQuery(
     theme.breakpoints.up("md")
   );
-  const useMediaQueryThemeBreakpointsDownSm = useMediaQuery(
-    theme.breakpoints.down("sm")
+  const useMediaQueryThemeBreakpointsOnlySm = useMediaQuery(
+    theme.breakpoints.only("sm")
+  );
+
+  const useMediaQueryThemeBreakpointsDownXs = useMediaQuery(
+    theme.breakpoints.down("xs")
   );
 
   const transitionDuration = {
@@ -46,6 +50,27 @@ const FloatingTimer = memo((props) => {
   const [height, setHeight] = useState(DEFAULT_HEIGHT);
   const [width, setWidth] = useState(DEFAULT_WIDTH);
   const [isDragging, setIsDragging] = useState(false);
+
+  const selectedTask =
+    Object.values(props.columns).filter((column, index) => {
+      return (
+        column.items.filter((item, index) => {
+          return item.isSelected;
+        })[0] !== undefined
+      );
+    }).length > 0
+      ? Object.values(props.columns)
+          .filter((column, index) => {
+            return (
+              column.items.filter((item, index) => {
+                return item.isSelected;
+              })[0] !== undefined
+            );
+          })[0]
+          .items.filter((item, index) => {
+            return item.isSelected;
+          })[0]
+      : null;
 
   const onResize = (e, dir, refToElement, delta, position) => {
     setWidth(refToElement.style.width);
@@ -67,7 +92,8 @@ const FloatingTimer = memo((props) => {
 
   return (
     <>
-      {useMediaQueryThemeBreakpointsDownSm && (
+      {(useMediaQueryThemeBreakpointsOnlySm ||
+        (selectedTask && useMediaQueryThemeBreakpointsDownXs)) && (
         <div className={classes.root}>
           <Zoom
             timeout={transitionDuration}
