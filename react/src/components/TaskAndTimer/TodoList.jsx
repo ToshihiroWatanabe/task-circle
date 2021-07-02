@@ -21,7 +21,7 @@ import { Context } from "contexts/Context";
 import StopIcon from "@material-ui/icons/Stop";
 import { secondToHHMMSS, taskItemsToReport } from "utils/convert";
 import TaskMenu from "./TaskMenu";
-import ColumnMenu from "./ColumnMenu";
+import ColumnMenu from "./TodoListMenu";
 import TagsInput from "./TagsInput";
 import CloseIcon from "@material-ui/icons/Close";
 import AssignmentOutlinedIcon from "@material-ui/icons/AssignmentOutlined";

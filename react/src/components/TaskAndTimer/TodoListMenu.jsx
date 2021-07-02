@@ -15,9 +15,9 @@ const useStyles = makeStyles({
 });
 
 /**
- * カラムメニューのコンポーネントです。
+ * ToDoリストメニューのコンポーネントです。
  */
-const ColumnMenu = memo((props) => {
+const TodoListMenu = memo((props) => {
   const classes = useStyles();
   const [state, setState] = useContext(Context);
   const [anchorEl, setAnchorEl] = useState(null);
@@ -150,4 +150,4 @@ const ColumnMenu = memo((props) => {
   );
 });
 
-export default ColumnMenu;
+export default TodoListMenu;
