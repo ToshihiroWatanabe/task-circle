@@ -1,6 +1,7 @@
 package app.taskcircle.listener;
 
 import app.taskcircle.model.Session;
+import app.taskcircle.service.SessionService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
@@ -13,10 +14,12 @@ import org.springframework.web.socket.messaging.SessionDisconnectEvent;
 public class SessionDisconnectListener implements ApplicationListener<SessionDisconnectEvent> {
 
     private final SimpMessagingTemplate simpMessagingTemplate;
+    private final SessionService sessionService;
 
     @Autowired
-    public SessionDisconnectListener(SimpMessagingTemplate simpMessagingTemplate) {
+    public SessionDisconnectListener(SimpMessagingTemplate simpMessagingTemplate, SessionService sessionService) {
         this.simpMessagingTemplate = simpMessagingTemplate;
+        this.sessionService = sessionService;
     }
 
     @EventListener
@@ -25,6 +28,7 @@ public class SessionDisconnectListener implements ApplicationListener<SessionDis
         System.out.println("切断: " + applicationEvent.getSessionId());
         Session session = new Session();
         session.setSessionId(applicationEvent.getSessionId());
+        sessionService.delete(session);
         simpMessagingTemplate.convertAndSend("/topic/session/leave", session);
     }
 }
