@@ -45,7 +45,7 @@ const UserList = memo((props) => {
         {props.sessions.map((session, index) => {
           return (
             <Fragment key={index}>
-              {index !== 0 && <Divider />}
+              <Divider />
               <ListItem alignItems="flex-start">
                 <ListItemAvatar style={{ marginLeft: "-0.4rem" }}>
                   <>
