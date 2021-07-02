@@ -68,6 +68,7 @@ const useStyles = makeStyles((theme) => ({
   main: {
     marginTop: "5rem",
     paddingLeft: theme.spacing(1),
+    width: "100vw",
     maxWidth: "100vw",
     height: "calc(100vh - 5rem)",
     overflow: "auto",

@@ -373,7 +373,7 @@ const ReportAnalytics = (props) => {
     <>
       <Card
         style={{
-          width: "95%",
+          width: "calc(100% - 2rem)",
           padding: "1rem",
           marginBottom: "1rem",
         }}
@@ -403,7 +403,7 @@ const ReportAnalytics = (props) => {
       </Card>
       <Card
         style={{
-          width: "95%",
+          width: "calc(100% - 2rem)",
           padding: "1rem",
           marginBottom: "1rem",
         }}
@@ -454,7 +454,7 @@ const ReportAnalytics = (props) => {
       </Card>
       <Card
         style={{
-          width: "95%",
+          width: "calc(100% - 2rem)",
           padding: "1rem",
         }}
         className={classes.categoryCard}
