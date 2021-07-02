@@ -3,6 +3,8 @@ import { Context } from "contexts/Context";
 import { Button } from "@material-ui/core";
 import stoppedAudio from "audio/notification_simple-02.mp3";
 import { SettingsContext } from "contexts/SettingsContext";
+import { secondToHHMMSS } from "utils/convert";
+import { DEFAULT_TITLE } from "utils/constant";
 
 const stoppedSound = new Audio(stoppedAudio);
 
@@ -18,7 +20,7 @@ const ToggleButton = memo((props) => {
    */
   const onClick = () => {
     setState((state) => {
-      if (state.isTimerOn && settings.isPomodoroEnabled) {
+      if (state.isTimerOn) {
         state.isTimerOn = false;
         // 効果音
         stoppedSound.play();
@@ -32,9 +34,35 @@ const ToggleButton = memo((props) => {
       }
       return { ...state };
     });
+    if (state.isTimerOn) {
+      refreshTitle();
+    } else {
+      document.title = DEFAULT_TITLE;
+    }
     if (state.isInRoom) {
       props.sendMessage();
     }
+  };
+
+  /**
+   * ページのタイトルを更新します。
+   */
+  const refreshTitle = (content, spentSecond) => {
+    setState((state) => {
+      if (settings.isPomodoroEnabled) {
+        document.title =
+          "(" +
+          secondToHHMMSS(state.pomodoroTimeLeft).substring(3) +
+          ") " +
+          (state.pomodoroTimerType === "work" ? content : "休憩中") +
+          " | " +
+          DEFAULT_TITLE;
+      } else {
+        document.title =
+          content + " (" + secondToHHMMSS(spentSecond) + ") | " + DEFAULT_TITLE;
+      }
+      return state;
+    });
   };
 
   return (

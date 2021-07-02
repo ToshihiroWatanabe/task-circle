@@ -1,3 +1,5 @@
+/** デフォルトタイトル */
+export const DEFAULT_TITLE = document.title;
 /** 一度にカウントする秒数 */
 export const ONCE_COUNT = 1;
 /** カウントの間隔(ミリ秒) */
