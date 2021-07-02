@@ -612,6 +612,21 @@ const TaskAndTimer = memo((props) => {
           </Typography>
         </>
       )}
+      {(ONCE_COUNT !== 1 || COUNT_INTERVAL !== 1000) && (
+        <div
+          style={{
+            position: "fixed",
+            zIndex: 9999,
+            fontSize: "5rem",
+            color: "tomato",
+            top: "50vh",
+            left: "50vw",
+            pointerEvents: "none",
+          }}
+        >
+          デバッグモード
+        </div>
+      )}
     </>
   );
 });
