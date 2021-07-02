@@ -119,7 +119,7 @@ const EnterTheRoom = memo((props) => {
         />
         <Tooltip
           placement="top"
-          title={props.isConnected ? "" : "接続されていません"}
+          title={state.isConnected ? "" : "接続されていません"}
         >
           <div style={{ position: "relative", bottom: "0.15rem" }}>
             <Button
@@ -127,7 +127,7 @@ const EnterTheRoom = memo((props) => {
               variant="contained"
               color="primary"
               onClick={onEnterButtonClick}
-              disabled={!props.isConnected}
+              disabled={!state.isConnected}
             >
               入室
             </Button>

@@ -7,6 +7,7 @@ public class ServletInitializer extends SpringBootServletInitializer {
 
     @Override
     protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
+        System.out.println("Tomcatで起動します。");
         return application.sources(Application.class);
     }
 

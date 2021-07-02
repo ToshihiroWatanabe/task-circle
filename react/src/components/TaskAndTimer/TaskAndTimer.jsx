@@ -1,4 +1,4 @@
-import React, { memo, useContext, useEffect, useRef, useState } from "react";
+import React, { memo, useContext, useEffect, useState } from "react";
 import { makeStyles, Typography, useTheme } from "@material-ui/core";
 import TodoList from "./TodoList";
 import Room from "./Room";
@@ -12,16 +12,12 @@ import tickAudio from "audio/tick.mp3";
 import faintTickAudio from "audio/faintTick.mp3";
 import YouTube from "react-youtube";
 import { secondToHHMMSS } from "utils/convert";
-import uuid from "uuid/v4";
 import { StatisticsContext } from "contexts/StatisticsContext";
 import FloatingTimer from "./FloatingTimer";
-import SockJsClient from "react-stomp";
-import { SOCKET_URL } from "utils/constant";
+import { SessionsContext } from "contexts/SessionsContext";
+import { ColumnsContext } from "contexts/ColumnsContext";
+import { ONCE_COUNT, COUNT_INTERVAL } from "utils/constant";
 
-/** 一度にカウントする秒数 */
-const ONCE_COUNT = 1;
-/** カウントの間隔(ミリ秒) */
-const COUNT_INTERVAL = 1000;
 /** setTimeoutのID */
 let timeoutId = null;
 
@@ -64,9 +60,6 @@ faintTickSound.volume = 1;
 /** 目標時間タイマー達成音 */
 const achievedSound = new Audio(achievedAudio);
 
-/** タイマー再生ボタンにカーソルが合っているかどうか */
-let isPlayButtonFocused = false;
-
 /** YouTube動作再生オプション */
 const playerOptions = {
   height: "1",
@@ -82,36 +75,19 @@ let workVideoPlayer = null;
 let breakVideoPlayer = null;
 let videoPlayDone = true;
 
-const sessionFindAllTopicsId = uuid();
-
-/** デフォルトTodoリスト */
-const defaultColumns = {
-  [uuid()]: {
-    name: "タスク1",
-    items: [],
-  },
-};
-
-/** ローカルストレージからTodoリストを取得します。 */
-const localStorageGetItemColumns = localStorage.getItem("columns")
-  ? JSON.parse(localStorage.getItem("columns"))
-  : { ...defaultColumns };
-
 const useStyles = makeStyles((theme) => ({}));
 
 /**
  * タスク＆タイマーページのコンポーネントです。
  */
-const TaskAndTimer = memo(() => {
+const TaskAndTimer = memo((props) => {
   const classes = useStyles();
   const theme = useTheme();
   const [state, setState] = useContext(Context);
-  const [columns, setColumns] = useState({
-    ...localStorageGetItemColumns,
-  });
+  const [columns, setColumns] = useContext(ColumnsContext);
   const [settings] = useContext(SettingsContext);
   const [statistics, setStatistics] = useContext(StatisticsContext);
-  const [sessions, setSessions] = useState([]);
+  const [sessions, setSessions] = useContext(SessionsContext);
   // 動画の読み込みが終わったかどうか
   const [workVideoOnReady, setWorkVideoOnReady] = useState(false);
   const [breakVideoOnReady, setBreakVideoOnReady] = useState(false);
@@ -123,8 +99,6 @@ const TaskAndTimer = memo(() => {
   const [breakVideoId, setBreakVideoId] = useState(
     settings.breakVideoUrl.split(/v=|\//).slice(-1)[0]
   );
-  const $websocket = useRef(null);
-  const [isConnected, setIsConnected] = useState(false);
 
   // 設定の動画URLに変化があったとき
   useEffect(() => {
@@ -262,7 +236,6 @@ const TaskAndTimer = memo(() => {
    * @param {*} type taskかfab
    */
   const onPlayButtonClick = (type) => {
-    isPlayButtonFocused = false;
     setState((state) => {
       state.isTimerOn = !state.isTimerOn;
       if (state.isTimerOn) {
@@ -316,7 +289,7 @@ const TaskAndTimer = memo(() => {
         updateVideoId();
       }
       if (state.isInRoom) {
-        sendMessage();
+        props.sendMessage();
       }
       return { ...state };
     });
@@ -411,6 +384,7 @@ const TaskAndTimer = memo(() => {
                   body: "タイマーを停止しました。",
                 });
               }
+              props.sendMessage();
             } else if (
               settings.isPomodoroEnabled &&
               state.pomodoroTimeLeft <= 0
@@ -462,7 +436,9 @@ const TaskAndTimer = memo(() => {
               link.href = "/favicon.ico";
               achievedSound.volume = settings.volume * 0.01;
               achievedSound.play();
+              props.sendMessage();
             } else {
+              // チクタク音を鳴らす
               if (settings.tickVolume === 10) {
                 faintTickSound.play();
               } else if (settings.tickVolume === 50) {
@@ -583,136 +559,6 @@ const TaskAndTimer = memo(() => {
     });
   };
 
-  const onConnected = () => {
-    setIsConnected(true);
-    console.log("サーバーに接続しました。");
-  };
-
-  const onDisconnected = () => {
-    setIsConnected(false);
-    console.log("サーバーとの接続が切れました。");
-    setState((state) => {
-      return { ...state, nameInRoom: "", isAfk: false, isInRoom: false };
-    });
-    setSessions([]);
-  };
-
-  const onSessionMessageReceived = (message) => {
-    console.log(message);
-    setSessions((sessions) => {
-      let newSessions = [
-        ...sessions,
-        {
-          sessionId: message.sessionId,
-          userName: message.userName,
-          sessionType: message.sessionType,
-          content: message.content,
-          isTimerOn: message.isTimerOn,
-          startedAt: message.startedAt,
-          finishAt: message.finishAt,
-        },
-      ];
-      // sessionIdの重複を削除(後に出てきたほうが消える)
-      newSessions = newSessions
-        .slice()
-        .reverse()
-        .filter(
-          (v, i, a) => a.findIndex((t) => t.sessionId === v.sessionId) === i
-        )
-        .reverse();
-      return newSessions;
-    });
-  };
-
-  const onLeaveMessageReceived = (message) => {
-    console.log(message);
-    setSessions((sessions) => {
-      const newSessions = sessions.filter((session, index) => {
-        return session.sessionId !== message.sessionId;
-      });
-      return [...newSessions];
-    });
-  };
-
-  const onFindAllMessageReceived = (message) => {
-    console.log(message);
-    setSessions((sessions) => {
-      return [...sessions, ...message];
-    });
-  };
-
-  const onEnter = (name) => {
-    setState((state) => {
-      return { ...state, nameInRoom: name };
-    });
-    sendMessage("enter");
-  };
-
-  const onLeave = () => {
-    setState((state) => {
-      return { ...state, nameInRoom: "", isAfk: false };
-    });
-    setSessions([]);
-    $websocket.current.sendMessage("/session/leave", JSON.stringify({}));
-  };
-
-  /**
-   * WebSocketのメッセージを送信します。
-   */
-  const sendMessage = (messageType) => {
-    if (!isConnected) return;
-    setState((state) => {
-      const selectedTask =
-        Object.values(columns).filter((column, index) => {
-          return (
-            column.items.filter((item, index) => {
-              return item.isSelected;
-            })[0] !== undefined
-          );
-        }).length > 0
-          ? Object.values(columns)
-              .filter((column, index) => {
-                return (
-                  column.items.filter((item, index) => {
-                    return item.isSelected;
-                  })[0] !== undefined
-                );
-              })[0]
-              .items.filter((item, index) => {
-                return item.isSelected;
-              })[0]
-          : null;
-      if (messageType === "enter") {
-        $websocket.current.sendMessage(
-          "/session/findall",
-          sessionFindAllTopicsId
-        );
-      }
-      $websocket.current.sendMessage(
-        messageType !== undefined ? "/session/" + messageType : "/session",
-        JSON.stringify({
-          userName: state.nameInRoom,
-          sessionType: state.isAfk
-            ? "afk"
-            : settings.isPomodoroEnabled
-            ? state.pomodoroTimerType
-            : "normalWork",
-          content: selectedTask !== null ? selectedTask.content : "",
-          isTimerOn: state.isTimerOn,
-          startedAt: state.isTimerOn ? Date.now() : 0,
-          finishAt:
-            settings.isPomodoroEnabled && state.isTimerOn
-              ? Date.now() + state.pomodoroTimeLeft * 1000
-              : selectedTask && selectedTask.estimatedSecond > 0
-              ? Date.now() +
-                (selectedTask.estimatedSecond - selectedTask.spentSecond) * 1000
-              : 0,
-        })
-      );
-      return state;
-    });
-  };
-
   return (
     <>
       <div style={{ display: "flex" }}>
@@ -723,10 +569,9 @@ const TaskAndTimer = memo(() => {
         />
         <Room
           sessions={sessions}
-          onEnter={onEnter}
-          onLeave={onLeave}
-          isConnected={isConnected}
-          sendMessage={sendMessage}
+          onEnter={props.onEnter}
+          onLeave={props.onLeave}
+          sendMessage={props.sendMessage}
         />
       </div>
       {/* フローティングタイマー */}
@@ -767,24 +612,6 @@ const TaskAndTimer = memo(() => {
           </Typography>
         </>
       )}
-      <SockJsClient
-        url={SOCKET_URL}
-        topics={["/topic/session"]}
-        onConnect={onConnected}
-        onDisconnect={onDisconnected}
-        onMessage={(msg) => onSessionMessageReceived(msg)}
-        ref={$websocket}
-      />
-      <SockJsClient
-        url={SOCKET_URL}
-        topics={["/topic/session/leave"]}
-        onMessage={(msg) => onLeaveMessageReceived(msg)}
-      />
-      <SockJsClient
-        url={SOCKET_URL}
-        topics={["/topic/session/findall/" + sessionFindAllTopicsId]}
-        onMessage={(msg) => onFindAllMessageReceived(msg)}
-      />
     </>
   );
 });

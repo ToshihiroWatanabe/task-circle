@@ -9,7 +9,7 @@ const stoppedSound = new Audio(stoppedAudio);
 /**
  * 作業・休憩切り替えボタンの切り替えボタンのコンポーネントです。
  */
-const ToggleButton = memo(() => {
+const ToggleButton = memo((props) => {
   const [state, setState] = useContext(Context);
   const [settings] = useContext(SettingsContext);
 
@@ -32,6 +32,7 @@ const ToggleButton = memo(() => {
       }
       return { ...state };
     });
+    props.sendMessage();
   };
 
   return (

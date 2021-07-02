@@ -228,7 +228,7 @@ const TimerPopover = memo((props) => {
               分
             </Typography>
             <Typography component="div" style={{ padding: "0.5rem 0 0 1rem" }}>
-              <ToggleButton />
+              <ToggleButton sendMessage={props.sendMessage} />
             </Typography>
           </>
         )}

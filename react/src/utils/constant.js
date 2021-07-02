@@ -21,3 +21,7 @@ export const SOCKET_URL =
   process.env.NODE_ENV === "production"
     ? "/websocket"
     : "http://localhost:8160/websocket";
+/** 一度にカウントする秒数 */
+export const ONCE_COUNT = 100;
+/** カウントの間隔(ミリ秒) */
+export const COUNT_INTERVAL = 1000;
