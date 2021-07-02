@@ -108,6 +108,10 @@ const TodoList = memo((props) => {
   const [playArrowIconTooltipOpen, setPlayArrowIconTooltipOpen] =
     useState(false);
   const location = useLocation();
+  const [addListTooltipPosition, setAddListTooltipPosition] = useState({
+    x: undefined,
+    y: undefined,
+  });
 
   /**
    * ドラッグが終わったときの処理です。
@@ -661,7 +665,26 @@ const TodoList = memo((props) => {
       </DragDropContext>
       {/* ToDoリストを追加 */}
       {Object.keys(props.columns).length < 4 && (
-        <Tooltip id="addListTooltip" title="ToDoリストを追加" placement="top">
+        <Tooltip
+          title="ToDoリストを追加"
+          onMouseMove={(e) =>
+            setAddListTooltipPosition({ x: e.pageX, y: e.pageY + 10 })
+          }
+          PopperProps={{
+            anchorEl: {
+              clientHeight: 0,
+              clientWidth: 0,
+              getBoundingClientRect: () => ({
+                top: addListTooltipPosition.y,
+                left: addListTooltipPosition.x,
+                right: addListTooltipPosition.x,
+                bottom: addListTooltipPosition.y,
+                width: 0,
+                height: 0,
+              }),
+            },
+          }}
+        >
           <IconButton onClick={onAddListButtonClick}>
             <AddCircleOutlineIcon />
           </IconButton>
