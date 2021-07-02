@@ -1,3 +1,7 @@
+/** 一度にカウントする秒数 */
+export const ONCE_COUNT = 1;
+/** カウントの間隔(ミリ秒) */
+export const COUNT_INTERVAL = 1000;
 /** 1つのToDoリストまたは日報のタスクの最大数 */
 export const NUMBER_OF_TASKS_MAX = 32;
 /** カテゴリーの文字数制限 */
@@ -21,7 +25,3 @@ export const SOCKET_URL =
   process.env.NODE_ENV === "production"
     ? "/websocket"
     : "http://localhost:8160/websocket";
-/** 一度にカウントする秒数 */
-export const ONCE_COUNT = 100;
-/** カウントの間隔(ミリ秒) */
-export const COUNT_INTERVAL = 1000;
