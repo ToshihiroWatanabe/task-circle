@@ -19,7 +19,7 @@ let refreshInterval = 0;
 const useStyles = makeStyles((theme) => ({
   list: {
     overflow: "auto",
-    maxHeight: "77vh",
+    maxHeight: "calc(100vh - 10.5rem)",
   },
   inline: {
     display: "inline",

@@ -1,5 +1,5 @@
 import React, { memo, useContext } from "react";
-import { Divider, makeStyles, useTheme } from "@material-ui/core";
+import { makeStyles, useTheme } from "@material-ui/core";
 import { Card } from "@material-ui/core";
 import { Context } from "contexts/Context";
 import EnterTheRoom from "./EnterTheRoom";
