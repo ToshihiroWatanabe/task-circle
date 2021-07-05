@@ -29,6 +29,8 @@ export function SettingsContextProvider(props) {
     tickVolume: 10,
     /** 開始・停止・アラーム音量(%) */
     volume: 100,
+    /** 時間のフォーマット(クリップボードへのコピー時) */
+    timeFormatToClipboard: "HH:MM:SS",
   });
 
   return (
