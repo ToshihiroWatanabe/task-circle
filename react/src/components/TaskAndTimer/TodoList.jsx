@@ -365,21 +365,6 @@ const TodoList = memo((props) => {
                       <Typography>{column.name}</Typography>
                     </div>
                     <Tooltip
-                      title={column.name + "から日報を作成"}
-                      placement="top"
-                    >
-                      <IconButton
-                        disabled={state.isTimerOn}
-                        size="small"
-                        color="inherit"
-                        onClick={() => {
-                          onCreateReportButtonClick(columnIndex);
-                        }}
-                      >
-                        <NoteAddOutlinedIcon />
-                      </IconButton>
-                    </Tooltip>
-                    <Tooltip
                       title="タスクをクリップボードにコピー"
                       placement="top"
                     >

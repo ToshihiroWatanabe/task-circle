@@ -2,14 +2,11 @@ import React, { useContext, useEffect, useRef } from "react";
 import { Switch, Route, useLocation } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
 import ResponsiveDrawer from "components/header/ResponsiveDrawer";
-import ReportAnalytics from "components/ReportAnalytics";
 import Settings from "components/Settings";
 import Login from "components/Login";
 import Signup from "components/Signup";
 import { Context } from "contexts/Context";
-import Portfolio from "components/Portfolio";
 import About from "components/About";
-import Reports from "components/reports/Reports";
 import TaskAndTimer from "components/TaskAndTimer/TaskAndTimer";
 import { SettingsContext } from "contexts/SettingsContext";
 import { StatisticsContext } from "contexts/StatisticsContext";
@@ -292,14 +289,6 @@ const App = () => {
           />
         </div>
         <Switch>
-          {/* 日報管理 */}
-          <Route exact path="/reports">
-            <Reports />
-          </Route>
-          {/* 分析レポート */}
-          <Route exact path="/analytics">
-            <ReportAnalytics reports={state.reports} />
-          </Route>
           {/* 設定 */}
           <Route exact path="/settings">
             <Settings />
