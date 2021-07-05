@@ -66,7 +66,7 @@ const TodoListMenu = memo((props) => {
       localStorage.setItem("columns", JSON.stringify(newColumns));
       return newColumns;
     });
-    props.setUndoSnackbarMessage("経過時間をリセットしました");
+    props.setUndoSnackbarMessage("時間をリセットしました");
     props.setUndoSnackbarOpen(true);
     setAnchorEl(null);
   };
@@ -106,6 +106,7 @@ const TodoListMenu = memo((props) => {
         open={Boolean(anchorEl)}
         onClose={handleClose}
         className={classes.menu}
+        style={{ fontSize: "0.7rem" }}
       >
         <MenuItem onClick={handleEdit} disabled={state.isTimerOn}>
           <EditIcon />
@@ -118,16 +119,8 @@ const TodoListMenu = memo((props) => {
             Object.values(props.columns)[props.index].items.length === 0
           }
         >
-          <Box
-            style={{
-              fontSize: "0.8rem",
-              display: "flex",
-              alignItems: "center",
-            }}
-          >
-            <RotateLeftIcon />
-            全ての時間をリセット
-          </Box>
+          <RotateLeftIcon />
+          時間をリセット
         </MenuItem>
         <MenuItem
           style={{ color: "red" }}
