@@ -19,8 +19,6 @@ import {
   Button,
 } from "@material-ui/core";
 import MenuIcon from "@material-ui/icons/Menu";
-import DescriptionIcon from "@material-ui/icons/Description";
-import AssessmentIcon from "@material-ui/icons/Assessment";
 import HomeIcon from "@material-ui/icons/Home";
 import InfoIcon from "@material-ui/icons/Info";
 import SettingsIcon from "@material-ui/icons/Settings";
@@ -28,12 +26,9 @@ import FilePopover from "components/header/FilePopover";
 import AccountPopover from "components/header/AccountPopover";
 import TimerPopover from "./TimerPopover";
 import { DRAWER_WIDTH } from "utils/constant";
-import AnalyticsFilePopover from "components/AnalyticsFilePopover";
 
 const pages = [
   { label: "ホーム", path: "/" },
-  // { label: "日報管理", path: "/reports" },
-  // { label: "分析レポート", path: "/analytics" },
   { label: "設定", path: "/settings" },
   { label: "このアプリについて", path: "/about" },
 ];

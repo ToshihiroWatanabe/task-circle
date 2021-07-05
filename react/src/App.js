@@ -2,14 +2,11 @@ import React, { useContext, useEffect, useRef } from "react";
 import { Switch, Route, useLocation } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
 import ResponsiveDrawer from "components/header/ResponsiveDrawer";
-import ReportAnalytics from "components/ReportAnalytics";
 import Settings from "components/Settings";
 import Login from "components/Login";
 import Signup from "components/Signup";
 import { Context } from "contexts/Context";
-import Portfolio from "components/Portfolio";
 import About from "components/About";
-import Reports from "components/reports/Reports";
 import TaskAndTimer from "components/TaskAndTimer/TaskAndTimer";
 import { SettingsContext } from "contexts/SettingsContext";
 import { StatisticsContext } from "contexts/StatisticsContext";
@@ -276,71 +273,58 @@ const App = () => {
 
   return (
     <>
-      {window.location.href.match(/.*\/portfolio\/.*/) && <Portfolio />}
-      {!window.location.href.match(/.*\/portfolio\/.*/) && (
-        <>
-          {/* ドロワー */}
-          <ResponsiveDrawer sendMessage={sendMessage} />
-          <main className={classes.main}>
-            {/* タスク＆タイマー */}
-            <div
-              style={{
-                display: location.pathname === "/" ? "" : "none",
-              }}
-            >
-              <TaskAndTimer
-                sendMessage={sendMessage}
-                onEnter={onEnter}
-                onLeave={onLeave}
-              />
-            </div>
-            <Switch>
-              {/* 日報管理 */}
-              <Route exact path="/reports">
-                <Reports />
-              </Route>
-              {/* 分析レポート */}
-              <Route exact path="/analytics">
-                <ReportAnalytics reports={state.reports} />
-              </Route>
-              {/* 設定 */}
-              <Route exact path="/settings">
-                <Settings />
-              </Route>
-              {/* について */}
-              <Route exact path="/about">
-                <About />
-              </Route>
-              {/* ログイン */}
-              <Route exact path="/login">
-                <Login />
-              </Route>
-              {/* 新規登録 */}
-              <Route exact path="/signup">
-                <Signup />
-              </Route>
-            </Switch>
-          </main>
-          <SockJsClient
-            url={SOCKET_URL}
-            topics={["/topic/session"]}
-            onConnect={onConnected}
-            onDisconnect={onDisconnected}
-            onMessage={(msg) => onSessionMessageReceived(msg)}
-            ref={$websocket}
+      {/* ドロワー */}
+      <ResponsiveDrawer sendMessage={sendMessage} />
+      <main className={classes.main}>
+        {/* タスク＆タイマー */}
+        <div
+          style={{
+            display: location.pathname === "/" ? "" : "none",
+          }}
+        >
+          <TaskAndTimer
+            sendMessage={sendMessage}
+            onEnter={onEnter}
+            onLeave={onLeave}
           />
-          <SockJsClient
-            url={SOCKET_URL}
-            topics={["/topic/session/leave"]}
-            onMessage={(msg) => onLeaveMessageReceived(msg)}
-          />
-          <SockJsClient
-            url={SOCKET_URL}
-            topics={["/topic/session/findall/" + sessionFindAllTopicsId]}
-            onMessage={(msg) => onFindAllMessageReceived(msg)}
-          />
-        </>
-      )}
+        </div>
+        <Switch>
+          {/* 設定 */}
+          <Route exact path="/settings">
+            <Settings />
+          </Route>
+          {/* について */}
+          <Route exact path="/about">
+            <About />
+          </Route>
+          {/* ログイン */}
+          <Route exact path="/login">
+            <Login />
+          </Route>
+          {/* 新規登録 */}
+          <Route exact path="/signup">
+            <Signup />
+          </Route>
+        </Switch>
+      </main>
+      <SockJsClient
+        url={SOCKET_URL}
+        topics={["/topic/session"]}
+        onConnect={onConnected}
+        onDisconnect={onDisconnected}
+        onMessage={(msg) => onSessionMessageReceived(msg)}
+        ref={$websocket}
+      />
+      <SockJsClient
+        url={SOCKET_URL}
+        topics={["/topic/session/leave"]}
+        onMessage={(msg) => onLeaveMessageReceived(msg)}
+      />
+      <SockJsClient
+        url={SOCKET_URL}
+        topics={["/topic/session/findall/" + sessionFindAllTopicsId]}
+        onMessage={(msg) => onFindAllMessageReceived(msg)}
+      />
     </>
   );
 };

@@ -1,5 +1,5 @@
 import React, { memo, useContext, useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
 import {
   Chip,
@@ -8,11 +8,9 @@ import {
   Card,
   Tooltip,
   Typography,
-  Divider,
   Snackbar,
   Button,
   useTheme,
-  Box,
 } from "@material-ui/core";
 import uuid from "uuid/v4";
 import PlayArrowIcon from "@material-ui/icons/PlayArrow";
@@ -20,14 +18,13 @@ import LinearDeterminate from "components/TaskAndTimer/LinearDeterminate";
 import "components/TaskAndTimer/TodoList.css";
 import { Context } from "contexts/Context";
 import StopIcon from "@material-ui/icons/Stop";
-import { secondToHHMMSS, taskItemsToReport } from "utils/convert";
+import { secondToHHMMSS } from "utils/convert";
 import TaskMenu from "./TaskMenu";
 import ColumnMenu from "./TodoListMenu";
 import TagsInput from "./TagsInput";
 import CloseIcon from "@material-ui/icons/Close";
 import AssignmentOutlinedIcon from "@material-ui/icons/AssignmentOutlined";
-import { copyTasksToClipboard } from "utils/export";
-import NoteAddOutlinedIcon from "@material-ui/icons/NoteAddOutlined";
+import { copyTasksToClipboard, copyTasksToClipboard_ja } from "utils/export";
 import AlarmIcon from "@material-ui/icons/Alarm";
 import FreeBreakfastOutlinedIcon from "@material-ui/icons/FreeBreakfastOutlined";
 import { SettingsContext } from "contexts/SettingsContext";
@@ -36,30 +33,6 @@ import { NUMBER_OF_TASKS_MAX } from "utils/constant";
 
 /** タイマー再生ボタンにカーソルが合っているかどうか */
 let isPlayButtonFocused = false;
-
-/** 最後にマウスが動いた時刻 */
-let lastMouseMoved = Date.now();
-let playArrowIconTooltipOpenTimeout = null;
-
-/** Bootstrap風ツールチップのスタイル */
-const useStylesBootstrap = makeStyles((theme) => ({
-  arrow: {
-    color: theme.palette.common.black,
-  },
-  tooltip: {
-    backgroundColor: theme.palette.common.black,
-    top: "-1rem",
-  },
-}));
-
-/**
- * Bootstrap風ツールチップのコンポーネントです。
- */
-function BootstrapTooltip(props) {
-  const classes = useStylesBootstrap();
-
-  return <Tooltip arrow classes={classes} {...props} />;
-}
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -106,9 +79,6 @@ const TodoList = memo((props) => {
   const [undoSnackbarMessage, setUndoSnackbarMessage] = useState("");
   const [simpleSnackbarOpen, setSimpleSnackbarOpen] = useState(false);
   const [simpleSnackbarMessage, setSimpleSnackbarMessage] = useState("");
-  const [playArrowIconTooltipOpen, setPlayArrowIconTooltipOpen] =
-    useState(false);
-  const location = useLocation();
   const [addListTooltipPosition, setAddListTooltipPosition] = useState({
     x: undefined,
     y: undefined,
@@ -173,55 +143,6 @@ const TodoList = memo((props) => {
   };
 
   /**
-   * 再生アイコンのツールチップを扱います。
-   */
-  const handlePlayArrowIconTooltip = () => {
-    if (
-      location.pathname === "/" &&
-      !state.isTimerOn &&
-      Date.now() - lastMouseMoved > 4000
-    ) {
-      setPlayArrowIconTooltipOpen(true);
-    } else {
-      setTimeout(handlePlayArrowIconTooltip, 5000);
-    }
-  };
-
-  // マウスが動いたとき
-  window.addEventListener("mousemove", (e) => {
-    handleOperation();
-  });
-
-  // タッチされたとき
-  window.addEventListener("touchstart", () => {
-    handleOperation();
-  });
-
-  // キーが押されたとき
-  window.addEventListener("keypress", () => {
-    handleOperation();
-  });
-
-  /**
-   * 操作されたときの処理です。
-   */
-  const handleOperation = () => {
-    lastMouseMoved = Date.now();
-    if (isPlayButtonFocused) {
-      if (!playArrowIconTooltipOpen) {
-        setPlayArrowIconTooltipOpen(true);
-      }
-    } else {
-      setPlayArrowIconTooltipOpen(false);
-      clearTimeout(playArrowIconTooltipOpenTimeout);
-      playArrowIconTooltipOpenTimeout = setTimeout(
-        handlePlayArrowIconTooltip,
-        5000
-      );
-    }
-  };
-
-  /**
    * タスクがクリックされたときの処理です。
    */
   const onItemClick = (event, columnIndex, taskIndex) => {
@@ -282,21 +203,18 @@ const TodoList = memo((props) => {
    * クリップボードボタンがクリックされたときの処理です。
    */
   const onClipboardButtonClick = (index) => {
-    if (copyTasksToClipboard(Object.values(props.columns)[index].items)) {
+    if (
+      settings.timeFormatToClipboard === "HH時間MM分SS秒" &&
+      copyTasksToClipboard_ja(Object.values(props.columns)[index].items)
+    ) {
+      setSimpleSnackbarMessage("タスクをコピーしました！");
+      setSimpleSnackbarOpen(true);
+    } else if (
+      copyTasksToClipboard(Object.values(props.columns)[index].items)
+    ) {
       setSimpleSnackbarMessage("タスクをコピーしました！");
       setSimpleSnackbarOpen(true);
     }
-  };
-
-  /**
-   * タスクから日報を作成するボタンがクリックされたときの処理です。
-   */
-  const onCreateReportButtonClick = (index) => {
-    const report = taskItemsToReport(Object.values(props.columns)[index].items);
-    setState({ ...state, waitingReport: report });
-    setTimeout(() => {
-      document.getElementById("linkToReports").click();
-    }, 1);
   };
 
   /**
@@ -364,21 +282,6 @@ const TodoList = memo((props) => {
                     <div style={{ flexGrow: "1", marginLeft: "0.5rem" }}>
                       <Typography>{column.name}</Typography>
                     </div>
-                    <Tooltip
-                      title={column.name + "から日報を作成"}
-                      placement="top"
-                    >
-                      <IconButton
-                        disabled={state.isTimerOn}
-                        size="small"
-                        color="inherit"
-                        onClick={() => {
-                          onCreateReportButtonClick(columnIndex);
-                        }}
-                      >
-                        <NoteAddOutlinedIcon />
-                      </IconButton>
-                    </Tooltip>
                     <Tooltip
                       title="タスクをクリップボードにコピー"
                       placement="top"

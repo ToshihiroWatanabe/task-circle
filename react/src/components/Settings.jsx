@@ -11,10 +11,8 @@ import {
   FormGroup,
   FormHelperText,
   CircularProgress,
-  Icon,
+  Select,
 } from "@material-ui/core";
-import { Context } from "contexts/Context";
-import SyncIcon from "@material-ui/icons/Sync";
 import SimpleSnackbar from "components/SimpleSnackbar";
 import MusicVideoIcon from "@material-ui/icons/MusicVideo";
 import YouTube from "react-youtube";
@@ -23,7 +21,7 @@ import VolumeSlider from "./VolumeSlider";
 import YouTubeIcon from "@material-ui/icons/YouTube";
 import NotificationsNoneOutlinedIcon from "@material-ui/icons/NotificationsNoneOutlined";
 import AddAlertIcon from "@material-ui/icons/AddAlert";
-import slackMark from "image/slackMark.svg";
+import ImportExportIcon from "@material-ui/icons/ImportExport";
 
 /** YouTube動画再生オプション */
 const playerOptions = {
@@ -82,13 +80,7 @@ const useStyles = makeStyles((theme) => ({
  */
 const Settings = () => {
   const classes = useStyles();
-  const [state, setState] = useContext(Context);
   const [settings, setSettings] = useContext(SettingsContext);
-  const [slackUserName, setSlackUserName] = useState(state.slackUserName);
-  const [slackWebhookUrl, setSlackWebhookUrl] = useState(state.slackWebhookUrl);
-  const [settingDisabled, setSettingDisabled] = useState(
-    state.userId === "" ? false : true
-  );
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [workVideoTitle, setWorkVideoTitle] = useState("");
   const [breakVideoTitle, setBreakVideoTitle] = useState("");
@@ -96,21 +88,6 @@ const Settings = () => {
   const [renderBreakVideo, setRenderBreakVideo] = useState(true);
 
   useEffect(() => {}, []);
-
-  const onSlackUserNameChange = (event) => {
-    setSlackUserName(event.target.value);
-  };
-  const onSlackWebhookUrlChange = (event) => {
-    setSlackWebhookUrl(event.target.value);
-  };
-  const onApplyButtonClick = (event) => {
-    event.preventDefault();
-    setState({
-      ...state,
-      slackUserName: slackUserName,
-      slackWebhookUrl: slackWebhookUrl,
-    });
-  };
 
   /**
    * 設定に変化があったときの処理です。
@@ -164,6 +141,19 @@ const Settings = () => {
         body: "アプリを使っていただき、ありがとうございます！",
       };
       new Notification("通知はオンです", options);
+    });
+  };
+
+  /**
+   * 時間のフォーマット(クリップボードへのコピー時)が変更されたときの処理です。
+   * @param {*} event
+   */
+  const onTimeFormatToClipboardChange = (event) => {
+    console.log(event.target.value);
+    setSettings((settings) => {
+      settings = { ...settings, timeFormatToClipboard: event.target.value };
+      localStorage.setItem("settings", JSON.stringify(settings));
+      return settings;
     });
   };
 
@@ -334,62 +324,29 @@ const Settings = () => {
           デスクトップ通知をオンにする
         </Button>
       </Card>
-      {/* Slack連携設定 */}
-      {/* <Card
-        style={{
-          width: "calc(100% - 2rem)",
-          padding: "1rem",
-          // marginLeft: "1rem",
-          marginBottom: "1rem",
-        }}
-      >
+      {/* 出力設定 */}
+      <Card className={classes.card}>
         <Typography>
-          <Icon>
-            <img alt="slack" src={slackMark} className={classes.imageIcon} />
-          </Icon>
-          Slack連携設定
+          <ImportExportIcon className={classes.iconMarginBottom} />
+          出力設定
         </Typography>
-        {state.userId === "" && (
-          <FormHelperText>
-            ログインしていない場合、この設定はページをリロードするとリセットされます。
-          </FormHelperText>
-        )}
-        <form autoComplete="on">
-          <TextField
-            label="ユーザー名(任意)"
-            name="slackUserName"
-            variant="outlined"
-            size="small"
-            defaultValue={state.slackUserName}
-            onChange={onSlackUserNameChange}
-            className={classes.slackTextField}
-            disabled={settingDisabled}
-            style={{ width: "16rem" }}
-          />
-          <TextField
-            label="Slack Webhook URL"
-            name="slackWebhookUrl"
-            variant="outlined"
-            size="small"
-            fullWidth
-            defaultValue={state.slackWebhookUrl}
-            onChange={onSlackWebhookUrlChange}
-            className={classes.slackTextField}
-            disabled={settingDisabled}
-          />
-          <Box mt={1} />
-          <Button
-            type="submit"
-            variant="contained"
-            color="secondary"
-            onClick={onApplyButtonClick}
-            disabled={settingDisabled}
-          >
-            <SyncIcon />
-            適用する
-          </Button>
-        </form>
-      </Card> */}
+        <Box mt={1} />
+        <Typography>
+          時間のフォーマット
+          <span style={{ fontSize: "0.6rem" }}>
+            (クリップボードへのコピー時)
+          </span>
+        </Typography>
+        <Select
+          native
+          style={{ width: "16rem" }}
+          value={settings.timeFormatToClipboard}
+          onChange={onTimeFormatToClipboardChange}
+        >
+          <option value={"HH:MM:SS"}>HH:MM:SS</option>
+          <option value={"HH時間MM分SS秒"}>HH時間MM分SS秒</option>
+        </Select>
+      </Card>
       <SimpleSnackbar
         open={snackbarOpen}
         setOpen={setSnackbarOpen}

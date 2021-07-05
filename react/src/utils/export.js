@@ -1,6 +1,8 @@
-import { secondToHHMMSS } from "utils/convert";
+import { secondToHHMMSS, secondToHHMMSS_ja } from "utils/convert";
 
-/** タスクをクリップボードにコピーします。 */
+/**
+ * タスクをHH:MM:SS形式でクリップボードにコピーします。
+ */
 export const copyTasksToClipboard = (items) => {
   let text = "";
   let totalSecond = 0;
@@ -19,6 +21,38 @@ export const copyTasksToClipboard = (items) => {
     totalSecond += item.spentSecond;
   });
   text += "計 " + secondToHHMMSS(totalSecond);
+  // 一時的に要素を追加
+  let textArea = document.createElement("textarea");
+  textArea.innerHTML = text;
+  textArea.id = "copyArea";
+  document.getElementById("app").appendChild(textArea);
+  textArea.select(document.getElementById("copyArea"));
+  document.execCommand("Copy");
+  document.getElementById("copyArea").remove();
+  return true;
+};
+
+/**
+ * タスクをHH時間MM分SS秒形式でクリップボードにコピーします。
+ */
+export const copyTasksToClipboard_ja = (items) => {
+  let text = "";
+  let totalSecond = 0;
+  items.forEach((item) => {
+    if (item.category !== "") {
+      text += "《" + item.category + "》";
+    }
+    text += item.content;
+    text += "\r\n";
+    text += secondToHHMMSS_ja(item.spentSecond);
+    if (item.estimatedSecond !== 0) {
+      text += " / " + secondToHHMMSS_ja(item.estimatedSecond);
+    }
+    text += "\r\n";
+    text += "\r\n";
+    totalSecond += item.spentSecond;
+  });
+  text += "計 " + secondToHHMMSS_ja(totalSecond);
   // 一時的に要素を追加
   let textArea = document.createElement("textarea");
   textArea.innerHTML = text;

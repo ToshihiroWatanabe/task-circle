@@ -504,33 +504,35 @@ const TaskAndTimer = memo((props) => {
       // 日付変更時刻は午前4時
       // 最終更新がない、初めての更新の場合
       setStatistics((statistics) => {
-        if (statistics.updatedAt === 0) {
-          statistics.todaySpentSecond += ONCE_COUNT * count;
-        } else {
-          const updatedAt = new Date(statistics.updatedAt);
-          const now = new Date();
-          // 0時～3時台の場合は前日扱いにする
-          if (updatedAt.getHours < 4) {
-            updatedAt.setDate(updatedAt.getDate - 1);
-          }
-          if (now.getHours < 4) {
-            now.setDate(now.getDate - 1);
-          }
-          // 1日経っていない場合
-          if (now.getDate() - updatedAt.getDate() < 1) {
+        if (state.pomodoroTimerType !== "break") {
+          if (statistics.updatedAt === 0) {
             statistics.todaySpentSecond += ONCE_COUNT * count;
-          } else if (now.getDate() - updatedAt.getDate() === 1) {
-            // 1日経っていた場合
-            statistics.yesterdaySpentSecond = statistics.todaySpentSecond;
-            statistics.todaySpentSecond = ONCE_COUNT * count;
-          } else if (now.getDate() - updatedAt.getDate() > 1) {
-            // 2日以上経っていた場合
-            statistics.yesterdaySpentSecond = 0;
-            statistics.todaySpentSecond = ONCE_COUNT * count;
+          } else {
+            const updatedAt = new Date(statistics.updatedAt);
+            const now = new Date();
+            // 0時～3時台の場合は前日扱いにする
+            if (updatedAt.getHours < 4) {
+              updatedAt.setDate(updatedAt.getDate - 1);
+            }
+            if (now.getHours < 4) {
+              now.setDate(now.getDate - 1);
+            }
+            // 1日経っていない場合
+            if (now.getDate() - updatedAt.getDate() < 1) {
+              statistics.todaySpentSecond += ONCE_COUNT * count;
+            } else if (now.getDate() - updatedAt.getDate() === 1) {
+              // 1日経っていた場合
+              statistics.yesterdaySpentSecond = statistics.todaySpentSecond;
+              statistics.todaySpentSecond = ONCE_COUNT * count;
+            } else if (now.getDate() - updatedAt.getDate() > 1) {
+              // 2日以上経っていた場合
+              statistics.yesterdaySpentSecond = 0;
+              statistics.todaySpentSecond = ONCE_COUNT * count;
+            }
           }
+          statistics.updatedAt = Date.now();
+          localStorage.setItem("statistics", JSON.stringify(statistics));
         }
-        statistics.updatedAt = Date.now();
-        localStorage.setItem("statistics", JSON.stringify(statistics));
         return { ...statistics };
       });
     }, 3);

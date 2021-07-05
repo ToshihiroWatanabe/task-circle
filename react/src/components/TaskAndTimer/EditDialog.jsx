@@ -106,7 +106,7 @@ const EditDialog = memo((props) => {
    */
   const handleAccept = () => {
     props.setColumns((columns) => {
-      return {
+      const newColumns = {
         ...columns,
         [Object.keys(columns)[props.columnIndex]]: {
           ...Object.values(columns)[props.columnIndex],
@@ -123,6 +123,8 @@ const EditDialog = memo((props) => {
           ),
         },
       };
+      localStorage.setItem("columns", JSON.stringify(newColumns));
+      return newColumns;
     });
     props.setOpen(false);
   };
