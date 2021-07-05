@@ -24,15 +24,16 @@ import ColumnMenu from "./TodoListMenu";
 import TagsInput from "./TagsInput";
 import CloseIcon from "@material-ui/icons/Close";
 import AssignmentOutlinedIcon from "@material-ui/icons/AssignmentOutlined";
-import { copyTasksToClipboard, copyTasksToClipboard_ja } from "utils/export";
+import {
+  copyTasksToClipboard,
+  copyTasksToClipboard_BuildUp,
+  copyTasksToClipboard_ja,
+} from "utils/export";
 import AlarmIcon from "@material-ui/icons/Alarm";
 import FreeBreakfastOutlinedIcon from "@material-ui/icons/FreeBreakfastOutlined";
 import { SettingsContext } from "contexts/SettingsContext";
 import AddCircleOutlineIcon from "@material-ui/icons/AddCircleOutline";
 import { NUMBER_OF_TASKS_MAX } from "utils/constant";
-
-/** タイマー再生ボタンにカーソルが合っているかどうか */
-let isPlayButtonFocused = false;
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -210,6 +211,12 @@ const TodoList = memo((props) => {
       setSimpleSnackbarMessage("タスクをコピーしました！");
       setSimpleSnackbarOpen(true);
     } else if (
+      settings.timeFormatToClipboard === "BuildUp" &&
+      copyTasksToClipboard_BuildUp(Object.values(props.columns)[index].items)
+    ) {
+      setSimpleSnackbarMessage("タスクをコピーしました！");
+      setSimpleSnackbarOpen(true);
+    } else if (
       copyTasksToClipboard(Object.values(props.columns)[index].items)
     ) {
       setSimpleSnackbarMessage("タスクをコピーしました！");
@@ -369,17 +376,6 @@ const TodoList = memo((props) => {
                                     }
                                   >
                                     <div style={{ display: "flex" }}>
-                                      {/* <BootstrapTooltip
-                                        title="タイマーを開始"
-                                        open={
-                                          location.pathname === "/" &&
-                                          playArrowIconTooltipOpen &&
-                                          !state.isTimerOn &&
-                                          item.isSelected &&
-                                          (item.spentSecond === 0 ||
-                                            isPlayButtonFocused)
-                                        }
-                                      > */}
                                       <IconButton
                                         size="small"
                                         color="inherit"
@@ -393,12 +389,6 @@ const TodoList = memo((props) => {
                                         onClick={() =>
                                           props.onPlayButtonClick("task")
                                         }
-                                        onMouseEnter={(e) => {
-                                          isPlayButtonFocused = true;
-                                        }}
-                                        onMouseLeave={(e) => {
-                                          isPlayButtonFocused = false;
-                                        }}
                                       >
                                         {/* タイマーがオフのときは再生アイコン */}
                                         {!state.isTimerOn && <PlayArrowIcon />}

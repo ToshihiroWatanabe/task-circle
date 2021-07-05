@@ -345,6 +345,7 @@ const Settings = () => {
         >
           <option value={"HH:MM:SS"}>HH:MM:SS</option>
           <option value={"HH時間MM分SS秒"}>HH時間MM分SS秒</option>
+          <option value={"BuildUp"}>BuildUp</option>
         </Select>
       </Card>
       <SimpleSnackbar
