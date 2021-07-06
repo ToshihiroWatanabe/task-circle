@@ -3,6 +3,10 @@ import { makeStyles, useTheme } from "@material-ui/core/styles";
 import { Button, TextField, Tooltip } from "@material-ui/core";
 import { Context } from "contexts/Context";
 
+const localStorageGetItemNameInRoom = localStorage.getItem("nameInRoom")
+  ? localStorage.getItem("nameInRoom")
+  : "";
+
 /** 使用できない名前 */
 const NG_NAMES = [
   "You",
@@ -49,6 +53,7 @@ const EnterTheRoom = memo((props) => {
   const classes = useStyles();
   const theme = useTheme();
   const [state, setState] = useContext(Context);
+  const [nameInRoom, setNameInRoom] = useState(localStorageGetItemNameInRoom);
   const [helperText, setHelperText] = useState("");
 
   /**
@@ -56,9 +61,7 @@ const EnterTheRoom = memo((props) => {
    * @param {*} event
    */
   const onTextFieldChange = (event) => {
-    setState((state) => {
-      return { ...state, nameInRoom: event.target.value };
-    });
+    setNameInRoom(event.target.value);
     setHelperText("");
   };
 
@@ -77,21 +80,14 @@ const EnterTheRoom = memo((props) => {
    */
   const onEnterButtonClick = (event) => {
     event.preventDefault();
-    if (validate(state.nameInRoom)) {
+    if (validate(nameInRoom)) {
       // 入室
       setState((state) => {
         const newState = {
           ...state,
-          nameInRoom: state.nameInRoom.trim(),
           isInRoom: true,
         };
-        localStorage.setItem(
-          "state",
-          JSON.stringify({
-            nameInRoom: newState.nameInRoom,
-            isInRoom: newState.isInRoom,
-          })
-        );
+        localStorage.setItem("nameInRoom", nameInRoom);
         return newState;
       });
       props.onEnter();
@@ -122,7 +118,7 @@ const EnterTheRoom = memo((props) => {
           label="名前"
           id="nameInRoom"
           name="nameInRoom"
-          value={state.nameInRoom}
+          value={nameInRoom}
           variant="outlined"
           margin="dense"
           onChange={onTextFieldChange}
