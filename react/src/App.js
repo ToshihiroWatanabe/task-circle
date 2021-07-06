@@ -151,7 +151,7 @@ const App = () => {
    */
   const onLeave = () => {
     setState((state) => {
-      return { ...state, nameInRoom: "", isAfk: false };
+      return { ...state, isAfk: false };
     });
     setSessions([]);
     $websocket.current.sendMessage("/session/leave", JSON.stringify({}));

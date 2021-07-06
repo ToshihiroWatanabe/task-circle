@@ -49,7 +49,6 @@ const EnterTheRoom = memo((props) => {
   const classes = useStyles();
   const theme = useTheme();
   const [state, setState] = useContext(Context);
-  const [nameInput, setNameInput] = useState("");
   const [helperText, setHelperText] = useState("");
 
   /**
@@ -57,7 +56,9 @@ const EnterTheRoom = memo((props) => {
    * @param {*} event
    */
   const onTextFieldChange = (event) => {
-    setNameInput(event.target.value);
+    setState((state) => {
+      return { ...state, nameInRoom: event.target.value };
+    });
     setHelperText("");
   };
 
@@ -76,12 +77,12 @@ const EnterTheRoom = memo((props) => {
    */
   const onEnterButtonClick = (event) => {
     event.preventDefault();
-    if (validate(nameInput)) {
+    if (validate(state.nameInRoom)) {
       // 入室
       setState((state) => {
         const newState = {
           ...state,
-          nameInRoom: nameInput.trim(),
+          nameInRoom: state.nameInRoom.trim(),
           isInRoom: true,
         };
         localStorage.setItem(
@@ -121,7 +122,7 @@ const EnterTheRoom = memo((props) => {
           label="名前"
           id="nameInRoom"
           name="nameInRoom"
-          defaultValue=""
+          value={state.nameInRoom}
           variant="outlined"
           margin="dense"
           onChange={onTextFieldChange}
