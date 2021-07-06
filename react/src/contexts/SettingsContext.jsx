@@ -31,6 +31,10 @@ export function SettingsContextProvider(props) {
     volume: 100,
     /** 時間のフォーマット(クリップボードへのコピー時) */
     timeFormatToClipboard: "HH:MM:SS",
+    /** ツイートボタンが有効かどうか */
+    isTweetButtonEnabled: false,
+    /** ツイート時の定型文 */
+    tweetTemplate: "#TaskCircle",
   });
 
   return (

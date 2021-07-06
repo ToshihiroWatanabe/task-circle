@@ -159,7 +159,7 @@ const TaskMenu = memo((props) => {
       >
         <MenuItem onClick={handleEdit}>
           <EditIcon />
-          編集
+          タスクを編集
         </MenuItem>
         <MenuItem
           onClick={handleReset}
@@ -183,7 +183,7 @@ const TaskMenu = memo((props) => {
           }
         >
           <DeleteIcon />
-          削除
+          タスクを削除
         </MenuItem>
       </Menu>
       <EditDialog

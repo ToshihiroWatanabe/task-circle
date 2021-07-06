@@ -12,6 +12,7 @@ import {
   FormHelperText,
   CircularProgress,
   Select,
+  Switch,
 } from "@material-ui/core";
 import SimpleSnackbar from "components/SimpleSnackbar";
 import MusicVideoIcon from "@material-ui/icons/MusicVideo";
@@ -22,6 +23,8 @@ import YouTubeIcon from "@material-ui/icons/YouTube";
 import NotificationsNoneOutlinedIcon from "@material-ui/icons/NotificationsNoneOutlined";
 import AddAlertIcon from "@material-ui/icons/AddAlert";
 import ImportExportIcon from "@material-ui/icons/ImportExport";
+import ShareIcon from "@material-ui/icons/Share";
+import TwitterIcon from "@material-ui/icons/Twitter";
 
 /** YouTube動画再生オプション */
 const playerOptions = {
@@ -149,9 +152,32 @@ const Settings = () => {
    * @param {*} event
    */
   const onTimeFormatToClipboardChange = (event) => {
-    console.log(event.target.value);
     setSettings((settings) => {
       settings = { ...settings, timeFormatToClipboard: event.target.value };
+      localStorage.setItem("settings", JSON.stringify(settings));
+      return settings;
+    });
+  };
+
+  /**
+   * ツイートボタンのオンオフが変更されたときの処理です。
+   * @param {*} evnet
+   */
+  const onTweetButtonEnabledChange = (event) => {
+    setSettings((settings) => {
+      settings = { ...settings, isTweetButtonEnabled: event.target.checked };
+      localStorage.setItem("settings", JSON.stringify(settings));
+      return settings;
+    });
+  };
+
+  /**
+   * ツイート時の定型文が変更されたときの処理です。
+   * @param {*} event
+   */
+  const onTweetTemplateChange = (event) => {
+    setSettings((settings) => {
+      settings = { ...settings, tweetTemplate: event.target.value };
       localStorage.setItem("settings", JSON.stringify(settings));
       return settings;
     });
@@ -345,8 +371,40 @@ const Settings = () => {
         >
           <option value={"HH:MM:SS"}>HH:MM:SS</option>
           <option value={"HH時間MM分SS秒"}>HH時間MM分SS秒</option>
+          <option value={"BuildUp"}>BuildUp</option>
         </Select>
       </Card>
+      {/* 共有設定 */}
+      <Card className={classes.card}>
+        <Typography>
+          <ShareIcon className={classes.iconMarginBottom} />
+          共有設定
+        </Typography>
+        <Box mt={1} />
+        <Typography style={{ display: "flex", alignItems: "center" }}>
+          <TwitterIcon color="primary" />
+          ツイートボタン
+          <Switch
+            checked={settings.isTweetButtonEnabled}
+            onChange={onTweetButtonEnabledChange}
+            inputProps={{
+              "aria-label": "checkbox",
+            }}
+          />
+        </Typography>
+        <TextField
+          label="定型文"
+          value={settings.tweetTemplate}
+          size="small"
+          placeholder="#TaskCircle"
+          variant="outlined"
+          multiline
+          rowsMax={4}
+          style={{ width: "16rem" }}
+          onChange={onTweetTemplateChange}
+        ></TextField>
+      </Card>
+      {/* Snackbar */}
       <SimpleSnackbar
         open={snackbarOpen}
         setOpen={setSnackbarOpen}
