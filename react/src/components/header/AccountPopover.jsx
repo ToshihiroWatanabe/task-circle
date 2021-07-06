@@ -83,20 +83,25 @@ const AccountPopover = memo((props) => {
         getContentAnchorEl={null}
         className={classes.popover}
       >
-        {statistics.updatedAt > 0 && (
-          <Tooltip
-            title={
-              "昨日の合計作業時間 " +
-              secondToHHMMSS(statistics.yesterdaySpentSecond)
-            }
-            placement="top"
-          >
-            <Typography>
-              {new Date(statistics.updatedAt).toLocaleDateString()}
-              の合計作業時間 {secondToHHMMSS(statistics.todaySpentSecond)}
-            </Typography>
-          </Tooltip>
-        )}
+        <Tooltip
+          title={
+            "昨日の合計作業時間 " +
+            (statistics.yesterdaySpentSecond > 0
+              ? secondToHHMMSS(statistics.yesterdaySpentSecond)
+              : "なし")
+          }
+          placement="top"
+        >
+          <Typography>
+            {statistics.updatedAt > 0
+              ? new Date(statistics.updatedAt).toLocaleDateString()
+              : new Date().toLocaleDateString()}
+            の合計作業時間{" "}
+            {statistics.todaySpentSecond > 0
+              ? secondToHHMMSS(statistics.todaySpentSecond)
+              : "なし"}
+          </Typography>
+        </Tooltip>
         <Box mt={"1rem"} />
         {state.userId === "" && (
           <>
