@@ -2,6 +2,7 @@ import React, { useState, memo, useContext } from "react";
 import { GoogleLogin, GoogleLogout } from "react-google-login";
 import SimpleSnackbar from "components/SimpleSnackbar";
 import { Context } from "contexts/Context";
+import "components/header/GoogleButton.css";
 
 /**
  * クライアントID
@@ -59,7 +60,7 @@ const GoogleButton = memo((props) => {
   };
 
   return (
-    <div>
+    <div id="googleButton">
       {state.isLogined ? (
         <GoogleLogout
           clientId={CLIENT_ID}
