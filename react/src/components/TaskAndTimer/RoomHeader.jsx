@@ -31,7 +31,11 @@ const RoomHeader = (props) => {
   const onExitButtonClick = () => {
     props.onLeave();
     setState((state) => {
-      return { ...state, isInRoom: false };
+      localStorage.setItem(
+        "state",
+        JSON.stringify({ isInRoom: false, nameInRoom: "" })
+      );
+      return { ...state, isInRoom: false, nameInRoom: "" };
     });
   };
 

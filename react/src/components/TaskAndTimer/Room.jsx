@@ -44,7 +44,9 @@ const Room = memo((props) => {
           />
         )}
         {/* 入室後 */}
-        {!state.isConnected && <>サーバーとの接続が切れました。</>}
+        {state.isInRoom && !state.isConnected && (
+          <>サーバーとの接続が切れました。</>
+        )}
         {state.isInRoom && <UserList sessions={props.sessions} />}
       </Card>
     </>

@@ -67,7 +67,7 @@ const EnterTheRoom = memo((props) => {
    */
   const onKeyDown = (event) => {
     if (event.keyCode === 13) {
-      onEnterButtonClick();
+      onEnterButtonClick(event);
     }
   };
 
@@ -75,12 +75,25 @@ const EnterTheRoom = memo((props) => {
    * 入室ボタンがクリックされたときの処理です。
    */
   const onEnterButtonClick = (event) => {
+    event.preventDefault();
     if (validate(nameInput)) {
       // 入室
       setState((state) => {
-        return { ...state, nameInRoom: nameInput.trim(), isInRoom: true };
+        const newState = {
+          ...state,
+          nameInRoom: nameInput.trim(),
+          isInRoom: true,
+        };
+        localStorage.setItem(
+          "state",
+          JSON.stringify({
+            nameInRoom: newState.nameInRoom,
+            isInRoom: newState.isInRoom,
+          })
+        );
+        return newState;
       });
-      props.onEnter(nameInput.trim());
+      props.onEnter();
     }
   };
 
@@ -126,7 +139,7 @@ const EnterTheRoom = memo((props) => {
               type="submit"
               variant="contained"
               color="primary"
-              onClick={onEnterButtonClick}
+              onClick={(event) => onEnterButtonClick(event)}
               disabled={!state.isConnected}
             >
               入室

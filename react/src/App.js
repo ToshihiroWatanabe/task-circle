@@ -26,10 +26,10 @@ if (
 
 const sessionFindAllTopicsId = uuid();
 
-/** ローカルストレージから日報を取得します。 */
-const localStorageGetItemReports = localStorage.getItem("reports")
-  ? JSON.parse(localStorage.getItem("reports"))
-  : [];
+/** ローカルストレージからstateを取得します。 */
+const localStorageGetItemState = localStorage.getItem("state")
+  ? JSON.parse(localStorage.getItem("state"))
+  : {};
 
 /** ローカルストレージから設定を取得します。 */
 const localStorageGetItemSettings = localStorage.getItem("settings")
@@ -92,6 +92,9 @@ const App = () => {
 
   useEffect(() => {
     // 初期値とローカルストレージからの値を統合
+    setState((state) => {
+      return { ...state, ...localStorageGetItemState };
+    });
     setColumns((columns) => {
       return { ...columns, ...localStorageGetItemColumns };
     });
@@ -104,7 +107,6 @@ const App = () => {
         setState((state) => {
           return {
             ...state,
-            reports: localStorageGetItemReports,
             pomodoroTimeLeft: newSettings.workTimerLength,
           };
         });
@@ -117,14 +119,13 @@ const App = () => {
    * WebSocketで接続されたときの処理です。
    */
   const onConnected = () => {
-    if (state.isInRoom) {
-      sendMessage("enter");
-    }
     setState((state) => {
       return { ...state, isConnected: true };
     });
-
     console.log("サーバーに接続しました。");
+    if (state.isInRoom) {
+      sendMessage("enter");
+    }
   };
 
   /**
@@ -140,12 +141,8 @@ const App = () => {
 
   /**
    * 入室時の処理です。
-   * @param {*} name
    */
-  const onEnter = (name) => {
-    setState((state) => {
-      return { ...state, nameInRoom: name };
-    });
+  const onEnter = () => {
     sendMessage("enter");
   };
 
@@ -230,7 +227,10 @@ const App = () => {
    * WebSocketのメッセージを送信します。
    */
   const sendMessage = (messageType) => {
-    if (!state.isConnected) return;
+    if (!state.isConnected && messageType !== "enter") {
+      console.error("接続されていません");
+      return;
+    }
     setState((state) => {
       const selectedTask =
         Object.values(columns).filter((column, index) => {
