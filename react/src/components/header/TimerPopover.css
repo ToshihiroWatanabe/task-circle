@@ -4,3 +4,8 @@
     height: 15.2rem;
     position: absolute !important;
 }
+
+.MuiSelect-select.MuiSelect-select {
+    padding-left: 12px;
+    padding-right: 12px !important;
+}

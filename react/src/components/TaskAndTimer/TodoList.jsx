@@ -34,6 +34,7 @@ import FreeBreakfastOutlinedIcon from "@material-ui/icons/FreeBreakfastOutlined"
 import { SettingsContext } from "contexts/SettingsContext";
 import AddCircleOutlineIcon from "@material-ui/icons/AddCircleOutline";
 import { NUMBER_OF_TASKS_MAX } from "utils/constant";
+import TwitterIcon from "@material-ui/icons/Twitter";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -289,6 +290,11 @@ const TodoList = memo((props) => {
                     <div style={{ flexGrow: "1", marginLeft: "0.5rem" }}>
                       <Typography>{column.name}</Typography>
                     </div>
+                    <Tooltip title="ツイートする" placement="top">
+                      <IconButton size="small" color="primary">
+                        <TwitterIcon />
+                      </IconButton>
+                    </Tooltip>
                     <Tooltip
                       title="タスクをクリップボードにコピー"
                       placement="top"
