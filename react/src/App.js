@@ -210,7 +210,18 @@ const App = () => {
   const onFindAllMessageReceived = (message) => {
     console.log(message);
     setSessions((sessions) => {
-      return [...sessions, ...message];
+      let newSessions = [...sessions, ...message];
+      newSessions = newSessions.map((session) => {
+        console.log(session.finishAt);
+        return {
+          ...session,
+          startedAt: (session.startedAt = new Date(
+            session.startedAt
+          ).getTime()),
+          finishAt: (session.finishAt = new Date(session.finishAt).getTime()),
+        };
+      });
+      return newSessions;
     });
   };
 
