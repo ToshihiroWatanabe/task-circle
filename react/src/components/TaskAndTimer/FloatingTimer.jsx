@@ -135,9 +135,12 @@ const FloatingTimer = memo((props) => {
             height: DEFAULT_HEIGHT,
           }}
           style={{
-            border: "solid 1px #ddd",
+            border:
+              theme.palette.type === "light"
+                ? "solid 1px #ddd"
+                : "solid 1px #111",
             borderRadius: "8px",
-            background: "#f0f0f0",
+            background: theme.palette.type === "light" ? "#f0f0f0" : "#424242",
             zIndex: "1",
           }}
         >

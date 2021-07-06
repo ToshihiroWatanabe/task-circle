@@ -80,6 +80,7 @@ const UserList = memo((props) => {
                     <Avatar
                       style={{
                         backgroundColor: getAvatarColor(session.userName),
+                        color: "white",
                       }}
                       src={session.imageUrl}
                     >

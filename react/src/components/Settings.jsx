@@ -44,7 +44,7 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: "1rem",
   },
   formLabel: {
-    color: "black",
+    color: "inherit",
   },
   formControl: {
     margin: theme.spacing(1),

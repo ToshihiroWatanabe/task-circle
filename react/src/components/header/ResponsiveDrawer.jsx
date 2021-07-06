@@ -114,8 +114,6 @@ const ResponsiveDrawer = memo((props) => {
               >
                 <ListItemIcon>
                   {page.label === "ホーム" ? <HomeIcon /> : ""}
-                  {/* {page.label === "日報管理" ? <DescriptionIcon /> : ""}
-                  {page.label === "分析レポート" ? <AssessmentIcon /> : ""} */}
                   {page.label === "設定" ? <SettingsIcon /> : ""}
                   {page.label === "このアプリについて" ? <InfoIcon /> : ""}
                 </ListItemIcon>
