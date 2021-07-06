@@ -9,6 +9,7 @@ import StopIcon from "@material-ui/icons/Stop";
 import CircularDeterminate from "./CircularDeterminate";
 import { SettingsContext } from "contexts/SettingsContext";
 import { secondToHHMMSS, secondToHHMMSS_ja } from "utils/convert";
+import { byteSlice } from "utils/string";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -180,9 +181,7 @@ const TimerFab = memo((props) => {
             {settings.isPomodoroEnabled &&
             state.pomodoroTimerType === "work" &&
             selectedTask !== null
-              ? selectedTask.content.length > 10
-                ? selectedTask.content.slice(0, 10) + "..."
-                : selectedTask.content
+              ? byteSlice(selectedTask.content, 20)
               : ""}
             {settings.isPomodoroEnabled && state.pomodoroTimerType === "break"
               ? "休憩"
@@ -199,9 +198,7 @@ const TimerFab = memo((props) => {
                 </p>
               )}
             {!settings.isPomodoroEnabled && selectedTask !== null
-              ? selectedTask.content.length > 10
-                ? selectedTask.content.slice(0, 10) + "..."
-                : selectedTask.content
+              ? byteSlice(selectedTask.content, 20)
               : ""}
           </div>
           {/* タスクが選択されていません */}
