@@ -117,9 +117,13 @@ const App = () => {
    * WebSocketで接続されたときの処理です。
    */
   const onConnected = () => {
+    if (state.isInRoom) {
+      sendMessage("enter");
+    }
     setState((state) => {
       return { ...state, isConnected: true };
     });
+
     console.log("サーバーに接続しました。");
   };
 
@@ -131,9 +135,6 @@ const App = () => {
       return { ...state, isConnected: false };
     });
     console.log("サーバーとの接続が切れました。");
-    setState((state) => {
-      return { ...state, nameInRoom: "", isAfk: false, isInRoom: false };
-    });
     setSessions([]);
   };
 
