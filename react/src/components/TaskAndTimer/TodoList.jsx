@@ -18,7 +18,7 @@ import LinearDeterminate from "components/TaskAndTimer/LinearDeterminate";
 import "components/TaskAndTimer/TodoList.css";
 import { Context } from "contexts/Context";
 import StopIcon from "@material-ui/icons/Stop";
-import { secondToHHMMSS } from "utils/convert";
+import { secondToHHMMSS, taskItemsToBuildUp } from "utils/convert";
 import TaskMenu from "./TaskMenu";
 import ColumnMenu from "./TodoListMenu";
 import TagsInput from "./TagsInput";
@@ -258,6 +258,19 @@ const TodoList = memo((props) => {
     });
   };
 
+  /**
+   * ツイートボタンがクリックされたときの処理です。
+   */
+  const onTweetButtonClick = (index) => {
+    let url =
+      "https://twitter.com/intent/tweet?text=" +
+      taskItemsToBuildUp(Object.values(props.columns)[index].items).replaceAll(
+        "\r\n",
+        "%0A"
+      );
+    window.open(url);
+  };
+
   return (
     <div className={classes.root}>
       <DragDropContext
@@ -291,7 +304,11 @@ const TodoList = memo((props) => {
                       <Typography>{column.name}</Typography>
                     </div>
                     <Tooltip title="ツイートする" placement="top">
-                      <IconButton size="small" color="primary">
+                      <IconButton
+                        size="small"
+                        color="primary"
+                        onClick={() => onTweetButtonClick(columnIndex)}
+                      >
                         <TwitterIcon />
                       </IconButton>
                     </Tooltip>

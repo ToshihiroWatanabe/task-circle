@@ -25,14 +25,7 @@ export const copyTasksToClipboard = (items) => {
     totalSecond += item.spentSecond;
   });
   text += "計 " + secondToHHMMSS(totalSecond);
-  // 一時的に要素を追加
-  let textArea = document.createElement("textarea");
-  textArea.innerHTML = text;
-  textArea.id = "copyArea";
-  document.getElementById("app").appendChild(textArea);
-  textArea.select(document.getElementById("copyArea"));
-  document.execCommand("Copy");
-  document.getElementById("copyArea").remove();
+  copyToClipboard(text);
   return true;
 };
 
@@ -53,18 +46,10 @@ export const copyTasksToClipboard_ja = (items) => {
       text += " / " + secondToHHMMSS_ja(item.estimatedSecond);
     }
     text += "\r\n";
-    text += "\r\n";
     totalSecond += item.spentSecond;
   });
   text += "計 " + secondToHHMMSS_ja(totalSecond);
-  // 一時的に要素を追加
-  let textArea = document.createElement("textarea");
-  textArea.innerHTML = text;
-  textArea.id = "copyArea";
-  document.getElementById("app").appendChild(textArea);
-  textArea.select(document.getElementById("copyArea"));
-  document.execCommand("Copy");
-  document.getElementById("copyArea").remove();
+  copyToClipboard(text);
   return true;
 };
 
@@ -97,6 +82,15 @@ export const copyTasksToClipboard_BuildUp = (items) => {
   });
   text += "\r\n";
   text += "計: " + secondToHHMM_00_ja(totalSecond);
+  copyToClipboard(text);
+  return true;
+};
+
+/**
+ * テキストをクリップボードにコピーします。
+ * @param {*} text
+ */
+const copyToClipboard = (text) => {
   // 一時的に要素を追加
   let textArea = document.createElement("textarea");
   textArea.innerHTML = text;
@@ -105,7 +99,6 @@ export const copyTasksToClipboard_BuildUp = (items) => {
   textArea.select(document.getElementById("copyArea"));
   document.execCommand("Copy");
   document.getElementById("copyArea").remove();
-  return true;
 };
 
 /**
