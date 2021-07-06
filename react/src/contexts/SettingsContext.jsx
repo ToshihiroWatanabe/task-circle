@@ -33,6 +33,8 @@ export function SettingsContextProvider(props) {
     timeFormatToClipboard: "HH:MM:SS",
     /** ツイートボタンが有効かどうか */
     isTweetButtonEnabled: false,
+    /** ツイート時の定型文 */
+    tweetTemplate: "#TaskCircle",
   });
 
   return (

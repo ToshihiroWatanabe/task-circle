@@ -171,6 +171,18 @@ const Settings = () => {
     });
   };
 
+  /**
+   * ツイート時の定型文が変更されたときの処理です。
+   * @param {*} event
+   */
+  const onTweetTemplateChange = (event) => {
+    setSettings((settings) => {
+      settings = { ...settings, tweetTemplate: event.target.value };
+      localStorage.setItem("settings", JSON.stringify(settings));
+      return settings;
+    });
+  };
+
   return (
     <>
       <Card className={classes.card}>
@@ -380,6 +392,16 @@ const Settings = () => {
             }}
           />
         </Typography>
+        <TextField
+          label="定型文"
+          value={settings.tweetTemplate}
+          placeholder="#TaskCircle"
+          variant="outlined"
+          multiline
+          rowsMax={4}
+          style={{ width: "16rem" }}
+          onChange={onTweetTemplateChange}
+        ></TextField>
       </Card>
       {/* Snackbar */}
       <SimpleSnackbar

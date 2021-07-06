@@ -262,12 +262,15 @@ const TodoList = memo((props) => {
    * ツイートボタンがクリックされたときの処理です。
    */
   const onTweetButtonClick = (index) => {
+    console.log(settings.tweetTemplate);
     let url =
       "https://twitter.com/intent/tweet?text=" +
       taskItemsToBuildUp(Object.values(props.columns)[index].items).replaceAll(
         "\r\n",
         "%0A"
-      );
+      ) +
+      "%0A%0A" +
+      settings.tweetTemplate.replaceAll("#", "%23");
     window.open(url);
   };
 
