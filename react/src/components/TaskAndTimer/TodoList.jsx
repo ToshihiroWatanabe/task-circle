@@ -306,15 +306,17 @@ const TodoList = memo((props) => {
                     <div style={{ flexGrow: "1", marginLeft: "0.5rem" }}>
                       <Typography>{column.name}</Typography>
                     </div>
-                    <Tooltip title="ツイートする" placement="top">
-                      <IconButton
-                        size="small"
-                        color="primary"
-                        onClick={() => onTweetButtonClick(columnIndex)}
-                      >
-                        <TwitterIcon />
-                      </IconButton>
-                    </Tooltip>
+                    {settings.isTweetButtonEnabled && (
+                      <Tooltip title="ツイートする" placement="top">
+                        <IconButton
+                          size="small"
+                          color="primary"
+                          onClick={() => onTweetButtonClick(columnIndex)}
+                        >
+                          <TwitterIcon />
+                        </IconButton>
+                      </Tooltip>
+                    )}
                     <Tooltip
                       title="タスクをクリップボードにコピー"
                       placement="top"

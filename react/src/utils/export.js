@@ -48,6 +48,7 @@ export const copyTasksToClipboard_ja = (items) => {
     text += "\r\n";
     totalSecond += item.spentSecond;
   });
+  text += "\r\n";
   text += "計 " + secondToHHMMSS_ja(totalSecond);
   copyToClipboard(text);
   return true;

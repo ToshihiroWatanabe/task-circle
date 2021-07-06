@@ -395,6 +395,7 @@ const Settings = () => {
         <TextField
           label="定型文"
           value={settings.tweetTemplate}
+          size="small"
           placeholder="#TaskCircle"
           variant="outlined"
           multiline
