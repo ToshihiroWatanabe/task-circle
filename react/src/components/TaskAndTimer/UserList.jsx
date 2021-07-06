@@ -1,7 +1,6 @@
 import React, { Fragment, memo, useState } from "react";
 import {
   Avatar,
-  Box,
   Divider,
   List,
   ListItem,
@@ -42,6 +41,35 @@ const UserList = memo((props) => {
   return (
     <>
       <List className={classes.list}>
+        {props.sessions.length === 0 && (
+          <>
+            <Divider />
+            <div style={{ display: "flex" }}>
+              <div
+                style={{
+                  width: "5rem",
+                  padding: "1rem 0.75rem 0.5rem 0.70rem",
+                }}
+              >
+                <Skeleton variant="circle" width={40} height={40} />
+              </div>
+              <div
+                style={{
+                  display: "inline-block",
+                  width: "100%",
+                  marginTop: "1rem",
+                }}
+              >
+                <div style={{ width: "33%" }}>
+                  <Skeleton variant="text" />
+                </div>
+                <div style={{ width: "66%" }}>
+                  <Skeleton variant="text" />
+                </div>
+              </div>
+            </div>
+          </>
+        )}
         {props.sessions.map((session, index) => {
           return (
             <Fragment key={index}>
@@ -49,10 +77,6 @@ const UserList = memo((props) => {
               <ListItem alignItems="flex-start">
                 <ListItemAvatar style={{ marginLeft: "-0.4rem" }}>
                   <>
-                    {/* {index === 0 && (
-                      <Skeleton variant="circle" width={40} height={40} />
-                    )}
-                    {index > 0 && ( */}
                     <Avatar
                       style={{
                         backgroundColor: getAvatarColor(session.userName),
@@ -61,16 +85,9 @@ const UserList = memo((props) => {
                     >
                       {session.userName.charAt(0).toUpperCase()}
                     </Avatar>
-                    {/* )} */}
                   </>
                 </ListItemAvatar>
-                {/* {index === 0 && (
-                  <div style={{ display: "inline-block", width: "100%" }}>
-                    <Skeleton variant="text" />
-                    <Skeleton variant="text" />
-                  </div>
-                )} */}
-                {/* {index > 0 && ( */}
+
                 <ListItemText
                   primary={session.userName}
                   secondary={
@@ -107,7 +124,6 @@ const UserList = memo((props) => {
                     </Fragment>
                   }
                 />
-                {/* )} */}
               </ListItem>
             </Fragment>
           );
