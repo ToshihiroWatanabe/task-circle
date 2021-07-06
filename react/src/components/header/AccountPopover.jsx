@@ -18,6 +18,7 @@ import { Link } from "react-router-dom";
 import { Context } from "contexts/Context";
 import { StatisticsContext } from "contexts/StatisticsContext";
 import { secondToHHMMSS } from "utils/convert";
+import GoogleButton from "./GoogleButton";
 
 const useStyles = makeStyles((theme) => ({
   link: {
@@ -103,50 +104,7 @@ const AccountPopover = memo((props) => {
           </Typography>
         </Tooltip>
         <Box mt={"1rem"} />
-        {state.userId === "" && (
-          <>
-            {/* <Typography>ログインしていません</Typography>
-            <Link onClick={handleClose} to="/login" className={classes.link}>
-              <Button variant="outlined" size="small">
-                <ListItemText primary="ログイン" />
-              </Button>
-            </Link>
-            <span style={{ marginRight: "0.5rem" }} />
-            <Link onClick={handleClose} to="/signup" className={classes.link}>
-              <Button variant="outlined" size="small">
-                <ListItemText primary="新規登録" />
-              </Button>
-            </Link> */}
-          </>
-        )}
-        {state.userId !== "" && (
-          <>
-            <Button variant="outlined" onClick={onSyncButtonClick}>
-              <SyncIcon />
-              日報をサーバーと同期
-            </Button>
-            {state.reportUpdatedAt !== "" && (
-              <>
-                <Typography>最終更新: {state.reportUpdatedAt}</Typography>
-              </>
-            )}
-            <Button
-              variant="outlined"
-              size="small"
-              onClick={onLogoutButtonClick}
-            >
-              <ListItemText primary="ログアウト" />
-            </Button>
-          </>
-        )}
-        <List>
-          <Link onClick={handleClose} to="/settings" className={classes.link}>
-            <Button className={classes.button} variant="outlined" size="small">
-              <SettingsIcon />
-              <ListItemText primary="設定" />
-            </Button>
-          </Link>
-        </List>
+        <GoogleButton />
       </Popover>
     </>
   );

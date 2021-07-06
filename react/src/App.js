@@ -1,10 +1,8 @@
-import React, { useContext, useEffect, useRef } from "react";
+import React, { memo, useContext, useState, useEffect, useRef } from "react";
 import { Switch, Route, useLocation } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
 import ResponsiveDrawer from "components/header/ResponsiveDrawer";
 import Settings from "components/Settings";
-import Login from "components/Login";
-import Signup from "components/Signup";
 import { Context } from "contexts/Context";
 import About from "components/About";
 import TaskAndTimer from "components/TaskAndTimer/TaskAndTimer";
@@ -25,11 +23,6 @@ if (
 }
 
 const sessionFindAllTopicsId = uuid();
-
-/** ローカルストレージからstateを取得します。 */
-const localStorageGetItemState = localStorage.getItem("state")
-  ? JSON.parse(localStorage.getItem("state"))
-  : {};
 
 /** ローカルストレージから設定を取得します。 */
 const localStorageGetItemSettings = localStorage.getItem("settings")
@@ -80,7 +73,7 @@ const useStyles = makeStyles((theme) => ({
 /**
  * Appコンポーネントです。
  */
-const App = () => {
+const App = memo(() => {
   const classes = useStyles();
   const [state, setState] = useContext(Context);
   const [settings, setSettings] = useContext(SettingsContext);
@@ -92,9 +85,6 @@ const App = () => {
 
   useEffect(() => {
     // 初期値とローカルストレージからの値を統合
-    setState((state) => {
-      return { ...state, ...localStorageGetItemState };
-    });
     setColumns((columns) => {
       return { ...columns, ...localStorageGetItemColumns };
     });
@@ -151,7 +141,7 @@ const App = () => {
    */
   const onLeave = () => {
     setState((state) => {
-      return { ...state, nameInRoom: "", isAfk: false };
+      return { ...state, isAfk: false };
     });
     setSessions([]);
     $websocket.current.sendMessage("/session/leave", JSON.stringify({}));
@@ -261,7 +251,7 @@ const App = () => {
       $websocket.current.sendMessage(
         messageType !== undefined ? "/session/" + messageType : "/session",
         JSON.stringify({
-          userName: state.nameInRoom,
+          userName: localStorage.getItem("nameInRoom"),
           sessionType: state.isAfk
             ? "afk"
             : settings.isPomodoroEnabled
@@ -309,14 +299,6 @@ const App = () => {
           <Route exact path="/about">
             <About />
           </Route>
-          {/* ログイン */}
-          <Route exact path="/login">
-            <Login />
-          </Route>
-          {/* 新規登録 */}
-          <Route exact path="/signup">
-            <Signup />
-          </Route>
         </Switch>
       </main>
       <SockJsClient
@@ -339,6 +321,6 @@ const App = () => {
       />
     </>
   );
-};
+});
 
 export default App;

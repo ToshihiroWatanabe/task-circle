@@ -156,8 +156,6 @@ const ResponsiveDrawer = memo((props) => {
                   <Fragment key={index}>TaskCircle</Fragment>
                 )
             )}
-            {location.pathname === "/login" && <>ログイン</>}
-            {location.pathname === "/signup" && <>新規登録</>}
           </Typography>
           <span style={{ flexGrow: 1 }}></span>
           {useMediaQuery(theme.breakpoints.up("md")) && (

@@ -543,6 +543,10 @@ const TaskAndTimer = memo((props) => {
    */
   const refreshTitle = (content, spentSecond) => {
     setState((state) => {
+      if (!state.isTimerOn) {
+        document.title = DEFAULT_TITLE;
+        return state;
+      }
       if (settings.isPomodoroEnabled) {
         document.title =
           "(" +
