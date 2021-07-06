@@ -38,6 +38,8 @@ export function ContextProvider(props) {
     isAfk: false,
     /** ルームでの名前 */
     nameInRoom: "",
+    /** ログインしているかどうか */
+    isLogined: false,
   });
 
   return (
