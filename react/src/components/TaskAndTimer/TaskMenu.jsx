@@ -8,27 +8,6 @@ import EditIcon from "@material-ui/icons/Edit";
 import EditDialog from "components/TaskAndTimer/EditDialog";
 import { StateContext } from "contexts/StateContext";
 
-const getCategories = (reports) => {
-  let categories = [];
-  for (let i = 0; i < reports.length; i++) {
-    for (let j = 0; j < reports[i].report_items.length; j++) {
-      if (reports[i].report_items[j].category !== "") {
-        categories.push({
-          label: reports[i].report_items[j].category,
-          value: reports[i].report_items[j].category,
-        });
-      }
-    }
-  }
-  // 重複を削除
-  const newCategories = categories.filter((element, index, array) => {
-    return (
-      array.findIndex((element2) => element.label === element2.label) === index
-    );
-  });
-  return newCategories;
-};
-
 const useStyles = makeStyles({
   menu: {
     width: "13rem",
@@ -46,12 +25,6 @@ const TaskMenu = memo((props) => {
   const [categories, setCategories] = useState([]);
 
   useEffect(() => {
-    setState((state) => {
-      setCategories((categories) => {
-        return getCategories(state.reports);
-      });
-      return state;
-    });
     // 編集でEnterを押した時にメニューが開かないようにする
     if (!editOpen) {
       setTimeout(() => {

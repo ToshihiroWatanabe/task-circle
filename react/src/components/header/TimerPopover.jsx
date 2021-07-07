@@ -154,7 +154,7 @@ const TimerPopover = memo((props) => {
         }}
         getContentAnchorEl={null}
       >
-        {state.userId === "" && (
+        {state.tokenId === "" && (
           <>
             {state.isTimerOn && (
               <Typography

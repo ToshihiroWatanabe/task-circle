@@ -22,7 +22,6 @@ import MenuIcon from "@material-ui/icons/Menu";
 import HomeIcon from "@material-ui/icons/Home";
 import InfoIcon from "@material-ui/icons/Info";
 import SettingsIcon from "@material-ui/icons/Settings";
-import FilePopover from "components/header/FilePopover";
 import AccountPopover from "components/header/AccountPopover";
 import TimerPopover from "./TimerPopover";
 import { DRAWER_WIDTH } from "utils/constant";
@@ -183,10 +182,6 @@ const ResponsiveDrawer = memo((props) => {
           >
             <TimerPopover sendMessage={props.sendMessage} />
           </div>
-          {/* 日報をインポート・エクスポートするファイルアイコン */}
-          {location.pathname === "/reports" && <FilePopover />}
-          {/* 分析レポートをエクスポートするファイルアイコン */}
-          {/* {location.pathname === "/analytics" && <AnalyticsFilePopover />} */}
           <AccountPopover onSyncButtonClick={props.onSyncButtonClick} />
         </Toolbar>
       </AppBar>
