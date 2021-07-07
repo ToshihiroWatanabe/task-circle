@@ -1,4 +1,4 @@
-import React, { memo, useEffect, useState } from "react";
+import React, { memo, useContext, useEffect, useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import {
   Button,
@@ -16,6 +16,7 @@ import {
 import Autocomplete, {
   createFilterOptions,
 } from "@material-ui/lab/Autocomplete";
+import { Context } from "contexts/Context";
 
 /** 時間 */
 const hours = [];
@@ -67,6 +68,7 @@ const EditDialog = memo((props) => {
     minute: 0,
     second: 0,
   });
+  const [state, setState] = useContext(Context);
 
   useEffect(() => {
     setValue((value) => {
@@ -127,6 +129,13 @@ const EditDialog = memo((props) => {
       return newColumns;
     });
     props.setOpen(false);
+    if (
+      state.isTimerOn &&
+      Object.values(props.columns)[props.columnIndex].items[props.index]
+        .isSelected
+    ) {
+      props.sendMessage();
+    }
   };
 
   /** オートコンプリートの選択肢 */

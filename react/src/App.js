@@ -1,4 +1,4 @@
-import React, { memo, useContext, useState, useEffect, useRef } from "react";
+import React, { memo, useContext, useEffect, useRef } from "react";
 import { Switch, Route, useLocation } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
 import ResponsiveDrawer from "components/header/ResponsiveDrawer";
@@ -219,6 +219,8 @@ const App = memo(() => {
   const sendMessage = (messageType) => {
     if (!state.isConnected && messageType !== "enter") {
       console.error("接続されていません");
+      return;
+    } else if (!state.isInRoom && messageType !== "enter") {
       return;
     }
     setState((state) => {

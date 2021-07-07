@@ -2,8 +2,10 @@ package app.taskcircle.controller;
 
 import app.taskcircle.model.Session;
 import app.taskcircle.payload.request.SessionMessage;
+import app.taskcircle.payload.response.SessionResponse;
 import app.taskcircle.service.SessionService;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
@@ -26,38 +28,43 @@ public class SessionWebSocketController {
 
     @MessageMapping("/session")
     @SendTo("/topic/session")
-    public SessionMessage SendToMessage(@Payload SessionMessage message, SimpMessageHeaderAccessor headerAccessor)
+    public SessionResponse SendToMessage(@Payload SessionMessage message, SimpMessageHeaderAccessor headerAccessor)
             throws Exception {
         message.setSessionId(headerAccessor.getSessionId());
         Session session = sessionService.messageToSession(message);
         session.setSessionId(headerAccessor.getSessionId());
         sessionService.update(session);
-        System.out.println(message.getSessionId() + " " + message.getUserName());
-        return message;
+        SessionResponse response = new SessionResponse();
+        BeanUtils.copyProperties(message, response);
+        return response;
     }
 
     @MessageMapping("/session/enter")
     @SendTo("/topic/session")
-    public SessionMessage enter(@Payload SessionMessage message, SimpMessageHeaderAccessor headerAccessor)
+    public SessionResponse enter(@Payload SessionMessage message, SimpMessageHeaderAccessor headerAccessor)
             throws Exception {
         message.setSessionId(headerAccessor.getSessionId());
         Session session = sessionService.messageToSession(message);
         session.setSessionId(headerAccessor.getSessionId());
         sessionService.create(session);
         System.out.println("enter: " + message.getSessionId() + " " + message.getUserName());
-        return message;
+        SessionResponse response = new SessionResponse();
+        BeanUtils.copyProperties(message, response);
+        return response;
     }
 
     @MessageMapping("/session/leave")
     @SendTo("/topic/session/leave")
-    public SessionMessage leave(@Payload SessionMessage message, SimpMessageHeaderAccessor headerAccessor)
+    public SessionResponse leave(@Payload SessionMessage message, SimpMessageHeaderAccessor headerAccessor)
             throws Exception {
         message.setSessionId(headerAccessor.getSessionId());
         Session session = new Session();
         session.setSessionId(headerAccessor.getSessionId());
         sessionService.delete(session);
         System.out.println("leave: " + message.getSessionId());
-        return message;
+        SessionResponse response = new SessionResponse();
+        BeanUtils.copyProperties(message, response);
+        return response;
     }
 
     @MessageMapping("/session/findall")
