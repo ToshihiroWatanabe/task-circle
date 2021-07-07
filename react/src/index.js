@@ -5,7 +5,7 @@ import App from "App";
 import "index.css";
 import * as serviceWorkerRegistration from "serviceWorkerRegistration";
 import reportWebVitals from "reportWebVitals";
-import { CssBaseline, MuiThemeProvider } from "@material-ui/core";
+import { CssBaseline } from "@material-ui/core";
 import ErrorBoundary from "components/ErrorBoundary";
 import { StateContextProvider } from "contexts/StateContext";
 import { SettingsContextProvider } from "contexts/SettingsContext";
@@ -34,6 +34,6 @@ ReactDOM.render(
   document.getElementById("app")
 );
 
-serviceWorkerRegistration.unregister();
+serviceWorkerRegistration.register();
 
 reportWebVitals();
