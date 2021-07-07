@@ -13,7 +13,7 @@ import faintTickAudio from "audio/faintTick.mp3";
 import YouTube from "react-youtube";
 import { secondToHHMMSS } from "utils/convert";
 import { StatisticsContext } from "contexts/StatisticsContext";
-import FloatingTimer from "./FloatingTimer";
+import RndTimer from "./RndTimer";
 import { SessionsContext } from "contexts/SessionsContext";
 import { TodoListsContext } from "contexts/TodoListsContext";
 import { DEFAULT_TITLE, ONCE_COUNT, COUNT_INTERVAL } from "utils/constant";
@@ -579,11 +579,8 @@ const TaskAndTimer = memo((props) => {
           sendMessage={props.sendMessage}
         />
       </div>
-      {/* フローティングタイマー */}
-      <FloatingTimer
-        todoLists={todoLists}
-        onPlayButtonClick={onPlayButtonClick}
-      />
+      {/* タイマー */}
+      <RndTimer todoLists={todoLists} onPlayButtonClick={onPlayButtonClick} />
       {/* 作業用BGM動画 */}
       {workVideoId !== "" && (
         <>

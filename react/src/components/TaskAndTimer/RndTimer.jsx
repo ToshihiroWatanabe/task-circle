@@ -1,6 +1,5 @@
-import React, { memo, useContext, useState } from "react";
+import React, { memo, useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import "./FloatingTimer.css";
 import { useTheme, Zoom, useMediaQuery } from "@material-ui/core";
 import { Rnd } from "react-rnd";
 import TimerFab from "./TimerFab";
@@ -21,7 +20,10 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const FloatingTimer = memo((props) => {
+/**
+ * リサイズ＆ドラッグ移動可能なタイマーのコンポーネントです。
+ */
+const RndTimer = memo((props) => {
   const classes = useStyles();
   const theme = useTheme();
 
@@ -51,6 +53,7 @@ const FloatingTimer = memo((props) => {
   const [width, setWidth] = useState(DEFAULT_WIDTH);
   const [isDragging, setIsDragging] = useState(false);
 
+  /** 選択されているタスク */
   const selectedTask =
     Object.values(props.todoLists).filter((column, index) => {
       return (
@@ -72,16 +75,30 @@ const FloatingTimer = memo((props) => {
           })[0]
       : null;
 
-  const onResize = (e, dir, refToElement, delta, position) => {
+  /**
+   * リサイズされたときの処理です。
+   * @param {*} e
+   * @param {*} dir
+   * @param {*} refToElement
+   */
+  const onResize = (e, dir, refToElement) => {
     setWidth(refToElement.style.width);
     setHeight(refToElement.style.height);
   };
 
-  const onResizeStop = (e, dir, refToElement, delta, position) => {
+  /**
+   * リサイズが終わったときの処理です。
+   */
+  const onResizeStop = (e, dir, refToElement, delta) => {
     setPositionX(dir.match(/.*Left/) ? positionX - delta.width : positionX);
     setPositionY(dir.match(/top.*/) ? positionY - delta.height : positionY);
   };
 
+  /**
+   * ドラッグが終わったときの処理です。
+   * @param {*} e
+   * @param {*} d
+   */
   const onDragStop = (e, d) => {
     setTimeout(() => {
       setIsDragging(false);
@@ -157,4 +174,4 @@ const FloatingTimer = memo((props) => {
   );
 });
 
-export default FloatingTimer;
+export default RndTimer;

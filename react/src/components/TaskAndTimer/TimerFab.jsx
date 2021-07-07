@@ -2,7 +2,7 @@ import React, { memo, useContext } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Fab from "@material-ui/core/Fab";
 import PlayArrowIcon from "@material-ui/icons/PlayArrow";
-import "./FloatingTimer.css";
+import "./TimerFab.css";
 import { useTheme, useMediaQuery } from "@material-ui/core";
 import StopIcon from "@material-ui/icons/Stop";
 import CircularDeterminate from "./CircularDeterminate";
@@ -122,7 +122,7 @@ const TimerFab = memo((props) => {
         color="primary"
         aria-label="timer"
         className={classes.fab}
-        id="floatingTimer"
+        id="timerFab"
         onClick={() => {
           onFabClick();
         }}

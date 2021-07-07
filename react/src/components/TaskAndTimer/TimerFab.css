@@ -1,4 +1,4 @@
-#floatingTimer>span {
+#timerFab>span {
     display: flex;
     flex-direction: column;
 }
