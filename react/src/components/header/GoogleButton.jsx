@@ -3,6 +3,7 @@ import { GoogleLogin, GoogleLogout } from "react-google-login";
 import SimpleSnackbar from "components/SimpleSnackbar";
 import { StateContext } from "contexts/StateContext";
 import "components/header/GoogleButton.css";
+import { maskEmail } from "utils/string";
 
 /**
  * クライアントID
@@ -31,6 +32,7 @@ const GoogleButton = memo((props) => {
         email: response.profileObj.email,
       };
     });
+    props.setMaskedEmail(maskEmail(response.profileObj.email));
   };
 
   /**
@@ -42,6 +44,7 @@ const GoogleButton = memo((props) => {
     setState((state) => {
       return { ...state, isLogined: false, tokenId: "", email: "" };
     });
+    props.setMaskedEmail("");
   };
 
   /**

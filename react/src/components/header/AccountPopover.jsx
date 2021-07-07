@@ -13,6 +13,8 @@ import { StateContext } from "contexts/StateContext";
 import { StatisticsContext } from "contexts/StatisticsContext";
 import { secondToHHMMSS } from "utils/convert";
 import GoogleButton from "./GoogleButton";
+import VisibilityIcon from "@material-ui/icons/Visibility";
+import VisibilityOffIcon from "@material-ui/icons/VisibilityOff";
 
 const useStyles = makeStyles((theme) => ({
   link: {
@@ -30,6 +32,10 @@ const AccountPopover = memo((props) => {
   const [statistics] = useContext(StatisticsContext);
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
+  // メールアドレスが隠されているかどうか
+  const [showEmail, setShowEmail] = useState(false);
+  // 一部を隠したメールアドレス
+  const [maskedEmail, setMaskedEmail] = useState("");
 
   /**
    * アイコンがクリックされたときの処理です。
@@ -89,8 +95,44 @@ const AccountPopover = memo((props) => {
           </Typography>
         </Tooltip>
         <Box mt={"1rem"} />
-        <GoogleButton />
-        {state.isLogined && <>{"ログイン中: " + state.email}</>}
+        <GoogleButton
+          maskedEmail={maskedEmail}
+          setMaskedEmail={setMaskedEmail}
+        />
+        <Box mt={"0.5rem"} />
+        {state.isLogined && (
+          <>
+            {/* メールアドレス表示 */}
+            <Typography variant="caption" style={{ display: "flex" }}>
+              {!showEmail && (
+                <>
+                  {"ログイン中: " + maskedEmail}
+                  <Tooltip title="メールを表示">
+                    <VisibilityOffIcon
+                      onClick={() => {
+                        setShowEmail(true);
+                      }}
+                      fontSize="small"
+                    />
+                  </Tooltip>
+                </>
+              )}
+              {showEmail && (
+                <>
+                  {"ログイン中: " + state.email}
+                  <Tooltip title="メールを非表示">
+                    <VisibilityIcon
+                      onClick={() => {
+                        setShowEmail(false);
+                      }}
+                      fontSize="small"
+                    />
+                  </Tooltip>
+                </>
+              )}
+            </Typography>
+          </>
+        )}
       </Popover>
     </>
   );

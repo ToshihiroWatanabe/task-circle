@@ -25,3 +25,18 @@ export const byteSlice = (str, length) => {
   }
   return str + "...";
 };
+
+/**
+ * メールアドレスを一部隠します。
+ *
+ * @param {string} email
+ * @returns マスク加工されたメールアドレス
+ */
+export const maskEmail = (email) => {
+  let emailSplit = email.split("@");
+  emailSplit[0] = emailSplit[0].replace(
+    emailSplit[0].substring(1, emailSplit[0].length),
+    "*".repeat(emailSplit[0].length - 1)
+  );
+  return emailSplit[0] + "@" + emailSplit[1];
+};
