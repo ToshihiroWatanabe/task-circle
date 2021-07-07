@@ -1,7 +1,6 @@
 import { createMuiTheme } from "@material-ui/core/styles";
 
-/** Material-UIのスタイルのテーマ */
-export const theme = createMuiTheme({
+export const themeTemplate = {
   breakpoints: {
     values: {
       xs: 0,
@@ -33,7 +32,8 @@ export const theme = createMuiTheme({
       main: "#ffbe30",
       contrastText: "#000000",
     },
-    // ダークモード
-    // type: "dark",
   },
-});
+};
+
+/** Material-UIのスタイルのテーマ */
+export const theme = createMuiTheme(themeTemplate);

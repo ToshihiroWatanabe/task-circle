@@ -5,7 +5,6 @@ import PropTypes from "prop-types";
 import {
   AppBar,
   Divider,
-  Drawer,
   Hidden,
   IconButton,
   List,
@@ -21,6 +20,8 @@ import {
 import MenuIcon from "@material-ui/icons/Menu";
 import HomeIcon from "@material-ui/icons/Home";
 import InfoIcon from "@material-ui/icons/Info";
+import Brightness4Icon from "@material-ui/icons/Brightness4";
+import Brightness7Icon from "@material-ui/icons/Brightness7";
 import SettingsIcon from "@material-ui/icons/Settings";
 import AccountPopover from "components/header/AccountPopover";
 import TimerPopover from "./TimerPopover";
@@ -177,11 +178,29 @@ const ResponsiveDrawer = memo((props) => {
             </Link>
           )}
           {/* ポモドーロ切り替えアイコン */}
-          <div
-            style={{ visibility: location.pathname === "/" ? "" : "hidden" }}
-          >
+          <div style={{ display: location.pathname === "/" ? "" : "none" }}>
             <TimerPopover sendMessage={props.sendMessage} />
           </div>
+          {/* ダークモード切り替えアイコン */}
+          {/* <IconButton
+            color="inherit"
+            onClick={() => {
+              props.setIsDarkModeOn(!props.isDarkModeOn);
+              localStorage.setItem("isDarkModeOn", props.isDarkModeOn);
+            }}
+            style={{
+              display: location.pathname === "/settings" ? "" : "none",
+            }}
+          >
+            {props.isDarkModeOn ? <Brightness7Icon /> : <Brightness4Icon />}
+          </IconButton> */}
+          {/* その他のページは空白 */}
+          {location.pathname !== "/" && (
+            <IconButton style={{ visibility: "hidden" }}>
+              <Brightness4Icon />
+            </IconButton>
+          )}
+          {/* アカウントボタン */}
           <AccountPopover onSyncButtonClick={props.onSyncButtonClick} />
         </Toolbar>
       </AppBar>

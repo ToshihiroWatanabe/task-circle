@@ -1,7 +1,11 @@
-import React, { memo, useContext, useEffect, useRef } from "react";
+import React, { memo, useContext, useEffect, useRef, useState } from "react";
 import { Switch, Route, useLocation } from "react-router-dom";
-import { makeStyles, MuiThemeProvider } from "@material-ui/core/styles";
-import { theme } from "theme";
+import {
+  createMuiTheme,
+  makeStyles,
+  MuiThemeProvider,
+} from "@material-ui/core/styles";
+import { theme, themeTemplate } from "theme";
 import uuid from "uuid/v4";
 import SockJsClient from "react-stomp";
 import { SOCKET_URL } from "utils/constant";
@@ -55,6 +59,11 @@ const localStorageGetItemColumns = localStorage.getItem("columns")
       },
     };
 
+/** ローカルストレージから取得したダークモードがオンかどうか */
+const localStorageGetItemIsDarkModeOn = localStorage.getItem("isDarkModeOn")
+  ? localStorage.getItem("isDarkModeOn")
+  : false;
+
 const useStyles = makeStyles((theme) => ({
   main: {
     marginTop: "5rem",
@@ -81,8 +90,19 @@ const App = memo(() => {
   const [statistics, setStatistics] = useContext(StatisticsContext);
   const [sessions, setSessions] = useContext(SessionsContext);
   const [columns, setColumns] = useContext(ColumnsContext);
+  const [isDarkModeOn, setIsDarkModeOn] = useState(
+    localStorageGetItemIsDarkModeOn
+  );
   const location = useLocation();
   const $websocket = useRef(null);
+
+  const darkTheme = createMuiTheme({
+    ...themeTemplate,
+    palette: {
+      ...themeTemplate.palette,
+      type: isDarkModeOn ? "dark" : "light",
+    },
+  });
 
   useEffect(() => {
     // 初期値とローカルストレージからの値を統合
@@ -277,9 +297,13 @@ const App = memo(() => {
 
   return (
     <>
-      <MuiThemeProvider theme={theme}>
+      <MuiThemeProvider theme={darkTheme}>
         {/* ドロワー */}
-        <ResponsiveDrawer sendMessage={sendMessage} />
+        <ResponsiveDrawer
+          sendMessage={sendMessage}
+          isDarkModeOn={isDarkModeOn}
+          setIsDarkModeOn={setIsDarkModeOn}
+        />
         <main className={classes.main}>
           {/* タスク＆タイマー */}
           <div
