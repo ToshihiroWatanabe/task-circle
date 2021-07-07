@@ -49,7 +49,14 @@ const RoomHeader = (props) => {
   return (
     <div className={classes.root}>
       <div style={{ flexGrow: "1", display: "flex" }}>
-        <Typography component="span">ルーム</Typography>
+        <Tooltip
+          title={
+            state.nameInRoom !== "" ? state.nameInRoom + "として入室中" : ""
+          }
+          placement="top"
+        >
+          <Typography component="span">ルーム</Typography>
+        </Tooltip>
         {state.isInRoom && (
           <>
             <PersonIcon

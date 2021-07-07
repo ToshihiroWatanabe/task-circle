@@ -20,6 +20,8 @@ export function StateContextProvider(props) {
     isInRoom: false,
     /** 離席しているかどうか */
     isAfk: false,
+    /** ルームでの名前 */
+    nameInRoom: "",
     /** ログインしているかどうか */
     isLogined: false,
     /** トークンID */

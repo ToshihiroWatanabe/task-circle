@@ -89,6 +89,7 @@ const EnterTheRoom = memo((props) => {
         const newState = {
           ...state,
           isInRoom: true,
+          nameInRoom: nameInRoom,
         };
         return newState;
       });

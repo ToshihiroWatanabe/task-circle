@@ -163,7 +163,7 @@ const App = memo(() => {
    */
   const onLeave = () => {
     setState((state) => {
-      return { ...state, isAfk: false };
+      return { ...state, isAfk: false, nameInRoom: "" };
     });
     setSessions([]);
     $websocket.current.sendMessage("/session/leave", JSON.stringify({}));

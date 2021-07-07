@@ -41,3 +41,6 @@ CREATE TABLE IF NOT EXISTS users(
     CHECK (JSON_VALID(todo_lists)),
     CHECK (JSON_VALID(settings))
 );
+
+-- 個人の統計テーブル
+-- 全体の統計テーブル
