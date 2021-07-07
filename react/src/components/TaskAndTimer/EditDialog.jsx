@@ -127,6 +127,7 @@ const EditDialog = memo((props) => {
       return newColumns;
     });
     props.setOpen(false);
+    props.sendMessage();
   };
 
   /** オートコンプリートの選択肢 */

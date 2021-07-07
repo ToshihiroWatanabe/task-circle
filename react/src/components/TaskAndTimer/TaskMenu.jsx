@@ -194,6 +194,7 @@ const TaskMenu = memo((props) => {
         columns={props.columns}
         setColumns={props.setColumns}
         categories={categories}
+        sendMessage={props.sendMessage}
       />
     </>
   );

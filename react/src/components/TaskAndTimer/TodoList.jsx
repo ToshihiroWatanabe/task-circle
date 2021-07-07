@@ -534,6 +534,7 @@ const TodoList = memo((props) => {
                                         setUndoSnackbarMessage={
                                           setUndoSnackbarMessage
                                         }
+                                        sendMessage={props.sendMessage}
                                       />
                                     </div>
                                     {item.estimatedSecond > 0 && (

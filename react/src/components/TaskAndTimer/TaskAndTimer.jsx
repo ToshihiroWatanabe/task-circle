@@ -570,6 +570,7 @@ const TaskAndTimer = memo((props) => {
           columns={columns}
           setColumns={setColumns}
           onPlayButtonClick={onPlayButtonClick}
+          sendMessage={props.sendMessage}
         />
         <Room
           sessions={sessions}

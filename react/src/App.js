@@ -220,6 +220,8 @@ const App = memo(() => {
     if (!state.isConnected && messageType !== "enter") {
       console.error("接続されていません");
       return;
+    } else if (!state.isInRoom && messageType !== "enter") {
+      return;
     }
     setState((state) => {
       const selectedTask =

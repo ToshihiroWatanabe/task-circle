@@ -25,7 +25,7 @@ public class SessionDisconnectListener implements ApplicationListener<SessionDis
     @EventListener
     @Override
     public void onApplicationEvent(SessionDisconnectEvent applicationEvent) {
-        System.out.println("切断: " + applicationEvent.getSessionId());
+        System.out.println("disconnect: " + applicationEvent.getSessionId());
         Session session = new Session();
         session.setSessionId(applicationEvent.getSessionId());
         sessionService.delete(session);
