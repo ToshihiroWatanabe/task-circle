@@ -11,14 +11,14 @@ import { StateContextProvider } from "contexts/StateContext";
 import { SettingsContextProvider } from "contexts/SettingsContext";
 import { StatisticsContextProvider } from "contexts/StatisticsContext";
 import { SessionsContextProvider } from "contexts/SessionsContext";
-import { ColumnsContextProvider } from "contexts/ColumnsContext";
+import { TodoListsContextProvider } from "contexts/TodoListsContext";
 
 ReactDOM.render(
   <ErrorBoundary>
     <BrowserRouter>
       <StateContextProvider>
         <SessionsContextProvider>
-          <ColumnsContextProvider>
+          <TodoListsContextProvider>
             <SettingsContextProvider>
               <StatisticsContextProvider>
                 <CssBaseline>
@@ -26,7 +26,7 @@ ReactDOM.render(
                 </CssBaseline>
               </StatisticsContextProvider>
             </SettingsContextProvider>
-          </ColumnsContextProvider>
+          </TodoListsContextProvider>
         </SessionsContextProvider>
       </StateContextProvider>
     </BrowserRouter>

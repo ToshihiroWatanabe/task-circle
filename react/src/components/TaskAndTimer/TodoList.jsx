@@ -76,7 +76,7 @@ const TodoList = memo((props) => {
   const [state, setState] = useContext(StateContext);
   const [settings] = useContext(SettingsContext);
   const [isTagsInputFocused, setIsTagsInputFocused] = useState(-1);
-  const [previousColumns, setPreviousColumns] = useState({});
+  const [previousTodoLists, setPreviousTodoLists] = useState({});
   const [undoSnackbarOpen, setUndoSnackbarOpen] = useState(false);
   const [undoSnackbarMessage, setUndoSnackbarMessage] = useState("");
   const [simpleSnackbarOpen, setSimpleSnackbarOpen] = useState(false);
@@ -89,18 +89,18 @@ const TodoList = memo((props) => {
   /**
    * ドラッグが終わったときの処理です。
    * @param {*} result
-   * @param {*} columns
-   * @param {*} props.setColumns
+   * @param {*} todoLists
+   * @param {*} props.setTodoLists
    * @returns
    */
-  const onDragEnd = (result, columns, setColumns) => {
+  const onDragEnd = (result, todoLists, setTodoLists) => {
     if (!result.destination) return;
     const { source, destination } = result;
 
     // 違うカラムに移動したとき
     if (source.droppableId !== destination.droppableId) {
-      const sourceColumn = columns[source.droppableId];
-      const destColumn = columns[destination.droppableId];
+      const sourceColumn = todoLists[source.droppableId];
+      const destColumn = todoLists[destination.droppableId];
       const sourceItems = [...sourceColumn.items];
       const destItems = [...destColumn.items];
       // 移動先のタスク数が最大数を超えていた場合
@@ -113,8 +113,8 @@ const TodoList = memo((props) => {
       }
       const [removed] = sourceItems.splice(source.index, 1);
       destItems.splice(destination.index, 0, removed);
-      const newColumns = {
-        ...columns,
+      const newTodoLists = {
+        ...todoLists,
         [source.droppableId]: {
           ...sourceColumn,
           items: sourceItems,
@@ -124,23 +124,23 @@ const TodoList = memo((props) => {
           items: destItems,
         },
       };
-      setColumns(newColumns);
-      localStorage.setItem("columns", JSON.stringify(newColumns));
+      setTodoLists(newTodoLists);
+      localStorage.setItem("todoLists", JSON.stringify(newTodoLists));
     } else {
       // 同じカラムでの移動だったとき
-      const column = columns[source.droppableId];
+      const column = todoLists[source.droppableId];
       const copiedItems = [...column.items];
       const [removed] = copiedItems.splice(source.index, 1);
       copiedItems.splice(destination.index, 0, removed);
-      const newColumns = {
-        ...columns,
+      const newTodoLists = {
+        ...todoLists,
         [source.droppableId]: {
           ...column,
           items: copiedItems,
         },
       };
-      setColumns(newColumns);
-      localStorage.setItem("columns", JSON.stringify(newColumns));
+      setTodoLists(newTodoLists);
+      localStorage.setItem("todoLists", JSON.stringify(newTodoLists));
     }
   };
 
@@ -161,9 +161,9 @@ const TodoList = memo((props) => {
       !["決定", "キャンセル"].includes(event.target.innerText) &&
       event.target.style.opacity !== "0"
     ) {
-      props.setColumns((columns) => {
+      props.setTodoLists((todoLists) => {
         // クリックされたタスクだけisSelectedをtrueにする
-        Object.values(columns).map((column, columnI) => {
+        Object.values(todoLists).map((column, columnI) => {
           column.items.map((item, itemI) => {
             if (columnI === columnIndex && itemI === taskIndex) {
               item.isSelected = true;
@@ -174,8 +174,8 @@ const TodoList = memo((props) => {
           });
           return column;
         });
-        localStorage.setItem("columns", JSON.stringify({ ...columns }));
-        return { ...columns };
+        localStorage.setItem("todoLists", JSON.stringify({ ...todoLists }));
+        return { ...todoLists };
       });
       if (state.isTimerOn) {
         props.sendMessage();
@@ -187,15 +187,15 @@ const TodoList = memo((props) => {
    * 取り消しボタンがクリックされたときの処理です。
    */
   const onUndoButtonClick = () => {
-    if (Object.values(previousColumns).length > 0) {
-      setPreviousColumns((previousColumns) => {
-        props.setColumns((columns) => {
-          const newColumns = { ...previousColumns };
-          localStorage.setItem("columns", JSON.stringify(newColumns));
-          return newColumns;
+    if (Object.values(previousTodoLists).length > 0) {
+      setPreviousTodoLists((previousTodoLists) => {
+        props.setTodoLists((todoLists) => {
+          const newTodoLists = { ...previousTodoLists };
+          localStorage.setItem("todoLists", JSON.stringify(newTodoLists));
+          return newTodoLists;
         });
       });
-      setPreviousColumns({});
+      setPreviousTodoLists({});
       setSimpleSnackbarMessage("操作を元に戻しました");
     } else {
       setSimpleSnackbarMessage("操作を元に戻せませんでした");
@@ -210,18 +210,18 @@ const TodoList = memo((props) => {
   const onClipboardButtonClick = (index) => {
     if (
       settings.timeFormatToClipboard === "HH時間MM分SS秒" &&
-      copyTasksToClipboard_ja(Object.values(props.columns)[index].items)
+      copyTasksToClipboard_ja(Object.values(props.todoLists)[index].items)
     ) {
       setSimpleSnackbarMessage("タスクをコピーしました！");
       setSimpleSnackbarOpen(true);
     } else if (
       settings.timeFormatToClipboard === "BuildUp" &&
-      copyTasksToClipboard_BuildUp(Object.values(props.columns)[index].items)
+      copyTasksToClipboard_BuildUp(Object.values(props.todoLists)[index].items)
     ) {
       setSimpleSnackbarMessage("タスクをコピーしました！");
       setSimpleSnackbarOpen(true);
     } else if (
-      copyTasksToClipboard(Object.values(props.columns)[index].items)
+      copyTasksToClipboard(Object.values(props.todoLists)[index].items)
     ) {
       setSimpleSnackbarMessage("タスクをコピーしました！");
       setSimpleSnackbarOpen(true);
@@ -233,15 +233,18 @@ const TodoList = memo((props) => {
    */
   const onAlarmIconClick = (columnIndex, taskIndex) => {
     if (
-      Object.values(props.columns)[columnIndex].items[taskIndex].spentSecond <
-      Object.values(props.columns)[columnIndex].items[taskIndex].estimatedSecond
+      Object.values(props.todoLists)[columnIndex].items[taskIndex].spentSecond <
+      Object.values(props.todoLists)[columnIndex].items[taskIndex]
+        .estimatedSecond
     ) {
-      props.setColumns((columns) => {
-        Object.values(columns)[columnIndex].items[taskIndex].achievedThenStop =
-          !Object.values(columns)[columnIndex].items[taskIndex]
+      props.setTodoLists((todoLists) => {
+        Object.values(todoLists)[columnIndex].items[
+          taskIndex
+        ].achievedThenStop =
+          !Object.values(todoLists)[columnIndex].items[taskIndex]
             .achievedThenStop;
-        localStorage.setItem("columns", JSON.stringify(columns));
-        return { ...columns };
+        localStorage.setItem("todoLists", JSON.stringify(todoLists));
+        return { ...todoLists };
       });
     }
   };
@@ -250,11 +253,11 @@ const TodoList = memo((props) => {
    * ToDoリストを追加するボタンがクリックされたときの処理です。
    */
   const onAddListButtonClick = () => {
-    props.setColumns((columns) => {
+    props.setTodoLists((todoLists) => {
       return {
-        ...columns,
+        ...todoLists,
         [uuid()]: {
-          name: "リスト" + (Object.keys(columns).length + 1),
+          name: "リスト" + (Object.keys(todoLists).length + 1),
           items: [],
         },
       };
@@ -267,10 +270,9 @@ const TodoList = memo((props) => {
   const onTweetButtonClick = (index) => {
     let url =
       "https://twitter.com/intent/tweet?text=" +
-      taskItemsToBuildUp(Object.values(props.columns)[index].items).replaceAll(
-        "\r\n",
-        "%0A"
-      ) +
+      taskItemsToBuildUp(
+        Object.values(props.todoLists)[index].items
+      ).replaceAll("\r\n", "%0A") +
       "%0A%0A" +
       settings.tweetTemplate.replaceAll("#", "%23");
     window.open(url);
@@ -280,10 +282,10 @@ const TodoList = memo((props) => {
     <div className={classes.root}>
       <DragDropContext
         onDragEnd={(result) =>
-          onDragEnd(result, props.columns, props.setColumns)
+          onDragEnd(result, props.todoLists, props.setTodoLists)
         }
       >
-        {Object.entries(props.columns).map(
+        {Object.entries(props.todoLists).map(
           ([columnId, column], columnIndex) => {
             return (
               <div className={classes.column} key={columnId}>
@@ -340,10 +342,10 @@ const TodoList = memo((props) => {
                     {/* カラムメニュー */}
                     <ColumnMenu
                       index={columnIndex}
-                      columns={props.columns}
+                      todoLists={props.todoLists}
                       column={column}
-                      setColumns={props.setColumns}
-                      setPreviousColumns={setPreviousColumns}
+                      setTodoLists={props.setTodoLists}
+                      setPreviousTodoLists={setPreviousTodoLists}
                       setUndoSnackbarOpen={setUndoSnackbarOpen}
                       setUndoSnackbarMessage={setUndoSnackbarMessage}
                     />
@@ -539,9 +541,11 @@ const TodoList = memo((props) => {
                                       <TaskMenu
                                         index={index}
                                         columnIndex={columnIndex}
-                                        columns={props.columns}
-                                        setColumns={props.setColumns}
-                                        setPreviousColumns={setPreviousColumns}
+                                        todoLists={props.todoLists}
+                                        setTodoLists={props.setTodoLists}
+                                        setPreviousTodoLists={
+                                          setPreviousTodoLists
+                                        }
                                         setUndoSnackbarOpen={
                                           setUndoSnackbarOpen
                                         }
@@ -610,8 +614,8 @@ const TodoList = memo((props) => {
                     placeholder="タスクを追加"
                     isTagsInputFocused={isTagsInputFocused}
                     setIsTagsInputFocused={setIsTagsInputFocused}
-                    columns={props.columns}
-                    setColumns={props.setColumns}
+                    todoLists={props.todoLists}
+                    setTodoLists={props.setTodoLists}
                     index={columnIndex}
                     style={{
                       width: "105%",
@@ -642,7 +646,7 @@ const TodoList = memo((props) => {
         )}
       </DragDropContext>
       {/* ToDoリストを追加 */}
-      {Object.keys(props.columns).length < 4 && (
+      {Object.keys(props.todoLists).length < 4 && (
         <Tooltip
           title="ToDoリストを追加"
           onMouseMove={(e) =>

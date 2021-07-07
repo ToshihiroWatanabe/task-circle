@@ -8,7 +8,7 @@ import {
   DialogContent,
   DialogTitle,
 } from "@material-ui/core";
-import { ColumnsContext } from "contexts/ColumnsContext";
+import { TodoListsContext } from "contexts/TodoListsContext";
 
 /** Material-UIのスタイル */
 const useStyles = makeStyles((theme) => ({
@@ -24,7 +24,7 @@ const SimpleFormDialog = memo((props) => {
   /** Material-UIのスタイル */
   const classes = useStyles();
   let inRef = null;
-  const [columns, setColumns] = useContext(ColumnsContext);
+  const [todoLists, setTodoLists] = useContext(TodoListsContext);
   const [helperText, setHelperText] = useState("");
 
   /**
@@ -44,10 +44,10 @@ const SimpleFormDialog = memo((props) => {
       setHelperText("リスト名は12文字以内にしてください");
     } else {
       // Todoリスト
-      setColumns((columns) => {
-        Object.values(columns)[props.index].name = inRef.value;
-        localStorage.setItem("columns", JSON.stringify(columns));
-        return { ...columns };
+      setTodoLists((todoLists) => {
+        Object.values(todoLists)[props.index].name = inRef.value;
+        localStorage.setItem("todoLists", JSON.stringify(todoLists));
+        return { ...todoLists };
       });
       props.setOpen(false);
     }

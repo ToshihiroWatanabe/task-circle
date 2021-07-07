@@ -29,8 +29,8 @@ const TagsInput = memo((props) => {
   const {
     placeholder,
     tags,
-    columns,
-    setColumns,
+    todoLists,
+    setTodoLists,
     isTagsInputFocused,
     setIsTagsInputFocused,
     index,
@@ -125,8 +125,8 @@ const TagsInput = memo((props) => {
   const onAddButtonClick = () => {
     if (validate()) {
       const retrievedInputValue = retrieveEstimatedSecond(inputValue.trim());
-      props.setColumns((columns) => {
-        Object.values(columns)[props.index].items.push({
+      props.setTodoLists((todoLists) => {
+        Object.values(todoLists)[props.index].items.push({
           id: uuid(),
           category: categoryInput.length > 0 ? categoryInput[0] : "",
           content: retrievedInputValue.content,
@@ -134,14 +134,14 @@ const TagsInput = memo((props) => {
           estimatedSecond: retrievedInputValue.estimatedSecond,
           // TODO: タスクがまだない かつ タイマー停止中のときは初めから選択された状態で追加したい
           isSelected:
-            // Object.values(columns)[props.index].items.length === 0 &&
+            // Object.values(todoLists)[props.index].items.length === 0 &&
             // !state.isTimerOn
             //   ? true :
             false,
           achievedThenStop: false,
         });
-        localStorage.setItem("columns", JSON.stringify(columns));
-        return { ...columns };
+        localStorage.setItem("todoLists", JSON.stringify(todoLists));
+        return { ...todoLists };
       });
       setCategoryInput([]);
       setInputValue("");
@@ -161,7 +161,7 @@ const TagsInput = memo((props) => {
         ? inputValue.trim().split(estimatedTimeInput)[0]
         : inputValue.trim();
     if (
-      Object.values(props.columns)[props.index].items.length >
+      Object.values(props.todoLists)[props.index].items.length >
       NUMBER_OF_TASKS_MAX
     ) {
       setHelperText("これ以上タスクを追加できません");

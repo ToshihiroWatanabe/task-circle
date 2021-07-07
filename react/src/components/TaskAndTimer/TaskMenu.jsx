@@ -59,13 +59,13 @@ const TaskMenu = memo((props) => {
    * リセットがクリックされたときの処理です。
    */
   const handleReset = () => {
-    props.setColumns((columns) => {
-      props.setPreviousColumns(JSON.parse(JSON.stringify({ ...columns })));
-      const newColumns = {
-        ...columns,
-        [Object.keys(columns)[props.columnIndex]]: {
-          ...Object.values(columns)[props.columnIndex],
-          items: Object.values(columns)[props.columnIndex].items.map(
+    props.setTodoLists((todoLists) => {
+      props.setPreviousTodoLists(JSON.parse(JSON.stringify({ ...todoLists })));
+      const newTodoLists = {
+        ...todoLists,
+        [Object.keys(todoLists)[props.columnIndex]]: {
+          ...Object.values(todoLists)[props.columnIndex],
+          items: Object.values(todoLists)[props.columnIndex].items.map(
             (item, index) => {
               if (index === props.index) {
                 item.spentSecond = 0;
@@ -77,8 +77,8 @@ const TaskMenu = memo((props) => {
           ),
         },
       };
-      localStorage.setItem("columns", JSON.stringify(newColumns));
-      return newColumns;
+      localStorage.setItem("todoLists", JSON.stringify(newTodoLists));
+      return newTodoLists;
     });
     setAnchorEl(null);
   };
@@ -87,13 +87,13 @@ const TaskMenu = memo((props) => {
    * 削除がクリックされたときの処理です。
    */
   const handleDelete = () => {
-    props.setColumns((columns) => {
-      props.setPreviousColumns(JSON.parse(JSON.stringify({ ...columns })));
-      const newColumns = {
-        ...columns,
-        [Object.keys(columns)[props.columnIndex]]: {
-          ...Object.values(columns)[props.columnIndex],
-          items: Object.values(columns)[props.columnIndex].items.filter(
+    props.setTodoLists((todoLists) => {
+      props.setPreviousTodoLists(JSON.parse(JSON.stringify({ ...todoLists })));
+      const newTodoLists = {
+        ...todoLists,
+        [Object.keys(todoLists)[props.columnIndex]]: {
+          ...Object.values(todoLists)[props.columnIndex],
+          items: Object.values(todoLists)[props.columnIndex].items.filter(
             (value, index) => {
               if (index === props.index) {
                 props.setUndoSnackbarMessage("削除しました");
@@ -104,8 +104,8 @@ const TaskMenu = memo((props) => {
           ),
         },
       };
-      localStorage.setItem("columns", JSON.stringify(newColumns));
-      return newColumns;
+      localStorage.setItem("todoLists", JSON.stringify(newTodoLists));
+      return newTodoLists;
     });
     setAnchorEl(null);
   };
@@ -134,10 +134,11 @@ const TaskMenu = memo((props) => {
         <MenuItem
           onClick={handleReset}
           disabled={
-            (Object.values(props.columns)[props.columnIndex].items[props.index]
-              .isSelected === true &&
+            (Object.values(props.todoLists)[props.columnIndex].items[
+              props.index
+            ].isSelected === true &&
               state.isTimerOn) ||
-            Object.values(props.columns)[props.columnIndex].items[props.index]
+            Object.values(props.todoLists)[props.columnIndex].items[props.index]
               .spentSecond === 0
           }
         >
@@ -148,7 +149,7 @@ const TaskMenu = memo((props) => {
           style={{ color: "red" }}
           onClick={handleDelete}
           disabled={
-            Object.values(props.columns)[props.columnIndex].items[props.index]
+            Object.values(props.todoLists)[props.columnIndex].items[props.index]
               .isSelected === true && state.isTimerOn
           }
         >
@@ -161,8 +162,8 @@ const TaskMenu = memo((props) => {
         setOpen={setEditOpen}
         index={props.index}
         columnIndex={props.columnIndex}
-        columns={props.columns}
-        setColumns={props.setColumns}
+        todoLists={props.todoLists}
+        setTodoLists={props.setTodoLists}
         categories={categories}
         sendMessage={props.sendMessage}
       />

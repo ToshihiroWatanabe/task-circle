@@ -87,14 +87,14 @@ const TimerFab = memo((props) => {
   );
 
   const selectedTask =
-    Object.values(props.columns).filter((column, index) => {
+    Object.values(props.todoLists).filter((column, index) => {
       return (
         column.items.filter((item, index) => {
           return item.isSelected;
         })[0] !== undefined
       );
     }).length > 0
-      ? Object.values(props.columns)
+      ? Object.values(props.todoLists)
           .filter((column, index) => {
             return (
               column.items.filter((item, index) => {
@@ -133,7 +133,7 @@ const TimerFab = memo((props) => {
       >
         {/* 進行状況サークル */}
         <CircularDeterminate
-          columns={props.columns}
+          todoLists={props.todoLists}
           width={props.width}
           height={props.height}
         />

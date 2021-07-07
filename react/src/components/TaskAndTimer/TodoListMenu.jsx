@@ -48,13 +48,13 @@ const TodoListMenu = memo((props) => {
    * 全ての経過時間をリセットがクリックされたときの処理です。
    */
   const handleReset = () => {
-    props.setColumns((columns) => {
-      props.setPreviousColumns(JSON.parse(JSON.stringify({ ...columns })));
-      const newColumns = {
-        ...columns,
-        [Object.keys(columns)[props.index]]: {
-          ...Object.values(columns)[props.index],
-          items: Object.values(columns)[props.index].items.map(
+    props.setTodoLists((todoLists) => {
+      props.setPreviousTodoLists(JSON.parse(JSON.stringify({ ...todoLists })));
+      const newTodoLists = {
+        ...todoLists,
+        [Object.keys(todoLists)[props.index]]: {
+          ...Object.values(todoLists)[props.index],
+          items: Object.values(todoLists)[props.index].items.map(
             (item, index) => {
               item.spentSecond = 0;
               item.estimatedSecond = 0;
@@ -63,8 +63,8 @@ const TodoListMenu = memo((props) => {
           ),
         },
       };
-      localStorage.setItem("columns", JSON.stringify(newColumns));
-      return newColumns;
+      localStorage.setItem("todoLists", JSON.stringify(newTodoLists));
+      return newTodoLists;
     });
     props.setUndoSnackbarMessage("時間をリセットしました");
     props.setUndoSnackbarOpen(true);
@@ -75,16 +75,16 @@ const TodoListMenu = memo((props) => {
    * 削除がクリックされたときの処理です。
    */
   const handleDelete = () => {
-    props.setColumns((columns) => {
-      props.setPreviousColumns(JSON.parse(JSON.stringify({ ...columns })));
-      const newColumns = {
-        ...columns,
+    props.setTodoLists((todoLists) => {
+      props.setPreviousTodoLists(JSON.parse(JSON.stringify({ ...todoLists })));
+      const newTodoLists = {
+        ...todoLists,
       };
-      delete newColumns[Object.keys(columns)[props.index]];
+      delete newTodoLists[Object.keys(todoLists)[props.index]];
       props.setUndoSnackbarMessage("削除しました");
       props.setUndoSnackbarOpen(true);
-      localStorage.setItem("columns", JSON.stringify(newColumns));
-      return newColumns;
+      localStorage.setItem("todoLists", JSON.stringify(newTodoLists));
+      return newTodoLists;
     });
     setAnchorEl(null);
   };
@@ -116,7 +116,7 @@ const TodoListMenu = memo((props) => {
           onClick={handleReset}
           disabled={
             state.isTimerOn ||
-            Object.values(props.columns)[props.index].items.length === 0
+            Object.values(props.todoLists)[props.index].items.length === 0
           }
         >
           <RotateLeftIcon />

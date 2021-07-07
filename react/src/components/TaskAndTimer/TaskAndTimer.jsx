@@ -15,7 +15,7 @@ import { secondToHHMMSS } from "utils/convert";
 import { StatisticsContext } from "contexts/StatisticsContext";
 import FloatingTimer from "./FloatingTimer";
 import { SessionsContext } from "contexts/SessionsContext";
-import { ColumnsContext } from "contexts/ColumnsContext";
+import { TodoListsContext } from "contexts/TodoListsContext";
 import { DEFAULT_TITLE, ONCE_COUNT, COUNT_INTERVAL } from "utils/constant";
 
 /** setTimeoutのID */
@@ -81,7 +81,7 @@ const TaskAndTimer = memo((props) => {
   const classes = useStyles();
   const theme = useTheme();
   const [state, setState] = useContext(StateContext);
-  const [columns, setColumns] = useContext(ColumnsContext);
+  const [todoLists, setTodoLists] = useContext(TodoListsContext);
   const [settings] = useContext(SettingsContext);
   const [statistics, setStatistics] = useContext(StatisticsContext);
   const [sessions, setSessions] = useContext(SessionsContext);
@@ -297,7 +297,7 @@ const TaskAndTimer = memo((props) => {
    */
   const timerCount = () => {
     setState((state) => {
-      setColumns((columns) => {
+      setTodoLists((todoLists) => {
         if (state.isTimerOn) {
           timeoutId = setTimeout(timerCount, getTimeout());
           // 前回のカウントから1.5秒以上経っていると一度にカウントする量が増える
@@ -315,7 +315,7 @@ const TaskAndTimer = memo((props) => {
           lastCountedAt = Date.now();
           setTimeout(() => {
             /** 選択しているタスク */
-            const selectedItem = Object.values(columns)
+            const selectedItem = Object.values(todoLists)
               .filter((column, index) => {
                 return (
                   column.items.filter((item, index) => {
@@ -333,7 +333,7 @@ const TaskAndTimer = memo((props) => {
               selectedItem.spentSecond >= selectedItem.estimatedSecond
             ) {
               // 目標時間を超えたときに停止する設定をオフにする
-              Object.values(columns)
+              Object.values(todoLists)
                 .filter((column, index) => {
                   return (
                     column.items.filter((item, index) => {
@@ -450,8 +450,8 @@ const TaskAndTimer = memo((props) => {
         } else if (!state.isTimerOn) {
           clearTimeout(timeoutId);
         }
-        localStorage.setItem("columns", JSON.stringify(columns));
-        return columns;
+        localStorage.setItem("todoLists", JSON.stringify(todoLists));
+        return todoLists;
       });
       return state;
     });
@@ -463,8 +463,8 @@ const TaskAndTimer = memo((props) => {
   const spendTime = (count) => {
     setTimeout(() => {
       setState((state) => {
-        setColumns((columns) => {
-          Object.values(columns)
+        setTodoLists((todoLists) => {
+          Object.values(todoLists)
             .filter((column, index) => {
               return (
                 column.items.filter((item, index) => {
@@ -486,7 +486,7 @@ const TaskAndTimer = memo((props) => {
               }
               return item;
             });
-          return { ...columns };
+          return { ...todoLists };
         });
         if (settings.isPomodoroEnabled) {
           state.pomodoroTimeLeft -= ONCE_COUNT * count;
@@ -567,8 +567,8 @@ const TaskAndTimer = memo((props) => {
     <>
       <div style={{ display: "flex" }}>
         <TodoList
-          columns={columns}
-          setColumns={setColumns}
+          todoLists={todoLists}
+          setTodoLists={setTodoLists}
           onPlayButtonClick={onPlayButtonClick}
           sendMessage={props.sendMessage}
         />
@@ -580,7 +580,10 @@ const TaskAndTimer = memo((props) => {
         />
       </div>
       {/* フローティングタイマー */}
-      <FloatingTimer columns={columns} onPlayButtonClick={onPlayButtonClick} />
+      <FloatingTimer
+        todoLists={todoLists}
+        onPlayButtonClick={onPlayButtonClick}
+      />
       {/* 作業用BGM動画 */}
       {workVideoId !== "" && (
         <>

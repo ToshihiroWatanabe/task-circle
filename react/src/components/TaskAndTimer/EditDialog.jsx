@@ -72,24 +72,24 @@ const EditDialog = memo((props) => {
 
   useEffect(() => {
     setValue((value) => {
-      value.category = Object.values(props.columns)[props.columnIndex].items[
+      value.category = Object.values(props.todoLists)[props.columnIndex].items[
         props.index
       ].category;
-      value.content = Object.values(props.columns)[props.columnIndex].items[
+      value.content = Object.values(props.todoLists)[props.columnIndex].items[
         props.index
       ].content;
       value.hour = Math.floor(
-        Object.values(props.columns)[props.columnIndex].items[props.index]
+        Object.values(props.todoLists)[props.columnIndex].items[props.index]
           .estimatedSecond / 3600
       );
       value.minute = Math.floor(
-        (Object.values(props.columns)[props.columnIndex].items[props.index]
+        (Object.values(props.todoLists)[props.columnIndex].items[props.index]
           .estimatedSecond /
           60) %
           60
       );
       value.second = Math.floor(
-        Object.values(props.columns)[props.columnIndex].items[props.index]
+        Object.values(props.todoLists)[props.columnIndex].items[props.index]
           .estimatedSecond % 60
       );
       return { ...value };
@@ -107,12 +107,12 @@ const EditDialog = memo((props) => {
    * 決定したときの処理です。
    */
   const handleAccept = () => {
-    props.setColumns((columns) => {
-      const newColumns = {
-        ...columns,
-        [Object.keys(columns)[props.columnIndex]]: {
-          ...Object.values(columns)[props.columnIndex],
-          items: Object.values(columns)[props.columnIndex].items.map(
+    props.setTodoLists((todoLists) => {
+      const newTodoLists = {
+        ...todoLists,
+        [Object.keys(todoLists)[props.columnIndex]]: {
+          ...Object.values(todoLists)[props.columnIndex],
+          items: Object.values(todoLists)[props.columnIndex].items.map(
             (item, index) => {
               if (index === props.index) {
                 item.category = value.category;
@@ -125,13 +125,13 @@ const EditDialog = memo((props) => {
           ),
         },
       };
-      localStorage.setItem("columns", JSON.stringify(newColumns));
-      return newColumns;
+      localStorage.setItem("todoLists", JSON.stringify(newTodoLists));
+      return newTodoLists;
     });
     props.setOpen(false);
     if (
       state.isTimerOn &&
-      Object.values(props.columns)[props.columnIndex].items[props.index]
+      Object.values(props.todoLists)[props.columnIndex].items[props.index]
         .isSelected
     ) {
       props.sendMessage();

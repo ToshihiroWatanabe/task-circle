@@ -17,7 +17,7 @@ import { StateContext } from "contexts/StateContext";
 import { SettingsContext } from "contexts/SettingsContext";
 import { StatisticsContext } from "contexts/StatisticsContext";
 import { SessionsContext } from "contexts/SessionsContext";
-import { ColumnsContext } from "contexts/ColumnsContext";
+import { TodoListsContext } from "contexts/TodoListsContext";
 import PrivacyPolicy from "components/PrivacyPolicy";
 
 // 開発中はページタイトルを変更
@@ -41,8 +41,8 @@ const localStorageGetItemStatistics = localStorage.getItem("statistics")
   : {};
 
 /** ローカルストレージから取得したTodoリスト */
-const localStorageGetItemColumns = localStorage.getItem("columns")
-  ? JSON.parse(localStorage.getItem("columns"))
+const localStorageGetItemTodoLists = localStorage.getItem("todoLists")
+  ? JSON.parse(localStorage.getItem("todoLists"))
   : {
       [uuid()]: {
         name: "リスト1",
@@ -90,7 +90,7 @@ const App = memo(() => {
   const [settings, setSettings] = useContext(SettingsContext);
   const [statistics, setStatistics] = useContext(StatisticsContext);
   const [sessions, setSessions] = useContext(SessionsContext);
-  const [columns, setColumns] = useContext(ColumnsContext);
+  const [todoLists, setTodoLists] = useContext(TodoListsContext);
   const [isDarkModeOn, setIsDarkModeOn] = useState(
     localStorageGetItemIsDarkModeOn
   );
@@ -107,8 +107,8 @@ const App = memo(() => {
 
   useEffect(() => {
     // 初期値とローカルストレージからの値を統合
-    setColumns((columns) => {
-      return { ...columns, ...localStorageGetItemColumns };
+    setTodoLists((todoLists) => {
+      return { ...todoLists, ...localStorageGetItemTodoLists };
     });
     setStatistics((statistics) => {
       return { ...statistics, ...localStorageGetItemStatistics };
@@ -234,14 +234,14 @@ const App = memo(() => {
     }
     setState((state) => {
       const selectedTask =
-        Object.values(columns).filter((column, index) => {
+        Object.values(todoLists).filter((column, index) => {
           return (
             column.items.filter((item, index) => {
               return item.isSelected;
             })[0] !== undefined
           );
         }).length > 0
-          ? Object.values(columns)
+          ? Object.values(todoLists)
               .filter((column, index) => {
                 return (
                   column.items.filter((item, index) => {
