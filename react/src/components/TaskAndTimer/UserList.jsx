@@ -111,7 +111,8 @@ const UserList = memo((props) => {
                           : ""}
                         {session.sessionType === "afk" ? "🪑離席中" : ""}
                       </Typography>
-                      {session.isTimerOn && session.finishAt > 0 && (
+                      {/* 残り時間 */}
+                      {session.isTimerOn && session.finishAt > dateNow && (
                         <>
                           {" - 残り"}
                           {session.finishAt - dateNow > 0
@@ -122,6 +123,7 @@ const UserList = memo((props) => {
                           {"分"}
                         </>
                       )}
+                      {/* 経過時間 */}
                       {session.sessionType === "afk" && (
                         <>
                           {" - "}
