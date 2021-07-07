@@ -42,21 +42,12 @@ const AccountPopover = memo((props) => {
     setAnchorEl(null);
   };
 
-  const onLogoutButtonClick = () => {
-    setState({ ...state, userId: "", password: "" });
-  };
-
-  /**
-   * 同期ボタンが押されたときの処理です。
-   */
-  const onSyncButtonClick = () => {};
-
   return (
     <>
       <Tooltip title="アカウントメニュー">
         <IconButton
           onClick={handleClick}
-          color={state.userId !== "" ? "inherit" : "default"}
+          color={state.tokenId !== "" ? "inherit" : "default"}
         >
           <AccountCircleIcon />
         </IconButton>

@@ -8,22 +8,10 @@ export const StateContext = createContext([{}, () => {}]);
  */
 export function StateContextProvider(props) {
   const [state, setState] = useState({
-    /** Slackに投稿するときの名前 */
-    slackUserName: "",
-    /** Slack Webhook URL */
-    slackWebhookUrl: "",
-    /** ユーザーID */
-    userId: "",
+    /** トークンID */
+    tokenId: "",
     /** パスワード */
     password: "",
-    /** 日報ID */
-    reportId: "",
-    /** 日報の更新日時 */
-    reportUpdatedAt: "",
-    /** 日報 */
-    reports: [],
-    /** 作成ダイアログ待機中の日報 */
-    waitingReport: {},
     /** タイマーがオンかどうか */
     isTimerOn: false,
     /** ポモドーロタイマーの残り時間 */
