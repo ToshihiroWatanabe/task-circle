@@ -154,90 +154,83 @@ const TimerPopover = memo((props) => {
         }}
         getContentAnchorEl={null}
       >
-        {state.tokenId === "" && (
-          <>
-            {state.isTimerOn && (
-              <Typography
-                variant="caption"
-                style={{ padding: "0.5rem 0 0 1rem" }}
-              >
-                タイマー作動中は変更できません
-              </Typography>
-            )}
-            <Typography
-              style={{
-                padding: state.isTimerOn ? "0rem 0 0 1rem" : "0.5rem 0 0 1rem",
-              }}
-            >
-              ポモドーロタイマー
-              <Switch
-                disabled={state.isTimerOn}
-                checked={settings.isPomodoroEnabled}
-                onChange={() => {
-                  onPomodoroEnabledChanged();
-                }}
-                name="isPomodoroEnabled"
-              />
-            </Typography>
-            <Typography style={{ padding: "0.5rem 0 0 1rem" }}>
-              休憩を自動スタート
-              <Switch
-                disabled={!settings.isPomodoroEnabled || state.isTimerOn}
-                checked={settings.isBreakAutoStart}
-                onChange={() => {
-                  onBreakAutoStartChanged();
-                }}
-                name="isBreakAutoStart"
-              />
-            </Typography>
-            <Typography component="div" style={{ padding: "0.5rem 0 0 1rem" }}>
-              作業タイマー
-              <Select
-                native
-                disabled={!settings.isPomodoroEnabled || state.isTimerOn}
-                value={settings.workTimerLength}
-                IconComponent={() => <></>}
-                onChange={(e) => {
-                  onWorkTimerLengthChange(e);
-                }}
-              >
-                {workTimerLength.map((value, index) => {
-                  return (
-                    <option key={index} value={value.value}>
-                      {value.label}
-                    </option>
-                  );
-                })}
-              </Select>
-              分
-            </Typography>
-            <Typography component="div" style={{ padding: "0.5rem 0 0 1rem" }}>
-              休憩タイマー
-              <Select
-                native
-                disabled={!settings.isPomodoroEnabled || state.isTimerOn}
-                value={settings.breakTimerLength}
-                IconComponent={() => <></>}
-                onChange={(e) => {
-                  onBreakTimerLengthChange(e);
-                }}
-              >
-                {breakTimerLength.map((value, index) => {
-                  return (
-                    <option key={index} value={value.value}>
-                      {value.label}
-                    </option>
-                  );
-                })}
-              </Select>
-              分
-            </Typography>
-            <Divider style={{ margin: "0.5rem 0.5rem 0 0.5rem" }} />
-            <Typography component="div" style={{ padding: "0.5rem 0 0 1rem" }}>
-              <ToggleButton sendMessage={props.sendMessage} />
-            </Typography>
-          </>
+        {state.isTimerOn && (
+          <Typography variant="caption" style={{ padding: "0.5rem 0 0 1rem" }}>
+            タイマー作動中は変更できません
+          </Typography>
         )}
+        <Typography
+          style={{
+            padding: state.isTimerOn ? "0rem 0 0 1rem" : "0.5rem 0 0 1rem",
+          }}
+        >
+          ポモドーロタイマー
+          <Switch
+            disabled={state.isTimerOn}
+            checked={settings.isPomodoroEnabled}
+            onChange={() => {
+              onPomodoroEnabledChanged();
+            }}
+            name="isPomodoroEnabled"
+          />
+        </Typography>
+        <Typography style={{ padding: "0.5rem 0 0 1rem" }}>
+          休憩を自動スタート
+          <Switch
+            disabled={!settings.isPomodoroEnabled || state.isTimerOn}
+            checked={settings.isBreakAutoStart}
+            onChange={() => {
+              onBreakAutoStartChanged();
+            }}
+            name="isBreakAutoStart"
+          />
+        </Typography>
+        <Typography component="div" style={{ padding: "0.5rem 0 0 1rem" }}>
+          作業タイマー
+          <Select
+            native
+            disabled={!settings.isPomodoroEnabled || state.isTimerOn}
+            value={settings.workTimerLength}
+            IconComponent={() => <></>}
+            onChange={(e) => {
+              onWorkTimerLengthChange(e);
+            }}
+          >
+            {workTimerLength.map((value, index) => {
+              return (
+                <option key={index} value={value.value}>
+                  {value.label}
+                </option>
+              );
+            })}
+          </Select>
+          分
+        </Typography>
+        <Typography component="div" style={{ padding: "0.5rem 0 0 1rem" }}>
+          休憩タイマー
+          <Select
+            native
+            disabled={!settings.isPomodoroEnabled || state.isTimerOn}
+            value={settings.breakTimerLength}
+            IconComponent={() => <></>}
+            onChange={(e) => {
+              onBreakTimerLengthChange(e);
+            }}
+          >
+            {breakTimerLength.map((value, index) => {
+              return (
+                <option key={index} value={value.value}>
+                  {value.label}
+                </option>
+              );
+            })}
+          </Select>
+          分
+        </Typography>
+        <Divider style={{ margin: "0.5rem 0.5rem 0 0.5rem" }} />
+        <Typography component="div" style={{ padding: "0.5rem 0 0 1rem" }}>
+          <ToggleButton sendMessage={props.sendMessage} />
+        </Typography>
       </Popover>
     </>
   );

@@ -47,7 +47,7 @@ const AccountPopover = memo((props) => {
       <Tooltip title="アカウントメニュー">
         <IconButton
           onClick={handleClick}
-          color={state.tokenId !== "" ? "inherit" : "default"}
+          color={state.isLogined ? "inherit" : "default"}
         >
           <AccountCircleIcon />
         </IconButton>
