@@ -18,6 +18,7 @@ import { SettingsContext } from "contexts/SettingsContext";
 import { StatisticsContext } from "contexts/StatisticsContext";
 import { SessionsContext } from "contexts/SessionsContext";
 import { ColumnsContext } from "contexts/ColumnsContext";
+import PrivacyPolicy from "components/PrivacyPolicy";
 
 // 開発中はページタイトルを変更
 if (
@@ -313,6 +314,10 @@ const App = memo(() => {
             {/* について */}
             <Route exact path="/about">
               <About />
+            </Route>
+            {/* プライバシーポリシー */}
+            <Route exact path="/privacy">
+              <PrivacyPolicy />
             </Route>
           </Switch>
         </main>

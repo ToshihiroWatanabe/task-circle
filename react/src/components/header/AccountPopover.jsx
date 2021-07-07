@@ -15,6 +15,7 @@ import { secondToHHMMSS } from "utils/convert";
 import GoogleButton from "./GoogleButton";
 import VisibilityIcon from "@material-ui/icons/Visibility";
 import VisibilityOffIcon from "@material-ui/icons/VisibilityOff";
+import { Link } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
   link: {
@@ -95,10 +96,19 @@ const AccountPopover = memo((props) => {
           </Typography>
         </Tooltip>
         <Box mt={"1rem"} />
-        <GoogleButton
-          maskedEmail={maskedEmail}
-          setMaskedEmail={setMaskedEmail}
-        />
+        <div style={{ display: "flex", alignItems: "center" }}>
+          <GoogleButton
+            maskedEmail={maskedEmail}
+            setMaskedEmail={setMaskedEmail}
+          />
+          <Link
+            to="/privacy"
+            onClick={handleClose}
+            style={{ marginLeft: "0.5rem" }}
+          >
+            プライバシーポリシー
+          </Link>
+        </div>
         <Box mt={"0.5rem"} />
         {state.isLogined && (
           <>
