@@ -5,7 +5,7 @@ import {
   makeStyles,
   MuiThemeProvider,
 } from "@material-ui/core/styles";
-import { theme, themeTemplate } from "theme";
+import { themeTemplate } from "theme";
 import uuid from "uuid/v4";
 import SockJsClient from "react-stomp";
 import { SOCKET_URL } from "utils/constant";

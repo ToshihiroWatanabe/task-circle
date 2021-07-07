@@ -24,7 +24,12 @@ const GoogleButton = memo((props) => {
   const login = (response) => {
     console.info(response);
     setState((state) => {
-      return { ...state, isLogined: true };
+      return {
+        ...state,
+        isLogined: true,
+        tokenId: response.tokenId,
+        email: response.profileObj.email,
+      };
     });
   };
 
@@ -35,7 +40,7 @@ const GoogleButton = memo((props) => {
   const logout = (response) => {
     console.info(response);
     setState((state) => {
-      return { ...state, isLogined: false };
+      return { ...state, isLogined: false, tokenId: "", email: "" };
     });
   };
 

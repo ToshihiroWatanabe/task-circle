@@ -90,6 +90,7 @@ const AccountPopover = memo((props) => {
         </Tooltip>
         <Box mt={"1rem"} />
         <GoogleButton />
+        {state.isLogined && <>{"ログイン中: " + state.email}</>}
       </Popover>
     </>
   );

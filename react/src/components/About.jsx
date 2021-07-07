@@ -11,22 +11,16 @@ import GitHubIcon from "@material-ui/icons/GitHub";
 import format from "date-fns/format";
 import preval from "preval.macro";
 
-const useStyles = makeStyles({
-  // card: {
-  //   display: "flex",
-  //   textAlign: "center",
-  //   flexDirection: "column",
-  //   width: "95%",
-  //   padding: "1rem",
-  //   marginBottom: "1rem",
-  // },
+const useStyles = makeStyles((theme) => ({
   card: {
     width: "calc(100% - 2rem)",
     padding: "1rem",
-    // marginLeft: "1rem",
     marginBottom: "1rem",
+    [theme.breakpoints.down("xs")]: {
+      width: "calc(100% - 8px)",
+    },
   },
-});
+}));
 
 /**
  * 「～について」ページのコンポーネントです。

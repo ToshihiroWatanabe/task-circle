@@ -42,6 +42,9 @@ const useStyles = makeStyles((theme) => ({
     width: "calc(100% - 2rem)",
     padding: "1rem",
     marginBottom: "1rem",
+    [theme.breakpoints.down("xs")]: {
+      width: "calc(100% - 8px)",
+    },
   },
   formLabel: {
     color: "inherit",
