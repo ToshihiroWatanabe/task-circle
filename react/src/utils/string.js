@@ -17,6 +17,9 @@ export const byteLength = (str) => {
  * 指定された文字数を超えた分を省略します。
  */
 export const byteSlice = (str, length) => {
+  if (byteLength(str) <= length) {
+    return str;
+  }
   while (byteLength(str) > length) {
     str = str.slice(0, -1);
   }
