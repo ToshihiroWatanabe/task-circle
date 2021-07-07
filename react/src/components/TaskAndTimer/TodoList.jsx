@@ -177,6 +177,9 @@ const TodoList = memo((props) => {
         localStorage.setItem("columns", JSON.stringify({ ...columns }));
         return { ...columns };
       });
+      if (state.isTimerOn) {
+        props.sendMessage();
+      }
     }
   };
 
