@@ -112,7 +112,7 @@ const App = memo(() => {
     setState((state) => {
       return { ...state, isConnected: true };
     });
-    console.log("サーバーに接続しました。");
+    console.info("サーバーに接続しました。");
     if (state.isInRoom) {
       sendMessage("enter");
     }
@@ -125,7 +125,7 @@ const App = memo(() => {
     setState((state) => {
       return { ...state, isConnected: false };
     });
-    console.log("サーバーとの接続が切れました。");
+    console.info("サーバーとの接続が切れました。");
     setSessions([]);
   };
 
@@ -200,7 +200,6 @@ const App = memo(() => {
     setSessions((sessions) => {
       let newSessions = [...sessions, ...message];
       newSessions = newSessions.map((session) => {
-        console.log(session.finishAt);
         return {
           ...session,
           startedAt: (session.startedAt = new Date(

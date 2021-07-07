@@ -60,8 +60,6 @@ const TaskMenu = memo((props) => {
    */
   const handleReset = () => {
     props.setColumns((columns) => {
-      console.log(columns);
-      console.log(Object.keys(columns)[props.columnIndex]);
       props.setPreviousColumns(JSON.parse(JSON.stringify({ ...columns })));
       const newColumns = {
         ...columns,
@@ -79,7 +77,6 @@ const TaskMenu = memo((props) => {
           ),
         },
       };
-      console.log(newColumns);
       localStorage.setItem("columns", JSON.stringify(newColumns));
       return newColumns;
     });
