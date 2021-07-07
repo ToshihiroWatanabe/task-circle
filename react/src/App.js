@@ -173,28 +173,18 @@ const App = memo(() => {
    * @param {*} message
    */
   const onSessionMessageReceived = (message) => {
-    console.log(message);
     setSessions((sessions) => {
-      let newSessions = [
-        ...sessions,
-        {
-          sessionId: message.sessionId,
-          userName: message.userName,
-          sessionType: message.sessionType,
-          content: message.content,
-          isTimerOn: message.isTimerOn,
-          startedAt: message.startedAt,
-          finishAt: message.finishAt,
-        },
-      ];
-      // sessionIdの重複を削除(後に出てきたほうが消える)
-      newSessions = newSessions
-        .slice()
-        .reverse()
-        .filter(
-          (v, i, a) => a.findIndex((t) => t.sessionId === v.sessionId) === i
-        )
-        .reverse();
+      let sessionUpdated = false;
+      let newSessions = sessions.map((session, index) => {
+        if (session.sessionId === message.sessionId) {
+          sessionUpdated = true;
+          return message;
+        }
+        return session;
+      });
+      if (!sessionUpdated) {
+        newSessions = [...newSessions, message];
+      }
       return newSessions;
     });
   };
@@ -204,7 +194,6 @@ const App = memo(() => {
    * @param {*} message
    */
   const onLeaveMessageReceived = (message) => {
-    console.log(message);
     setSessions((sessions) => {
       const newSessions = sessions.filter((session, index) => {
         return session.sessionId !== message.sessionId;
@@ -217,7 +206,6 @@ const App = memo(() => {
    * findAllのメッセージを受信したときの処理です。
    */
   const onFindAllMessageReceived = (message) => {
-    console.log(message);
     setSessions((sessions) => {
       let newSessions = [...sessions, ...message];
       newSessions = newSessions.map((session) => {
