@@ -3,10 +3,9 @@ import ReactDOM from "react-dom";
 import { BrowserRouter } from "react-router-dom";
 import App from "App";
 import "index.css";
-import { theme } from "theme";
 import * as serviceWorkerRegistration from "serviceWorkerRegistration";
 import reportWebVitals from "reportWebVitals";
-import { CssBaseline, MuiThemeProvider } from "@material-ui/core";
+import { CssBaseline } from "@material-ui/core";
 import ErrorBoundary from "components/ErrorBoundary";
 import { StateContextProvider } from "contexts/StateContext";
 import { SettingsContextProvider } from "contexts/SettingsContext";
@@ -22,11 +21,9 @@ ReactDOM.render(
           <ColumnsContextProvider>
             <SettingsContextProvider>
               <StatisticsContextProvider>
-                <MuiThemeProvider theme={theme}>
-                  <CssBaseline>
-                    <App />
-                  </CssBaseline>
-                </MuiThemeProvider>
+                <CssBaseline>
+                  <App />
+                </CssBaseline>
               </StatisticsContextProvider>
             </SettingsContextProvider>
           </ColumnsContextProvider>

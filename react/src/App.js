@@ -1,16 +1,17 @@
 import React, { memo, useContext, useEffect, useRef } from "react";
 import { Switch, Route, useLocation } from "react-router-dom";
-import { makeStyles } from "@material-ui/core/styles";
-import ResponsiveDrawer from "components/header/ResponsiveDrawer";
-import Settings from "components/Settings";
-import { StateContext } from "contexts/StateContext";
-import About from "components/About";
-import TaskAndTimer from "components/TaskAndTimer/TaskAndTimer";
-import { SettingsContext } from "contexts/SettingsContext";
-import { StatisticsContext } from "contexts/StatisticsContext";
+import { makeStyles, MuiThemeProvider } from "@material-ui/core/styles";
+import { theme } from "theme";
+import uuid from "uuid/v4";
 import SockJsClient from "react-stomp";
 import { SOCKET_URL } from "utils/constant";
-import uuid from "uuid/v4";
+import ResponsiveDrawer from "components/header/ResponsiveDrawer";
+import TaskAndTimer from "components/TaskAndTimer/TaskAndTimer";
+import Settings from "components/Settings";
+import About from "components/About";
+import { StateContext } from "contexts/StateContext";
+import { SettingsContext } from "contexts/SettingsContext";
+import { StatisticsContext } from "contexts/StatisticsContext";
 import { SessionsContext } from "contexts/SessionsContext";
 import { ColumnsContext } from "contexts/ColumnsContext";
 
@@ -276,50 +277,52 @@ const App = memo(() => {
 
   return (
     <>
-      {/* ドロワー */}
-      <ResponsiveDrawer sendMessage={sendMessage} />
-      <main className={classes.main}>
-        {/* タスク＆タイマー */}
-        <div
-          style={{
-            display: location.pathname === "/" ? "" : "none",
-          }}
-        >
-          <TaskAndTimer
-            sendMessage={sendMessage}
-            onEnter={onEnter}
-            onLeave={onLeave}
-          />
-        </div>
-        <Switch>
-          {/* 設定 */}
-          <Route exact path="/settings">
-            <Settings />
-          </Route>
-          {/* について */}
-          <Route exact path="/about">
-            <About />
-          </Route>
-        </Switch>
-      </main>
-      <SockJsClient
-        url={SOCKET_URL}
-        topics={["/topic/session"]}
-        onConnect={onConnected}
-        onDisconnect={onDisconnected}
-        onMessage={(msg) => onSessionMessageReceived(msg)}
-        ref={$websocket}
-      />
-      <SockJsClient
-        url={SOCKET_URL}
-        topics={["/topic/session/leave"]}
-        onMessage={(msg) => onLeaveMessageReceived(msg)}
-      />
-      <SockJsClient
-        url={SOCKET_URL}
-        topics={["/topic/session/findall/" + sessionFindAllTopicsId]}
-        onMessage={(msg) => onFindAllMessageReceived(msg)}
-      />
+      <MuiThemeProvider theme={theme}>
+        {/* ドロワー */}
+        <ResponsiveDrawer sendMessage={sendMessage} />
+        <main className={classes.main}>
+          {/* タスク＆タイマー */}
+          <div
+            style={{
+              display: location.pathname === "/" ? "" : "none",
+            }}
+          >
+            <TaskAndTimer
+              sendMessage={sendMessage}
+              onEnter={onEnter}
+              onLeave={onLeave}
+            />
+          </div>
+          <Switch>
+            {/* 設定 */}
+            <Route exact path="/settings">
+              <Settings />
+            </Route>
+            {/* について */}
+            <Route exact path="/about">
+              <About />
+            </Route>
+          </Switch>
+        </main>
+        <SockJsClient
+          url={SOCKET_URL}
+          topics={["/topic/session"]}
+          onConnect={onConnected}
+          onDisconnect={onDisconnected}
+          onMessage={(msg) => onSessionMessageReceived(msg)}
+          ref={$websocket}
+        />
+        <SockJsClient
+          url={SOCKET_URL}
+          topics={["/topic/session/leave"]}
+          onMessage={(msg) => onLeaveMessageReceived(msg)}
+        />
+        <SockJsClient
+          url={SOCKET_URL}
+          topics={["/topic/session/findall/" + sessionFindAllTopicsId]}
+          onMessage={(msg) => onFindAllMessageReceived(msg)}
+        />
+      </MuiThemeProvider>
     </>
   );
 });
