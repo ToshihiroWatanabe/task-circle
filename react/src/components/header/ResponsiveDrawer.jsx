@@ -37,19 +37,6 @@ const useStyles = makeStyles((theme) => ({
   root: {
     display: "flex",
   },
-  drawer: {
-    // [theme.breakpoints.up("lg")]: {
-    //   width: DRAWER_WIDTH,
-    //   flexShrink: 0,
-    // },
-  },
-  appBar: {
-    // zIndex: theme.zIndex.drawer + 1,
-    // [theme.breakpoints.up("lg")]: {
-    //   width: `calc(100%)`,
-    //   marginLeft: DRAWER_WIDTH,
-    // },
-  },
   menuButton: {
     marginRight: theme.spacing(2),
     [theme.breakpoints.up("md")]: {
@@ -148,12 +135,7 @@ const ResponsiveDrawer = memo((props) => {
             onClick={onHeaderTitleClick}
             noWrap
           >
-            {pages.map(
-              (page, index) =>
-                location.pathname === page.path && (
-                  <Fragment key={index}>TaskCircle</Fragment>
-                )
-            )}
+            TaskCircle
           </Typography>
           <span style={{ flexGrow: 1 }}></span>
           {useMediaQuery(theme.breakpoints.up("md")) && (
@@ -204,7 +186,7 @@ const ResponsiveDrawer = memo((props) => {
           <AccountPopover onSyncButtonClick={props.onSyncButtonClick} />
         </Toolbar>
       </AppBar>
-      <nav className={classes.drawer} aria-label="mailbox folders">
+      <nav aria-label="mailbox folders">
         {/* The implementation can be swapped with js to avoid SEO duplication of links. */}
         <Hidden lgUp implementation="css">
           <SwipeableDrawer

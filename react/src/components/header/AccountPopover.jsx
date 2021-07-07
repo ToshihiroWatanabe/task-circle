@@ -102,6 +102,7 @@ const AccountPopover = memo((props) => {
             setMaskedEmail={setMaskedEmail}
           />
           <Link
+            id="linkToPrivacy"
             to="/privacy"
             onClick={handleClose}
             style={{ marginLeft: "0.5rem" }}

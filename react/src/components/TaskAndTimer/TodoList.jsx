@@ -454,7 +454,9 @@ const TodoList = memo((props) => {
                                       </IconButton>
                                       {/* </BootstrapTooltip> */}
                                       <div style={{ flexGrow: "1" }}>
-                                        <div style={{ marginBottom: "0.2rem" }}>
+                                        <div
+                                          style={{ marginBottom: "-0.2rem" }}
+                                        >
                                           {item.category !== "" && (
                                             <Tooltip
                                               title={item.category}
@@ -483,9 +485,9 @@ const TodoList = memo((props) => {
                                         </div>
                                         <div
                                           style={{
-                                            fontSize: "0.75rem",
-                                            marginTop: "0.5rem",
-                                            marginBottom: "-0.2rem",
+                                            fontSize: "0.8rem",
+                                            marginTop: "0.4rem",
+                                            marginBottom: "-0.4rem",
                                             display: "flex",
                                             alignItems: "center",
                                           }}
