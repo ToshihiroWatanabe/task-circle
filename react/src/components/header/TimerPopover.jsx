@@ -11,7 +11,7 @@ import {
   Typography,
 } from "@material-ui/core";
 import "./TimerPopover.css";
-import { Context } from "contexts/Context";
+import { StateContext } from "contexts/StateContext";
 import ToggleButton from "./ToggleButton";
 import { SettingsContext } from "contexts/SettingsContext";
 
@@ -38,7 +38,7 @@ const useStyles = makeStyles((theme) => ({}));
  */
 const TimerPopover = memo((props) => {
   const classes = useStyles();
-  const [state, setState] = useContext(Context);
+  const [state, setState] = useContext(StateContext);
   const [settings, setSettings] = useContext(SettingsContext);
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);

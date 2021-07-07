@@ -1,10 +1,7 @@
 import React, { memo, useContext, useState } from "react";
 import {
   Box,
-  Button,
   IconButton,
-  List,
-  ListItemText,
   makeStyles,
   Popover,
   Tooltip,
@@ -12,10 +9,7 @@ import {
 } from "@material-ui/core";
 import "./AccountPopover.css";
 import AccountCircleIcon from "@material-ui/icons/AccountCircle";
-import SettingsIcon from "@material-ui/icons/Settings";
-import SyncIcon from "@material-ui/icons/Sync";
-import { Link } from "react-router-dom";
-import { Context } from "contexts/Context";
+import { StateContext } from "contexts/StateContext";
 import { StatisticsContext } from "contexts/StatisticsContext";
 import { secondToHHMMSS } from "utils/convert";
 import GoogleButton from "./GoogleButton";
@@ -32,7 +26,7 @@ const useStyles = makeStyles((theme) => ({
  */
 const AccountPopover = memo((props) => {
   const classes = useStyles();
-  const [state, setState] = useContext(Context);
+  const [state, setState] = useContext(StateContext);
   const [statistics] = useContext(StatisticsContext);
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);

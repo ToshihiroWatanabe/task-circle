@@ -16,7 +16,7 @@ import {
 import Autocomplete, {
   createFilterOptions,
 } from "@material-ui/lab/Autocomplete";
-import { Context } from "contexts/Context";
+import { StateContext } from "contexts/StateContext";
 
 /** 時間 */
 const hours = [];
@@ -68,7 +68,7 @@ const EditDialog = memo((props) => {
     minute: 0,
     second: 0,
   });
-  const [state, setState] = useContext(Context);
+  const [state, setState] = useContext(StateContext);
 
   useEffect(() => {
     setValue((value) => {

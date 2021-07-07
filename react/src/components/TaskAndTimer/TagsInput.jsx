@@ -6,7 +6,7 @@ import Downshift from "downshift";
 import AddIcon from "@material-ui/icons/Add";
 import uuid from "uuid/v4";
 import { NUMBER_OF_TASKS_MAX } from "utils/constant";
-import { Context } from "contexts/Context";
+import { StateContext } from "contexts/StateContext";
 
 let lastSpacePressed = 0;
 
@@ -22,7 +22,7 @@ const useStyles = makeStyles((theme) => ({
  */
 const TagsInput = memo((props) => {
   const classes = useStyles();
-  const [state] = useContext(Context);
+  const [state] = useContext(StateContext);
   const [helperText, setHelperText] = useState("");
   const [inputValue, setInputValue] = useState("");
   const [categoryInput, setCategoryInput] = useState([]);

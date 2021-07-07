@@ -2,7 +2,7 @@ import React, { memo, useContext, useEffect, useState } from "react";
 import { makeStyles, Typography, useTheme } from "@material-ui/core";
 import TodoList from "./TodoList";
 import Room from "./Room";
-import { Context } from "contexts/Context";
+import { StateContext } from "contexts/StateContext";
 import { SettingsContext } from "contexts/SettingsContext";
 import { changeFaviconTo } from "utils/changeFavicon";
 import startedAudio from "audio/notification_simple-01.mp3";
@@ -80,7 +80,7 @@ const useStyles = makeStyles((theme) => ({}));
 const TaskAndTimer = memo((props) => {
   const classes = useStyles();
   const theme = useTheme();
-  const [state, setState] = useContext(Context);
+  const [state, setState] = useContext(StateContext);
   const [columns, setColumns] = useContext(ColumnsContext);
   const [settings] = useContext(SettingsContext);
   const [statistics, setStatistics] = useContext(StatisticsContext);

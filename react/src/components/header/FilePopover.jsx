@@ -12,7 +12,7 @@ import FileCopyIcon from "@material-ui/icons/FileCopy";
 import { DropzoneArea } from "material-ui-dropzone";
 import AttachFileIcon from "@material-ui/icons/AttachFile";
 import MuiAlert from "@material-ui/lab/Alert";
-import { Context } from "contexts/Context";
+import { StateContext } from "contexts/StateContext";
 import { exportReportsToTxt, exportReportsToJson } from "utils/export";
 import {
   NUMBER_OF_TASKS_MAX,
@@ -36,7 +36,7 @@ const useStyles = makeStyles((theme) => ({
  */
 const FilePopover = memo((props) => {
   const classes = useStyles();
-  const [state, setState] = useContext(Context);
+  const [state, setState] = useContext(StateContext);
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
 

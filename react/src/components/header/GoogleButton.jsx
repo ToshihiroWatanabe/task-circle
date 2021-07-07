@@ -1,7 +1,7 @@
 import React, { useState, memo, useContext } from "react";
 import { GoogleLogin, GoogleLogout } from "react-google-login";
 import SimpleSnackbar from "components/SimpleSnackbar";
-import { Context } from "contexts/Context";
+import { StateContext } from "contexts/StateContext";
 import "components/header/GoogleButton.css";
 
 /**
@@ -13,7 +13,7 @@ const CLIENT_ID = process.env.REACT_APP_CLIENT_ID;
  * Googleでログイン/ログアウトするボタンのコンポーネントです。
  */
 const GoogleButton = memo((props) => {
-  const [state, setState] = useContext(Context);
+  const [state, setState] = useContext(StateContext);
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMassage] = useState("");
 

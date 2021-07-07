@@ -1,7 +1,7 @@
 import React, { memo, useContext } from "react";
 import { makeStyles, useTheme } from "@material-ui/core";
 import { Card } from "@material-ui/core";
-import { Context } from "contexts/Context";
+import { StateContext } from "contexts/StateContext";
 import EnterTheRoom from "./EnterTheRoom";
 import RoomHeader from "./RoomHeader";
 import UserList from "./UserList";
@@ -26,7 +26,7 @@ const useStyles = makeStyles((theme) => ({
 const Room = memo((props) => {
   const classes = useStyles();
   const theme = useTheme();
-  const [state, setState] = useContext(Context);
+  const [state, setState] = useContext(StateContext);
 
   return (
     <>

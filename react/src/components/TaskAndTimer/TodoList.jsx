@@ -16,7 +16,7 @@ import uuid from "uuid/v4";
 import PlayArrowIcon from "@material-ui/icons/PlayArrow";
 import LinearDeterminate from "components/TaskAndTimer/LinearDeterminate";
 import "components/TaskAndTimer/TodoList.css";
-import { Context } from "contexts/Context";
+import { StateContext } from "contexts/StateContext";
 import StopIcon from "@material-ui/icons/Stop";
 import { secondToHHMMSS, taskItemsToBuildUp } from "utils/convert";
 import TaskMenu from "./TaskMenu";
@@ -73,7 +73,7 @@ const useStyles = makeStyles((theme) => ({
 const TodoList = memo((props) => {
   const classes = useStyles();
   const theme = useTheme();
-  const [state, setState] = useContext(Context);
+  const [state, setState] = useContext(StateContext);
   const [settings] = useContext(SettingsContext);
   const [isTagsInputFocused, setIsTagsInputFocused] = useState(-1);
   const [previousColumns, setPreviousColumns] = useState({});

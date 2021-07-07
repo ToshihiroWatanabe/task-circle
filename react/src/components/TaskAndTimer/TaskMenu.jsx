@@ -6,7 +6,7 @@ import DeleteIcon from "@material-ui/icons/Delete";
 import RotateLeftIcon from "@material-ui/icons/RotateLeft";
 import EditIcon from "@material-ui/icons/Edit";
 import EditDialog from "components/TaskAndTimer/EditDialog";
-import { Context } from "contexts/Context";
+import { StateContext } from "contexts/StateContext";
 
 const getCategories = (reports) => {
   let categories = [];
@@ -40,7 +40,7 @@ const useStyles = makeStyles({
  */
 const TaskMenu = memo((props) => {
   const classes = useStyles();
-  const [state, setState] = useContext(Context);
+  const [state, setState] = useContext(StateContext);
   const [anchorEl, setAnchorEl] = useState(null);
   const [editOpen, setEditOpen] = useState(false);
   const [categories, setCategories] = useState([]);

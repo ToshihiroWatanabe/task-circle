@@ -6,7 +6,7 @@ import "./FloatingTimer.css";
 import { useTheme, useMediaQuery } from "@material-ui/core";
 import StopIcon from "@material-ui/icons/Stop";
 import CircularDeterminate from "./CircularDeterminate";
-import { Context } from "contexts/Context";
+import { StateContext } from "contexts/StateContext";
 import { SettingsContext } from "contexts/SettingsContext";
 import { secondToHHMMSS, secondToHHMMSS_ja } from "utils/convert";
 import { byteSlice } from "utils/string";
@@ -74,7 +74,7 @@ const useStyles = makeStyles((theme) => ({
 const TimerFab = memo((props) => {
   const classes = useStyles();
   const theme = useTheme();
-  const [state] = useContext(Context);
+  const [state] = useContext(StateContext);
   const [settings] = useContext(SettingsContext);
   const useMediaQueryThemeBreakpointsUpMd = useMediaQuery(
     theme.breakpoints.up("md")

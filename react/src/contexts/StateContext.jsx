@@ -1,12 +1,12 @@
 import React, { createContext, useState } from "react";
 
-export const Context = createContext([{}, () => {}]);
+export const StateContext = createContext([{}, () => {}]);
 
 /**
  * グローバルstateを提供します。
  * @param {*} props
  */
-export function ContextProvider(props) {
+export function StateContextProvider(props) {
   const [state, setState] = useState({
     /** Slackに投稿するときの名前 */
     slackUserName: "",
@@ -41,8 +41,8 @@ export function ContextProvider(props) {
   });
 
   return (
-    <Context.Provider value={[state, setState]}>
+    <StateContext.Provider value={[state, setState]}>
       {props.children}
-    </Context.Provider>
+    </StateContext.Provider>
   );
 }

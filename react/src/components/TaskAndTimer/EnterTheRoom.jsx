@@ -1,7 +1,7 @@
 import React, { memo, useContext, useState } from "react";
 import { makeStyles, useTheme } from "@material-ui/core/styles";
 import { Button, TextField, Tooltip } from "@material-ui/core";
-import { Context } from "contexts/Context";
+import { StateContext } from "contexts/StateContext";
 
 const localStorageGetItemNameInRoom = localStorage.getItem("nameInRoom")
   ? localStorage.getItem("nameInRoom")
@@ -52,7 +52,7 @@ const useStyles = makeStyles((theme) => ({
 const EnterTheRoom = memo((props) => {
   const classes = useStyles();
   const theme = useTheme();
-  const [state, setState] = useContext(Context);
+  const [state, setState] = useContext(StateContext);
   const [nameInRoom, setNameInRoom] = useState(localStorageGetItemNameInRoom);
   const [helperText, setHelperText] = useState("");
 

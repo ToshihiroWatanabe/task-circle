@@ -3,7 +3,7 @@ import { Switch, Route, useLocation } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
 import ResponsiveDrawer from "components/header/ResponsiveDrawer";
 import Settings from "components/Settings";
-import { Context } from "contexts/Context";
+import { StateContext } from "contexts/StateContext";
 import About from "components/About";
 import TaskAndTimer from "components/TaskAndTimer/TaskAndTimer";
 import { SettingsContext } from "contexts/SettingsContext";
@@ -75,7 +75,7 @@ const useStyles = makeStyles((theme) => ({
  */
 const App = memo(() => {
   const classes = useStyles();
-  const [state, setState] = useContext(Context);
+  const [state, setState] = useContext(StateContext);
   const [settings, setSettings] = useContext(SettingsContext);
   const [statistics, setStatistics] = useContext(StatisticsContext);
   const [sessions, setSessions] = useContext(SessionsContext);

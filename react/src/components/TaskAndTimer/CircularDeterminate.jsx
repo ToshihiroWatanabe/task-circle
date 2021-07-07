@@ -1,7 +1,7 @@
 import React, { memo, useContext } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import CircularProgress from "@material-ui/core/CircularProgress";
-import { Context } from "contexts/Context";
+import { StateContext } from "contexts/StateContext";
 import { SettingsContext } from "contexts/SettingsContext";
 
 const useStyles = makeStyles((theme) => ({
@@ -33,7 +33,7 @@ const useStyles = makeStyles((theme) => ({
  */
 const CircularDeterminate = memo((props) => {
   const classes = useStyles();
-  const [state] = useContext(Context);
+  const [state] = useContext(StateContext);
   const [settings] = useContext(SettingsContext);
 
   const selectedTask =

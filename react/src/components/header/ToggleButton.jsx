@@ -1,5 +1,5 @@
 import React, { useContext, memo } from "react";
-import { Context } from "contexts/Context";
+import { StateContext } from "contexts/StateContext";
 import { Button, useTheme } from "@material-ui/core";
 import stoppedAudio from "audio/notification_simple-02.mp3";
 import { SettingsContext } from "contexts/SettingsContext";
@@ -13,7 +13,7 @@ const stoppedSound = new Audio(stoppedAudio);
  */
 const ToggleButton = memo((props) => {
   const theme = useTheme();
-  const [state, setState] = useContext(Context);
+  const [state, setState] = useContext(StateContext);
   const [settings] = useContext(SettingsContext);
 
   /**

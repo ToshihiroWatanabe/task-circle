@@ -7,7 +7,7 @@ import {
   Tooltip,
   Typography,
 } from "@material-ui/core";
-import { Context } from "contexts/Context";
+import { StateContext } from "contexts/StateContext";
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 import PersonIcon from "@material-ui/icons/Person";
 import HelpPopover from "components/TaskAndTimer/HelpPopover";
@@ -23,7 +23,7 @@ const useStyles = makeStyles((theme) => ({
  */
 const RoomHeader = (props) => {
   const classes = useStyles();
-  const [state, setState] = useContext(Context);
+  const [state, setState] = useContext(StateContext);
 
   /**
    * 退室ボタンがクリックされたときの処理です。

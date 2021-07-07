@@ -8,7 +8,7 @@ import * as serviceWorkerRegistration from "serviceWorkerRegistration";
 import reportWebVitals from "reportWebVitals";
 import { CssBaseline, MuiThemeProvider } from "@material-ui/core";
 import ErrorBoundary from "components/ErrorBoundary";
-import { ContextProvider } from "contexts/Context";
+import { StateContextProvider } from "contexts/StateContext";
 import { SettingsContextProvider } from "contexts/SettingsContext";
 import { StatisticsContextProvider } from "contexts/StatisticsContext";
 import { SessionsContextProvider } from "contexts/SessionsContext";
@@ -17,7 +17,7 @@ import { ColumnsContextProvider } from "contexts/ColumnsContext";
 ReactDOM.render(
   <ErrorBoundary>
     <BrowserRouter>
-      <ContextProvider>
+      <StateContextProvider>
         <SessionsContextProvider>
           <ColumnsContextProvider>
             <SettingsContextProvider>
@@ -31,7 +31,7 @@ ReactDOM.render(
             </SettingsContextProvider>
           </ColumnsContextProvider>
         </SessionsContextProvider>
-      </ContextProvider>
+      </StateContextProvider>
     </BrowserRouter>
   </ErrorBoundary>,
   document.getElementById("app")
