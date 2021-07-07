@@ -6,6 +6,9 @@ import org.apache.ibatis.annotations.Mapper;
 
 import app.taskcircle.model.Session;
 
+/**
+ * sessionsテーブルのマッパークラスです。
+ */
 @Mapper
 public interface SessionMapper {
 

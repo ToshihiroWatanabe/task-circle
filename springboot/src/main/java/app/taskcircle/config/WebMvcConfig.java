@@ -10,6 +10,7 @@ import org.springframework.web.cors.CorsConfiguration;
  */
 @Configuration
 public class WebMvcConfig implements WebMvcConfigurer {
+
     /**
      * CORSを許可する条件を追加します。
      */

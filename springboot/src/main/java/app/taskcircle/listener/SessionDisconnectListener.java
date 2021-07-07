@@ -10,6 +10,9 @@ import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Component;
 import org.springframework.web.socket.messaging.SessionDisconnectEvent;
 
+/**
+ * セッションの切断を検知するリスナークラスです。
+ */
 @Component
 public class SessionDisconnectListener implements ApplicationListener<SessionDisconnectEvent> {
 

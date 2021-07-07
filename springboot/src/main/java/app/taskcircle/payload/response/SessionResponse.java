@@ -3,6 +3,9 @@ package app.taskcircle.payload.response;
 import lombok.Getter;
 import lombok.Setter;
 
+/**
+ * セッションのレスポンスのモデルクラスです。
+ */
 @Getter
 @Setter
 public class SessionResponse {

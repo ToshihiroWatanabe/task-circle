@@ -10,8 +10,11 @@ import org.springframework.stereotype.Service;
 
 import app.taskcircle.mapper.SessionMapper;
 import app.taskcircle.model.Session;
-import app.taskcircle.payload.request.SessionMessage;
+import app.taskcircle.payload.request.SessionRequest;
 
+/**
+ * セッションに関するサービスクラスです。
+ */
 @Service
 public class SessionService {
 
@@ -42,16 +45,19 @@ public class SessionService {
         return sessionMapper.deleteAll();
     }
 
-    public Session messageToSession(SessionMessage message) {
+    /**
+     * セッションのリクエストをsessionsテーブルのモデルクラスに変換します。
+     */
+    public Session requestToSession(SessionRequest request) {
         Session session = new Session();
-        session.setUserName(message.getUserName());
-        session.setSessionType(message.getSessionType());
-        session.setContent(message.getContent());
-        session.setIsTimerOn(message.getIsTimerOn());
+        session.setUserName(request.getUserName());
+        session.setSessionType(request.getSessionType());
+        session.setContent(request.getContent());
+        session.setIsTimerOn(request.getIsTimerOn());
         session.setStartedAt(
-                LocalDateTime.ofInstant(Instant.ofEpochMilli(message.getStartedAt()), ZoneId.systemDefault()));
+                LocalDateTime.ofInstant(Instant.ofEpochMilli(request.getStartedAt()), ZoneId.systemDefault()));
         session.setFinishAt(
-                LocalDateTime.ofInstant(Instant.ofEpochMilli(message.getFinishAt()), ZoneId.systemDefault()));
+                LocalDateTime.ofInstant(Instant.ofEpochMilli(request.getFinishAt()), ZoneId.systemDefault()));
         return session;
     }
 }

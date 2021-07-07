@@ -5,6 +5,9 @@ import java.time.LocalDateTime;
 import lombok.Getter;
 import lombok.Setter;
 
+/**
+ * sessionsテーブルのモデルクラスです。
+ */
 @Getter
 @Setter
 public class Session {
