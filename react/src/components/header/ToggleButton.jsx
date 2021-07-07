@@ -74,7 +74,7 @@ const ToggleButton = memo((props) => {
         variant="contained"
         style={{
           backgroundColor:
-            theme.palette.type === "light" ? "whitesmoke" : "#525252",
+            theme.palette.type === "light" ? "whitesmoke" : "#555",
           color: theme.palette.type === "light" ? "#000" : "#FFF",
           border:
             state.pomodoroTimerType === "work"

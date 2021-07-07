@@ -296,10 +296,10 @@ const TodoList = memo((props) => {
                       }).length > 0
                         ? theme.palette.type === "light"
                           ? "#ebecf0"
-                          : "#525252"
+                          : "#424242"
                         : theme.palette.type === "light"
                         ? "#fafafa"
-                        : "#323232",
+                        : "#555",
                     padding: 4,
                     width: "100%",
                     marginBottom: "-0.2rem",
@@ -358,12 +358,18 @@ const TodoList = memo((props) => {
                         style={{
                           paddingTop: "0.5rem",
                           background: snapshot.isDraggingOver
-                            ? "lightblue"
+                            ? theme.palette.type === "light"
+                              ? "lightblue"
+                              : theme.palette.primary.dark
                             : column.items.filter((item) => {
                                 return item.isSelected;
                               }).length > 0
-                            ? "#ebecf0"
-                            : "#fafafa",
+                            ? theme.palette.type === "light"
+                              ? "#ebecf0"
+                              : "#666"
+                            : theme.palette.type === "light"
+                            ? "#fafafa"
+                            : "#666",
                         }}
                         className={classes.columnCard}
                       >
@@ -394,10 +400,10 @@ const TodoList = memo((props) => {
                                           : snapshot.isDragging
                                           ? theme.palette.type === "light"
                                             ? "#F8F8F8"
-                                            : "#2F2F2F"
+                                            : "#555"
                                           : theme.palette.type === "light"
                                           ? "#FFF"
-                                          : "#1F1F1F",
+                                          : "#424242",
                                       color:
                                         item.isSelected &&
                                         state.isTimerOn &&
@@ -464,7 +470,11 @@ const TodoList = memo((props) => {
                                                   fontSize: "0.75rem",
                                                   height: "1.2rem",
                                                   maxWidth: "4rem",
-                                                  backgroundColor: "#ebecf0",
+                                                  backgroundColor:
+                                                    theme.palette.type ===
+                                                    "light"
+                                                      ? "#ebecf0"
+                                                      : "#555",
                                                 }}
                                               />
                                             </Tooltip>
@@ -578,10 +588,10 @@ const TodoList = memo((props) => {
                       }).length > 0
                         ? theme.palette.type === "light"
                           ? "#ebecf0"
-                          : "#626262"
+                          : "#424242"
                         : theme.palette.type === "light"
                         ? "#fafafa"
-                        : "#303030",
+                        : "#555",
                     width: "100%",
                     marginTop: "-2px",
                     paddingLeft: "0.5rem",
@@ -609,16 +619,16 @@ const TodoList = memo((props) => {
                         isTagsInputFocused === columnIndex
                           ? theme.palette.type === "light"
                             ? "white"
-                            : "black"
+                            : "#111"
                           : column.items.filter((item) => {
                               return item.isSelected;
                             }).length > 0
                           ? theme.palette.type === "light"
                             ? "#ebecf0"
-                            : "#626262"
+                            : "#424242"
                           : theme.palette.type === "light"
                           ? "#fafafa"
-                          : "#303030",
+                          : "#555",
                       borderRadius: "4px",
                       height: "2.5rem",
                     }}
