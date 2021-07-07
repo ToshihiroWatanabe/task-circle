@@ -32,9 +32,12 @@ CREATE TABLE IF NOT EXISTS users(
     user_name VARCHAR(24),
     -- プロフィール画像のURL
     image_url VARCHAR(255),
+    -- Todoリスト
+    todo_lists JSON,
     -- 設定
     settings JSON,
     created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    CHECK (JSON_VALID(todo_lists)),
     CHECK (JSON_VALID(settings))
 );
