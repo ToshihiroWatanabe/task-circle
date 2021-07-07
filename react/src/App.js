@@ -261,7 +261,7 @@ const App = memo(() => {
             : "normalWork",
           content: selectedTask !== null ? selectedTask.content : "",
           isTimerOn: state.isTimerOn,
-          startedAt: state.isTimerOn ? Date.now() : 0,
+          startedAt: state.isTimerOn || state.isAfk ? Date.now() : 0,
           finishAt:
             settings.isPomodoroEnabled && state.isTimerOn
               ? Date.now() + state.pomodoroTimeLeft * 1000

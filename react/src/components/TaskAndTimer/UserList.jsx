@@ -122,6 +122,25 @@ const UserList = memo((props) => {
                           {"分"}
                         </>
                       )}
+                      {session.sessionType === "afk" && (
+                        <>
+                          {" - "}
+                          {dateNow - session.startedAt >= 1000 * 60 * 60
+                            ? Math.floor(
+                                (dateNow - session.startedAt) / 1000 / 60 / 60
+                              ) + "時間"
+                            : ""}
+                          {dateNow - session.startedAt >= 1000 * 60
+                            ? Math.floor(
+                                ((dateNow - session.startedAt) %
+                                  (1000 * 60 * 60)) /
+                                  1000 /
+                                  60
+                              ) + "分"
+                            : "0分"}
+                          {"経過"}
+                        </>
+                      )}
                     </Fragment>
                   }
                 />
