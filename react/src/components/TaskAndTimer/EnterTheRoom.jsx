@@ -62,7 +62,9 @@ const EnterTheRoom = memo((props) => {
    */
   const onTextFieldChange = (event) => {
     setNameInRoom(event.target.value);
-    setHelperText("");
+    if (helperText !== "") {
+      setHelperText("");
+    }
   };
 
   /**
@@ -80,6 +82,7 @@ const EnterTheRoom = memo((props) => {
    */
   const onEnterButtonClick = (event) => {
     event.preventDefault();
+    localStorage.setItem("nameInRoom", nameInRoom);
     if (validate(nameInRoom)) {
       // 入室
       setState((state) => {
@@ -87,7 +90,6 @@ const EnterTheRoom = memo((props) => {
           ...state,
           isInRoom: true,
         };
-        localStorage.setItem("nameInRoom", nameInRoom);
         return newState;
       });
       props.onEnter();

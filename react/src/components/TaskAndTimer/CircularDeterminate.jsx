@@ -1,5 +1,5 @@
 import React, { memo, useContext } from "react";
-import { makeStyles } from "@material-ui/core/styles";
+import { makeStyles, useTheme } from "@material-ui/core/styles";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import { StateContext } from "contexts/StateContext";
 import { SettingsContext } from "contexts/SettingsContext";
@@ -33,6 +33,7 @@ const useStyles = makeStyles((theme) => ({
  */
 const CircularDeterminate = memo((props) => {
   const classes = useStyles();
+  const theme = useTheme();
   const [state] = useContext(StateContext);
   const [settings] = useContext(SettingsContext);
 
@@ -81,8 +82,8 @@ const CircularDeterminate = memo((props) => {
               : "yellow"
             : selectedTask &&
               selectedTask.spentSecond > selectedTask.estimatedSecond
-            ? "LightSeaGreen"
-            : "orange",
+            ? theme.palette.primary.light
+            : theme.palette.secondary,
         }}
       />
     </div>

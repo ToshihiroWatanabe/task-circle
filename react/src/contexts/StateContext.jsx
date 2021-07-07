@@ -8,10 +8,6 @@ export const StateContext = createContext([{}, () => {}]);
  */
 export function StateContextProvider(props) {
   const [state, setState] = useState({
-    /** トークンID */
-    tokenId: "",
-    /** パスワード */
-    password: "",
     /** タイマーがオンかどうか */
     isTimerOn: false,
     /** ポモドーロタイマーの残り時間 */
@@ -26,6 +22,10 @@ export function StateContextProvider(props) {
     isAfk: false,
     /** ログインしているかどうか */
     isLogined: false,
+    /** トークンID */
+    tokenId: "",
+    /** メールアドレス */
+    email: "",
   });
 
   return (
