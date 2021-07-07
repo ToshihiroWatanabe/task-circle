@@ -48,7 +48,7 @@ const UserList = memo((props) => {
               <div
                 style={{
                   width: "5rem",
-                  padding: "1rem 0.75rem 0.5rem 0.70rem",
+                  padding: "0.8rem 0.75rem 0.5rem 0.5rem",
                 }}
               >
                 <Skeleton variant="circle" width={40} height={40} />
@@ -74,7 +74,7 @@ const UserList = memo((props) => {
           return (
             <Fragment key={index}>
               <Divider />
-              <ListItem alignItems="flex-start">
+              <ListItem alignItems="flex-start" style={{ paddingTop: 4 }}>
                 <ListItemAvatar style={{ marginLeft: "-0.4rem" }}>
                   <>
                     <Avatar
@@ -91,6 +91,7 @@ const UserList = memo((props) => {
 
                 <ListItemText
                   primary={session.userName}
+                  style={{ marginTop: 6, marginBottom: -1 }}
                   secondary={
                     <Fragment>
                       <Typography

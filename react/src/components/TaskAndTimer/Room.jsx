@@ -30,7 +30,10 @@ const Room = memo((props) => {
 
   return (
     <>
-      <Card className={classes.roomCard}>
+      <Card
+        className={classes.roomCard}
+        style={{ paddingBottom: state.isInRoom ? 0 : "" }}
+      >
         <RoomHeader
           sessions={props.sessions}
           onLeave={props.onLeave}
