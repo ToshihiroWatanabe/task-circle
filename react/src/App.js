@@ -25,17 +25,17 @@ if (
 
 const sessionFindAllTopicsId = uuid();
 
-/** ローカルストレージから設定を取得します。 */
+/** ローカルストレージから取得した設定 */
 const localStorageGetItemSettings = localStorage.getItem("settings")
   ? JSON.parse(localStorage.getItem("settings"))
   : {};
 
-/** ローカルストレージから統計を取得します。 */
+/** ローカルストレージから取得した統計 */
 const localStorageGetItemStatistics = localStorage.getItem("statistics")
   ? JSON.parse(localStorage.getItem("statistics"))
   : {};
 
-/** ローカルストレージからTodoリストを取得します。 */
+/** ローカルストレージから取得したTodoリスト */
 const localStorageGetItemColumns = localStorage.getItem("columns")
   ? JSON.parse(localStorage.getItem("columns"))
   : {
