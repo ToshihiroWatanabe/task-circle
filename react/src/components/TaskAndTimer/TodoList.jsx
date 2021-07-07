@@ -12,29 +12,29 @@ import {
   Button,
   useTheme,
 } from "@material-ui/core";
-import uuid from "uuid/v4";
-import PlayArrowIcon from "@material-ui/icons/PlayArrow";
-import LinearDeterminate from "components/TaskAndTimer/LinearDeterminate";
 import "components/TaskAndTimer/TodoList.css";
+import uuid from "uuid/v4";
 import { StateContext } from "contexts/StateContext";
+import { SettingsContext } from "contexts/SettingsContext";
 import StopIcon from "@material-ui/icons/Stop";
+import CloseIcon from "@material-ui/icons/Close";
+import AlarmIcon from "@material-ui/icons/Alarm";
+import TwitterIcon from "@material-ui/icons/Twitter";
+import PlayArrowIcon from "@material-ui/icons/PlayArrow";
+import AddCircleOutlineIcon from "@material-ui/icons/AddCircleOutline";
+import AssignmentOutlinedIcon from "@material-ui/icons/AssignmentOutlined";
+import FreeBreakfastOutlinedIcon from "@material-ui/icons/FreeBreakfastOutlined";
 import { secondToHHMMSS, taskItemsToBuildUp } from "utils/convert";
 import TaskMenu from "./TaskMenu";
 import ColumnMenu from "./TodoListMenu";
 import TagsInput from "./TagsInput";
-import CloseIcon from "@material-ui/icons/Close";
-import AssignmentOutlinedIcon from "@material-ui/icons/AssignmentOutlined";
+import LinearDeterminate from "components/TaskAndTimer/LinearDeterminate";
 import {
   copyTasksToClipboard,
   copyTasksToClipboard_BuildUp,
   copyTasksToClipboard_ja,
 } from "utils/export";
-import AlarmIcon from "@material-ui/icons/Alarm";
-import FreeBreakfastOutlinedIcon from "@material-ui/icons/FreeBreakfastOutlined";
-import { SettingsContext } from "contexts/SettingsContext";
-import AddCircleOutlineIcon from "@material-ui/icons/AddCircleOutline";
 import { NUMBER_OF_TASKS_MAX } from "utils/constant";
-import TwitterIcon from "@material-ui/icons/Twitter";
 
 const useStyles = makeStyles((theme) => ({
   root: {
