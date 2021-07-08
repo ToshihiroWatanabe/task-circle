@@ -42,7 +42,7 @@ public class AuthController {
      */
     @PostMapping("/login")
     @Transactional
-    public boolean login(@RequestBody User user) {
+    public String login(@RequestBody User user) {
         User responseUser = restOperations.getForObject(
                 "https://www.googleapis.com/oauth2/v3/tokeninfo?id_token=" + user.getTokenId(), User.class);
         // クライアントから送られてきたメールアドレスとGoogleから送られてきたメールアドレスが同じか判定
@@ -50,15 +50,17 @@ public class AuthController {
             try {
                 user.setUserUuid(UUID.randomUUID().toString());
                 System.out.println("新規登録: " + user.getEmail());
-                return userService.create(user) && todoListService.create(user.getUserUuid())
-                        && settingService.create(user.getUserUuid());
+                userService.create(user);
+                todoListService.create(user.getUserUuid());
+                settingService.create(user.getUserUuid());
+                return "registered";
             } catch (DuplicateKeyException e) {
                 userService.updateTokenAndImageUrl(user);
                 System.out.println("ログイン: " + user.getEmail());
-                return true;
+                return "logined";
             }
         } else {
-            return false;
+            return "failed";
         }
     }
 }

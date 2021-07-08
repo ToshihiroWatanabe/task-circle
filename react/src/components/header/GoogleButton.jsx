@@ -5,6 +5,10 @@ import { StateContext } from "contexts/StateContext";
 import "components/header/GoogleButton.css";
 import { maskEmail } from "utils/string";
 import AuthService from "services/auth.service";
+import TodoListService from "services/todoList.service";
+import SettingService from "services/setting.service";
+import { TodoListsContext } from "contexts/TodoListsContext";
+import { SettingsContext } from "contexts/SettingsContext";
 
 /**
  * クライアントID
@@ -16,6 +20,8 @@ const CLIENT_ID = process.env.REACT_APP_CLIENT_ID;
  */
 const GoogleButton = memo((props) => {
   const [state, setState] = useContext(StateContext);
+  const [todoLists, setTodoLists] = useContext(TodoListsContext);
+  const [settings, setSettings] = useContext(SettingsContext);
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMassage] = useState("");
 
@@ -30,7 +36,7 @@ const GoogleButton = memo((props) => {
       email: response.profileObj.email,
     })
       .then((res) => {
-        if (res) {
+        if (res.data === "registered" || res.data === "logined") {
           setState((state) => {
             return {
               ...state,
@@ -40,6 +46,12 @@ const GoogleButton = memo((props) => {
             };
           });
           props.setMaskedEmail(maskEmail(response.profileObj.email));
+          if (res.data === "registered") {
+            console.log(todoLists);
+            console.log(settings);
+            TodoListService.update(response.tokenId, JSON.stringify(todoLists));
+            SettingService.update(response.tokenId, JSON.stringify(settings));
+          }
         } else {
           handleLoginFailure();
         }
@@ -65,7 +77,6 @@ const GoogleButton = memo((props) => {
    * @param {*} response
    */
   const handleLoginFailure = (response) => {
-    console.info(response);
     setSnackbarMassage("ログインに失敗しました");
     setSnackbarOpen(true);
   };
@@ -75,7 +86,6 @@ const GoogleButton = memo((props) => {
    * @param {*} response
    */
   const handleLogoutFailure = (response) => {
-    console.info(response);
     setSnackbarMassage("ログアウトに失敗しました");
     setSnackbarOpen(true);
   };
