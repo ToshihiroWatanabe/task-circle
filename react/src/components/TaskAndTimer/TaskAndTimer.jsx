@@ -574,7 +574,9 @@ const TaskAndTimer = memo((props) => {
   const updateTodoLists = (todoLists) => {
     localStorage.setItem("todoLists", JSON.stringify(todoLists));
     localStorage.setItem("todoListsUpdatedAt", Date.now());
-    setIsInSync(true);
+    if (state.isLogined) {
+      setIsInSync(true);
+    }
     clearTimeout(updateTimeout);
     updateTimeout = setTimeout(() => {
       if (state.isLogined) {
@@ -614,7 +616,7 @@ const TaskAndTimer = memo((props) => {
           return todoLists;
         });
       }
-    }, 1000);
+    }, 100);
   };
 
   return (

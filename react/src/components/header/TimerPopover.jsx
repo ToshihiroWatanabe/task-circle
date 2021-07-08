@@ -88,7 +88,7 @@ const TimerPopover = memo((props) => {
           return settings;
         });
       }
-    }, 1000);
+    }, 100);
   };
 
   /**

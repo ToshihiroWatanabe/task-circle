@@ -173,7 +173,7 @@ const Settings = () => {
           return settings;
         });
       }
-    }, 1000);
+    }, 100);
   };
 
   /**
