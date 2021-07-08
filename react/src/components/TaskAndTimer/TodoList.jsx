@@ -454,11 +454,16 @@ const TodoList = memo((props) => {
                                             <FreeBreakfastOutlinedIcon />
                                           )}
                                       </IconButton>
-                                      {/* </BootstrapTooltip> */}
-                                      <div style={{ flexGrow: "1" }}>
-                                        <div
-                                          style={{ marginBottom: "-0.2rem" }}
-                                        >
+                                      {/* タスク名と経過時間エリア */}
+                                      <div
+                                        style={{
+                                          flexGrow: "1",
+                                          display: "flex",
+                                          flexDirection: "column",
+                                          justifyContent: "space-around",
+                                        }}
+                                      >
+                                        <div>
                                           {item.category !== "" && (
                                             <Tooltip
                                               title={item.category}
@@ -488,8 +493,6 @@ const TodoList = memo((props) => {
                                         <div
                                           style={{
                                             fontSize: "0.8rem",
-                                            marginTop: "0.4rem",
-                                            marginBottom: "-0.4rem",
                                             display: "flex",
                                             alignItems: "center",
                                           }}
@@ -501,7 +504,7 @@ const TodoList = memo((props) => {
                                                 color: item.achievedThenStop
                                                   ? ""
                                                   : "#BBB",
-                                                margin: "0 0.2rem",
+                                                margin: "0 0.3rem",
                                               }}
                                             >
                                               {" / "}
