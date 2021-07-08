@@ -58,8 +58,7 @@ export default function VolumeSlider(props) {
     }
     clearTimeout(changeTimeout);
     changeTimeout = setTimeout(() => {
-      localStorage.setItem("settings", JSON.stringify(props.settings));
-      localStorage.setItem("settingsUpdatedAt", Date.now());
+      props.updateSettings(props.settings);
     }, 500);
   };
 

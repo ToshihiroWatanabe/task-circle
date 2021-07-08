@@ -25,6 +25,10 @@ import AddAlertIcon from "@material-ui/icons/AddAlert";
 import ImportExportIcon from "@material-ui/icons/ImportExport";
 import ShareIcon from "@material-ui/icons/Share";
 import TwitterIcon from "@material-ui/icons/Twitter";
+import { StateContext } from "contexts/StateContext";
+import SettingService from "services/setting.service";
+
+let updateTimeout = 0;
 
 /** YouTube動画再生オプション */
 const playerOptions = {
@@ -86,6 +90,7 @@ const useStyles = makeStyles((theme) => ({
  */
 const Settings = () => {
   const classes = useStyles();
+  const [state, setState] = useContext(StateContext);
   const [settings, setSettings] = useContext(SettingsContext);
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [workVideoTitle, setWorkVideoTitle] = useState("");
@@ -121,10 +126,55 @@ const Settings = () => {
           ? event.target.value
           : event.target.checked,
       };
-      localStorage.setItem("settings", JSON.stringify(settings));
-      localStorage.setItem("settingsUpdatedAt", Date.now());
+      updateSettings(settings);
       return settings;
     });
+  };
+
+  /**
+   * ローカルストレージとDBの設定を更新します。
+   */
+  const updateSettings = (setting) => {
+    localStorage.setItem("settings", JSON.stringify(settings));
+    localStorage.setItem("settingsUpdatedAt", Date.now());
+    clearTimeout(updateTimeout);
+    updateTimeout = setTimeout(() => {
+      if (state.isLogined) {
+        setState((state) => {
+          return { ...state, isInSync: true };
+        });
+        // DBの設定を取得
+        SettingService.findByTokenId(state.tokenId).then((r) => {
+          console.log(r);
+          // ローカルのデータより新しいかどうか比較する
+          if (
+            new Date(r.data.updatedAt).getTime() >
+            localStorage.getItem("settingsUpdatedAt")
+          ) {
+            // ローカルのデータをDBのデータに上書きする
+            setSettings((settings) => {
+              const newSettings = {
+                ...settings,
+                ...JSON.parse(r.data.setting),
+              };
+              localStorage.setItem("settings", JSON.stringify(newSettings));
+              localStorage.setItem(
+                "settingsUpdatedAt",
+                new Date(r.data.updatedAt).getTime()
+              );
+              return newSettings;
+            });
+          }
+        });
+        setSettings((settings) => {
+          SettingService.update(state.tokenId, JSON.stringify(settings));
+          return settings;
+        });
+        setState((state) => {
+          return { ...state, isInSync: false };
+        });
+      }
+    }, 1000);
   };
 
   /**
@@ -158,8 +208,7 @@ const Settings = () => {
   const onTimeFormatToClipboardChange = (event) => {
     setSettings((settings) => {
       settings = { ...settings, timeFormatToClipboard: event.target.value };
-      localStorage.setItem("settings", JSON.stringify(settings));
-      localStorage.setItem("settingsUpdatedAt", Date.now());
+      updateSettings(settings);
       return settings;
     });
   };
@@ -171,8 +220,7 @@ const Settings = () => {
   const onTweetButtonEnabledChange = (event) => {
     setSettings((settings) => {
       settings = { ...settings, isTweetButtonEnabled: event.target.checked };
-      localStorage.setItem("settings", JSON.stringify(settings));
-      localStorage.setItem("settingsUpdatedAt", Date.now());
+      updateSettings();
       return settings;
     });
   };
@@ -184,8 +232,7 @@ const Settings = () => {
   const onTweetTemplateChange = (event) => {
     setSettings((settings) => {
       settings = { ...settings, tweetTemplate: event.target.value };
-      localStorage.setItem("settings", JSON.stringify(settings));
-      localStorage.setItem("settingsUpdatedAt", Date.now());
+      updateSettings(settings);
       return settings;
     });
   };
@@ -253,6 +300,7 @@ const Settings = () => {
               helperText="音量(作業用BGM)"
               settings={settings}
               setSettings={setSettings}
+              updateSettings={updateSettings}
             />
           </FormGroup>
         </FormControl>

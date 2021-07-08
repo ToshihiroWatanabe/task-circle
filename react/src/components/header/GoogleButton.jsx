@@ -50,6 +50,7 @@ const GoogleButton = memo((props) => {
           });
           props.setMaskedEmail(maskEmail(response.profileObj.email));
           if (res.data === "logined") {
+            // DBのTodoリストを取得
             TodoListService.findByTokenId(response.tokenId).then((r) => {
               console.log(r);
               // ローカルのデータより新しいかどうか比較する
@@ -75,6 +76,7 @@ const GoogleButton = memo((props) => {
                 );
               }
             });
+            // DBの設定を取得
             SettingService.findByTokenId(response.tokenId).then((r) => {
               console.log(r);
               // ローカルのデータより新しいかどうか比較する

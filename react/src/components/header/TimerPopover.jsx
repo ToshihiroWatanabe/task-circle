@@ -14,6 +14,7 @@ import "./TimerPopover.css";
 import { StateContext } from "contexts/StateContext";
 import ToggleButton from "./ToggleButton";
 import { SettingsContext } from "contexts/SettingsContext";
+import SettingService from "services/setting.service";
 
 const workTimerLength = [];
 workTimerLength.push({ label: "5", value: 5 * 60 });
@@ -31,6 +32,8 @@ breakTimerLength.push({ label: "10", value: 10 * 60 });
 breakTimerLength.push({ label: "15", value: 15 * 60 });
 breakTimerLength.push({ label: "20", value: 20 * 60 });
 
+let updateTimeout = 0;
+
 const useStyles = makeStyles((theme) => ({}));
 
 /**
@@ -42,6 +45,52 @@ const TimerPopover = memo((props) => {
   const [settings, setSettings] = useContext(SettingsContext);
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
+
+  /**
+   * ローカルストレージとDBの設定を更新します。
+   */
+  const updateSettings = (setting) => {
+    localStorage.setItem("settings", JSON.stringify(settings));
+    localStorage.setItem("settingsUpdatedAt", Date.now());
+    clearTimeout(updateTimeout);
+    updateTimeout = setTimeout(() => {
+      if (state.isLogined) {
+        setState((state) => {
+          return { ...state, isInSync: true };
+        });
+        // DBの設定を取得
+        SettingService.findByTokenId(state.tokenId).then((r) => {
+          console.log(r);
+          // ローカルのデータより新しいかどうか比較する
+          if (
+            new Date(r.data.updatedAt).getTime() >
+            localStorage.getItem("settingsUpdatedAt")
+          ) {
+            // ローカルのデータをDBのデータに上書きする
+            setSettings((settings) => {
+              const newSettings = {
+                ...settings,
+                ...JSON.parse(r.data.setting),
+              };
+              localStorage.setItem("settings", JSON.stringify(newSettings));
+              localStorage.setItem(
+                "settingsUpdatedAt",
+                new Date(r.data.updatedAt).getTime()
+              );
+              return newSettings;
+            });
+          }
+        });
+        setSettings((settings) => {
+          SettingService.update(state.tokenId, JSON.stringify(settings));
+          return settings;
+        });
+        setState((state) => {
+          return { ...state, isInSync: false };
+        });
+      }
+    }, 1000);
+  };
 
   /**
    * アイコンがクリックされたときの処理です。
@@ -63,8 +112,7 @@ const TimerPopover = memo((props) => {
         ...settings,
         isPomodoroEnabled: !settings.isPomodoroEnabled,
       };
-      localStorage.setItem("settings", JSON.stringify(newSettings));
-      localStorage.setItem("settingsUpdatedAt", Date.now());
+      updateSettings(newSettings);
       return newSettings;
     });
   };
@@ -78,8 +126,7 @@ const TimerPopover = memo((props) => {
         ...settings,
         isBreakAutoStart: !settings.isBreakAutoStart,
       };
-      localStorage.setItem("settings", JSON.stringify(newSettings));
-      localStorage.setItem("settingsUpdatedAt", Date.now());
+      updateSettings(newSettings);
       return newSettings;
     });
   };
@@ -97,8 +144,7 @@ const TimerPopover = memo((props) => {
         return state;
       });
       const newSettings = { ...settings, workTimerLength: event.target.value };
-      localStorage.setItem("settings", JSON.stringify(newSettings));
-      localStorage.setItem("settingsUpdatedAt", Date.now());
+      updateSettings(newSettings);
       return newSettings;
     });
   };
@@ -116,8 +162,7 @@ const TimerPopover = memo((props) => {
         return state;
       });
       const newSettings = { ...settings, breakTimerLength: event.target.value };
-      localStorage.setItem("settings", JSON.stringify(newSettings));
-      localStorage.setItem("settingsUpdatedAt", Date.now());
+      updateSettings(newSettings);
       return newSettings;
     });
   };
