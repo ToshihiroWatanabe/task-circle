@@ -4,6 +4,7 @@ import SimpleSnackbar from "components/SimpleSnackbar";
 import { StateContext } from "contexts/StateContext";
 import "components/header/GoogleButton.css";
 import { maskEmail } from "utils/string";
+import AuthService from "services/auth.service";
 
 /**
  * クライアントID
@@ -19,24 +20,31 @@ const GoogleButton = memo((props) => {
   const [snackbarMessage, setSnackbarMassage] = useState("");
 
   /**
-   * ログインに成功したときの処理です。
+   * ログイン時の処理です。
    * @param {*} response
    */
   const login = (response) => {
     console.info(response);
-    setState((state) => {
-      return {
-        ...state,
-        isLogined: true,
-        tokenId: response.tokenId,
-        email: response.profileObj.email,
-      };
+    AuthService.login({
+      tokenId: response.tokenId,
+      email: response.profileObj.email,
+    }).then((res) => {
+      if (res) {
+        setState((state) => {
+          return {
+            ...state,
+            isLogined: true,
+            tokenId: response.tokenId,
+            email: response.profileObj.email,
+          };
+        });
+        props.setMaskedEmail(maskEmail(response.profileObj.email));
+      }
     });
-    props.setMaskedEmail(maskEmail(response.profileObj.email));
   };
 
   /**
-   * ログアウトに成功したときの処理です。
+   * ログアウト時の処理です。
    * @param {*} response
    */
   const logout = (response) => {
