@@ -32,15 +32,31 @@ CREATE TABLE IF NOT EXISTS users(
     user_name VARCHAR(24),
     -- プロフィール画像のURL
     image_url VARCHAR(255),
-    -- Todoリスト
-    -- todo_lists JSON,
-    -- 設定
-    -- settings JSON,
     created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    -- CHECK (JSON_VALID(todo_lists)),
-    -- CHECK (JSON_VALID(settings))
+    updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
+
+-- Todoリストテーブル
+CREATE TABLE IF NOT EXISTS todo_lists(
+    -- ユーザーUUID
+    user_uuid VARCHAR(36) NOT NULL,
+    -- Todoリスト
+    todo_list JSON,
+    updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    CHECK (JSON_VALID(todo_list)),
+    FOREIGN KEY (user_uuid) REFERENCES users(user_uuid)
+)
+
+-- 設定テーブル
+CREATE TABLE IF NOT EXISTS settings(
+    -- ユーザーUUID
+    user_uuid VARCHAR(36) NOT NULL,
+    -- 設定
+    setting JSON,
+    updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    CHECK (JSON_VALID(setting)),
+    FOREIGN KEY (user_uuid) REFERENCES users(user_uuid)
+)
 
 -- 個人の統計テーブル
 -- 全体の統計テーブル
