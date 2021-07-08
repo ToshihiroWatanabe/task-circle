@@ -68,16 +68,16 @@ const localStorageGetItemIsDarkModeOn = localStorage.getItem("isDarkModeOn")
 
 const useStyles = makeStyles((theme) => ({
   main: {
-    marginTop: "5rem",
+    paddingTop: "5rem",
     paddingLeft: theme.spacing(1),
     width: "100vw",
     maxWidth: "100vw",
-    height: "calc(100vh - 5rem)",
+    height: "100vh",
     overflow: "auto",
     [theme.breakpoints.up("md")]: {},
     [theme.breakpoints.down("xs")]: {
       marginRight: theme.spacing(1),
-      marginTop: "4rem",
+      paddingTop: "4rem",
     },
   },
 }));
@@ -294,7 +294,12 @@ const App = memo(() => {
           isDarkModeOn={isDarkModeOn}
           setIsDarkModeOn={setIsDarkModeOn}
         />
-        <main className={classes.main}>
+        <main
+          className={classes.main}
+          style={{
+            backgroundColor: darkTheme.palette.type === "light" ? "" : "#333",
+          }}
+        >
           {/* タスク＆タイマー */}
           <div
             style={{

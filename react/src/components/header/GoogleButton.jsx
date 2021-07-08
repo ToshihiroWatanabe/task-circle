@@ -9,6 +9,7 @@ import TodoListService from "services/todoList.service";
 import SettingService from "services/setting.service";
 import { TodoListsContext } from "contexts/TodoListsContext";
 import { SettingsContext } from "contexts/SettingsContext";
+import { useTheme } from "@material-ui/core";
 
 /**
  * クライアントID
@@ -19,6 +20,7 @@ const CLIENT_ID = process.env.REACT_APP_CLIENT_ID;
  * Googleでログイン/ログアウトするボタンのコンポーネントです。
  */
 const GoogleButton = memo((props) => {
+  const theme = useTheme();
   const [state, setState] = useContext(StateContext);
   const [todoLists, setTodoLists] = useContext(TodoListsContext);
   const [settings, setSettings] = useContext(SettingsContext);
@@ -157,6 +159,7 @@ const GoogleButton = memo((props) => {
           buttonText="ログアウト"
           onLogoutSuccess={logout}
           onFailure={handleLogoutFailure}
+          theme={theme.palette.type}
         />
       ) : (
         <GoogleLogin
@@ -166,6 +169,7 @@ const GoogleButton = memo((props) => {
           onFailure={handleLoginFailure}
           cookiePolicy={"single_host_origin"}
           responseType="code,token"
+          theme={theme.palette.type}
         />
       )}
       <SimpleSnackbar

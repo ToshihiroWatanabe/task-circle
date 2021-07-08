@@ -16,6 +16,7 @@ import {
   SwipeableDrawer,
   useMediaQuery,
   Button,
+  Tooltip,
 } from "@material-ui/core";
 import MenuIcon from "@material-ui/icons/Menu";
 import HomeIcon from "@material-ui/icons/Home";
@@ -164,20 +165,22 @@ const ResponsiveDrawer = memo((props) => {
             <TimerPopover sendMessage={props.sendMessage} />
           </div>
           {/* ダークモード切り替えアイコン */}
-          {/* <IconButton
-            color="inherit"
-            onClick={() => {
-              props.setIsDarkModeOn(!props.isDarkModeOn);
-              localStorage.setItem("isDarkModeOn", props.isDarkModeOn);
-            }}
-            style={{
-              display: location.pathname === "/settings" ? "" : "none",
-            }}
-          >
-            {props.isDarkModeOn ? <Brightness7Icon /> : <Brightness4Icon />}
-          </IconButton> */}
+          <Tooltip title="ダークモード切り替え">
+            <IconButton
+              color="inherit"
+              onClick={() => {
+                props.setIsDarkModeOn(!props.isDarkModeOn);
+                localStorage.setItem("isDarkModeOn", props.isDarkModeOn);
+              }}
+              style={{
+                display: location.pathname === "/settings" ? "" : "none",
+              }}
+            >
+              {props.isDarkModeOn ? <Brightness7Icon /> : <Brightness4Icon />}
+            </IconButton>
+          </Tooltip>
           {/* その他のページは空白 */}
-          {location.pathname !== "/" && (
+          {!["/", "/settings"].includes(location.pathname) && (
             <IconButton style={{ visibility: "hidden" }}>
               <Brightness4Icon />
             </IconButton>

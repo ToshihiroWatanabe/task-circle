@@ -294,6 +294,7 @@ const TodoList = memo((props) => {
                 {/* ToDoリストのヘッダー */}
                 <div
                   style={{
+                    color: theme.palette.type === "light" ? "black" : "white",
                     backgroundColor:
                       column.items.filter((item) => {
                         return item.isSelected;
@@ -633,7 +634,7 @@ const TodoList = memo((props) => {
                         isTagsInputFocused === columnIndex
                           ? theme.palette.type === "light"
                             ? "white"
-                            : "#111"
+                            : "#424242"
                           : column.items.filter((item) => {
                               return item.isSelected;
                             }).length > 0
