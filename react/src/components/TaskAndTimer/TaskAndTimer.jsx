@@ -18,6 +18,7 @@ import { SessionsContext } from "contexts/SessionsContext";
 import { TodoListsContext } from "contexts/TodoListsContext";
 import { DEFAULT_TITLE, ONCE_COUNT, COUNT_INTERVAL } from "utils/constant";
 import TodoListService from "services/todoList.service";
+import SyncProgress from "components/SyncProgress";
 
 /** setTimeoutのID */
 let timeoutId = null;
@@ -99,6 +100,7 @@ const TaskAndTimer = memo((props) => {
   const [breakVideoId, setBreakVideoId] = useState(
     settings.breakVideoUrl.split(/v=|\//).slice(-1)[0]
   );
+  const [isInSync, setIsInSync] = useState(false);
 
   // 設定の動画URLに変化があったとき
   useEffect(() => {
@@ -451,9 +453,9 @@ const TaskAndTimer = memo((props) => {
             }
           }, 2);
         } else if (!state.isTimerOn) {
+          updateTodoLists(todoLists);
           clearTimeout(timeoutId);
         }
-        updateTodoLists(todoLists);
         return todoLists;
       });
       return state;
@@ -572,26 +574,31 @@ const TaskAndTimer = memo((props) => {
   const updateTodoLists = (todoLists) => {
     localStorage.setItem("todoLists", JSON.stringify(todoLists));
     localStorage.setItem("todoListsUpdatedAt", Date.now());
+    setIsInSync(true);
     clearTimeout(updateTimeout);
     updateTimeout = setTimeout(() => {
       if (state.isLogined) {
-        setState((state) => {
-          return { ...state, isInSync: true };
-        });
         // DBの設定を取得
         TodoListService.findByTokenId(state.tokenId).then((r) => {
-          console.log(r);
           // ローカルのデータより新しいかどうか比較する
+          const localStorageGetItemTodoListsUpdatedAt = localStorage.getItem(
+            "todoListsUpdatedAt"
+          )
+            ? localStorage.getItem("todoListsUpdatedAt")
+            : 0;
           if (
             new Date(r.data.updatedAt).getTime() >
             localStorage.getItem("todoListsUpdatedAt")
           ) {
             // ローカルのデータをDBのデータに上書きする
             setTodoLists((todoLists) => {
-              const newTodoLists = {
-                ...todoLists,
-                ...JSON.parse(r.data.todoList),
-              };
+              const newTodoLists =
+                localStorageGetItemTodoListsUpdatedAt > 0
+                  ? {
+                      ...todoLists,
+                      ...JSON.parse(r.data.todoList),
+                    }
+                  : JSON.parse(r.data.todoList);
               localStorage.setItem("todoLists", JSON.stringify(newTodoLists));
               localStorage.setItem(
                 "todoListsUpdatedAt",
@@ -600,13 +607,11 @@ const TaskAndTimer = memo((props) => {
               return newTodoLists;
             });
           }
+          setIsInSync(false);
         });
         setTodoLists((todoLists) => {
           TodoListService.update(state.tokenId, JSON.stringify(todoLists));
           return todoLists;
-        });
-        setState((state) => {
-          return { ...state, isInSync: false };
         });
       }
     }, 1000);
@@ -682,6 +687,7 @@ const TaskAndTimer = memo((props) => {
           デバッグモード
         </div>
       )}
+      <SyncProgress isInSync={isInSync} />
     </>
   );
 });

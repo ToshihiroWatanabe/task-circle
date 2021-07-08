@@ -322,20 +322,6 @@ const App = memo(() => {
             </Route>
           </Switch>
         </main>
-        {/* 同期中の表示 */}
-        {state.isInSync && (
-          <>
-            <div
-              style={{
-                position: "fixed",
-                bottom: 0,
-                left: 0,
-              }}
-            >
-              <CircularProgress />
-            </div>
-          </>
-        )}
         <SockJsClient
           url={SOCKET_URL}
           topics={["/topic/session"]}

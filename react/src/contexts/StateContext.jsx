@@ -28,8 +28,6 @@ export function StateContextProvider(props) {
     tokenId: "",
     /** メールアドレス */
     email: "",
-    /** 同期中かどうか */
-    isInSync: false,
   });
 
   return (

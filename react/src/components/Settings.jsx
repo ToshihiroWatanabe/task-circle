@@ -27,6 +27,7 @@ import ShareIcon from "@material-ui/icons/Share";
 import TwitterIcon from "@material-ui/icons/Twitter";
 import { StateContext } from "contexts/StateContext";
 import SettingService from "services/setting.service";
+import SyncProgress from "components/SyncProgress";
 
 let updateTimeout = 0;
 
@@ -97,6 +98,7 @@ const Settings = () => {
   const [breakVideoTitle, setBreakVideoTitle] = useState("");
   const [renderWorkVideo, setRenderWorkVideo] = useState(true);
   const [renderBreakVideo, setRenderBreakVideo] = useState(true);
+  const [isInSync, setIsInSync] = useState(false);
 
   useEffect(() => {}, []);
 
@@ -137,15 +139,14 @@ const Settings = () => {
   const updateSettings = (settings) => {
     localStorage.setItem("settings", JSON.stringify(settings));
     localStorage.setItem("settingsUpdatedAt", Date.now());
+    if (state.isLogined) {
+      setIsInSync(true);
+    }
     clearTimeout(updateTimeout);
     updateTimeout = setTimeout(() => {
       if (state.isLogined) {
-        setState((state) => {
-          return { ...state, isInSync: true };
-        });
         // DBの設定を取得
         SettingService.findByTokenId(state.tokenId).then((r) => {
-          console.log(r);
           // ローカルのデータより新しいかどうか比較する
           if (
             new Date(r.data.updatedAt).getTime() >
@@ -165,13 +166,11 @@ const Settings = () => {
               return newSettings;
             });
           }
+          setIsInSync(false);
         });
         setSettings((settings) => {
           SettingService.update(state.tokenId, JSON.stringify(settings));
           return settings;
-        });
-        setState((state) => {
-          return { ...state, isInSync: false };
         });
       }
     }, 1000);
@@ -465,6 +464,7 @@ const Settings = () => {
         setOpen={setSnackbarOpen}
         message="適用しました！"
       />
+      <SyncProgress isInSync={isInSync} />
     </>
   );
 };

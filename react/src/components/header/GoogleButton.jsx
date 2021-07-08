@@ -32,7 +32,7 @@ const GoogleButton = memo((props) => {
   const login = (response) => {
     console.info(response);
     setState((state) => {
-      return { ...state, isInSync: true };
+      return { ...state, isInSync: true, isInRoom: false };
     });
     AuthService.login({
       tokenId: response.tokenId,

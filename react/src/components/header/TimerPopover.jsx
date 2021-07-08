@@ -15,6 +15,7 @@ import { StateContext } from "contexts/StateContext";
 import ToggleButton from "./ToggleButton";
 import { SettingsContext } from "contexts/SettingsContext";
 import SettingService from "services/setting.service";
+import SyncProgress from "components/SyncProgress";
 
 const workTimerLength = [];
 workTimerLength.push({ label: "5", value: 5 * 60 });
@@ -44,6 +45,7 @@ const TimerPopover = memo((props) => {
   const [state, setState] = useContext(StateContext);
   const [settings, setSettings] = useContext(SettingsContext);
   const [anchorEl, setAnchorEl] = useState(null);
+  const [isInSync, setIsInSync] = useState(false);
   const open = Boolean(anchorEl);
 
   /**
@@ -52,15 +54,14 @@ const TimerPopover = memo((props) => {
   const updateSettings = (settings) => {
     localStorage.setItem("settings", JSON.stringify(settings));
     localStorage.setItem("settingsUpdatedAt", Date.now());
+    if (state.isLogined) {
+      setIsInSync(true);
+    }
     clearTimeout(updateTimeout);
     updateTimeout = setTimeout(() => {
       if (state.isLogined) {
-        setState((state) => {
-          return { ...state, isInSync: true };
-        });
         // DBの設定を取得
         SettingService.findByTokenId(state.tokenId).then((r) => {
-          console.log(r);
           // ローカルのデータより新しいかどうか比較する
           if (
             new Date(r.data.updatedAt).getTime() >
@@ -80,13 +81,11 @@ const TimerPopover = memo((props) => {
               return newSettings;
             });
           }
+          setIsInSync(false);
         });
         setSettings((settings) => {
           SettingService.update(state.tokenId, JSON.stringify(settings));
           return settings;
-        });
-        setState((state) => {
-          return { ...state, isInSync: false };
         });
       }
     }, 1000);
@@ -281,6 +280,7 @@ const TimerPopover = memo((props) => {
           <ToggleButton sendMessage={props.sendMessage} />
         </Typography>
       </Popover>
+      <SyncProgress isInSync={isInSync} />
     </>
   );
 });
