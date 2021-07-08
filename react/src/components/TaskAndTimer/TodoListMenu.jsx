@@ -64,6 +64,7 @@ const TodoListMenu = memo((props) => {
         },
       };
       localStorage.setItem("todoLists", JSON.stringify(newTodoLists));
+      localStorage.setItem("todoListsUpdatedAt", Date.now());
       return newTodoLists;
     });
     props.setUndoSnackbarMessage("時間をリセットしました");
@@ -84,6 +85,7 @@ const TodoListMenu = memo((props) => {
       props.setUndoSnackbarMessage("削除しました");
       props.setUndoSnackbarOpen(true);
       localStorage.setItem("todoLists", JSON.stringify(newTodoLists));
+      localStorage.setItem("todoListsUpdatedAt", Date.now());
       return newTodoLists;
     });
     setAnchorEl(null);

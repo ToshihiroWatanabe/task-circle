@@ -132,15 +132,11 @@ const TagsInput = memo((props) => {
           content: retrievedInputValue.content,
           spentSecond: 0,
           estimatedSecond: retrievedInputValue.estimatedSecond,
-          // TODO: タスクがまだない かつ タイマー停止中のときは初めから選択された状態で追加したい
-          isSelected:
-            // Object.values(todoLists)[props.index].items.length === 0 &&
-            // !state.isTimerOn
-            //   ? true :
-            false,
+          isSelected: false,
           achievedThenStop: false,
         });
         localStorage.setItem("todoLists", JSON.stringify(todoLists));
+        localStorage.setItem("todoListsUpdatedAt", Date.now());
         return { ...todoLists };
       });
       setCategoryInput([]);

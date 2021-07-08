@@ -122,6 +122,7 @@ const Settings = () => {
           : event.target.checked,
       };
       localStorage.setItem("settings", JSON.stringify(settings));
+      localStorage.setItem("settingsUpdatedAt", Date.now());
       return settings;
     });
   };
@@ -158,6 +159,7 @@ const Settings = () => {
     setSettings((settings) => {
       settings = { ...settings, timeFormatToClipboard: event.target.value };
       localStorage.setItem("settings", JSON.stringify(settings));
+      localStorage.setItem("settingsUpdatedAt", Date.now());
       return settings;
     });
   };
@@ -170,6 +172,7 @@ const Settings = () => {
     setSettings((settings) => {
       settings = { ...settings, isTweetButtonEnabled: event.target.checked };
       localStorage.setItem("settings", JSON.stringify(settings));
+      localStorage.setItem("settingsUpdatedAt", Date.now());
       return settings;
     });
   };
@@ -182,6 +185,7 @@ const Settings = () => {
     setSettings((settings) => {
       settings = { ...settings, tweetTemplate: event.target.value };
       localStorage.setItem("settings", JSON.stringify(settings));
+      localStorage.setItem("settingsUpdatedAt", Date.now());
       return settings;
     });
   };

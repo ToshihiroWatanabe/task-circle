@@ -451,6 +451,7 @@ const TaskAndTimer = memo((props) => {
           clearTimeout(timeoutId);
         }
         localStorage.setItem("todoLists", JSON.stringify(todoLists));
+        localStorage.setItem("todoListsUpdatedAt", Date.now());
         return todoLists;
       });
       return state;

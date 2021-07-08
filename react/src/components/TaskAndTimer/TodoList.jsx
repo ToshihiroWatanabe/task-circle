@@ -126,6 +126,7 @@ const TodoList = memo((props) => {
       };
       setTodoLists(newTodoLists);
       localStorage.setItem("todoLists", JSON.stringify(newTodoLists));
+      localStorage.setItem("todoListsUpdatedAt", Date.now());
     } else {
       // 同じカラムでの移動だったとき
       const column = todoLists[source.droppableId];
@@ -141,6 +142,7 @@ const TodoList = memo((props) => {
       };
       setTodoLists(newTodoLists);
       localStorage.setItem("todoLists", JSON.stringify(newTodoLists));
+      localStorage.setItem("todoListsUpdatedAt", Date.now());
     }
   };
 
@@ -175,6 +177,7 @@ const TodoList = memo((props) => {
           return column;
         });
         localStorage.setItem("todoLists", JSON.stringify({ ...todoLists }));
+        localStorage.setItem("todoListsUpdatedAt", Date.now());
         return { ...todoLists };
       });
       if (state.isTimerOn) {
@@ -192,6 +195,7 @@ const TodoList = memo((props) => {
         props.setTodoLists((todoLists) => {
           const newTodoLists = { ...previousTodoLists };
           localStorage.setItem("todoLists", JSON.stringify(newTodoLists));
+          localStorage.setItem("todoListsUpdatedAt", Date.now());
           return newTodoLists;
         });
       });
@@ -244,6 +248,7 @@ const TodoList = memo((props) => {
           !Object.values(todoLists)[columnIndex].items[taskIndex]
             .achievedThenStop;
         localStorage.setItem("todoLists", JSON.stringify(todoLists));
+        localStorage.setItem("todoListsUpdatedAt", Date.now());
         return { ...todoLists };
       });
     }

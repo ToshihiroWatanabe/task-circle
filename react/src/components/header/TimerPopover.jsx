@@ -64,6 +64,7 @@ const TimerPopover = memo((props) => {
         isPomodoroEnabled: !settings.isPomodoroEnabled,
       };
       localStorage.setItem("settings", JSON.stringify(newSettings));
+      localStorage.setItem("settingsUpdatedAt", Date.now());
       return newSettings;
     });
   };
@@ -78,6 +79,7 @@ const TimerPopover = memo((props) => {
         isBreakAutoStart: !settings.isBreakAutoStart,
       };
       localStorage.setItem("settings", JSON.stringify(newSettings));
+      localStorage.setItem("settingsUpdatedAt", Date.now());
       return newSettings;
     });
   };
@@ -96,6 +98,7 @@ const TimerPopover = memo((props) => {
       });
       const newSettings = { ...settings, workTimerLength: event.target.value };
       localStorage.setItem("settings", JSON.stringify(newSettings));
+      localStorage.setItem("settingsUpdatedAt", Date.now());
       return newSettings;
     });
   };
@@ -114,6 +117,7 @@ const TimerPopover = memo((props) => {
       });
       const newSettings = { ...settings, breakTimerLength: event.target.value };
       localStorage.setItem("settings", JSON.stringify(newSettings));
+      localStorage.setItem("settingsUpdatedAt", Date.now());
       return newSettings;
     });
   };
