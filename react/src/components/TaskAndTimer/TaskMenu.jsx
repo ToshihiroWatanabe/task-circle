@@ -77,8 +77,7 @@ const TaskMenu = memo((props) => {
           ),
         },
       };
-      localStorage.setItem("todoLists", JSON.stringify(newTodoLists));
-      localStorage.setItem("todoListsUpdatedAt", Date.now());
+      props.updateTodoLists(newTodoLists);
       return newTodoLists;
     });
     setAnchorEl(null);
@@ -105,8 +104,7 @@ const TaskMenu = memo((props) => {
           ),
         },
       };
-      localStorage.setItem("todoLists", JSON.stringify(newTodoLists));
-      localStorage.setItem("todoListsUpdatedAt", Date.now());
+      props.updateTodoLists(newTodoLists);
       return newTodoLists;
     });
     setAnchorEl(null);
@@ -168,6 +166,7 @@ const TaskMenu = memo((props) => {
         setTodoLists={props.setTodoLists}
         categories={categories}
         sendMessage={props.sendMessage}
+        updateTodoLists={props.updateTodoLists}
       />
     </>
   );

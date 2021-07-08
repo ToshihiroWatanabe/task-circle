@@ -17,6 +17,7 @@ import RndTimer from "./RndTimer";
 import { SessionsContext } from "contexts/SessionsContext";
 import { TodoListsContext } from "contexts/TodoListsContext";
 import { DEFAULT_TITLE, ONCE_COUNT, COUNT_INTERVAL } from "utils/constant";
+import TodoListService from "services/todoList.service";
 
 /** setTimeoutのID */
 let timeoutId = null;
@@ -25,6 +26,8 @@ let timeoutId = null;
 let startedAt = null;
 /** 最後にカウントした時刻 */
 let lastCountedAt = null;
+
+let updateTimeout = 0;
 
 /**
  * 次にタイマーをカウントするまでの時間(ミリ秒)を返します。
@@ -450,8 +453,7 @@ const TaskAndTimer = memo((props) => {
         } else if (!state.isTimerOn) {
           clearTimeout(timeoutId);
         }
-        localStorage.setItem("todoLists", JSON.stringify(todoLists));
-        localStorage.setItem("todoListsUpdatedAt", Date.now());
+        updateTodoLists(todoLists);
         return todoLists;
       });
       return state;
@@ -564,6 +566,52 @@ const TaskAndTimer = memo((props) => {
     });
   };
 
+  /**
+   * ローカルストレージとDBのTodoリストを更新します。
+   */
+  const updateTodoLists = (todoLists) => {
+    localStorage.setItem("todoLists", JSON.stringify(todoLists));
+    localStorage.setItem("todoListsUpdatedAt", Date.now());
+    clearTimeout(updateTimeout);
+    updateTimeout = setTimeout(() => {
+      if (state.isLogined) {
+        setState((state) => {
+          return { ...state, isInSync: true };
+        });
+        // DBの設定を取得
+        TodoListService.findByTokenId(state.tokenId).then((r) => {
+          console.log(r);
+          // ローカルのデータより新しいかどうか比較する
+          if (
+            new Date(r.data.updatedAt).getTime() >
+            localStorage.getItem("todoListsUpdatedAt")
+          ) {
+            // ローカルのデータをDBのデータに上書きする
+            setTodoLists((todoLists) => {
+              const newTodoLists = {
+                ...todoLists,
+                ...JSON.parse(r.data.todoList),
+              };
+              localStorage.setItem("todoLists", JSON.stringify(newTodoLists));
+              localStorage.setItem(
+                "todoListsUpdatedAt",
+                new Date(r.data.updatedAt).getTime()
+              );
+              return newTodoLists;
+            });
+          }
+        });
+        setTodoLists((todoLists) => {
+          TodoListService.update(state.tokenId, JSON.stringify(todoLists));
+          return todoLists;
+        });
+        setState((state) => {
+          return { ...state, isInSync: false };
+        });
+      }
+    }, 1000);
+  };
+
   return (
     <>
       <div style={{ display: "flex" }}>
@@ -572,6 +620,7 @@ const TaskAndTimer = memo((props) => {
           setTodoLists={setTodoLists}
           onPlayButtonClick={onPlayButtonClick}
           sendMessage={props.sendMessage}
+          updateTodoLists={updateTodoLists}
         />
         <Room
           sessions={sessions}

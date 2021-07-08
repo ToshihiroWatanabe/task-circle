@@ -46,8 +46,7 @@ const SimpleFormDialog = memo((props) => {
       // Todoリスト
       setTodoLists((todoLists) => {
         Object.values(todoLists)[props.index].name = inRef.value;
-        localStorage.setItem("todoLists", JSON.stringify(todoLists));
-        localStorage.setItem("todoListsUpdatedAt", Date.now());
+        props.updateTodoLists(todoLists);
         return { ...todoLists };
       });
       props.setOpen(false);

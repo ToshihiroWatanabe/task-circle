@@ -125,8 +125,7 @@ const EditDialog = memo((props) => {
           ),
         },
       };
-      localStorage.setItem("todoLists", JSON.stringify(newTodoLists));
-      localStorage.setItem("todoListsUpdatedAt", Date.now());
+      props.updateTodoLists(newTodoLists);
       return newTodoLists;
     });
     props.setOpen(false);

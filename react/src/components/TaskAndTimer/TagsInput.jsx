@@ -135,8 +135,7 @@ const TagsInput = memo((props) => {
           isSelected: false,
           achievedThenStop: false,
         });
-        localStorage.setItem("todoLists", JSON.stringify(todoLists));
-        localStorage.setItem("todoListsUpdatedAt", Date.now());
+        props.updateTodoLists(todoLists);
         return { ...todoLists };
       });
       setCategoryInput([]);

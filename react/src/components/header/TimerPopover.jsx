@@ -49,7 +49,7 @@ const TimerPopover = memo((props) => {
   /**
    * ローカルストレージとDBの設定を更新します。
    */
-  const updateSettings = (setting) => {
+  const updateSettings = (settings) => {
     localStorage.setItem("settings", JSON.stringify(settings));
     localStorage.setItem("settingsUpdatedAt", Date.now());
     clearTimeout(updateTimeout);

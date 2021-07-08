@@ -63,8 +63,7 @@ const TodoListMenu = memo((props) => {
           ),
         },
       };
-      localStorage.setItem("todoLists", JSON.stringify(newTodoLists));
-      localStorage.setItem("todoListsUpdatedAt", Date.now());
+      props.updateTodoLists(newTodoLists);
       return newTodoLists;
     });
     props.setUndoSnackbarMessage("時間をリセットしました");
@@ -84,8 +83,7 @@ const TodoListMenu = memo((props) => {
       delete newTodoLists[Object.keys(todoLists)[props.index]];
       props.setUndoSnackbarMessage("削除しました");
       props.setUndoSnackbarOpen(true);
-      localStorage.setItem("todoLists", JSON.stringify(newTodoLists));
-      localStorage.setItem("todoListsUpdatedAt", Date.now());
+      props.updateTodoLists(newTodoLists);
       return newTodoLists;
     });
     setAnchorEl(null);
@@ -140,6 +138,7 @@ const TodoListMenu = memo((props) => {
         defaultValue={props.column.name}
         formDialogTitle="リスト名を変更"
         label="リスト名"
+        updateTodoLists={props.updateTodoLists}
       />
     </>
   );

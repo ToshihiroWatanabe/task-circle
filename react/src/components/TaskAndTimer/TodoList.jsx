@@ -26,7 +26,7 @@ import AssignmentOutlinedIcon from "@material-ui/icons/AssignmentOutlined";
 import FreeBreakfastOutlinedIcon from "@material-ui/icons/FreeBreakfastOutlined";
 import { secondToHHMMSS, taskItemsToBuildUp } from "utils/convert";
 import TaskMenu from "./TaskMenu";
-import ColumnMenu from "./TodoListMenu";
+import TodoListMenu from "./TodoListMenu";
 import TagsInput from "./TagsInput";
 import LinearDeterminate from "components/TaskAndTimer/LinearDeterminate";
 import {
@@ -125,8 +125,7 @@ const TodoList = memo((props) => {
         },
       };
       setTodoLists(newTodoLists);
-      localStorage.setItem("todoLists", JSON.stringify(newTodoLists));
-      localStorage.setItem("todoListsUpdatedAt", Date.now());
+      props.updateTodoLists(newTodoLists);
     } else {
       // 同じカラムでの移動だったとき
       const column = todoLists[source.droppableId];
@@ -141,8 +140,7 @@ const TodoList = memo((props) => {
         },
       };
       setTodoLists(newTodoLists);
-      localStorage.setItem("todoLists", JSON.stringify(newTodoLists));
-      localStorage.setItem("todoListsUpdatedAt", Date.now());
+      props.updateTodoLists(newTodoLists);
     }
   };
 
@@ -176,8 +174,7 @@ const TodoList = memo((props) => {
           });
           return column;
         });
-        localStorage.setItem("todoLists", JSON.stringify({ ...todoLists }));
-        localStorage.setItem("todoListsUpdatedAt", Date.now());
+        props.updateTodoLists({ ...todoLists });
         return { ...todoLists };
       });
       if (state.isTimerOn) {
@@ -194,8 +191,7 @@ const TodoList = memo((props) => {
       setPreviousTodoLists((previousTodoLists) => {
         props.setTodoLists((todoLists) => {
           const newTodoLists = { ...previousTodoLists };
-          localStorage.setItem("todoLists", JSON.stringify(newTodoLists));
-          localStorage.setItem("todoListsUpdatedAt", Date.now());
+          props.updateTodoLists(newTodoLists);
           return newTodoLists;
         });
       });
@@ -247,8 +243,7 @@ const TodoList = memo((props) => {
         ].achievedThenStop =
           !Object.values(todoLists)[columnIndex].items[taskIndex]
             .achievedThenStop;
-        localStorage.setItem("todoLists", JSON.stringify(todoLists));
-        localStorage.setItem("todoListsUpdatedAt", Date.now());
+        props.updateTodoLists(todoLists);
         return { ...todoLists };
       });
     }
@@ -266,8 +261,7 @@ const TodoList = memo((props) => {
           items: [],
         },
       };
-      localStorage.setItem("todoLists", JSON.stringify(newTodoLists));
-      localStorage.setItem("todoListsUpdatedAt", Date.now());
+      props.updateTodoLists(newTodoLists);
       return newTodoLists;
     });
   };
@@ -347,8 +341,8 @@ const TodoList = memo((props) => {
                         <AssignmentOutlinedIcon />
                       </IconButton>
                     </Tooltip>
-                    {/* カラムメニュー */}
-                    <ColumnMenu
+                    {/* Todoリストメニュー */}
+                    <TodoListMenu
                       index={columnIndex}
                       todoLists={props.todoLists}
                       column={column}
@@ -356,6 +350,7 @@ const TodoList = memo((props) => {
                       setPreviousTodoLists={setPreviousTodoLists}
                       setUndoSnackbarOpen={setUndoSnackbarOpen}
                       setUndoSnackbarMessage={setUndoSnackbarMessage}
+                      updateTodoLists={props.updateTodoLists}
                     />
                   </div>
                 </div>
@@ -564,6 +559,7 @@ const TodoList = memo((props) => {
                                           setUndoSnackbarMessage
                                         }
                                         sendMessage={props.sendMessage}
+                                        updateTodoLists={props.updateTodoLists}
                                       />
                                     </div>
                                     {item.estimatedSecond > 0 && (
@@ -627,6 +623,7 @@ const TodoList = memo((props) => {
                     setIsTagsInputFocused={setIsTagsInputFocused}
                     todoLists={props.todoLists}
                     setTodoLists={props.setTodoLists}
+                    updateTodoLists={props.updateTodoLists}
                     index={columnIndex}
                     style={{
                       width: "105%",
