@@ -49,15 +49,54 @@ const GoogleButton = memo((props) => {
           if (res.data === "logined") {
             TodoListService.findByTokenId(response.tokenId).then((r) => {
               console.log(r);
+              // ローカルのデータより新しいかどうか比較する
+              if (
+                new Date(r.data.updatedAt).getTime() >
+                localStorage.getItem("todoListsUpdatedAt")
+              ) {
+                // ローカルのデータをDBのデータに上書きする
+                setTodoLists((todoLists) => {
+                  const newTodoLists = {
+                    ...todoLists,
+                    ...JSON.parse(r.data.todoList),
+                  };
+                  localStorage.setItem(
+                    "todoLists",
+                    JSON.stringify(newTodoLists)
+                  );
+                  return newTodoLists;
+                });
+                localStorage.setItem(
+                  "todoListsUpdatedAt",
+                  new Date(r.data.updatedAt).getTime()
+                );
+              }
             });
             SettingService.findByTokenId(response.tokenId).then((r) => {
               console.log(r);
+              // ローカルのデータより新しいかどうか比較する
+              if (
+                new Date(r.data.updatedAt).getTime() >
+                localStorage.getItem("settingsUpdatedAt")
+              ) {
+                // ローカルのデータをDBのデータに上書きする
+                setSettings((settings) => {
+                  const newSettings = {
+                    ...settings,
+                    ...JSON.parse(r.data.setting),
+                  };
+                  localStorage.setItem("settings", JSON.stringify(newSettings));
+                  return newSettings;
+                });
+                localStorage.setItem(
+                  "settingsUpdatedAt",
+                  new Date(r.data.updatedAt).getTime()
+                );
+              }
             });
           }
-          if (res.data === "registered") {
-            TodoListService.update(response.tokenId, JSON.stringify(todoLists));
-            SettingService.update(response.tokenId, JSON.stringify(settings));
-          }
+          TodoListService.update(response.tokenId, JSON.stringify(todoLists));
+          SettingService.update(response.tokenId, JSON.stringify(settings));
         } else {
           handleLoginFailure();
         }

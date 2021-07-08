@@ -259,13 +259,16 @@ const TodoList = memo((props) => {
    */
   const onAddListButtonClick = () => {
     props.setTodoLists((todoLists) => {
-      return {
+      const newTodoLists = {
         ...todoLists,
         [uuid()]: {
           name: "リスト" + (Object.keys(todoLists).length + 1),
           items: [],
         },
       };
+      localStorage.setItem("todoLists", JSON.stringify(newTodoLists));
+      localStorage.setItem("todoListsUpdatedAt", Date.now());
+      return newTodoLists;
     });
   };
 
