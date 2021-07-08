@@ -19,6 +19,7 @@ import { StatisticsContext } from "contexts/StatisticsContext";
 import { SessionsContext } from "contexts/SessionsContext";
 import { TodoListsContext } from "contexts/TodoListsContext";
 import PrivacyPolicy from "components/PrivacyPolicy";
+import { CircularProgress } from "@material-ui/core";
 
 // 開発中はページタイトルを変更
 if (
@@ -320,6 +321,14 @@ const App = memo(() => {
               <PrivacyPolicy />
             </Route>
           </Switch>
+          {/* 同期中の表示 */}
+          {state.isInSync && (
+            <>
+              <div style={{ position: "fixed", bottom: "0", right: "0" }}>
+                <CircularProgress />
+              </div>
+            </>
+          )}
         </main>
         <SockJsClient
           url={SOCKET_URL}

@@ -31,6 +31,9 @@ const GoogleButton = memo((props) => {
    */
   const login = (response) => {
     console.info(response);
+    setState((state) => {
+      return { ...state, isInSync: true };
+    });
     AuthService.login({
       tokenId: response.tokenId,
       email: response.profileObj.email,
@@ -97,12 +100,21 @@ const GoogleButton = memo((props) => {
           }
           TodoListService.update(response.tokenId, JSON.stringify(todoLists));
           SettingService.update(response.tokenId, JSON.stringify(settings));
+          setState((state) => {
+            return { ...state, isInSync: false };
+          });
         } else {
           handleLoginFailure();
+          setState((state) => {
+            return { ...state, isInSync: false };
+          });
         }
       })
       .catch(() => {
         handleLoginFailure();
+        setState((state) => {
+          return { ...state, isInSync: false };
+        });
       });
   };
 
