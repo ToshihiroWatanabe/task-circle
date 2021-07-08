@@ -33,6 +33,7 @@ const TagsInput = memo((props) => {
     setTodoLists,
     isTagsInputFocused,
     setIsTagsInputFocused,
+    updateTodoLists,
     index,
     ...other
   } = props;
