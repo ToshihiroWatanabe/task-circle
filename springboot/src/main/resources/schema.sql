@@ -39,24 +39,24 @@ CREATE TABLE IF NOT EXISTS users(
 -- Todoリストテーブル
 CREATE TABLE IF NOT EXISTS todo_lists(
     -- ユーザーUUID
-    user_uuid VARCHAR(36) NOT NULL,
+    user_uuid VARCHAR(36) NOT NULL PRIMARY KEY,
     -- Todoリスト
     todo_list JSON,
     updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     CHECK (JSON_VALID(todo_list)),
     FOREIGN KEY (user_uuid) REFERENCES users(user_uuid)
-)
+);
 
 -- 設定テーブル
 CREATE TABLE IF NOT EXISTS settings(
     -- ユーザーUUID
-    user_uuid VARCHAR(36) NOT NULL,
+    user_uuid VARCHAR(36) NOT NULL PRIMARY KEY,
     -- 設定
     setting JSON,
     updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     CHECK (JSON_VALID(setting)),
     FOREIGN KEY (user_uuid) REFERENCES users(user_uuid)
-)
+);
 
 -- 個人の統計テーブル
 -- 全体の統計テーブル

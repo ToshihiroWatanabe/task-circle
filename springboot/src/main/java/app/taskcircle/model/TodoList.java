@@ -1,5 +1,14 @@
 package app.taskcircle.model;
 
-public class TodoList {
+import java.time.LocalDateTime;
 
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
+public class TodoList {
+    private String userUuid;
+    private String todoList;
+    private LocalDateTime updatedAt;
 }

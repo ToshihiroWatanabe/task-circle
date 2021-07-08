@@ -28,19 +28,25 @@ const GoogleButton = memo((props) => {
     AuthService.login({
       tokenId: response.tokenId,
       email: response.profileObj.email,
-    }).then((res) => {
-      if (res) {
-        setState((state) => {
-          return {
-            ...state,
-            isLogined: true,
-            tokenId: response.tokenId,
-            email: response.profileObj.email,
-          };
-        });
-        props.setMaskedEmail(maskEmail(response.profileObj.email));
-      }
-    });
+    })
+      .then((res) => {
+        if (res) {
+          setState((state) => {
+            return {
+              ...state,
+              isLogined: true,
+              tokenId: response.tokenId,
+              email: response.profileObj.email,
+            };
+          });
+          props.setMaskedEmail(maskEmail(response.profileObj.email));
+        } else {
+          handleLoginFailure();
+        }
+      })
+      .catch(() => {
+        handleLoginFailure();
+      });
   };
 
   /**
@@ -48,7 +54,6 @@ const GoogleButton = memo((props) => {
    * @param {*} response
    */
   const logout = (response) => {
-    console.info(response);
     setState((state) => {
       return { ...state, isLogined: false, tokenId: "", email: "" };
     });
