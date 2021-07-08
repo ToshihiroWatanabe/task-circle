@@ -26,14 +26,13 @@ public class TodoListController {
     }
 
     @PostMapping("/findbytokenid")
-    public TodoList findByTokenId(@RequestBody String tokenId) {
-        User user = userService.findByTokenId(tokenId);
+    public TodoList findByTokenId(@RequestBody TodoListRequest request) {
+        User user = userService.findByTokenId(request.getTokenId());
         return todoListService.findByUserUuid(user.getUserUuid());
     }
 
     @PostMapping("/update")
     public boolean update(@RequestBody TodoListRequest request) {
-        System.out.println("update: " + request.getTokenId() + " " + request.getTodoList());
         User user = userService.findByTokenId(request.getTokenId());
         TodoList todoList = new TodoList();
         todoList.setUserUuid(user.getUserUuid());

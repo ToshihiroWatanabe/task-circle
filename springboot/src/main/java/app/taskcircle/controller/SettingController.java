@@ -26,8 +26,8 @@ public class SettingController {
     }
 
     @PostMapping("/findbytokenid")
-    public Setting findByTokenId(@RequestBody String tokenId) {
-        User user = userService.findByTokenId(tokenId);
+    public Setting findByTokenId(@RequestBody SettingRequest request) {
+        User user = userService.findByTokenId(request.getTokenId());
         return settingService.findByUserUuid(user.getUserUuid());
     }
 

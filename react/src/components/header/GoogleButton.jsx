@@ -46,9 +46,15 @@ const GoogleButton = memo((props) => {
             };
           });
           props.setMaskedEmail(maskEmail(response.profileObj.email));
+          if (res.data === "logined") {
+            TodoListService.findByTokenId(response.tokenId).then((r) => {
+              console.log(r);
+            });
+            SettingService.findByTokenId(response.tokenId).then((r) => {
+              console.log(r);
+            });
+          }
           if (res.data === "registered") {
-            console.log(todoLists);
-            console.log(settings);
             TodoListService.update(response.tokenId, JSON.stringify(todoLists));
             SettingService.update(response.tokenId, JSON.stringify(settings));
           }
