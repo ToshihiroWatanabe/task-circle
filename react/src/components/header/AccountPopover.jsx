@@ -6,6 +6,7 @@ import {
   Popover,
   Tooltip,
   Typography,
+  useTheme,
 } from "@material-ui/core";
 import "./AccountPopover.css";
 import AccountCircleIcon from "@material-ui/icons/AccountCircle";
@@ -29,6 +30,7 @@ const useStyles = makeStyles((theme) => ({
  */
 const AccountPopover = memo((props) => {
   const classes = useStyles();
+  const theme = useTheme();
   const [state, setState] = useContext(StateContext);
   const [statistics] = useContext(StatisticsContext);
   const [anchorEl, setAnchorEl] = useState(null);
@@ -54,7 +56,21 @@ const AccountPopover = memo((props) => {
       <Tooltip title="アカウントメニュー">
         <IconButton
           onClick={handleClick}
-          color={state.isLogined ? "inherit" : "default"}
+          color={
+            theme.palette.type === "light"
+              ? state.isLogined
+                ? "inherit"
+                : "default"
+              : ""
+          }
+          style={{
+            color:
+              theme.palette.type === "light"
+                ? ""
+                : state.isLogined
+                ? "white"
+                : "RGB(0,0,0,0.54)",
+          }}
         >
           <AccountCircleIcon />
         </IconButton>
