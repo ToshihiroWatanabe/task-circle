@@ -26,12 +26,15 @@ workTimerLength.push({ label: "25", value: 25 * 60 });
 workTimerLength.push({ label: "30", value: 30 * 60 });
 workTimerLength.push({ label: "45", value: 45 * 60 });
 workTimerLength.push({ label: "60", value: 60 * 60 });
+workTimerLength.push({ label: "90", value: 90 * 60 });
 
 const breakTimerLength = [];
 breakTimerLength.push({ label: "5", value: 5 * 60 });
 breakTimerLength.push({ label: "10", value: 10 * 60 });
 breakTimerLength.push({ label: "15", value: 15 * 60 });
 breakTimerLength.push({ label: "20", value: 20 * 60 });
+breakTimerLength.push({ label: "25", value: 25 * 60 });
+breakTimerLength.push({ label: "30", value: 30 * 60 });
 
 let updateTimeout = 0;
 
