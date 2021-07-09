@@ -169,8 +169,8 @@ const ResponsiveDrawer = memo((props) => {
             <IconButton
               color="inherit"
               onClick={() => {
+                localStorage.setItem("isDarkModeOn", !props.isDarkModeOn);
                 props.setIsDarkModeOn(!props.isDarkModeOn);
-                localStorage.setItem("isDarkModeOn", props.isDarkModeOn);
               }}
               style={{
                 display: location.pathname === "/settings" ? "" : "none",

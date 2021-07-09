@@ -9,8 +9,8 @@
 		<relativePath/>
 		<!-- lookup parent from repository -->
 	</parent>
-	<groupId>app</groupId>
-	<artifactId>taskcircle</artifactId>
+	<groupId>net</groupId>
+	<artifactId>task_circle</artifactId>
 	<packaging>war</packaging>
 	<version>1.0.0</version>
 	<name>taskcircle</name>

@@ -19,7 +19,6 @@ import { StatisticsContext } from "contexts/StatisticsContext";
 import { SessionsContext } from "contexts/SessionsContext";
 import { TodoListsContext } from "contexts/TodoListsContext";
 import PrivacyPolicy from "components/PrivacyPolicy";
-import { CircularProgress } from "@material-ui/core";
 
 // 開発中はページタイトルを変更
 if (
