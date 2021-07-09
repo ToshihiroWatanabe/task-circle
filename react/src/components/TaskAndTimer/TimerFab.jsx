@@ -69,13 +69,13 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 /**
- * タイマーのフローティングアクションボタンのコンポーネントです。
+ * タイマーのFAB(フローティングアクションボタン)のコンポーネントです。
  */
 const TimerFab = memo((props) => {
   const classes = useStyles();
   const theme = useTheme();
-  const [state] = useContext(StateContext);
-  const [settings] = useContext(SettingsContext);
+  const [state, setState] = useContext(StateContext);
+  const [settings, setSettings] = useContext(SettingsContext);
   const useMediaQueryThemeBreakpointsUpMd = useMediaQuery(
     theme.breakpoints.up("md")
   );
@@ -86,6 +86,7 @@ const TimerFab = memo((props) => {
     theme.breakpoints.down("xs")
   );
 
+  /** 選択されているタスク */
   const selectedTask =
     Object.values(props.todoLists).filter((column, index) => {
       return (
@@ -108,12 +109,44 @@ const TimerFab = memo((props) => {
       : null;
 
   /**
-   * Fabがクリックされたときの処理です。
+   * FABがクリックされたときの処理です。
    */
   const onFabClick = () => {
     if (!props.isDragging && selectedTask !== null) {
       props.onPlayButtonClick(0, "fab");
     }
+  };
+
+  /**
+   * FABが右クリックされたときの処理です。
+   */
+  const onFabContextMenu = (event) => {
+    event.preventDefault();
+    // 通常タイマー → 作業 → 休憩 → ...
+    setSettings((settings) => {
+      setState((state) => {
+        if (state.isTimerOn) {
+          props.onPlayButtonClick(0, "fab");
+        }
+        const newState = {
+          ...state,
+          pomodoroTimerType:
+            settings.isPomodoroEnabled && state.pomodoroTimerType === "work"
+              ? "break"
+              : "work",
+          pomodoroTimeLeft:
+            settings.isPomodoroEnabled && state.pomodoroTimerType === "work"
+              ? settings.breakTimerLength
+              : settings.workTimerLength,
+        };
+        return newState;
+      });
+      const newSettings = {
+        ...settings,
+        isPomodoroEnabled: state.pomodoroTimerType === "break" ? false : true,
+      };
+      return newSettings;
+    });
   };
 
   return (
@@ -125,6 +158,9 @@ const TimerFab = memo((props) => {
         id="timerFab"
         onClick={() => {
           onFabClick();
+        }}
+        onContextMenu={(event) => {
+          onFabContextMenu(event);
         }}
         style={{
           width: props.width !== "undifined" ? props.width : "",
@@ -147,7 +183,7 @@ const TimerFab = memo((props) => {
                 (Math.floor(state.pomodoroTimeLeft % 60) < 10
                   ? "0" + Math.floor(state.pomodoroTimeLeft % 60)
                   : Math.floor(state.pomodoroTimeLeft % 60))}
-            {/* ポモドーロモードじゃないとき */}
+            {/* ポモドーロモードでないとき */}
             {!settings.isPomodoroEnabled && selectedTask !== null && (
               <span
                 style={{
@@ -177,7 +213,7 @@ const TimerFab = memo((props) => {
           </div>
           {/* タスク名 */}
           <div className={classes.content}>
-            {/* ポモドーロがオン かつ 作業タイマー かつ 選択しているタスクが存在する */}
+            {/* ポモドーロがオン かつ 作業タイマー かつ 選択しているタスクが存在するとき */}
             {settings.isPomodoroEnabled &&
             state.pomodoroTimerType === "work" &&
             selectedTask !== null
