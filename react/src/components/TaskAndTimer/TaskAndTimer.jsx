@@ -1,5 +1,10 @@
 import React, { memo, useContext, useEffect, useState } from "react";
-import { makeStyles, Typography, useTheme } from "@material-ui/core";
+import {
+  makeStyles,
+  Typography,
+  useMediaQuery,
+  useTheme,
+} from "@material-ui/core";
 import TodoList from "./TodoList";
 import Room from "./Room";
 import { StateContext } from "contexts/StateContext";
@@ -24,6 +29,7 @@ import {
 } from "utils/constant";
 import TodoListService from "services/todoList.service";
 import SyncProgress from "components/SyncProgress";
+import LabelBottomNavigation from "./LabelBottomNavigation";
 
 /** setTimeoutのID */
 let timeoutId = null;
@@ -106,6 +112,9 @@ const TaskAndTimer = memo((props) => {
     settings.breakVideoUrl.split(/v=|\//).slice(-1)[0]
   );
   const [isInSync, setIsInSync] = useState(false);
+  const useMediaQueryThemeBreakpointsDownXs = useMediaQuery(
+    theme.breakpoints.down("xs")
+  );
 
   // 設定の動画URLに変化があったとき
   useEffect(() => {
@@ -647,6 +656,8 @@ const TaskAndTimer = memo((props) => {
           sendMessage={props.sendMessage}
         />
       </div>
+      {/* ボトムナビゲーション */}
+      {useMediaQueryThemeBreakpointsDownXs && <LabelBottomNavigation />}
       {/* タイマー */}
       <RndTimer todoLists={todoLists} onPlayButtonClick={onPlayButtonClick} />
       {/* 作業用BGM動画 */}
