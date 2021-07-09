@@ -12,6 +12,9 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 @Configuration
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
+    /**
+     * HTTP通信に関する設定をします。
+     */
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         // CSRF対策を無効に設定

@@ -4,11 +4,13 @@ import lombok.Getter;
 import lombok.Setter;
 
 /**
-  * 設定のリクエストのモデルクラスです。
+ * 設定のリクエストのモデルクラスです。
  */
 @Getter
 @Setter
 public class SettingRequest {
-    private String tokenId;
-    private String setting;
+  /** トークンID */
+  private String tokenId;
+  /** 設定 */
+  private String setting;
 }

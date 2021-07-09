@@ -17,7 +17,7 @@ import app.taskcircle.service.UserService;
 import java.util.UUID;
 
 /**
- * 認証リクエストを受けとり、結果を返すコントローラークラスです。
+ * 認証に関するコントローラークラスです。
  */
 @RestController
 @RequestMapping("/api/auth")
@@ -40,6 +40,7 @@ public class AuthController {
      * ログイン処理です。
      * 
      * @param user ユーザーデータ
+     * @return 新規登録時は"registered"、ログイン時は"logined"、失敗時は"failed"
      */
     @PostMapping("/login")
     @Transactional

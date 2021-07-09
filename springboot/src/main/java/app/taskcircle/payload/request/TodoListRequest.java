@@ -9,6 +9,8 @@ import lombok.Setter;
 @Getter
 @Setter
 public class TodoListRequest {
+    /** トークンID */
     private String tokenId;
+    /** ToDoリスト */
     private String todoList;
 }

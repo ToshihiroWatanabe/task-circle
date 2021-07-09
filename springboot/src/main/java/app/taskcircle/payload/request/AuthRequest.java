@@ -9,6 +9,8 @@ import lombok.Setter;
 @Getter
 @Setter
 public class AuthRequest {
+    /** トークンID */
     private String tokenId;
+    /** メールアドレス */
     private String email;
 }

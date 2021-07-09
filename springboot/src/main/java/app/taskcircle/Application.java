@@ -27,6 +27,7 @@ public class Application {
 	 * アプリケーション起動時に実行する処理です。
 	 * 
 	 * @param args
+	 * @return 成功した場合はtrue
 	 */
 	public boolean execStartup(String[] args) {
 		return sessionService.deleteAll();

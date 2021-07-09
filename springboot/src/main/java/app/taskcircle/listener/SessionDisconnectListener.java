@@ -25,6 +25,9 @@ public class SessionDisconnectListener implements ApplicationListener<SessionDis
         this.sessionService = sessionService;
     }
 
+    /**
+     * 切断があったときの処理です。
+     */
     @EventListener
     @Override
     public void onApplicationEvent(SessionDisconnectEvent applicationEvent) {

@@ -29,9 +29,17 @@ public class SessionWebSocketController {
         this.simpMessagingTemplate = simpMessagingTemplate;
     }
 
+    /**
+     * メッセージを送受信します。
+     * 
+     * @param request        セッションのリクエスト
+     * @param headerAccessor リクエストヘッダー
+     * @return セッションのレスポンス
+     * @throws Exception
+     */
     @MessageMapping("/session")
     @SendTo("/topic/session")
-    public SessionResponse SendToMessage(@Payload SessionRequest request, SimpMessageHeaderAccessor headerAccessor)
+    public SessionResponse SendMessage(@Payload SessionRequest request, SimpMessageHeaderAccessor headerAccessor)
             throws Exception {
         request.setSessionId(headerAccessor.getSessionId());
         Session session = sessionService.requestToSession(request);
@@ -42,6 +50,14 @@ public class SessionWebSocketController {
         return response;
     }
 
+    /**
+     * 入室メッセージを送受信します。
+     * 
+     * @param request        セッションのリクエスト
+     * @param headerAccessor リクエストヘッダー
+     * @return セッションのレスポンス
+     * @throws Exception
+     */
     @MessageMapping("/session/enter")
     @SendTo("/topic/session")
     public SessionResponse enter(@Payload SessionRequest request, SimpMessageHeaderAccessor headerAccessor)
@@ -56,6 +72,14 @@ public class SessionWebSocketController {
         return response;
     }
 
+    /**
+     * 退室メッセージを送受信します。
+     * 
+     * @param request        セッションのリクエスト
+     * @param headerAccessor リクエストヘッダー
+     * @return セッションのレスポンス
+     * @throws Exception
+     */
     @MessageMapping("/session/leave")
     @SendTo("/topic/session/leave")
     public SessionResponse leave(@Payload SessionRequest request, SimpMessageHeaderAccessor headerAccessor)
@@ -70,6 +94,12 @@ public class SessionWebSocketController {
         return response;
     }
 
+    /**
+     * セッションテーブルからデータを取得するリクエストを受けて、結果を返します。
+     * 
+     * @param sessionFindAllTopicsId 送受信するトピックのID
+     * @throws Exception
+     */
     @MessageMapping("/session/findall")
     public void findAll(@Payload String sessionFindAllTopicsId) throws Exception {
         simpMessagingTemplate.convertAndSend("/topic/session/findall/" + sessionFindAllTopicsId,

@@ -11,7 +11,10 @@ import lombok.Setter;
 @Getter
 @Setter
 public class TodoList {
+    /** ユーザーUUID */
     private String userUuid;
+    /** ToDoリスト */
     private String todoList;
+    /** 更新時刻 */
     private LocalDateTime updatedAt;
 }

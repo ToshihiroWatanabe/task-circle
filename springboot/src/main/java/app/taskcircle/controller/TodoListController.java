@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 /**
- * Todoリストに関するリクエストを受け取るコントローラークラスです。
+ * Todoリストに関するコントローラークラスです。
  */
 @RestController
 @RequestMapping("/api/todolist")
@@ -29,12 +29,24 @@ public class TodoListController {
         this.todoListService = todoListService;
     }
 
+    /**
+     * トークンIDからToDoリストを取得するリクエストを受けて、結果を返します。
+     * 
+     * @param request ToDoリストのリクエスト
+     * @return ToDoリスト
+     */
     @PostMapping("/findbytokenid")
     public TodoList findByTokenId(@RequestBody TodoListRequest request) {
         User user = userService.findByTokenId(request.getTokenId());
         return todoListService.findByUserUuid(user.getUserUuid());
     }
 
+    /**
+     * ToDoリストを更新するリクエストを受けて、結果を返します。
+     * 
+     * @param request ToDoリストのリクエスト
+     * @return 成功した場合はtrue
+     */
     @PostMapping("/update")
     public boolean update(@RequestBody TodoListRequest request) {
         User user = userService.findByTokenId(request.getTokenId());

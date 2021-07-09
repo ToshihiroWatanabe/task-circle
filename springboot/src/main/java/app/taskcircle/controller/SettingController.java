@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 /**
- * 設定に関するリクエストを受け取るコントローラークラスです。
+ * 設定に関するコントローラークラスです。
  */
 @RestController
 @RequestMapping("/api/setting")
@@ -29,12 +29,24 @@ public class SettingController {
         this.settingService = settingService;
     }
 
+    /**
+     * トークンIDから設定を取得するリクエストを受けて、結果を返します。
+     * 
+     * @param request 設定のリクエスト
+     * @return 設定
+     */
     @PostMapping("/findbytokenid")
     public Setting findByTokenId(@RequestBody SettingRequest request) {
         User user = userService.findByTokenId(request.getTokenId());
         return settingService.findByUserUuid(user.getUserUuid());
     }
 
+    /**
+     * 設定を更新するリクエストを受けて、結果を返します。
+     * 
+     * @param request 設定のリクエスト
+     * @return 成功した場合はtrue
+     */
     @PostMapping("/update")
     public boolean update(@RequestBody SettingRequest request) {
         User user = userService.findByTokenId(request.getTokenId());

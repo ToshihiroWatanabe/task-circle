@@ -25,22 +25,50 @@ public class SessionService {
         this.sessionMapper = sessionMapper;
     }
 
+    /**
+     * セッション情報を取得します。
+     * 
+     * @return セッションのリスト
+     */
     public List<Session> findAll() {
         return sessionMapper.findAll();
     }
 
+    /**
+     * セッションを作成します。
+     * 
+     * @param session セッション
+     * @return 成功した場合はtrue
+     */
     public boolean create(Session session) {
         return sessionMapper.create(session);
     }
 
+    /**
+     * セッション情報を更新します。
+     * 
+     * @param session セッション
+     * @return 成功した場合はtrue
+     */
     public boolean update(Session session) {
         return sessionMapper.update(session);
     }
 
+    /**
+     * セッションを削除します。
+     * 
+     * @param session セッション
+     * @return 成功した場合はtrue
+     */
     public boolean delete(Session session) {
         return sessionMapper.delete(session);
     }
 
+    /**
+     * セッションを全て削除します。
+     * 
+     * @return 成功した場合はtrue
+     */
     public boolean deleteAll() {
         return sessionMapper.deleteAll();
     }

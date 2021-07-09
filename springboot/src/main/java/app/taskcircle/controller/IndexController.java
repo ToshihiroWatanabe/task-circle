@@ -11,6 +11,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 public class IndexController {
 
+    /**
+     * リクエストを受けて、index.htmlを返します。
+     * 
+     * @param request APIやWebSocketを除くリクエスト
+     * @return index.html
+     */
     @RequestMapping(value = { "/", "/{x:[\\w\\-]+}", "/{x:^(?!api|websocket$).*$}/**/{y:[\\w\\-]+}", })
     public String getIndex(HttpServletRequest request) {
         return "/index.html";

@@ -11,8 +11,11 @@ import lombok.Setter;
 @Getter
 @Setter
 public class Setting {
+    /** ユーザーUUID */
     private String userUuid;
+    /** 設定 */
     private String setting;
+    /** 更新時刻 */
     private LocalDateTime updatedAt;
 
 }

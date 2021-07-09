@@ -48,7 +48,7 @@ public class UserService {
     }
 
     /**
-     * トークンIDとアイコン画像のURLを更新します。
+     * トークンIDとプロフィール画像のURLを更新します。
      * 
      * @param user ユーザー情報
      * @return 成功した場合はtrue
