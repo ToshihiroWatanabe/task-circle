@@ -1,11 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
+import "components/TaskAndTimer/LabelBottomNavigation.css";
 import BottomNavigation from "@material-ui/core/BottomNavigation";
 import BottomNavigationAction from "@material-ui/core/BottomNavigationAction";
-import FolderIcon from "@material-ui/icons/Folder";
-import RestoreIcon from "@material-ui/icons/Restore";
-import FavoriteIcon from "@material-ui/icons/Favorite";
-import LocationOnIcon from "@material-ui/icons/LocationOn";
+import ListAltIcon from "@material-ui/icons/ListAlt";
+import PeopleIcon from "@material-ui/icons/People";
 
 const useStyles = makeStyles({
   root: {
@@ -16,12 +15,40 @@ const useStyles = makeStyles({
   },
 });
 
-const LabelBottomNavigation = () => {
+/**
+ * ボトムナビゲーションのコンポーネントです。
+ */
+const LabelBottomNavigation = (props) => {
   const classes = useStyles();
-  const [value, setValue] = React.useState("recents");
+  const [value, setValue] = useState("recents");
+
+  React.useEffect(() => {
+    console.log(Object.values(props.todoLists));
+  }, []);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
+  };
+
+  /**
+   * ToDoリストボタンがクリックされたときの処理です。
+   * @param {*} index
+   */
+  const onListButtonClick = (index) => {
+    if (index === 0) {
+      document.getElementsByTagName("main")[0].scrollLeft = 0;
+    }
+  };
+
+  /**
+   * ルームボタンがクリックされたときの処理です。
+   */
+  const onRoomButtonClick = () => {
+    const todoListAndRoomWidth =
+      document.getElementById("todoListAndRoom").children[0].clientWidth +
+      document.getElementById("todoListAndRoom").children[1].clientWidth;
+    console.log(todoListAndRoomWidth);
+    document.getElementsByTagName("main")[0].scrollLeft = todoListAndRoomWidth;
   };
 
   return (
@@ -30,25 +57,26 @@ const LabelBottomNavigation = () => {
       onChange={handleChange}
       className={classes.root}
     >
+      {Object.values(props.todoLists).map((todoList, index) => {
+        return (
+          <BottomNavigationAction
+            key={index}
+            label={todoList.name}
+            value={"list" + index}
+            icon={<ListAltIcon />}
+            onClick={() => {
+              onListButtonClick(index);
+            }}
+          />
+        );
+      })}
       <BottomNavigationAction
-        label="Recents"
-        value="recents"
-        icon={<RestoreIcon />}
-      />
-      <BottomNavigationAction
-        label="Favorites"
-        value="favorites"
-        icon={<FavoriteIcon />}
-      />
-      <BottomNavigationAction
-        label="Nearby"
-        value="nearby"
-        icon={<LocationOnIcon />}
-      />
-      <BottomNavigationAction
-        label="Folder"
-        value="folder"
-        icon={<FolderIcon />}
+        label="ルーム"
+        value="room"
+        icon={<PeopleIcon />}
+        onClick={() => {
+          onRoomButtonClick();
+        }}
       />
     </BottomNavigation>
   );

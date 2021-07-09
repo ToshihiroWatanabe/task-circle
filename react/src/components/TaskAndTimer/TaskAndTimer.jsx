@@ -641,7 +641,7 @@ const TaskAndTimer = memo((props) => {
 
   return (
     <>
-      <div style={{ display: "flex" }}>
+      <div style={{ display: "flex" }} id="todoListAndRoom">
         <TodoList
           todoLists={todoLists}
           setTodoLists={setTodoLists}
@@ -657,7 +657,9 @@ const TaskAndTimer = memo((props) => {
         />
       </div>
       {/* ボトムナビゲーション */}
-      {useMediaQueryThemeBreakpointsDownXs && <LabelBottomNavigation />}
+      {useMediaQueryThemeBreakpointsDownXs && (
+        <LabelBottomNavigation todoLists={todoLists} />
+      )}
       {/* タイマー */}
       <RndTimer todoLists={todoLists} onPlayButtonClick={onPlayButtonClick} />
       {/* 作業用BGM動画 */}

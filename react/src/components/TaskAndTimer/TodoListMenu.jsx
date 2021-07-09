@@ -63,11 +63,13 @@ const TodoListMenu = memo((props) => {
           ),
         },
       };
+      props.setUndoSnackbarMessage(
+        Object.values(todoLists)[props.index].name + "の時間をリセットしました"
+      );
+      props.setUndoSnackbarOpen(true);
       props.updateTodoLists(newTodoLists);
       return newTodoLists;
     });
-    props.setUndoSnackbarMessage("時間をリセットしました");
-    props.setUndoSnackbarOpen(true);
     setAnchorEl(null);
   };
 
@@ -81,7 +83,9 @@ const TodoListMenu = memo((props) => {
         ...todoLists,
       };
       delete newTodoLists[Object.keys(todoLists)[props.index]];
-      props.setUndoSnackbarMessage("削除しました");
+      props.setUndoSnackbarMessage(
+        Object.values(todoLists)[props.index].name + "を削除しました"
+      );
       props.setUndoSnackbarOpen(true);
       props.updateTodoLists(newTodoLists);
       return newTodoLists;

@@ -11,6 +11,7 @@ import {
   Snackbar,
   Button,
   useTheme,
+  useMediaQuery,
 } from "@material-ui/core";
 import "components/TaskAndTimer/TodoList.css";
 import uuid from "uuid/v4";
@@ -86,6 +87,9 @@ const TodoList = memo((props) => {
     x: undefined,
     y: undefined,
   });
+  const useMediaQueryThemeBreakpointsDownXs = useMediaQuery(
+    theme.breakpoints.down("xs")
+  );
 
   /**
    * ドラッグが終わったときの処理です。
@@ -699,6 +703,11 @@ const TodoList = memo((props) => {
         open={undoSnackbarOpen}
         onClose={() => setUndoSnackbarOpen(false)}
         autoHideDuration={6000}
+        anchorOrigin={{
+          vertical: "bottom",
+          horizontal: "center",
+        }}
+        style={{ bottom: useMediaQueryThemeBreakpointsDownXs ? "5rem" : "" }}
         message={undoSnackbarMessage}
         action={
           <>
@@ -725,6 +734,11 @@ const TodoList = memo((props) => {
         open={simpleSnackbarOpen}
         onClose={() => setSimpleSnackbarOpen(false)}
         autoHideDuration={6000}
+        anchorOrigin={{
+          vertical: "bottom",
+          horizontal: "center",
+        }}
+        style={{ bottom: useMediaQueryThemeBreakpointsDownXs ? "5rem" : "" }}
         message={simpleSnackbarMessage}
         action={
           <>

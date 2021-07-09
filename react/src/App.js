@@ -69,13 +69,13 @@ const useStyles = makeStyles((theme) => ({
   main: {
     paddingTop: "5rem",
     paddingLeft: theme.spacing(1),
+    paddingRight: theme.spacing(1),
     width: "100vw",
     maxWidth: "100vw",
     height: "100vh",
     overflow: "auto",
     [theme.breakpoints.up("md")]: {},
     [theme.breakpoints.down("xs")]: {
-      marginRight: theme.spacing(1),
       paddingTop: "4rem",
     },
   },

@@ -1,13 +1,5 @@
 import React, { useEffect, useState } from "react";
-import {
-  Button,
-  Card,
-  IconButton,
-  Link,
-  makeStyles,
-  Tooltip,
-  Typography,
-} from "@material-ui/core";
+import { Button, Card, Link, makeStyles, Typography } from "@material-ui/core";
 import GitHubIcon from "@material-ui/icons/GitHub";
 import format from "date-fns/format";
 import preval from "preval.macro";
@@ -19,7 +11,7 @@ const useStyles = makeStyles((theme) => ({
     padding: "1rem",
     marginBottom: "1rem",
     [theme.breakpoints.down("xs")]: {
-      width: "calc(100% - 8px)",
+      width: "100%",
     },
   },
 }));
