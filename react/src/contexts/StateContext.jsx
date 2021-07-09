@@ -14,6 +14,8 @@ export function StateContextProvider(props) {
     pomodoroTimeLeft: 25 * 60,
     /** ポモドーロタイマーのタイプ */
     pomodoroTimerType: "work",
+    /** ボトムナビゲーションの値 */
+    bottomNavigationValue: "list1",
     /** WebSocketが接続されたかどうか */
     isConnected: false,
     /** 入室しているかどうか */

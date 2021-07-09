@@ -284,6 +284,26 @@ const App = memo(() => {
     });
   };
 
+  /**
+   * スクロールされたときの処理です。
+   */
+  const onScroll = (event) => {
+    if (
+      event.target.scrollLeft >
+      event.target.scrollWidth - document.body.scrollWidth * 1.5
+    ) {
+      setState({ ...state, bottomNavigationValue: "room" });
+    } else if (event.target.scrollLeft < document.body.scrollWidth / 2) {
+      setState({ ...state, bottomNavigationValue: "list1" });
+    } else if (event.target.scrollLeft < document.body.scrollWidth * 1.5) {
+      setState({ ...state, bottomNavigationValue: "list2" });
+    } else if (event.target.scrollLeft < document.body.scrollWidth * 2.5) {
+      setState({ ...state, bottomNavigationValue: "list3" });
+    } else if (event.target.scrollLeft < document.body.scrollWidth * 3.5) {
+      setState({ ...state, bottomNavigationValue: "list4" });
+    }
+  };
+
   return (
     <>
       <MuiThemeProvider theme={darkTheme}>
@@ -295,6 +315,7 @@ const App = memo(() => {
         />
         <main
           className={classes.main}
+          onScroll={onScroll}
           style={{
             backgroundColor: darkTheme.palette.type === "light" ? "" : "#333",
           }}
