@@ -22,10 +22,6 @@ const LabelBottomNavigation = (props) => {
   const classes = useStyles();
   const [value, setValue] = useState("recents");
 
-  React.useEffect(() => {
-    console.log(Object.values(props.todoLists));
-  }, []);
-
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
@@ -37,6 +33,13 @@ const LabelBottomNavigation = (props) => {
   const onListButtonClick = (index) => {
     if (index === 0) {
       document.getElementsByTagName("main")[0].scrollLeft = 0;
+    } else {
+      const todoListAndRoomWidth =
+        document.getElementById("todoListAndRoom").children[0].clientWidth +
+        document.getElementById("todoListAndRoom").children[1].clientWidth;
+      const todoListLength = Object.values(props.todoLists).length;
+      document.getElementsByTagName("main")[0].scrollLeft =
+        (todoListAndRoomWidth * index) / (todoListLength + 1) - 10;
     }
   };
 
@@ -47,7 +50,6 @@ const LabelBottomNavigation = (props) => {
     const todoListAndRoomWidth =
       document.getElementById("todoListAndRoom").children[0].clientWidth +
       document.getElementById("todoListAndRoom").children[1].clientWidth;
-    console.log(todoListAndRoomWidth);
     document.getElementsByTagName("main")[0].scrollLeft = todoListAndRoomWidth;
   };
 

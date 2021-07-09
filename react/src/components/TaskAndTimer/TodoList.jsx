@@ -57,7 +57,7 @@ const useStyles = makeStyles((theme) => ({
   columnCard: {
     padding: 4,
     width: "100%",
-    maxHeight: "calc(100vh - 13.5rem)",
+    maxHeight: "calc(100vh - 14.5rem)",
     overflow: "auto",
   },
   taskCard: {
