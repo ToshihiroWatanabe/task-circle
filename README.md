@@ -1,6 +1,10 @@
 # task-circle（タスクサークル）
 
+フロントエンドはReact、バックエンドはSpring Bootで制作しています。
+
 ## Requirement
+
+動作環境は以下の通りです。
 
 - Java 11.0.10
 - Apache Maven 3.8.1
@@ -9,11 +13,12 @@
 
 ## Install
 
-### データベース
+### データベースの作成
 
-springboot\src\main\resources\schema.sqlを実行して、テーブルを作成してください。
+MySQLでデータベースを作成し、
+springboot\src\main\resources\schema.sqlにあるSQL文でテーブルを作成してください。
 
-### 環境変数
+### 環境変数の設定
 
 #### Spring Boot用の環境変数
 
@@ -29,21 +34,35 @@ MYSQL_PASSWORD|データベースに接続するユーザーのパスワード
 
 環境変数名|説明
 ---|---
-CLIENT_ID|Google OAuthのクライアントID
+CLIENT_ID|Google OAuthのクライアントID(これが無くてもログイン機能以外は動作します)
 
 ### インストールと実行
 
+GitHubからリポジトリをクローンします。
+
 `git clone https://github.com/ToshihiroWatanabe/task-circle.git`
+
+Spring Bootプロジェクトのディレクトリに移動します。
 
 `cd task-circle/springboot`
 
+Mavenで依存関係をインストールします。
+
 `mvn install`
+
+Spring Bootアプリケーションを起動します。
 
 `mvn spring-boot:run`
 
+Reactプロジェクトのディレクトリに移動します。
+
 `cd ../react`
 
+npmで依存関係をインストールします。
+
 `npm install`
+
+Reactアプリケーションを起動します。
 
 `npm start`
 
