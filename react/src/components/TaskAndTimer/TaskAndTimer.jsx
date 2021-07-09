@@ -269,6 +269,9 @@ const TaskAndTimer = memo((props) => {
           state.pomodoroTimerType === "break"
         ) {
           changeFaviconTo("coffee");
+        } else {
+          const link = document.querySelector("link[rel*='icon']");
+          link.href = "/favicon/taskcircle_timer_on.ico";
         }
         // 開始の効果音
         startedSound.volume = settings.volume * 0.01;
