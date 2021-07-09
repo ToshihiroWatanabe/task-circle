@@ -176,7 +176,7 @@ const ResponsiveDrawer = memo((props) => {
                 display: location.pathname === "/settings" ? "" : "none",
               }}
             >
-              {props.isDarkModeOn ? <Brightness7Icon /> : <Brightness4Icon />}
+              {props.isDarkModeOn ? <Brightness4Icon /> : <Brightness7Icon />}
             </IconButton>
           </Tooltip>
           {/* その他のページは空白 */}

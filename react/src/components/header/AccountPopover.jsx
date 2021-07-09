@@ -61,7 +61,7 @@ const AccountPopover = memo((props) => {
               ? state.isLogined
                 ? "inherit"
                 : "default"
-              : ""
+              : "default"
           }
           style={{
             color:

@@ -19,6 +19,7 @@ import { SettingsContext } from "contexts/SettingsContext";
 import StopIcon from "@material-ui/icons/Stop";
 import CloseIcon from "@material-ui/icons/Close";
 import AlarmIcon from "@material-ui/icons/Alarm";
+import AlarmOffIcon from "@material-ui/icons/AlarmOff";
 import TwitterIcon from "@material-ui/icons/Twitter";
 import PlayArrowIcon from "@material-ui/icons/PlayArrow";
 import AddCircleOutlineIcon from "@material-ui/icons/AddCircleOutline";
@@ -536,6 +537,19 @@ const TodoList = memo((props) => {
                                               >
                                                 <AlarmIcon
                                                   style={{
+                                                    display:
+                                                      item.achievedThenStop
+                                                        ? ""
+                                                        : "none",
+                                                    pointerEvents: "none",
+                                                  }}
+                                                />
+                                                <AlarmOffIcon
+                                                  style={{
+                                                    display:
+                                                      item.achievedThenStop
+                                                        ? "none"
+                                                        : "",
                                                     pointerEvents: "none",
                                                   }}
                                                 />

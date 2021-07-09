@@ -15,7 +15,7 @@ springboot\src\main\resources\schema.sqlを実行して、テーブルを作成�
 
 ### 環境変数
 
-#### Java用の環境変数
+#### Spring Boot用の環境変数
 
 環境変数名|説明
 ---|---
