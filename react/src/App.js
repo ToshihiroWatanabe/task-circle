@@ -62,7 +62,7 @@ const localStorageGetItemTodoLists = localStorage.getItem("todoLists")
 
 /** ローカルストレージから取得したダークモードがオンかどうか */
 const localStorageGetItemIsDarkModeOn = localStorage.getItem("isDarkModeOn")
-  ? localStorage.getItem("isDarkModeOn")
+  ? localStorage.getItem("isDarkModeOn") === "true"
   : false;
 
 const useStyles = makeStyles((theme) => ({
