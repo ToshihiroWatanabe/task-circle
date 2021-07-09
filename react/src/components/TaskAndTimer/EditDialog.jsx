@@ -20,7 +20,7 @@ import { StateContext } from "contexts/StateContext";
 
 /** 時間 */
 const hours = [];
-for (let i = 0; i <= 24; i++) {
+for (let i = 0; i <= 23; i++) {
   hours.push({ label: i.toString(), value: i });
 }
 
@@ -49,7 +49,7 @@ const filterOptions = createFilterOptions({
 });
 
 const useStyles = makeStyles((theme) => ({
-  paper: { width: "90%" },
+  [theme.breakpoints.up("sm")]: { paper: { width: "90%" } },
 }));
 
 let isControlPressed = false;
@@ -144,6 +144,7 @@ const EditDialog = memo((props) => {
       <Popper {...props} style={{ width: "4rem" }} placement="bottom-start" />
     );
   };
+  /** オートコンプリートの選択肢 */
   const Popper8rem = function (props) {
     return (
       <Popper {...props} style={{ width: "8rem" }} placement="bottom-start" />
@@ -313,6 +314,7 @@ const EditDialog = memo((props) => {
   return (
     <>
       <Dialog
+        fullScreen={isBreakPointsDownXs}
         open={props.open}
         onClose={handleCancel}
         onKeyDown={onKeyDown}
