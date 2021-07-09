@@ -6,6 +6,8 @@ export const ONCE_COUNT = 1;
 export const COUNT_INTERVAL = 1000;
 /** 1つのToDoリストのタスクの最大数 */
 export const NUMBER_OF_TASKS_MAX = 32;
+/** ToDoリストの最大数 */
+export const NUMBER_OF_LISTS_MAX = 4;
 /** カテゴリーの文字数制限 */
 export const REPORT_ITEMS_CATEGORY_MAX = 45;
 /** 内容(タスク名)の文字数制限 */

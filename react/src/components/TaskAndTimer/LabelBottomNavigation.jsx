@@ -5,6 +5,7 @@ import BottomNavigation from "@material-ui/core/BottomNavigation";
 import BottomNavigationAction from "@material-ui/core/BottomNavigationAction";
 import ListAltIcon from "@material-ui/icons/ListAlt";
 import PeopleIcon from "@material-ui/icons/People";
+import { NUMBER_OF_LISTS_MAX } from "utils/constant";
 
 const useStyles = makeStyles({
   root: {
@@ -38,8 +39,14 @@ const LabelBottomNavigation = (props) => {
         document.getElementById("todoListAndRoom").children[0].clientWidth +
         document.getElementById("todoListAndRoom").children[1].clientWidth;
       const todoListLength = Object.values(props.todoLists).length;
-      document.getElementsByTagName("main")[0].scrollLeft =
-        (todoListAndRoomWidth * index) / (todoListLength + 1) - 10;
+      // リスト数が最大数以上のとき
+      if (todoListLength >= NUMBER_OF_LISTS_MAX) {
+        document.getElementsByTagName("main")[0].scrollLeft =
+          (todoListAndRoomWidth * index) / (todoListLength + 1) + index * 4;
+      } else {
+        document.getElementsByTagName("main")[0].scrollLeft =
+          (todoListAndRoomWidth * index) / (todoListLength + 1) - index * 8;
+      }
     }
   };
 

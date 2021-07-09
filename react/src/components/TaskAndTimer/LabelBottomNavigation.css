@@ -1,5 +1,5 @@
 .MuiBottomNavigationAction-root {
-    min-width: 40px;
+    min-width: 30px !important;
 }
 
 .MuiBottomNavigationAction-label {

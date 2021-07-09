@@ -36,7 +36,7 @@ import {
   copyTasksToClipboard_BuildUp,
   copyTasksToClipboard_ja,
 } from "utils/export";
-import { NUMBER_OF_TASKS_MAX } from "utils/constant";
+import { NUMBER_OF_TASKS_MAX, NUMBER_OF_LISTS_MAX } from "utils/constant";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -673,7 +673,7 @@ const TodoList = memo((props) => {
         )}
       </DragDropContext>
       {/* ToDoリストを追加 */}
-      {Object.keys(props.todoLists).length < 4 && (
+      {Object.keys(props.todoLists).length < NUMBER_OF_LISTS_MAX && (
         <Tooltip
           title="ToDoリストを追加"
           onMouseMove={(e) =>
