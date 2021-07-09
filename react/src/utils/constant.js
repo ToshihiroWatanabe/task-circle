@@ -4,22 +4,14 @@ export const DEFAULT_TITLE = document.title;
 export const ONCE_COUNT = 1;
 /** カウントの間隔(ミリ秒) */
 export const COUNT_INTERVAL = 1000;
-/** 1つのToDoリストまたは日報のタスクの最大数 */
+/** 1つのToDoリストのタスクの最大数 */
 export const NUMBER_OF_TASKS_MAX = 32;
 /** カテゴリーの文字数制限 */
 export const REPORT_ITEMS_CATEGORY_MAX = 45;
-/** 内容の文字数制限 */
+/** 内容(タスク名)の文字数制限 */
 export const REPORT_ITEMS_CONTENT_MAX = 45;
-/** 感想の文字数制限 */
-export const REPORT_CONTENT_MAX = 400;
-/** ユーザーIDの最小文字数 */
-export const USER_ID_LENGTH_MIN = 5;
-/** ユーザーIDの最大文字数 */
-export const USER_ID_LENGTH_MAX = 32;
-/** パスワードの最小文字数 */
-export const PASSWORD_LENGTH_MIN = 12;
-/** パスワードの最大文字数 */
-export const PASSWORD_LENGTH_MAX = 100;
+/** 経過時間(秒)の最大値 */
+export const SPENT_SECOND_MAX = 1000 * 60 * 60 - 1;
 /** ドロワーの横幅 */
 export const DRAWER_WIDTH = "15rem";
 /** WebSocketのURL */

@@ -184,7 +184,7 @@ const TagsInput = memo((props) => {
    * @returns
    */
   const retrieveEstimatedSecond = (input) => {
-    const matched = input.match(/\d+:[0-5]*[0-9]:[0-5]*[0-9]/);
+    const matched = input.match(/([0-1]*[0-9]|2[0-3]):[0-5]*[0-9]:[0-5]*[0-9]/);
     if (matched) {
       let matchedSplit = matched[0].split(":");
       let estimatedSecond =

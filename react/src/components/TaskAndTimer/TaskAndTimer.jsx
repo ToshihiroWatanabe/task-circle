@@ -16,7 +16,12 @@ import { StatisticsContext } from "contexts/StatisticsContext";
 import RndTimer from "./RndTimer";
 import { SessionsContext } from "contexts/SessionsContext";
 import { TodoListsContext } from "contexts/TodoListsContext";
-import { DEFAULT_TITLE, ONCE_COUNT, COUNT_INTERVAL } from "utils/constant";
+import {
+  DEFAULT_TITLE,
+  ONCE_COUNT,
+  COUNT_INTERVAL,
+  SPENT_SECOND_MAX,
+} from "utils/constant";
 import TodoListService from "services/todoList.service";
 import SyncProgress from "components/SyncProgress";
 
@@ -484,6 +489,9 @@ const TaskAndTimer = memo((props) => {
                   state.pomodoroTimerType !== "break"
                 ) {
                   item.spentSecond += ONCE_COUNT * count;
+                  if (item.spentSecond > SPENT_SECOND_MAX) {
+                    item.spentSecond = SPENT_SECOND_MAX;
+                  }
                 }
                 setTimeout(() => {
                   refreshTitle(item.content, item.spentSecond);
