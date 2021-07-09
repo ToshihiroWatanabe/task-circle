@@ -6,6 +6,9 @@ import org.springframework.stereotype.Service;
 import app.taskcircle.mapper.TodoListMapper;
 import app.taskcircle.model.TodoList;
 
+/**
+ * ToDoリストに関するサービスクラスです。
+ */
 @Service
 public class TodoListService {
     private final TodoListMapper todoListMapper;

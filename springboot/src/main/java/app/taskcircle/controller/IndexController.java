@@ -6,7 +6,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 /**
- * index.htmlを返すコントローラーです。
+ * index.htmlを返すコントローラークラスです。
  */
 @Controller
 public class IndexController {

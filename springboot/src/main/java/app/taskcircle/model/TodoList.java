@@ -5,6 +5,9 @@ import java.time.LocalDateTime;
 import lombok.Getter;
 import lombok.Setter;
 
+/**
+ * todo_listsテーブルのモデルクラスです。
+ */
 @Getter
 @Setter
 public class TodoList {

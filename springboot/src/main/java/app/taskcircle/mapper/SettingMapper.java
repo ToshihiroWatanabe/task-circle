@@ -4,6 +4,9 @@ import org.apache.ibatis.annotations.Mapper;
 
 import app.taskcircle.model.Setting;
 
+/**
+ * settingsテーブルのマッパーインターフェースです。
+ */
 @Mapper
 public interface SettingMapper {
     public Setting findByUserUuid(String userUuid);

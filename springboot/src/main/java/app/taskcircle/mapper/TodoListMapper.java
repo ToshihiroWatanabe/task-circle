@@ -4,6 +4,9 @@ import org.apache.ibatis.annotations.Mapper;
 
 import app.taskcircle.model.TodoList;
 
+/**
+ * todo_listsテーブルのマッパーインターフェースです。
+ */
 @Mapper
 public interface TodoListMapper {
     public TodoList findByUserUuid(String userUuid);

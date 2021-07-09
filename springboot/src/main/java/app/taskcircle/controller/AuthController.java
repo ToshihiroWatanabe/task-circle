@@ -17,7 +17,7 @@ import app.taskcircle.service.UserService;
 import java.util.UUID;
 
 /**
- * 認証リクエストを受けとり、結果を返すコントローラーです。
+ * 認証リクエストを受けとり、結果を返すコントローラークラスです。
  */
 @RestController
 @RequestMapping("/api/auth")

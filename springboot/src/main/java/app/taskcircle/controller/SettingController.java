@@ -13,6 +13,9 @@ import app.taskcircle.service.UserService;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
+/**
+ * 設定に関するリクエストを受け取るコントローラークラスです。
+ */
 @RestController
 @RequestMapping("/api/setting")
 public class SettingController {

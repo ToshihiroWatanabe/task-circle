@@ -5,7 +5,7 @@ import org.apache.ibatis.annotations.Mapper;
 import app.taskcircle.model.User;
 
 /**
- * usersテーブルに関するマッパーインターフェースです。
+ * usersテーブルのマッパーインターフェースです。
  */
 @Mapper
 public interface UserMapper {

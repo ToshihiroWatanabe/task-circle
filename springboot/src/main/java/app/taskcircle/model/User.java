@@ -4,7 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 /**
- * ユーザーアカウントのモデルクラスです。
+ * usersテーブルのモデルクラスです。
  */
 @Getter
 @Setter

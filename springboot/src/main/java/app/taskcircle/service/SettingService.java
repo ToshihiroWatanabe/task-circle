@@ -6,6 +6,9 @@ import org.springframework.stereotype.Service;
 import app.taskcircle.mapper.SettingMapper;
 import app.taskcircle.model.Setting;
 
+/**
+ * 設定に関するサービスクラスです。
+ */
 @Service
 public class SettingService {
     private final SettingMapper settingMapper;
