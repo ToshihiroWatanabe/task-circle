@@ -219,7 +219,7 @@ const Settings = () => {
   const onTweetButtonEnabledChange = (event) => {
     setSettings((settings) => {
       settings = { ...settings, isTweetButtonEnabled: event.target.checked };
-      updateSettings();
+      updateSettings(settings);
       return settings;
     });
   };

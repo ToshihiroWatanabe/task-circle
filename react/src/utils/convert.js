@@ -99,30 +99,9 @@ export const taskItemsToBuildUp = (items) => {
   });
   text += "\r\n";
   text += "計: " + secondToHHMM_00_ja(totalSecond);
+  text += "\r\n";
+  text += "\r\n";
+  text += "✍感想";
+  text += "\r\n";
   return text;
-};
-
-/**
- * タスクの配列を日報に変換します。
- * @param {*} items タスクの配列
- */
-export const taskItemsToReport = (items) => {
-  let report = {
-    date: format(new Date(), "yyyy/MM/dd"),
-    content: "",
-    report_items: [],
-    updatedAt: 0,
-  };
-  items.forEach((item) => {
-    if (item.spentSecond > 0) {
-      let reportItem = {
-        category: item.category,
-        content: item.content,
-        hour: Math.floor(item.spentSecond / 3600),
-        minute: Math.floor((item.spentSecond / 60) % 60),
-      };
-      report.report_items.push(reportItem);
-    }
-  });
-  return report;
 };
