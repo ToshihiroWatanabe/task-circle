@@ -51,7 +51,7 @@ const localStorageGetItemTodoLists = localStorage.getItem("todoLists")
           {
             id: uuid(),
             category: "",
-            content: "タスク",
+            content: "タスク1",
             spentSecond: 0,
             estimatedSecond: 3600,
             isSelected: true,

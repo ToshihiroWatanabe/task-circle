@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import {
+  Button,
   Card,
   IconButton,
   Link,
@@ -29,6 +30,7 @@ const useStyles = makeStyles((theme) => ({
 const About = () => {
   const classes = useStyles();
   const [buildTimestamp, setBuildTimestamp] = useState(new Date(0));
+  const [newestEmojiFontSize, setNewestEmojiFontSize] = useState(1);
 
   useEffect(() => {
     axios
@@ -72,27 +74,41 @@ const About = () => {
           {/* 最新のバージョンかどうか */}
           <div>
             {buildTimestamp.getTime() - preval`module.exports = Date.now();` <=
-              3 * 60 * 1000 &&
-            buildTimestamp.getTime() - preval`module.exports = Date.now();` >= 0
-              ? "お使いのアプリは最新のバージョンです😀"
-              : ""}
+            3 * 60 * 1000 ? (
+              <>
+                お使いのアプリは最新のバージョンです
+                <span
+                  style={{ fontSize: newestEmojiFontSize + "rem" }}
+                  onClick={() => {
+                    setNewestEmojiFontSize(
+                      newestEmojiFontSize + 0.5 < 10
+                        ? newestEmojiFontSize + 0.5
+                        : 10
+                    );
+                  }}
+                >
+                  {newestEmojiFontSize < 10 ? <>😀</> : <>🤩</>}
+                </span>
+              </>
+            ) : (
+              ""
+            )}
             {buildTimestamp.getTime() - preval`module.exports = Date.now();` >=
             60 * 60 * 1000
               ? "キャッシュを削除すると最新版がダウンロードされます。"
               : ""}
           </div>
         </div>
-        <Tooltip title="GitHubでリポジトリを見る">
-          <Link
-            href="https://github.com/ToshihiroWatanabe/task-circle"
-            target="_blank"
-            rel="noopener"
-          >
-            <IconButton size="small" style={{ color: "black" }}>
-              <GitHubIcon />
-            </IconButton>
-          </Link>
-        </Tooltip>
+        <Link
+          href="https://github.com/ToshihiroWatanabe/task-circle"
+          target="_blank"
+          rel="noopener"
+        >
+          <Button size="small" variant="outlined" style={{ color: "black" }}>
+            <GitHubIcon />
+            ソースコードを見る
+          </Button>
+        </Link>
 
         <Typography style={{ margin: "1rem 0" }}>
           Copyright © {new Date().getFullYear()} ワタナベトシヒロ All Rights

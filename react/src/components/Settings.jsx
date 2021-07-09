@@ -380,7 +380,7 @@ const Settings = () => {
           />
           {settings.tickVolume === 0 && (
             <Typography variant="caption">
-              チクタク音のボリュームが0だと、動作が不安定になる場合があります。
+              チクタク音のボリュームを0にすると、動作が不安定になる場合があります。
             </Typography>
           )}
         </FormControl>
