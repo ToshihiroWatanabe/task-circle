@@ -1,5 +1,5 @@
 import React, { memo, useContext } from "react";
-import { makeStyles } from "@material-ui/core";
+import { Box, makeStyles, useTheme } from "@material-ui/core";
 import { Card } from "@material-ui/core";
 import { StateContext } from "contexts/StateContext";
 import EnterTheRoom from "./EnterTheRoom";
@@ -24,6 +24,7 @@ const useStyles = makeStyles((theme) => ({
  * ルームのコンポーネントです。
  */
 const Room = memo((props) => {
+  const theme = useTheme();
   const classes = useStyles();
   const [state, setState] = useContext(StateContext);
 
@@ -51,6 +52,9 @@ const Room = memo((props) => {
         )}
         {state.isInRoom && <UserList sessions={props.sessions} />}
       </Card>
+      <div
+        style={{ minWidth: theme.spacing(1), width: theme.spacing(1) }}
+      ></div>
     </>
   );
 });
