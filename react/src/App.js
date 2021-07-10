@@ -20,14 +20,6 @@ import { SessionsContext } from "contexts/SessionsContext";
 import { TodoListsContext } from "contexts/TodoListsContext";
 import PrivacyPolicy from "components/PrivacyPolicy";
 
-// 開発中はページタイトルを変更
-if (
-  process.env.NODE_ENV === "development" &&
-  !document.title.match(/.*開発中.*/)
-) {
-  document.title += "(開発中)";
-}
-
 const sessionFindAllTopicsId = uuid();
 
 /** ローカルストレージから取得した設定 */
@@ -174,6 +166,9 @@ const App = memo(() => {
    * @param {*} message
    */
   const onSessionMessageReceived = (message) => {
+    if (!state.isInRoom) {
+      return;
+    }
     setSessions((sessions) => {
       let sessionUpdated = false;
       let newSessions = sessions.map((session, index) => {
@@ -195,6 +190,9 @@ const App = memo(() => {
    * @param {*} message
    */
   const onLeaveMessageReceived = (message) => {
+    if (!state.isInRoom) {
+      return;
+    }
     setSessions((sessions) => {
       const newSessions = sessions.filter((session, index) => {
         return session.sessionId !== message.sessionId;
