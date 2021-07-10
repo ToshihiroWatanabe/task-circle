@@ -368,6 +368,7 @@ const TodoList = memo((props) => {
                         ref={provided.innerRef}
                         style={{
                           paddingTop: "0.5rem",
+                          borderRadius: 0,
                           background: snapshot.isDraggingOver
                             ? theme.palette.type === "light"
                               ? "lightblue"
