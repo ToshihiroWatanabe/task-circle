@@ -12,7 +12,8 @@ const useStyles = makeStyles({
   root: {
     width: "100vw",
     position: "fixed",
-    bottom: "0",
+    left: 0,
+    bottom: 0,
     paddingRight: "5rem",
   },
 });
