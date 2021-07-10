@@ -1,4 +1,4 @@
-import React, { Fragment, memo, useState } from "react";
+import React, { Fragment, memo, useEffect, useState } from "react";
 import {
   Avatar,
   Divider,
@@ -32,11 +32,15 @@ const RoomUserList = memo((props) => {
   const classes = useStyles();
   const [dateNow, setDateNow] = useState(Date.now() + 1000);
 
-  // 現在時刻を更新
-  clearInterval(refreshInterval);
-  refreshInterval = setInterval(() => {
-    setDateNow(Date.now() + 1000);
-  }, 1000);
+  useEffect(() => {
+    // 現在時刻を更新
+    refreshInterval = setInterval(() => {
+      setDateNow(Date.now() + 1000);
+    }, 1000);
+    return () => {
+      clearInterval(refreshInterval);
+    };
+  }, []);
 
   return (
     <>
