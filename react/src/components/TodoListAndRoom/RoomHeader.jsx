@@ -1,6 +1,5 @@
 import React, { useContext } from "react";
 import {
-  Box,
   Button,
   IconButton,
   makeStyles,
@@ -70,7 +69,9 @@ const RoomHeader = (props) => {
       {!state.isInRoom && (
         <>
           <HelpPopover
-            message={"入室すると今のタイマーの状況を仲間と共有できます。"}
+            message={
+              "入室すると今のタイマーの状況を他のユーザーと共有できます。"
+            }
           />
         </>
       )}

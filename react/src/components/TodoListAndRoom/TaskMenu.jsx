@@ -1,5 +1,5 @@
 import React, { useState, useEffect, memo, useContext } from "react";
-import { makeStyles } from "@material-ui/core";
+import { makeStyles, Tooltip } from "@material-ui/core";
 import { IconButton, Menu, MenuItem } from "@material-ui/core";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
 import DeleteIcon from "@material-ui/icons/Delete";
@@ -112,14 +112,16 @@ const TaskMenu = memo((props) => {
 
   return (
     <>
-      <IconButton
-        edge={"end"}
-        onClick={handleClick}
-        color="inherit"
-        aria-label="タスクメニュー切替"
-      >
-        <MoreVertIcon />
-      </IconButton>
+      <Tooltip title="タスクメニュー">
+        <IconButton
+          edge={"end"}
+          onClick={handleClick}
+          color="inherit"
+          aria-label="タスクメニュー切替"
+        >
+          <MoreVertIcon />
+        </IconButton>
+      </Tooltip>
       <Menu
         anchorEl={anchorEl}
         keepMounted
