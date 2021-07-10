@@ -6,7 +6,8 @@
 }
 
 #downshift-multiple-input-helper-text {
-    background-color: #ebecf0 !important;
+    /* background-color: #ebecf0 !important; */
+    background-color: inherit;
     margin: 0;
     width: 100%;
 }

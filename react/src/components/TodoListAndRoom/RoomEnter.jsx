@@ -2,40 +2,11 @@ import React, { memo, useContext, useState } from "react";
 import { makeStyles, useTheme } from "@material-ui/core/styles";
 import { Button, TextField, Tooltip } from "@material-ui/core";
 import { StateContext } from "contexts/StateContext";
+import { NG_USER_NAMES } from "utils/constant";
 
 const localStorageGetItemNameInRoom = localStorage.getItem("nameInRoom")
   ? localStorage.getItem("nameInRoom")
   : "";
-
-/** 使用できない名前 */
-const NG_NAMES = [
-  "You",
-  "you",
-  "あなた",
-  "Name",
-  "name",
-  "Username",
-  "userName",
-  "username",
-  "名前",
-  "運営",
-  "TaskCircle",
-  "Taskcircle",
-  "taskCircle",
-  "taskcircle",
-  "Task Circle",
-  "Task circle",
-  "task Circle",
-  "task circle",
-  "Task-Circle",
-  "Task-circle",
-  "task-Circle",
-  "task-circle",
-  "Task_Circle",
-  "Task_circle",
-  "task_Circle",
-  "task_circle",
-];
 
 const useStyles = makeStyles((theme) => ({
   root: {},
@@ -104,7 +75,7 @@ const RoomEnter = memo((props) => {
     if (name.trim() === "") {
       setHelperText("名前を入力してください");
       return false;
-    } else if (NG_NAMES.includes(name.trim())) {
+    } else if (NG_USER_NAMES.includes(name.trim())) {
       setHelperText("その名前は使えません");
       return false;
     } else if (name.trim().length > 20) {

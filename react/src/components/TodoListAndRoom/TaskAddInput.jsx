@@ -5,7 +5,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import Downshift from "downshift";
 import AddIcon from "@material-ui/icons/Add";
 import uuid from "uuid/v4";
-import { NUMBER_OF_TASKS_MAX } from "utils/constant";
+import { NUMBER_OF_TASKS_MAX, NG_TASK_NAMES } from "utils/constant";
 import { StateContext } from "contexts/StateContext";
 
 let lastSpacePressed = 0;
@@ -165,6 +165,9 @@ const TaskAddInput = memo((props) => {
     } else if (content.length < 1) {
       setHelperText("タスク名を入力してください");
       return false;
+    } else if (NG_TASK_NAMES.includes(content)) {
+      setHelperText("そのタスク名は使えません");
+      return false;
     } else if (content.length > 45) {
       setHelperText("タスク名は45文字以内にしてください");
       return false;
@@ -180,8 +183,8 @@ const TaskAddInput = memo((props) => {
 
   /**
    * 入力された文字列を、文字列と目標時間に分割します。
-   * @param {*} input
-   * @returns
+   * @param {*} input 入力された文字列
+   * @returns 内容と目標時間のオブジェクト
    */
   const retrieveEstimatedSecond = (input) => {
     const matched = input.match(/([0-1]*[0-9]|2[0-3]):[0-5]*[0-9]:[0-5]*[0-9]/);

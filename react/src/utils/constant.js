@@ -21,3 +21,42 @@ export const SOCKET_URL =
   process.env.NODE_ENV === "production"
     ? "/websocket"
     : "http://localhost:8160/websocket";
+
+/** 使用できないユーザー名 */
+export const NG_USER_NAMES = [
+  "You",
+  "you",
+  "あなた",
+  "Name",
+  "name",
+  "Username",
+  "userName",
+  "username",
+  "名前",
+  "運営",
+  "TaskCircle",
+  "Taskcircle",
+  "taskCircle",
+  "taskcircle",
+  "Task Circle",
+  "Task circle",
+  "task Circle",
+  "task circle",
+  "Task-Circle",
+  "Task-circle",
+  "task-Circle",
+  "task-circle",
+  "Task_Circle",
+  "Task_circle",
+  "task_Circle",
+  "task_circle",
+];
+
+/** 使用できないタスク名 */
+export const NG_TASK_NAMES = [
+  "タスクが選択されていません",
+  "作業中",
+  "ポモドーロ中",
+  "休憩中",
+  "離席中",
+];
