@@ -1,10 +1,9 @@
-import React, { memo, useContext } from "react";
-import { makeStyles, useTheme } from "@material-ui/core";
-import { Card } from "@material-ui/core";
-import { StateContext } from "contexts/StateContext";
+import { Card, makeStyles, useTheme } from "@material-ui/core";
 import RoomEnter from "components/home/RoomEnter";
 import RoomHeader from "components/home/RoomHeader";
 import RoomUserList from "components/home/RoomUserList";
+import { StateContext } from "contexts/StateContext";
+import React, { memo, useContext } from "react";
 
 const useStyles = makeStyles((theme) => ({
   roomCard: {

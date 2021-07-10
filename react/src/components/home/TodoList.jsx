@@ -1,42 +1,42 @@
-import React, { memo, useContext, useState } from "react";
-import { Link } from "react-router-dom";
-import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
 import {
+  Button,
+  Card,
   Chip,
   IconButton,
   makeStyles,
-  Card,
+  Snackbar,
   Tooltip,
   Typography,
-  Snackbar,
-  Button,
-  useTheme,
   useMediaQuery,
+  useTheme,
 } from "@material-ui/core";
-import "components/home/TodoList.css";
-import uuid from "uuid/v4";
-import { StateContext } from "contexts/StateContext";
-import { SettingsContext } from "contexts/SettingsContext";
-import StopIcon from "@material-ui/icons/Stop";
-import CloseIcon from "@material-ui/icons/Close";
+import AddCircleOutlineIcon from "@material-ui/icons/AddCircleOutline";
 import AlarmIcon from "@material-ui/icons/Alarm";
 import AlarmOffIcon from "@material-ui/icons/AlarmOff";
-import TwitterIcon from "@material-ui/icons/Twitter";
-import PlayArrowIcon from "@material-ui/icons/PlayArrow";
-import AddCircleOutlineIcon from "@material-ui/icons/AddCircleOutline";
 import AssignmentOutlinedIcon from "@material-ui/icons/AssignmentOutlined";
+import CloseIcon from "@material-ui/icons/Close";
 import FreeBreakfastOutlinedIcon from "@material-ui/icons/FreeBreakfastOutlined";
-import { secondToHHMMSS, taskItemsToBuildUp } from "utils/convert";
-import TaskMenu from "components/home/TaskMenu";
-import TodoListMenu from "components/home/TodoListMenu";
-import TaskAddInput from "components/home/TaskAddInput";
+import PlayArrowIcon from "@material-ui/icons/PlayArrow";
+import StopIcon from "@material-ui/icons/Stop";
+import TwitterIcon from "@material-ui/icons/Twitter";
 import LinearDeterminate from "components/home/LinearDeterminate";
+import TaskAddInput from "components/home/TaskAddInput";
+import TaskMenu from "components/home/TaskMenu";
+import "components/home/TodoList.css";
+import TodoListMenu from "components/home/TodoListMenu";
+import { SettingsContext } from "contexts/SettingsContext";
+import { StateContext } from "contexts/StateContext";
+import React, { memo, useContext, useState } from "react";
+import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
+import { Link } from "react-router-dom";
+import { NUMBER_OF_LISTS_MAX, NUMBER_OF_TASKS_MAX } from "utils/constant";
+import { secondToHHMMSS, taskItemsToBuildUp } from "utils/convert";
 import {
   copyTasksToClipboard,
   copyTasksToClipboard_BuildUp,
   copyTasksToClipboard_ja,
 } from "utils/export";
-import { NUMBER_OF_TASKS_MAX, NUMBER_OF_LISTS_MAX } from "utils/constant";
+import uuid from "uuid/v4";
 
 const useStyles = makeStyles((theme) => ({
   root: {

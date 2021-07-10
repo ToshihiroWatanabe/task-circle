@@ -1,4 +1,3 @@
-import React, { memo, useContext } from "react";
 import {
   Button,
   IconButton,
@@ -6,10 +5,11 @@ import {
   Tooltip,
   Typography,
 } from "@material-ui/core";
-import { StateContext } from "contexts/StateContext";
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 import PersonIcon from "@material-ui/icons/Person";
 import HelpPopover from "components/home/HelpPopover";
+import { StateContext } from "contexts/StateContext";
+import React, { memo, useContext } from "react";
 
 const useStyles = makeStyles((theme) => ({
   root: {

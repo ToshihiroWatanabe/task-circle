@@ -1,15 +1,15 @@
-import React, { useState, memo, useContext } from "react";
-import { GoogleLogin, GoogleLogout } from "react-google-login";
-import SimpleSnackbar from "components/SimpleSnackbar";
-import { StateContext } from "contexts/StateContext";
-import "components/header/GoogleButton.css";
-import { maskEmail } from "utils/string";
-import AuthService from "services/auth.service";
-import TodoListService from "services/todoList.service";
-import SettingService from "services/setting.service";
-import { TodoListsContext } from "contexts/TodoListsContext";
-import { SettingsContext } from "contexts/SettingsContext";
 import { useTheme } from "@material-ui/core";
+import "components/header/GoogleButton.css";
+import SimpleSnackbar from "components/SimpleSnackbar";
+import { SettingsContext } from "contexts/SettingsContext";
+import { StateContext } from "contexts/StateContext";
+import { TodoListsContext } from "contexts/TodoListsContext";
+import React, { memo, useContext, useState } from "react";
+import { GoogleLogin, GoogleLogout } from "react-google-login";
+import AuthService from "services/auth.service";
+import SettingService from "services/setting.service";
+import TodoListService from "services/todoList.service";
+import { maskEmail } from "utils/string";
 
 /**
  * クライアントID

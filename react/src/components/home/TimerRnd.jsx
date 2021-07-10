@@ -1,9 +1,9 @@
-import React, { memo, useEffect, useState } from "react";
+import { useMediaQuery, useTheme, Zoom } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-import { useLocation } from "react-router-dom";
-import { useTheme, Zoom, useMediaQuery } from "@material-ui/core";
-import { Rnd } from "react-rnd";
 import TimerFab from "components/home/TimerFab";
+import React, { memo, useEffect, useState } from "react";
+import { Rnd } from "react-rnd";
+import { useLocation } from "react-router-dom";
 
 const DEFAULT_WIDTH = 180;
 const DEFAULT_HEIGHT = 180;

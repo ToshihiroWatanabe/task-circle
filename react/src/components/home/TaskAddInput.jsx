@@ -1,11 +1,11 @@
-import React, { memo, useEffect, useState } from "react";
-import PropTypes from "prop-types";
 import { Chip, IconButton, TextField, Tooltip } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-import Downshift from "downshift";
 import AddIcon from "@material-ui/icons/Add";
+import Downshift from "downshift";
+import PropTypes from "prop-types";
+import React, { memo, useEffect, useState } from "react";
+import { NG_TASK_NAMES, NUMBER_OF_TASKS_MAX } from "utils/constant";
 import uuid from "uuid/v4";
-import { NUMBER_OF_TASKS_MAX, NG_TASK_NAMES } from "utils/constant";
 
 let lastSpacePressed = 0;
 

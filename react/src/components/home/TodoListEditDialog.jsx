@@ -1,14 +1,14 @@
-import React, { memo, useContext, useState } from "react";
-import { makeStyles } from "@material-ui/core/styles";
 import {
   Button,
-  TextField,
   Dialog,
   DialogActions,
   DialogContent,
   DialogTitle,
+  TextField,
 } from "@material-ui/core";
+import { makeStyles } from "@material-ui/core/styles";
 import { TodoListsContext } from "contexts/TodoListsContext";
+import React, { memo, useContext, useState } from "react";
 
 /** Material-UIのスタイル */
 const useStyles = makeStyles((theme) => ({

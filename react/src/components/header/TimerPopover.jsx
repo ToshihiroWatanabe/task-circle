@@ -1,4 +1,3 @@
-import React, { memo, useContext, useState } from "react";
 import {
   Divider,
   Icon,
@@ -10,12 +9,13 @@ import {
   Tooltip,
   Typography,
 } from "@material-ui/core";
-import "./TimerPopover.css";
-import { StateContext } from "contexts/StateContext";
 import TimerToggleButton from "components/header/TimerToggleButton";
-import { SettingsContext } from "contexts/SettingsContext";
-import SettingService from "services/setting.service";
 import SyncProgress from "components/SyncProgress";
+import { SettingsContext } from "contexts/SettingsContext";
+import { StateContext } from "contexts/StateContext";
+import React, { memo, useContext, useState } from "react";
+import SettingService from "services/setting.service";
+import "./TimerPopover.css";
 
 const workTimerLength = [];
 workTimerLength.push({ label: "5", value: 5 * 60 });

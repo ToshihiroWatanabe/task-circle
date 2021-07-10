@@ -1,4 +1,3 @@
-import React, { Fragment, memo, useEffect, useState } from "react";
 import {
   Avatar,
   Divider,
@@ -9,8 +8,9 @@ import {
   makeStyles,
   Typography,
 } from "@material-ui/core";
-import { getAvatarColor } from "utils/color";
 import { Skeleton } from "@material-ui/lab";
+import React, { Fragment, memo, useEffect, useState } from "react";
+import { getAvatarColor } from "utils/color";
 
 /** 更新のsetInterval ID */
 let refreshInterval = 0;

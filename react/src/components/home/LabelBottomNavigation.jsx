@@ -1,12 +1,12 @@
-import React, { memo, useContext } from "react";
-import { makeStyles } from "@material-ui/core/styles";
-import "components/home/LabelBottomNavigation.css";
 import BottomNavigation from "@material-ui/core/BottomNavigation";
 import BottomNavigationAction from "@material-ui/core/BottomNavigationAction";
+import { makeStyles } from "@material-ui/core/styles";
 import ListAltIcon from "@material-ui/icons/ListAlt";
 import PeopleIcon from "@material-ui/icons/People";
-import { NUMBER_OF_LISTS_MAX } from "utils/constant";
+import "components/home/LabelBottomNavigation.css";
 import { StateContext } from "contexts/StateContext";
+import React, { memo, useContext } from "react";
+import { NUMBER_OF_LISTS_MAX } from "utils/constant";
 
 const useStyles = makeStyles({
   root: {

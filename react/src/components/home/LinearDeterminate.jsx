@@ -1,6 +1,6 @@
-import React, { memo } from "react";
-import { makeStyles } from "@material-ui/core/styles";
 import LinearProgress from "@material-ui/core/LinearProgress";
+import { makeStyles } from "@material-ui/core/styles";
+import React, { memo } from "react";
 
 const useStyles = makeStyles({
   root: {

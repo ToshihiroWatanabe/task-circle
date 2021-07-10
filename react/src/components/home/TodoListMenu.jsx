@@ -1,12 +1,17 @@
-import React, { useState, memo, useContext } from "react";
-import { makeStyles, Tooltip } from "@material-ui/core";
-import { IconButton, Menu, MenuItem } from "@material-ui/core";
-import MoreVertIcon from "@material-ui/icons/MoreVert";
+import {
+  IconButton,
+  makeStyles,
+  Menu,
+  MenuItem,
+  Tooltip,
+} from "@material-ui/core";
 import DeleteIcon from "@material-ui/icons/Delete";
-import RotateLeftIcon from "@material-ui/icons/RotateLeft";
 import EditIcon from "@material-ui/icons/Edit";
-import { StateContext } from "contexts/StateContext";
+import MoreVertIcon from "@material-ui/icons/MoreVert";
+import RotateLeftIcon from "@material-ui/icons/RotateLeft";
 import TodoListEditDialog from "components/home/TodoListEditDialog";
+import { StateContext } from "contexts/StateContext";
+import React, { memo, useContext, useState } from "react";
 
 const useStyles = makeStyles({
   menu: {

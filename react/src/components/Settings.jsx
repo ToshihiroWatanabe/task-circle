@@ -1,33 +1,33 @@
-import React, { memo, useContext, useState } from "react";
 import {
   Box,
   Button,
   Card,
+  CircularProgress,
   FormControl,
-  FormLabel,
-  makeStyles,
-  TextField,
-  Typography,
   FormGroup,
   FormHelperText,
-  CircularProgress,
+  FormLabel,
+  makeStyles,
   Select,
   Switch,
+  TextField,
+  Typography,
 } from "@material-ui/core";
-import SimpleSnackbar from "components/SimpleSnackbar";
-import MusicVideoIcon from "@material-ui/icons/MusicVideo";
-import YouTube from "react-youtube";
-import { SettingsContext } from "contexts/SettingsContext";
-import VolumeSlider from "components/VolumeSlider";
-import YouTubeIcon from "@material-ui/icons/YouTube";
-import NotificationsNoneOutlinedIcon from "@material-ui/icons/NotificationsNoneOutlined";
 import AddAlertIcon from "@material-ui/icons/AddAlert";
 import ImportExportIcon from "@material-ui/icons/ImportExport";
+import MusicVideoIcon from "@material-ui/icons/MusicVideo";
+import NotificationsNoneOutlinedIcon from "@material-ui/icons/NotificationsNoneOutlined";
 import ShareIcon from "@material-ui/icons/Share";
 import TwitterIcon from "@material-ui/icons/Twitter";
-import { StateContext } from "contexts/StateContext";
-import SettingService from "services/setting.service";
+import YouTubeIcon from "@material-ui/icons/YouTube";
+import SimpleSnackbar from "components/SimpleSnackbar";
 import SyncProgress from "components/SyncProgress";
+import VolumeSlider from "components/VolumeSlider";
+import { SettingsContext } from "contexts/SettingsContext";
+import { StateContext } from "contexts/StateContext";
+import React, { memo, useContext, useState } from "react";
+import YouTube from "react-youtube";
+import SettingService from "services/setting.service";
 
 let updateTimeout = 0;
 

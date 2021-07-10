@@ -1,15 +1,15 @@
-import React, { memo, useContext } from "react";
-import { makeStyles } from "@material-ui/core/styles";
+import { useMediaQuery, useTheme } from "@material-ui/core";
 import Fab from "@material-ui/core/Fab";
+import { makeStyles } from "@material-ui/core/styles";
 import PlayArrowIcon from "@material-ui/icons/PlayArrow";
-import "./TimerFab.css";
-import { useTheme, useMediaQuery } from "@material-ui/core";
 import StopIcon from "@material-ui/icons/Stop";
 import CircularDeterminate from "components/home/CircularDeterminate";
-import { StateContext } from "contexts/StateContext";
 import { SettingsContext } from "contexts/SettingsContext";
+import { StateContext } from "contexts/StateContext";
+import React, { memo, useContext } from "react";
 import { secondToHHMMSS, secondToHHMMSS_ja } from "utils/convert";
 import { byteSlice } from "utils/string";
+import "./TimerFab.css";
 
 const useStyles = makeStyles((theme) => ({
   root: {

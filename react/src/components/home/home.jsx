@@ -1,35 +1,35 @@
-import React, { memo, useContext, useEffect, useState } from "react";
 import {
   makeStyles,
   Typography,
   useMediaQuery,
   useTheme,
 } from "@material-ui/core";
-import TodoList from "components/home/TodoList";
-import Room from "components/home/Room";
-import { StateContext } from "contexts/StateContext";
-import { SettingsContext } from "contexts/SettingsContext";
-import { changeFaviconTo } from "utils/changeFavicon";
+import faintTickAudio from "audio/faintTick.mp3";
 import startedAudio from "audio/notification_simple-01.mp3";
 import stoppedAudio from "audio/notification_simple-02.mp3";
 import achievedAudio from "audio/sound02.mp3";
 import tickAudio from "audio/tick.mp3";
-import faintTickAudio from "audio/faintTick.mp3";
-import YouTube from "react-youtube";
-import { secondToHHMMSS } from "utils/convert";
-import { StatisticsContext } from "contexts/StatisticsContext";
+import LabelBottomNavigation from "components/home/LabelBottomNavigation";
+import Room from "components/home/Room";
 import TimerRnd from "components/home/TimerRnd";
+import TodoList from "components/home/TodoList";
+import SyncProgress from "components/SyncProgress";
 import { SessionsContext } from "contexts/SessionsContext";
+import { SettingsContext } from "contexts/SettingsContext";
+import { StateContext } from "contexts/StateContext";
+import { StatisticsContext } from "contexts/StatisticsContext";
 import { TodoListsContext } from "contexts/TodoListsContext";
+import React, { memo, useContext, useEffect, useState } from "react";
+import YouTube from "react-youtube";
+import TodoListService from "services/todoList.service";
+import { changeFaviconTo } from "utils/changeFavicon";
 import {
+  COUNT_INTERVAL,
   DEFAULT_TITLE,
   ONCE_COUNT,
-  COUNT_INTERVAL,
   SPENT_SECOND_MAX,
 } from "utils/constant";
-import TodoListService from "services/todoList.service";
-import SyncProgress from "components/SyncProgress";
-import LabelBottomNavigation from "components/home/LabelBottomNavigation";
+import { secondToHHMMSS } from "utils/convert";
 
 /** setTimeoutのID */
 let timeoutId = null;

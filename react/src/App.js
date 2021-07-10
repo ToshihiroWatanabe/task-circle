@@ -1,25 +1,25 @@
-import React, { memo, useContext, useEffect, useRef, useState } from "react";
-import { Switch, Route, useLocation } from "react-router-dom";
+import { useMediaQuery, useTheme } from "@material-ui/core";
 import {
   createMuiTheme,
   makeStyles,
   MuiThemeProvider,
 } from "@material-ui/core/styles";
-import { themeTemplate } from "theme";
-import uuid from "uuid/v4";
-import SockJsClient from "react-stomp";
-import { SOCKET_URL } from "utils/constant";
+import About from "components/About";
 import ResponsiveDrawer from "components/header/ResponsiveDrawer";
 import TaskAndTimer from "components/home/home";
-import Settings from "components/Settings";
-import About from "components/About";
-import { StateContext } from "contexts/StateContext";
-import { SettingsContext } from "contexts/SettingsContext";
-import { StatisticsContext } from "contexts/StatisticsContext";
-import { SessionsContext } from "contexts/SessionsContext";
-import { TodoListsContext } from "contexts/TodoListsContext";
 import PrivacyPolicy from "components/PrivacyPolicy";
-import { useMediaQuery, useTheme } from "@material-ui/core";
+import Settings from "components/Settings";
+import { SessionsContext } from "contexts/SessionsContext";
+import { SettingsContext } from "contexts/SettingsContext";
+import { StateContext } from "contexts/StateContext";
+import { StatisticsContext } from "contexts/StatisticsContext";
+import { TodoListsContext } from "contexts/TodoListsContext";
+import React, { memo, useContext, useEffect, useRef, useState } from "react";
+import { Route, Switch, useLocation } from "react-router-dom";
+import SockJsClient from "react-stomp";
+import { themeTemplate } from "theme";
+import { SOCKET_URL } from "utils/constant";
+import uuid from "uuid/v4";
 
 const sessionFindAllTopicsId = uuid();
 

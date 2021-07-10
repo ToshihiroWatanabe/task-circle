@@ -1,8 +1,8 @@
-import React, { memo, useContext } from "react";
-import { makeStyles, useTheme } from "@material-ui/core/styles";
 import CircularProgress from "@material-ui/core/CircularProgress";
-import { StateContext } from "contexts/StateContext";
+import { makeStyles, useTheme } from "@material-ui/core/styles";
 import { SettingsContext } from "contexts/SettingsContext";
+import { StateContext } from "contexts/StateContext";
+import React, { memo, useContext } from "react";
 
 const useStyles = makeStyles((theme) => ({
   root: {

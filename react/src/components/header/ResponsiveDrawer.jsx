@@ -1,9 +1,6 @@
-import React, { useState, memo, Fragment } from "react";
-import { Link, useLocation } from "react-router-dom";
-import { makeStyles, useTheme } from "@material-ui/core/styles";
-import PropTypes from "prop-types";
 import {
   AppBar,
+  Button,
   Divider,
   Hidden,
   IconButton,
@@ -11,21 +8,24 @@ import {
   ListItem,
   ListItemIcon,
   ListItemText,
-  Toolbar,
-  Typography,
   SwipeableDrawer,
-  useMediaQuery,
-  Button,
+  Toolbar,
   Tooltip,
+  Typography,
+  useMediaQuery,
 } from "@material-ui/core";
-import MenuIcon from "@material-ui/icons/Menu";
-import HomeIcon from "@material-ui/icons/Home";
-import InfoIcon from "@material-ui/icons/Info";
+import { makeStyles, useTheme } from "@material-ui/core/styles";
 import Brightness4Icon from "@material-ui/icons/Brightness4";
 import Brightness7Icon from "@material-ui/icons/Brightness7";
+import HomeIcon from "@material-ui/icons/Home";
+import InfoIcon from "@material-ui/icons/Info";
+import MenuIcon from "@material-ui/icons/Menu";
 import SettingsIcon from "@material-ui/icons/Settings";
 import AccountPopover from "components/header/AccountPopover";
 import TimerPopover from "components/header/TimerPopover";
+import PropTypes from "prop-types";
+import React, { Fragment, memo, useState } from "react";
+import { Link, useLocation } from "react-router-dom";
 import { DRAWER_WIDTH } from "utils/constant";
 
 const pages = [

@@ -1,10 +1,10 @@
-import React, { useContext, memo } from "react";
-import { StateContext } from "contexts/StateContext";
 import { Button, useTheme } from "@material-ui/core";
 import stoppedAudio from "audio/notification_simple-02.mp3";
 import { SettingsContext } from "contexts/SettingsContext";
-import { secondToHHMMSS } from "utils/convert";
+import { StateContext } from "contexts/StateContext";
+import React, { memo, useContext } from "react";
 import { DEFAULT_TITLE } from "utils/constant";
+import { secondToHHMMSS } from "utils/convert";
 
 const stoppedSound = new Audio(stoppedAudio);
 

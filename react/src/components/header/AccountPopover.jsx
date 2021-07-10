@@ -1,4 +1,3 @@
-import React, { memo, useContext, useState } from "react";
 import {
   Box,
   IconButton,
@@ -8,15 +7,16 @@ import {
   Typography,
   useTheme,
 } from "@material-ui/core";
-import "./AccountPopover.css";
 import AccountCircleIcon from "@material-ui/icons/AccountCircle";
-import { StateContext } from "contexts/StateContext";
-import { StatisticsContext } from "contexts/StatisticsContext";
-import { secondToHHMMSS } from "utils/convert";
-import GoogleButton from "components/header/GoogleButton";
 import VisibilityIcon from "@material-ui/icons/Visibility";
 import VisibilityOffIcon from "@material-ui/icons/VisibilityOff";
+import GoogleButton from "components/header/GoogleButton";
+import { StateContext } from "contexts/StateContext";
+import { StatisticsContext } from "contexts/StatisticsContext";
+import React, { memo, useContext, useState } from "react";
 import { Link } from "react-router-dom";
+import { secondToHHMMSS } from "utils/convert";
+import "./AccountPopover.css";
 
 const useStyles = makeStyles((theme) => ({
   link: {

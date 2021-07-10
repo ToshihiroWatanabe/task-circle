@@ -1,6 +1,6 @@
-import React, { Fragment, memo } from "react";
-import { Snackbar, IconButton } from "@material-ui/core";
+import { IconButton, Snackbar } from "@material-ui/core";
 import CloseIcon from "@material-ui/icons/Close";
+import React, { Fragment, memo } from "react";
 
 /**
  * スナックバーのコンポーネントです。
