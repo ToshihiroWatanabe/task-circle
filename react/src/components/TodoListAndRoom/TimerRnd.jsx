@@ -1,5 +1,6 @@
-import React, { memo, useState } from "react";
+import React, { memo, useEffect, useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
+import { useLocation } from "react-router-dom";
 import { useTheme, Zoom, useMediaQuery } from "@material-ui/core";
 import { Rnd } from "react-rnd";
 import TimerFab from "./TimerFab";
@@ -26,7 +27,7 @@ const useStyles = makeStyles((theme) => ({
 const TimerRnd = memo((props) => {
   const classes = useStyles();
   const theme = useTheme();
-
+  const location = useLocation();
   const useMediaQueryThemeBreakpointsUpMd = useMediaQuery(
     theme.breakpoints.up("md")
   );
@@ -74,6 +75,17 @@ const TimerRnd = memo((props) => {
             return item.isSelected;
           })[0]
       : null;
+
+  // URLに変更があったとき
+  useEffect(() => {
+    if (location.pathname === "/") {
+      console.log(positionY + 80 + parseInt(height));
+      console.log(window.innerHeight);
+      if (positionY + 80 + parseInt(height) > window.innerHeight) {
+        setPositionY(window.innerHeight - 80 - parseInt(height));
+      }
+    }
+  }, [location]);
 
   /**
    * リサイズされたときの処理です。
