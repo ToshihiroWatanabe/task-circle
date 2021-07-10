@@ -49,7 +49,7 @@ const useStyles = makeStyles((theme) => ({
 /**
  * ルームに入室する前に表示されるコンポーネントです。
  */
-const EnterTheRoom = memo((props) => {
+const RoomEnter = memo((props) => {
   const classes = useStyles();
   const theme = useTheme();
   const [state, setState] = useContext(StateContext);
@@ -151,4 +151,4 @@ const EnterTheRoom = memo((props) => {
   );
 });
 
-export default EnterTheRoom;
+export default RoomEnter;

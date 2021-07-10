@@ -5,7 +5,7 @@ import MoreVertIcon from "@material-ui/icons/MoreVert";
 import DeleteIcon from "@material-ui/icons/Delete";
 import RotateLeftIcon from "@material-ui/icons/RotateLeft";
 import EditIcon from "@material-ui/icons/Edit";
-import EditDialog from "components/TaskAndTimer/EditDialog";
+import TaskEditDialog from "components/TodoListAndRoom/TaskEditDialog";
 import { StateContext } from "contexts/StateContext";
 
 const useStyles = makeStyles({
@@ -157,7 +157,7 @@ const TaskMenu = memo((props) => {
           タスクを削除
         </MenuItem>
       </Menu>
-      <EditDialog
+      <TaskEditDialog
         open={editOpen}
         setOpen={setEditOpen}
         index={props.index}

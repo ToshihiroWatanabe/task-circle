@@ -11,7 +11,7 @@ const stoppedSound = new Audio(stoppedAudio);
 /**
  * 作業・休憩切り替えボタンの切り替えボタンのコンポーネントです。
  */
-const ToggleButton = memo((props) => {
+const TimerToggleButton = memo((props) => {
   const theme = useTheme();
   const [state, setState] = useContext(StateContext);
   const [settings] = useContext(SettingsContext);
@@ -88,4 +88,4 @@ const ToggleButton = memo((props) => {
   );
 });
 
-export default ToggleButton;
+export default TimerToggleButton;

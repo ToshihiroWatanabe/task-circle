@@ -12,7 +12,7 @@ import {
 } from "@material-ui/core";
 import "./TimerPopover.css";
 import { StateContext } from "contexts/StateContext";
-import ToggleButton from "./ToggleButton";
+import TimerToggleButton from "./TimerToggleButton";
 import { SettingsContext } from "contexts/SettingsContext";
 import SettingService from "services/setting.service";
 import SyncProgress from "components/SyncProgress";
@@ -280,7 +280,7 @@ const TimerPopover = memo((props) => {
         </Typography>
         <Divider style={{ margin: "0.5rem 0.5rem 0 0.5rem" }} />
         <Typography component="div" style={{ padding: "0.5rem 0 0 1rem" }}>
-          <ToggleButton sendMessage={props.sendMessage} />
+          <TimerToggleButton sendMessage={props.sendMessage} />
         </Typography>
       </Popover>
       <SyncProgress isInSync={isInSync} />

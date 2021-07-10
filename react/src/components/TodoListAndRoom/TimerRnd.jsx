@@ -23,7 +23,7 @@ const useStyles = makeStyles((theme) => ({
 /**
  * リサイズ＆ドラッグ移動可能なタイマーのコンポーネントです。
  */
-const RndTimer = memo((props) => {
+const TimerRnd = memo((props) => {
   const classes = useStyles();
   const theme = useTheme();
 
@@ -174,4 +174,4 @@ const RndTimer = memo((props) => {
   );
 });
 
-export default RndTimer;
+export default TimerRnd;

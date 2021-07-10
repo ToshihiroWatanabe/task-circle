@@ -57,7 +57,7 @@ let isControlPressed = false;
 /**
  * 編集ダイアログのコンポーネントです。
  */
-const EditDialog = memo((props) => {
+const TaskEditDialog = memo((props) => {
   const classes = useStyles();
   const theme = useTheme();
   const isBreakPointsDownXs = useMediaQuery(theme.breakpoints.down("xs"));
@@ -561,4 +561,4 @@ const EditDialog = memo((props) => {
   );
 });
 
-export default EditDialog;
+export default TaskEditDialog;

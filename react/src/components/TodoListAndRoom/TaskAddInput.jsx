@@ -18,9 +18,9 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 /**
- * タグ入力可能な入力欄のコンポーネントです。
+ * タスク追加の入力欄のコンポーネントです。
  */
-const TagsInput = memo((props) => {
+const TaskAddInput = memo((props) => {
   const classes = useStyles();
   const [state] = useContext(StateContext);
   const [helperText, setHelperText] = useState("");
@@ -268,11 +268,11 @@ const TagsInput = memo((props) => {
   );
 });
 
-TagsInput.defaultProps = {
+TaskAddInput.defaultProps = {
   tags: [],
 };
-TagsInput.propTypes = {
+TaskAddInput.propTypes = {
   tags: PropTypes.arrayOf(PropTypes.string),
 };
 
-export default TagsInput;
+export default TaskAddInput;

@@ -10,7 +10,7 @@ import {
 import { StateContext } from "contexts/StateContext";
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 import PersonIcon from "@material-ui/icons/Person";
-import HelpPopover from "components/TaskAndTimer/HelpPopover";
+import HelpPopover from "components/TodoListAndRoom/HelpPopover";
 
 const useStyles = makeStyles((theme) => ({
   root: {

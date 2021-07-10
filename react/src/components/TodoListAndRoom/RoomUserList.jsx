@@ -26,9 +26,9 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 /**
- * ユーザーリストのコンポーネントです。
+ * ルームのユーザーリストのコンポーネントです。
  */
-const UserList = memo((props) => {
+const RoomUserList = memo((props) => {
   const classes = useStyles();
   const [dateNow, setDateNow] = useState(Date.now() + 1000);
 
@@ -156,4 +156,4 @@ const UserList = memo((props) => {
   );
 });
 
-export default UserList;
+export default RoomUserList;

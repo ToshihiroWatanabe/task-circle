@@ -2,9 +2,9 @@ import React, { memo, useContext } from "react";
 import { Box, makeStyles, useTheme } from "@material-ui/core";
 import { Card } from "@material-ui/core";
 import { StateContext } from "contexts/StateContext";
-import EnterTheRoom from "./EnterTheRoom";
+import RoomEnter from "./RoomEnter";
 import RoomHeader from "./RoomHeader";
-import UserList from "./UserList";
+import RoomUserList from "./RoomUserList";
 
 const useStyles = makeStyles((theme) => ({
   roomCard: {
@@ -41,16 +41,13 @@ const Room = memo((props) => {
         />
         {/* 入室前 */}
         {!state.isInRoom && (
-          <EnterTheRoom
-            onEnter={props.onEnter}
-            isConnected={state.isConnected}
-          />
+          <RoomEnter onEnter={props.onEnter} isConnected={state.isConnected} />
         )}
         {/* 入室後 */}
         {state.isInRoom && !state.isConnected && (
           <>サーバーとの接続が切れました。</>
         )}
-        {state.isInRoom && <UserList sessions={props.sessions} />}
+        {state.isInRoom && <RoomUserList sessions={props.sessions} />}
       </Card>
       <div
         style={{ minWidth: theme.spacing(1), width: theme.spacing(1) }}

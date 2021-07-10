@@ -13,7 +13,7 @@ import {
   useTheme,
   useMediaQuery,
 } from "@material-ui/core";
-import "components/TaskAndTimer/TodoList.css";
+import "components/TodoListAndRoom/TodoList.css";
 import uuid from "uuid/v4";
 import { StateContext } from "contexts/StateContext";
 import { SettingsContext } from "contexts/SettingsContext";
@@ -29,8 +29,8 @@ import FreeBreakfastOutlinedIcon from "@material-ui/icons/FreeBreakfastOutlined"
 import { secondToHHMMSS, taskItemsToBuildUp } from "utils/convert";
 import TaskMenu from "./TaskMenu";
 import TodoListMenu from "./TodoListMenu";
-import TagsInput from "./TagsInput";
-import LinearDeterminate from "components/TaskAndTimer/LinearDeterminate";
+import TaskAddInput from "./TaskAddInput";
+import LinearDeterminate from "components/TodoListAndRoom/LinearDeterminate";
 import {
   copyTasksToClipboard,
   copyTasksToClipboard_BuildUp,
@@ -632,7 +632,7 @@ const TodoList = memo((props) => {
                       "0px 2px 1px -1px rgb(0 0 0 / 20%), 0px 1px 1px 0px rgb(0 0 0 / 14%), 0px 1px 3px 0px rgb(0 0 0 / 12%)",
                   }}
                 >
-                  <TagsInput
+                  <TaskAddInput
                     fullWidth
                     variant="outlined"
                     name="tags"

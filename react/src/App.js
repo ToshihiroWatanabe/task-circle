@@ -10,7 +10,7 @@ import uuid from "uuid/v4";
 import SockJsClient from "react-stomp";
 import { SOCKET_URL } from "utils/constant";
 import ResponsiveDrawer from "components/header/ResponsiveDrawer";
-import TaskAndTimer from "components/TaskAndTimer/TaskAndTimer";
+import TaskAndTimer from "components/TodoListAndRoom/TaskAndTimer";
 import Settings from "components/Settings";
 import About from "components/About";
 import { StateContext } from "contexts/StateContext";
