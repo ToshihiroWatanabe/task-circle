@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import "components/TodoListAndRoom/LabelBottomNavigation.css";
 import BottomNavigation from "@material-ui/core/BottomNavigation";
@@ -24,32 +24,6 @@ const useStyles = makeStyles({
 const LabelBottomNavigation = (props) => {
   const classes = useStyles();
   const [state, setState] = useContext(StateContext);
-
-  useEffect(() => {
-    // スクロールイベントリスナーを追加
-    // document.getElementsByTagName("main")[0].addEventListener("scroll", () => {
-    //   onScroll();
-    // });
-  }, []);
-
-  const onScroll = () => {
-    // const scrollWidth = document.body.scrollWidth;
-    // console.log(scrollWidth);
-    // const todoListAndRoomWidth =
-    //   document.getElementById("todoListAndRoom").children[0].clientWidth +
-    //   document.getElementById("todoListAndRoom").children[1].clientWidth;
-    // const todoListLength = Object.values(props.todoLists).length;
-    // const scrollLeft = document.getElementsByTagName("main")[0].scrollLeft;
-    // console.log(Object.values(props.todoLists).length + 1);
-    // console.log(todoListAndRoomWidth / (todoListLength + 1));
-    // console.log(scrollLeft);
-    // if (
-    //   scrollLeft <
-    //   todoListAndRoomWidth / (todoListLength + 1) - scrollWidth / 2
-    // ) {
-    //   setValue("list1");
-    // }
-  };
 
   const handleChange = (event, newValue) => {
     setState({ ...state, bottomNavigationValue: newValue });
