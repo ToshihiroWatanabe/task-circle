@@ -1,3 +1,4 @@
+/** アバター背景色のカラーコードの配列 */
 const COLORS = [
   "#f44336", // red[500]
   "#e91e63", // pink[500]
@@ -18,7 +19,7 @@ const COLORS = [
 ];
 
 /**
- * アバターの背景色を決定します。
+ * ユーザー名からアバターの背景色を決定します。
  *
  * @param {string} name ユーザー名
  * @returns カラーコード
@@ -28,6 +29,6 @@ export const getAvatarColor = (name) => {
   for (let i = 0; i < name.length; i++) {
     hash = 31 * hash + name.charCodeAt(i);
   }
-  let index = Math.abs(hash % COLORS.length);
+  const index = Math.abs(hash % COLORS.length);
   return COLORS[index];
 };

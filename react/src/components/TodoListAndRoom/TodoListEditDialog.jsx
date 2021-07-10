@@ -20,7 +20,7 @@ let enterKeyIsDown = false;
 /**
  * タスク名を編集するダイアログの関数コンポーネントです。
  */
-const SimpleFormDialog = memo((props) => {
+const TodoListEditDialog = memo((props) => {
   /** Material-UIのスタイル */
   const classes = useStyles();
   let inRef = null;
@@ -111,4 +111,4 @@ const SimpleFormDialog = memo((props) => {
   );
 });
 
-export default SimpleFormDialog;
+export default TodoListEditDialog;

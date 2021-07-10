@@ -1,20 +1,20 @@
 /**
  * 全角文字は2文字、半角文字は1文字としてカウントします。
- * @param {*} str
- * @returns
+ * @param {string} str
+ * @returns 文字数
  */
 export const byteLength = (str) => {
   let length = 0;
-
   for (let i = 0; i < str.length; i++) {
     str[i].match(/[ -~]/) ? (length += 1) : (length += 2);
   }
-
   return length;
 };
 
 /**
  * 指定された文字数を超えた分を省略します。
+ * @param {string} str 文字列
+ * @param {int} length 文字数
  */
 export const byteSlice = (str, length) => {
   if (byteLength(str) <= length) {

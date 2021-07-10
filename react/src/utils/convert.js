@@ -1,5 +1,3 @@
-import format from "date-fns/format";
-
 /**
  * 秒をHH:MM:SS形式の文字列に変換します。
  * @param {*} second 秒

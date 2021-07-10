@@ -6,7 +6,7 @@ import DeleteIcon from "@material-ui/icons/Delete";
 import RotateLeftIcon from "@material-ui/icons/RotateLeft";
 import EditIcon from "@material-ui/icons/Edit";
 import { StateContext } from "contexts/StateContext";
-import SimpleFormDialog from "./SimpleFormDialog";
+import TodoListEditDialog from "./TodoListEditDialog";
 
 const useStyles = makeStyles({
   menu: {
@@ -135,7 +135,7 @@ const TodoListMenu = memo((props) => {
           リストを削除
         </MenuItem>
       </Menu>
-      <SimpleFormDialog
+      <TodoListEditDialog
         open={editOpen}
         setOpen={setEditOpen}
         index={props.index}
