@@ -181,6 +181,7 @@ const TimerPopover = memo((props) => {
               }
               style={{
                 width: "1.25rem",
+                height: "1.25rem",
                 filter: settings.isPomodoroEnabled
                   ? "drop-shadow(0px 0px 1.25px #000)"
                   : "contrast(20%)",

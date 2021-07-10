@@ -209,17 +209,7 @@ const ResponsiveDrawer = memo((props) => {
             {drawer}
           </SwipeableDrawer>
         </Hidden>
-        <Hidden mdDown implementation="css">
-          {/* <Drawer
-            classes={{
-              paper: classes.drawerPaper,
-            }}
-            variant="permanent"
-            open
-          >
-            {drawer}
-          </Drawer> */}
-        </Hidden>
+        <Hidden mdDown implementation="css"></Hidden>
       </nav>
     </div>
   );
