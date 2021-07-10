@@ -1,4 +1,4 @@
-import http from "../http-common";
+import http from "http-common";
 
 /**
  * 認証に関するAPIのリクエストを送信します。

@@ -5,7 +5,7 @@ import MoreVertIcon from "@material-ui/icons/MoreVert";
 import DeleteIcon from "@material-ui/icons/Delete";
 import RotateLeftIcon from "@material-ui/icons/RotateLeft";
 import EditIcon from "@material-ui/icons/Edit";
-import TaskEditDialog from "components/TodoListAndRoom/TaskEditDialog";
+import TaskEditDialog from "components/home/TaskEditDialog";
 import { StateContext } from "contexts/StateContext";
 
 const useStyles = makeStyles({

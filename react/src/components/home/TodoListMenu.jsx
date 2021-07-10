@@ -6,7 +6,7 @@ import DeleteIcon from "@material-ui/icons/Delete";
 import RotateLeftIcon from "@material-ui/icons/RotateLeft";
 import EditIcon from "@material-ui/icons/Edit";
 import { StateContext } from "contexts/StateContext";
-import TodoListEditDialog from "./TodoListEditDialog";
+import TodoListEditDialog from "components/home/TodoListEditDialog";
 
 const useStyles = makeStyles({
   menu: {

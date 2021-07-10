@@ -13,7 +13,7 @@ import {
   useTheme,
   useMediaQuery,
 } from "@material-ui/core";
-import "components/TodoListAndRoom/TodoList.css";
+import "components/home/TodoList.css";
 import uuid from "uuid/v4";
 import { StateContext } from "contexts/StateContext";
 import { SettingsContext } from "contexts/SettingsContext";
@@ -27,10 +27,10 @@ import AddCircleOutlineIcon from "@material-ui/icons/AddCircleOutline";
 import AssignmentOutlinedIcon from "@material-ui/icons/AssignmentOutlined";
 import FreeBreakfastOutlinedIcon from "@material-ui/icons/FreeBreakfastOutlined";
 import { secondToHHMMSS, taskItemsToBuildUp } from "utils/convert";
-import TaskMenu from "./TaskMenu";
-import TodoListMenu from "./TodoListMenu";
-import TaskAddInput from "./TaskAddInput";
-import LinearDeterminate from "components/TodoListAndRoom/LinearDeterminate";
+import TaskMenu from "components/home/TaskMenu";
+import TodoListMenu from "components/home/TodoListMenu";
+import TaskAddInput from "components/home/TaskAddInput";
+import LinearDeterminate from "components/home/LinearDeterminate";
 import {
   copyTasksToClipboard,
   copyTasksToClipboard_BuildUp,

@@ -18,7 +18,7 @@ import SimpleSnackbar from "components/SimpleSnackbar";
 import MusicVideoIcon from "@material-ui/icons/MusicVideo";
 import YouTube from "react-youtube";
 import { SettingsContext } from "contexts/SettingsContext";
-import VolumeSlider from "./VolumeSlider";
+import VolumeSlider from "components/VolumeSlider";
 import YouTubeIcon from "@material-ui/icons/YouTube";
 import NotificationsNoneOutlinedIcon from "@material-ui/icons/NotificationsNoneOutlined";
 import AddAlertIcon from "@material-ui/icons/AddAlert";

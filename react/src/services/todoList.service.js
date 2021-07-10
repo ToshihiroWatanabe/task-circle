@@ -1,4 +1,4 @@
-import http from "../http-common";
+import http from "http-common";
 
 /**
  * Todoリストに関するAPIのリクエストを送信します。

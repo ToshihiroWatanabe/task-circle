@@ -13,7 +13,7 @@ import AccountCircleIcon from "@material-ui/icons/AccountCircle";
 import { StateContext } from "contexts/StateContext";
 import { StatisticsContext } from "contexts/StatisticsContext";
 import { secondToHHMMSS } from "utils/convert";
-import GoogleButton from "./GoogleButton";
+import GoogleButton from "components/header/GoogleButton";
 import VisibilityIcon from "@material-ui/icons/Visibility";
 import VisibilityOffIcon from "@material-ui/icons/VisibilityOff";
 import { Link } from "react-router-dom";

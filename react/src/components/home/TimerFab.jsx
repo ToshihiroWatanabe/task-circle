@@ -5,7 +5,7 @@ import PlayArrowIcon from "@material-ui/icons/PlayArrow";
 import "./TimerFab.css";
 import { useTheme, useMediaQuery } from "@material-ui/core";
 import StopIcon from "@material-ui/icons/Stop";
-import CircularDeterminate from "./CircularDeterminate";
+import CircularDeterminate from "components/home/CircularDeterminate";
 import { StateContext } from "contexts/StateContext";
 import { SettingsContext } from "contexts/SettingsContext";
 import { secondToHHMMSS, secondToHHMMSS_ja } from "utils/convert";

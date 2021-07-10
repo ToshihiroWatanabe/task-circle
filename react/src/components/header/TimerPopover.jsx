@@ -12,7 +12,7 @@ import {
 } from "@material-ui/core";
 import "./TimerPopover.css";
 import { StateContext } from "contexts/StateContext";
-import TimerToggleButton from "./TimerToggleButton";
+import TimerToggleButton from "components/header/TimerToggleButton";
 import { SettingsContext } from "contexts/SettingsContext";
 import SettingService from "services/setting.service";
 import SyncProgress from "components/SyncProgress";

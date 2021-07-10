@@ -5,8 +5,8 @@ import {
   useMediaQuery,
   useTheme,
 } from "@material-ui/core";
-import TodoList from "./TodoList";
-import Room from "./Room";
+import TodoList from "components/home/TodoList";
+import Room from "components/home/Room";
 import { StateContext } from "contexts/StateContext";
 import { SettingsContext } from "contexts/SettingsContext";
 import { changeFaviconTo } from "utils/changeFavicon";
@@ -18,7 +18,7 @@ import faintTickAudio from "audio/faintTick.mp3";
 import YouTube from "react-youtube";
 import { secondToHHMMSS } from "utils/convert";
 import { StatisticsContext } from "contexts/StatisticsContext";
-import TimerRnd from "./TimerRnd";
+import TimerRnd from "components/home/TimerRnd";
 import { SessionsContext } from "contexts/SessionsContext";
 import { TodoListsContext } from "contexts/TodoListsContext";
 import {
@@ -29,7 +29,7 @@ import {
 } from "utils/constant";
 import TodoListService from "services/todoList.service";
 import SyncProgress from "components/SyncProgress";
-import LabelBottomNavigation from "./LabelBottomNavigation";
+import LabelBottomNavigation from "components/home/LabelBottomNavigation";
 
 /** setTimeoutのID */
 let timeoutId = null;

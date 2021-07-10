@@ -3,7 +3,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import { useLocation } from "react-router-dom";
 import { useTheme, Zoom, useMediaQuery } from "@material-ui/core";
 import { Rnd } from "react-rnd";
-import TimerFab from "./TimerFab";
+import TimerFab from "components/home/TimerFab";
 
 const DEFAULT_WIDTH = 180;
 const DEFAULT_HEIGHT = 180;

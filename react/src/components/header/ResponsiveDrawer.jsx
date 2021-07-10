@@ -25,7 +25,7 @@ import Brightness4Icon from "@material-ui/icons/Brightness4";
 import Brightness7Icon from "@material-ui/icons/Brightness7";
 import SettingsIcon from "@material-ui/icons/Settings";
 import AccountPopover from "components/header/AccountPopover";
-import TimerPopover from "./TimerPopover";
+import TimerPopover from "components/header/TimerPopover";
 import { DRAWER_WIDTH } from "utils/constant";
 
 const pages = [
