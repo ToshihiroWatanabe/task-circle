@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { memo, useContext } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import "components/TodoListAndRoom/LabelBottomNavigation.css";
 import BottomNavigation from "@material-ui/core/BottomNavigation";
@@ -21,7 +21,7 @@ const useStyles = makeStyles({
 /**
  * ボトムナビゲーションのコンポーネントです。
  */
-const LabelBottomNavigation = (props) => {
+const LabelBottomNavigation = memo((props) => {
   const classes = useStyles();
   const [state, setState] = useContext(StateContext);
 
@@ -92,6 +92,6 @@ const LabelBottomNavigation = (props) => {
       />
     </BottomNavigation>
   );
-};
+});
 
 export default LabelBottomNavigation;

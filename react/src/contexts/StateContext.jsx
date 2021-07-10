@@ -1,4 +1,4 @@
-import React, { createContext, useState } from "react";
+import React, { createContext, memo, useState } from "react";
 
 export const StateContext = createContext([{}, () => {}]);
 
@@ -6,7 +6,7 @@ export const StateContext = createContext([{}, () => {}]);
  * グローバルstateを提供します。
  * @param {*} props
  */
-export function StateContextProvider(props) {
+export const StateContextProvider = memo((props) => {
   const [state, setState] = useState({
     /** タイマーがオンかどうか */
     isTimerOn: false,
@@ -37,4 +37,4 @@ export function StateContextProvider(props) {
       {props.children}
     </StateContext.Provider>
   );
-}
+});

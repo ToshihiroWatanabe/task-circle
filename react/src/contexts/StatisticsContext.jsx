@@ -1,4 +1,4 @@
-import React, { createContext, useState } from "react";
+import React, { createContext, memo, useState } from "react";
 
 export const StatisticsContext = createContext([{}, () => {}]);
 
@@ -6,7 +6,7 @@ export const StatisticsContext = createContext([{}, () => {}]);
  * 統計のグローバルstateを提供します。
  * @param {*} props
  */
-export function StatisticsContextProvider(props) {
+export const StatisticsContextProvider = memo((props) => {
   const [statistics, setStatistics] = useState({
     // 本日の経過時間(秒)
     todaySpentSecond: 0,
@@ -21,4 +21,4 @@ export function StatisticsContextProvider(props) {
       {props.children}
     </StatisticsContext.Provider>
   );
-}
+});

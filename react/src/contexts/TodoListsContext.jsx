@@ -1,4 +1,4 @@
-import React, { createContext, useState } from "react";
+import React, { createContext, memo, useState } from "react";
 
 export const TodoListsContext = createContext([{}, () => {}]);
 
@@ -6,7 +6,7 @@ export const TodoListsContext = createContext([{}, () => {}]);
  * ToDoリストのグローバルstateを提供します。
  * @param {*} props
  */
-export function TodoListsContextProvider(props) {
+export const TodoListsContextProvider = memo((props) => {
   const [todoLists, setTodoLists] = useState({});
 
   return (
@@ -14,4 +14,4 @@ export function TodoListsContextProvider(props) {
       {props.children}
     </TodoListsContext.Provider>
   );
-}
+});

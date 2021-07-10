@@ -1,4 +1,4 @@
-import React, { createContext, useState } from "react";
+import React, { createContext, memo, useState } from "react";
 
 export const SessionsContext = createContext([{}, () => {}]);
 
@@ -6,7 +6,7 @@ export const SessionsContext = createContext([{}, () => {}]);
  * セッションのグローバルstateを提供します。
  * @param {*} props
  */
-export function SessionsContextProvider(props) {
+export const SessionsContextProvider = memo((props) => {
   const [sessions, setSessions] = useState([]);
 
   return (
@@ -14,4 +14,4 @@ export function SessionsContextProvider(props) {
       {props.children}
     </SessionsContext.Provider>
   );
-}
+});

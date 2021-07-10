@@ -1,11 +1,11 @@
-import React from "react";
+import React, { memo } from "react";
 import { CircularProgress } from "@material-ui/core";
 
 /**
  * 同期中の表示のコンポーネントです。
  * @param {*} props
  */
-const SyncProgress = (props) => {
+const SyncProgress = memo((props) => {
   return (
     <>
       <div
@@ -21,6 +21,6 @@ const SyncProgress = (props) => {
       </div>
     </>
   );
-};
+});
 
 export default SyncProgress;

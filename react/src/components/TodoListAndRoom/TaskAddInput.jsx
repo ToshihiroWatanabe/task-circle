@@ -1,4 +1,4 @@
-import React, { memo, useContext, useEffect, useState } from "react";
+import React, { memo, useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import { Chip, IconButton, TextField, Tooltip } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
@@ -6,7 +6,6 @@ import Downshift from "downshift";
 import AddIcon from "@material-ui/icons/Add";
 import uuid from "uuid/v4";
 import { NUMBER_OF_TASKS_MAX, NG_TASK_NAMES } from "utils/constant";
-import { StateContext } from "contexts/StateContext";
 
 let lastSpacePressed = 0;
 
@@ -22,7 +21,6 @@ const useStyles = makeStyles((theme) => ({
  */
 const TaskAddInput = memo((props) => {
   const classes = useStyles();
-  const [state] = useContext(StateContext);
   const [helperText, setHelperText] = useState("");
   const [inputValue, setInputValue] = useState("");
   const [categoryInput, setCategoryInput] = useState([]);

@@ -1,4 +1,4 @@
-import React, { createContext, useState } from "react";
+import React, { createContext, memo, useState } from "react";
 
 export const SettingsContext = createContext([{}, () => {}]);
 
@@ -6,7 +6,7 @@ export const SettingsContext = createContext([{}, () => {}]);
  * 設定のグローバルstateを提供します。
  * @param {*} props
  */
-export function SettingsContextProvider(props) {
+export const SettingsContextProvider = memo((props) => {
   // 設定
   const [settings, setSettings] = useState({
     /** ポモドーロモードがオンかどうか */
@@ -42,4 +42,4 @@ export function SettingsContextProvider(props) {
       {props.children}
     </SettingsContext.Provider>
   );
-}
+});

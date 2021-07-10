@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { memo, useContext, useState } from "react";
 import {
   Box,
   Button,
@@ -89,7 +89,7 @@ const useStyles = makeStyles((theme) => ({
 /**
  * 設定ページのコンポーネントです。
  */
-const Settings = () => {
+const Settings = memo(() => {
   const classes = useStyles();
   const [state, setState] = useContext(StateContext);
   const [settings, setSettings] = useContext(SettingsContext);
@@ -99,8 +99,6 @@ const Settings = () => {
   const [renderWorkVideo, setRenderWorkVideo] = useState(true);
   const [renderBreakVideo, setRenderBreakVideo] = useState(true);
   const [isInSync, setIsInSync] = useState(false);
-
-  useEffect(() => {}, []);
 
   /**
    * 設定に変化があったときの処理です。
@@ -467,6 +465,6 @@ const Settings = () => {
       <SyncProgress isInSync={isInSync} />
     </>
   );
-};
+});
 
 export default Settings;

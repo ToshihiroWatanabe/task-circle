@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { memo, useContext } from "react";
 import {
   Button,
   IconButton,
@@ -20,7 +20,7 @@ const useStyles = makeStyles((theme) => ({
 /**
  * ルームのヘッダーのコンポーネントです。
  */
-const RoomHeader = (props) => {
+const RoomHeader = memo((props) => {
   const classes = useStyles();
   const [state, setState] = useContext(StateContext);
 
@@ -100,6 +100,6 @@ const RoomHeader = (props) => {
       )}
     </div>
   );
-};
+});
 
 export default RoomHeader;

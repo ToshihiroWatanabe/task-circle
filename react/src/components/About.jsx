@@ -1,5 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { Button, Card, Link, makeStyles, Typography } from "@material-ui/core";
+import {
+  Box,
+  Button,
+  Card,
+  Link,
+  makeStyles,
+  Typography,
+} from "@material-ui/core";
 import GitHubIcon from "@material-ui/icons/GitHub";
 import format from "date-fns/format";
 import preval from "preval.macro";
@@ -48,6 +55,7 @@ const About = () => {
     <>
       <Card className={classes.card}>
         <Typography variant="h5">TaskCircle（タスクサークル）</Typography>
+        <Box mt="1rem" />
         <div style={{ display: "flex", flexDirection: "column" }}>
           <Typography variant="caption">
             クライアント側のビルド時刻{" "}

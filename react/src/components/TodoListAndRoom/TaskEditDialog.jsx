@@ -60,7 +60,9 @@ let isControlPressed = false;
 const TaskEditDialog = memo((props) => {
   const classes = useStyles();
   const theme = useTheme();
-  const isBreakPointsDownXs = useMediaQuery(theme.breakpoints.down("xs"));
+  const useMediaQueryThemeBreakpointsDownXs = useMediaQuery(
+    theme.breakpoints.down("xs")
+  );
   const [value, setValue] = useState({
     category: "",
     content: "",
@@ -314,7 +316,7 @@ const TaskEditDialog = memo((props) => {
   return (
     <>
       <Dialog
-        fullScreen={isBreakPointsDownXs}
+        fullScreen={useMediaQueryThemeBreakpointsDownXs}
         open={props.open}
         onClose={handleCancel}
         onKeyDown={onKeyDown}
@@ -369,7 +371,7 @@ const TaskEditDialog = memo((props) => {
             目標・見積時間:
             {/* 時間 */}
             <FormControl>
-              {!isBreakPointsDownXs && (
+              {!useMediaQueryThemeBreakpointsDownXs && (
                 <Autocomplete
                   freeSolo
                   disableClearable // バツマークを無効にする
@@ -407,7 +409,7 @@ const TaskEditDialog = memo((props) => {
                   )}
                 />
               )}
-              {isBreakPointsDownXs && (
+              {useMediaQueryThemeBreakpointsDownXs && (
                 <Select
                   native
                   value={value.hour}
@@ -429,7 +431,7 @@ const TaskEditDialog = memo((props) => {
             時間
             {/* 分 */}
             <FormControl>
-              {!isBreakPointsDownXs && (
+              {!useMediaQueryThemeBreakpointsDownXs && (
                 <Autocomplete
                   freeSolo
                   disableClearable // バツマークを無効にする
@@ -467,7 +469,7 @@ const TaskEditDialog = memo((props) => {
                   )}
                 />
               )}
-              {isBreakPointsDownXs && (
+              {useMediaQueryThemeBreakpointsDownXs && (
                 <Select
                   native
                   value={value.minute}
@@ -488,7 +490,7 @@ const TaskEditDialog = memo((props) => {
             </FormControl>
             分{/* 秒 */}
             <FormControl>
-              {!isBreakPointsDownXs && (
+              {!useMediaQueryThemeBreakpointsDownXs && (
                 <Autocomplete
                   freeSolo
                   disableClearable // バツマークを無効にする
@@ -526,7 +528,7 @@ const TaskEditDialog = memo((props) => {
                   )}
                 />
               )}
-              {isBreakPointsDownXs && (
+              {useMediaQueryThemeBreakpointsDownXs && (
                 <Select
                   native
                   value={value.second}

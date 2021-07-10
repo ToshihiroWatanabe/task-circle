@@ -19,6 +19,7 @@ import { StatisticsContext } from "contexts/StatisticsContext";
 import { SessionsContext } from "contexts/SessionsContext";
 import { TodoListsContext } from "contexts/TodoListsContext";
 import PrivacyPolicy from "components/PrivacyPolicy";
+import { useMediaQuery, useTheme } from "@material-ui/core";
 
 const sessionFindAllTopicsId = uuid();
 
@@ -78,6 +79,7 @@ const useStyles = makeStyles((theme) => ({
  */
 const App = memo(() => {
   const classes = useStyles();
+  const theme = useTheme();
   const [state, setState] = useContext(StateContext);
   const [settings, setSettings] = useContext(SettingsContext);
   const [statistics, setStatistics] = useContext(StatisticsContext);
@@ -96,6 +98,9 @@ const App = memo(() => {
       type: isDarkModeOn ? "dark" : "light",
     },
   });
+  const useMediaQueryThemeBreakpointsDownXs = useMediaQuery(
+    theme.breakpoints.down("xs")
+  );
 
   useEffect(() => {
     // 初期値とローカルストレージからの値を統合
@@ -286,6 +291,9 @@ const App = memo(() => {
    * スクロールされたときの処理です。
    */
   const onScroll = (event) => {
+    if (location.pathname !== "/" || !useMediaQueryThemeBreakpointsDownXs) {
+      return;
+    }
     if (
       event.target.scrollLeft >
       event.target.scrollWidth - document.body.scrollWidth * 1.5

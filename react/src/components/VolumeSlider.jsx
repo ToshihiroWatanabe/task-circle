@@ -1,4 +1,4 @@
-import React from "react";
+import React, { memo } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
@@ -38,7 +38,7 @@ const useStyles = makeStyles({
 /**
  * 音量スライダーのコンポーネントです。
  */
-export default function VolumeSlider(props) {
+const VolumeSlider = memo((props) => {
   const classes = useStyles();
 
   /**
@@ -107,4 +107,6 @@ export default function VolumeSlider(props) {
       </Grid>
     </div>
   );
-}
+});
+
+export default VolumeSlider;
