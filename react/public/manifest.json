@@ -1,6 +1,6 @@
 {
   "short_name": "TaskCircle",
-  "name": "TaskCircle（タスクサークル）",
+  "name": "TaskCircle",
   "start_url": ".",
   "display": "standalone",
   "theme_color": "#2ab8d9",
