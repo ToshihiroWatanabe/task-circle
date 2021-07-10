@@ -65,8 +65,9 @@ const About = () => {
           </Typography>
           {/* 最新のバージョンかどうか */}
           <div>
-            {buildTimestamp.getTime() - preval`module.exports = Date.now();` <=
-            3 * 60 * 1000 ? (
+            {buildTimestamp.getTime() > 0 &&
+            buildTimestamp.getTime() - preval`module.exports = Date.now();` <=
+              10 * 60 * 1000 ? (
               <>
                 お使いのアプリは最新のバージョンです
                 <span
