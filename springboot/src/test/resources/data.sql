@@ -1,0 +1,1 @@
+INSET INTO sessions (session_id, user_name, session_type, content) VALUES ("testId", "ユーザー1", "work", "講座予習");
