@@ -333,7 +333,7 @@ const TaskAndTimer = memo((props) => {
             count++;
           }
           spendTime(count);
-          updateStatistics(count);
+          updateStatistics(state, count);
           lastCountedAt = Date.now();
           setTimeout(() => {
             /** 選択しているタスク */
@@ -524,7 +524,7 @@ const TaskAndTimer = memo((props) => {
   /**
    * 統計を更新します。
    */
-  const updateStatistics = (count) => {
+  const updateStatistics = (state, count) => {
     setTimeout(() => {
       // 日付変更時刻は午前4時
       // 最終更新がない、初めての更新の場合
