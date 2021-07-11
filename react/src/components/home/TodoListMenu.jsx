@@ -100,13 +100,13 @@ const TodoListMenu = memo((props) => {
 
   return (
     <>
-      <Tooltip title="ToDoリストメニュー" placement="top">
+      <Tooltip title="リストメニュー" placement="top">
         <IconButton
           size="small"
           edge={"end"}
           onClick={handleClick}
           color="inherit"
-          aria-label="ToDoリストメニュー切替"
+          aria-label="リストメニュー切替"
         >
           <MoreVertIcon />
         </IconButton>

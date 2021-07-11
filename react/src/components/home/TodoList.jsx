@@ -334,7 +334,7 @@ const TodoList = memo((props) => {
                       </Tooltip>
                     )}
                     <Tooltip
-                      title="タスクをクリップボードにコピー"
+                      title={column.name + "をクリップボードにコピー"}
                       placement="top"
                     >
                       <IconButton
