@@ -4,8 +4,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import ListAltIcon from "@material-ui/icons/ListAlt";
 import PeopleIcon from "@material-ui/icons/People";
 import "components/home/LabelBottomNavigation.css";
-import { StateContext } from "contexts/StateContext";
-import React, { memo, useCallback, useContext } from "react";
+import React, { memo } from "react";
 import { NUMBER_OF_LISTS_MAX } from "utils/constant";
 
 const useStyles = makeStyles({
@@ -33,7 +32,10 @@ const LabelBottomNavigation = memo((props) => {
    */
   const onListButtonClick = (index) => {
     if (index === 0) {
-      document.getElementsByTagName("main")[0].scrollLeft = 0;
+      document.getElementsByTagName("main")[0].scrollTo({
+        left: 0,
+        behavior: "smooth",
+      });
     } else {
       const todoListAndRoomWidth =
         document.getElementById("todoListAndRoom").children[0].clientWidth +
@@ -41,12 +43,18 @@ const LabelBottomNavigation = memo((props) => {
       const todoListLength = Object.values(props.todoLists).length;
       // リスト数が最大数以上のとき
       if (todoListLength >= NUMBER_OF_LISTS_MAX) {
-        document.getElementsByTagName("main")[0].scrollLeft =
-          (todoListAndRoomWidth * index) / (todoListLength + 1) + index * 4;
+        document.getElementsByTagName("main")[0].scrollTo({
+          left:
+            (todoListAndRoomWidth * index) / (todoListLength + 1) + index * 4,
+          behavior: "smooth",
+        });
       } else {
         // リスト数が最大数未満のとき
-        document.getElementsByTagName("main")[0].scrollLeft =
-          (todoListAndRoomWidth * index) / (todoListLength + 1) - index * 8;
+        document.getElementsByTagName("main")[0].scrollTo({
+          left:
+            (todoListAndRoomWidth * index) / (todoListLength + 1) - index * 8,
+          behavior: "smooth",
+        });
       }
     }
   };
@@ -58,7 +66,10 @@ const LabelBottomNavigation = memo((props) => {
     const todoListAndRoomWidth =
       document.getElementById("todoListAndRoom").children[0].clientWidth +
       document.getElementById("todoListAndRoom").children[1].clientWidth;
-    document.getElementsByTagName("main")[0].scrollLeft = todoListAndRoomWidth;
+    document.getElementsByTagName("main")[0].scrollTo({
+      left: todoListAndRoomWidth,
+      behavior: "smooth",
+    });
   };
 
   return (
