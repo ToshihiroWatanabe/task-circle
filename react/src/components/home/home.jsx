@@ -1,9 +1,4 @@
-import {
-  makeStyles,
-  Typography,
-  useMediaQuery,
-  useTheme,
-} from "@material-ui/core";
+import { makeStyles, Typography, useTheme } from "@material-ui/core";
 import faintTickAudio from "audio/faintTick.mp3";
 import startedAudio from "audio/notification_simple-01.mp3";
 import stoppedAudio from "audio/notification_simple-02.mp3";
@@ -110,9 +105,6 @@ const Home = memo((props) => {
     settings.breakVideoUrl.split(/v=|\//).slice(-1)[0]
   );
   const [isInSync, setIsInSync] = useState(false);
-  const useMediaQueryThemeBreakpointsDownXs = useMediaQuery(
-    theme.breakpoints.down("xs")
-  );
 
   // 設定の動画URLに変化があったとき
   useEffect(() => {
