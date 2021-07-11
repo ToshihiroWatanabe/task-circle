@@ -13,6 +13,7 @@ const MIN_HEIGHT = 120;
 const useStyles = makeStyles((theme) => ({
   root: {
     position: "fixed",
+    zIndex: 1,
     bottom: 0,
     right: 0,
     "& > *": {

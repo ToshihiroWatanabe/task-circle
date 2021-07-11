@@ -9,7 +9,6 @@ import startedAudio from "audio/notification_simple-01.mp3";
 import stoppedAudio from "audio/notification_simple-02.mp3";
 import achievedAudio from "audio/sound02.mp3";
 import tickAudio from "audio/tick.mp3";
-import LabelBottomNavigation from "components/home/LabelBottomNavigation";
 import Room from "components/home/Room";
 import TimerRnd from "components/home/TimerRnd";
 import TodoList from "components/home/TodoList";
@@ -655,10 +654,6 @@ const Home = memo((props) => {
           sendMessage={props.sendMessage}
         />
       </div>
-      {/* ボトムナビゲーション */}
-      {useMediaQueryThemeBreakpointsDownXs && (
-        <LabelBottomNavigation todoLists={todoLists} />
-      )}
       {/* タイマー */}
       <TimerRnd todoLists={todoLists} onPlayButtonClick={onPlayButtonClick} />
       {/* 作業用BGM動画 */}

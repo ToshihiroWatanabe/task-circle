@@ -5,7 +5,7 @@ import ListAltIcon from "@material-ui/icons/ListAlt";
 import PeopleIcon from "@material-ui/icons/People";
 import "components/home/LabelBottomNavigation.css";
 import { StateContext } from "contexts/StateContext";
-import React, { memo, useContext } from "react";
+import React, { memo, useCallback, useContext } from "react";
 import { NUMBER_OF_LISTS_MAX } from "utils/constant";
 
 const useStyles = makeStyles({
@@ -23,12 +23,10 @@ const useStyles = makeStyles({
  */
 const LabelBottomNavigation = memo((props) => {
   const classes = useStyles();
-  const [state, setState] = useContext(StateContext);
 
   const handleChange = (event, newValue) => {
-    setState({ ...state, bottomNavigationValue: newValue });
+    props.setBottomNavigationValue(newValue);
   };
-
   /**
    * ToDoリストボタンがクリックされたときの処理です。
    * @param {*} index
@@ -65,7 +63,7 @@ const LabelBottomNavigation = memo((props) => {
 
   return (
     <BottomNavigation
-      value={state.bottomNavigationValue}
+      value={props.bottomNavigationValue}
       onChange={handleChange}
       className={classes.root}
     >

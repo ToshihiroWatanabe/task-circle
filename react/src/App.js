@@ -6,7 +6,8 @@ import {
 } from "@material-ui/core/styles";
 import About from "components/About";
 import ResponsiveDrawer from "components/header/ResponsiveDrawer";
-import TaskAndTimer from "components/home/Home";
+import Home from "components/home/Home";
+import LabelBottomNavigation from "components/home/LabelBottomNavigation";
 import PrivacyPolicy from "components/PrivacyPolicy";
 import Settings from "components/Settings";
 import { SessionsContext } from "contexts/SessionsContext";
@@ -90,6 +91,8 @@ const App = memo(() => {
   );
   const location = useLocation();
   const $websocket = useRef(null);
+  /** ボトムナビゲーションの値 */
+  const [bottomNavigationValue, setBottomNavigationValue] = useState("list1");
 
   const darkTheme = createMuiTheme({
     ...themeTemplate,
@@ -298,15 +301,15 @@ const App = memo(() => {
       event.target.scrollLeft >
       event.target.scrollWidth - document.body.scrollWidth * 1.5
     ) {
-      setState({ ...state, bottomNavigationValue: "room" });
+      setBottomNavigationValue("room");
     } else if (event.target.scrollLeft < document.body.scrollWidth / 2) {
-      setState({ ...state, bottomNavigationValue: "list1" });
+      setBottomNavigationValue("list1");
     } else if (event.target.scrollLeft < document.body.scrollWidth * 1.5) {
-      setState({ ...state, bottomNavigationValue: "list2" });
+      setBottomNavigationValue("list2");
     } else if (event.target.scrollLeft < document.body.scrollWidth * 2.5) {
-      setState({ ...state, bottomNavigationValue: "list3" });
+      setBottomNavigationValue("list3");
     } else if (event.target.scrollLeft < document.body.scrollWidth * 3.5) {
-      setState({ ...state, bottomNavigationValue: "list4" });
+      setBottomNavigationValue("list4");
     }
   };
 
@@ -326,17 +329,25 @@ const App = memo(() => {
             backgroundColor: darkTheme.palette.type === "light" ? "" : "#333",
           }}
         >
-          {/* タスク＆タイマー */}
+          {/* ホーム */}
           <div
             style={{
               display: location.pathname === "/" ? "" : "none",
             }}
           >
-            <TaskAndTimer
+            <Home
               sendMessage={sendMessage}
               onEnter={onEnter}
               onLeave={onLeave}
             />
+            {/* ボトムナビゲーション */}
+            {useMediaQueryThemeBreakpointsDownXs && (
+              <LabelBottomNavigation
+                todoLists={todoLists}
+                bottomNavigationValue={bottomNavigationValue}
+                setBottomNavigationValue={setBottomNavigationValue}
+              />
+            )}
           </div>
           <Switch>
             {/* 設定 */}
