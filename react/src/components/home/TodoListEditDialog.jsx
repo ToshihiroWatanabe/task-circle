@@ -10,18 +10,17 @@ import { makeStyles } from "@material-ui/core/styles";
 import { TodoListsContext } from "contexts/TodoListsContext";
 import React, { memo, useContext, useState } from "react";
 
-/** Material-UIのスタイル */
 const useStyles = makeStyles((theme) => ({
   paper: { width: "90%" },
 }));
 
+/** Enterキーが押下されているかどうか */
 let enterKeyIsDown = false;
 
 /**
  * タスク名を編集するダイアログの関数コンポーネントです。
  */
 const TodoListEditDialog = memo((props) => {
-  /** Material-UIのスタイル */
   const classes = useStyles();
   let inRef = null;
   const [todoLists, setTodoLists] = useContext(TodoListsContext);
@@ -55,7 +54,7 @@ const TodoListEditDialog = memo((props) => {
 
   /**
    * キーが押されたときの処理です。
-   * @param {*} event
+   * @param {*} event イベント
    */
   const handleKeyDown = (event) => {
     setHelperText("");
@@ -65,6 +64,11 @@ const TodoListEditDialog = memo((props) => {
       }, 1);
     }
   };
+
+  /**
+   * キーが離れたときの処理です。
+   * @param {*} event イベント
+   */
   const handleKeyUp = (event) => {
     if (event.keyCode === 13 && enterKeyIsDown) {
       enterKeyIsDown = false;

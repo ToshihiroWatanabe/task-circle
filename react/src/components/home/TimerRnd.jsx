@@ -79,8 +79,6 @@ const TimerRnd = memo((props) => {
   // URLに変更があったとき
   useEffect(() => {
     if (location.pathname === "/") {
-      console.log(positionY + 80 + parseInt(height));
-      console.log(window.innerHeight);
       if (positionY + 80 + parseInt(height) > window.innerHeight) {
         setPositionY(window.innerHeight - 80 - parseInt(height));
       }

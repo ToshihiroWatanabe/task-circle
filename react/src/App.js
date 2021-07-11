@@ -6,7 +6,7 @@ import {
 } from "@material-ui/core/styles";
 import About from "components/About";
 import ResponsiveDrawer from "components/header/ResponsiveDrawer";
-import TaskAndTimer from "components/home/home";
+import TaskAndTimer from "components/home/Home";
 import PrivacyPolicy from "components/PrivacyPolicy";
 import Settings from "components/Settings";
 import { SessionsContext } from "contexts/SessionsContext";

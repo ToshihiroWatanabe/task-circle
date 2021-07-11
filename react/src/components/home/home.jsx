@@ -31,15 +31,14 @@ import {
 } from "utils/constant";
 import { secondToHHMMSS } from "utils/convert";
 
-/** setTimeoutのID */
-let timeoutId = null;
-
-/** タイマーを開始した時刻 */
-let startedAt = null;
-/** 最後にカウントした時刻 */
-let lastCountedAt = null;
-
+/** タイマーのカウントのsetTimeoutのID */
+let timerCountTimeout = 0;
+/** ローカルストレージのデータの更新のsetTimeoutのID */
 let updateTimeout = 0;
+/** タイマーを開始した時刻 */
+let startedAt = 0;
+/** 最後にカウントした時刻 */
+let lastCountedAt = 0;
 
 /**
  * 次にタイマーをカウントするまでの時間(ミリ秒)を返します。
@@ -90,9 +89,9 @@ let videoPlayDone = true;
 const useStyles = makeStyles((theme) => ({}));
 
 /**
- * タスク＆タイマーページのコンポーネントです。
+ * ホームのコンポーネントです。
  */
-const TaskAndTimer = memo((props) => {
+const Home = memo((props) => {
   const classes = useStyles();
   const theme = useTheme();
   const [state, setState] = useContext(StateContext);
@@ -258,7 +257,7 @@ const TaskAndTimer = memo((props) => {
         // タイマー開始
         startedAt = Date.now();
         lastCountedAt = Date.now();
-        timeoutId = setTimeout(timerCount, getTimeout());
+        timerCountTimeout = setTimeout(timerCount, getTimeout());
         // 離席解除
         state.isAfk = false;
         // ポモドーロが休憩タイマーなら作業に切り替える
@@ -321,7 +320,7 @@ const TaskAndTimer = memo((props) => {
     setState((state) => {
       setTodoLists((todoLists) => {
         if (state.isTimerOn) {
-          timeoutId = setTimeout(timerCount, getTimeout());
+          timerCountTimeout = setTimeout(timerCount, getTimeout());
           // 前回のカウントから1.5秒以上経っていると一度にカウントする量が増える
           const dateNow = Date.now();
           let count = 0;
@@ -388,7 +387,7 @@ const TaskAndTimer = memo((props) => {
                 }
                 return { ...state };
               });
-              clearTimeout(timeoutId);
+              clearTimeout(timerCountTimeout);
               // faviconをデフォルトに戻す
               const link = document.querySelector("link[rel*='icon']");
               link.href = "/favicon.ico";
@@ -449,7 +448,7 @@ const TaskAndTimer = memo((props) => {
 
                 return { ...state };
               });
-              clearTimeout(timeoutId);
+              clearTimeout(timerCountTimeout);
               // faviconをデフォルトに戻す
               const link = document.querySelector("link[rel*='icon']");
               link.href = "/favicon.ico";
@@ -471,7 +470,7 @@ const TaskAndTimer = memo((props) => {
           }, 2);
         } else if (!state.isTimerOn) {
           updateTodoLists(todoLists);
-          clearTimeout(timeoutId);
+          clearTimeout(timerCountTimeout);
         }
         return todoLists;
       });
@@ -718,4 +717,4 @@ const TaskAndTimer = memo((props) => {
   );
 });
 
-export default TaskAndTimer;
+export default Home;
