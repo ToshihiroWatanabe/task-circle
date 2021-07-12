@@ -261,7 +261,7 @@ const Home = memo((props) => {
           changeFaviconTo("coffee");
         } else {
           const link = document.querySelector("link[rel*='icon']");
-          link.href = "/favicon/taskcircle_timer_on.ico";
+          link.href = "/favicon/taskcircle_timer_on_favicon.ico";
         }
         // 開始の効果音
         startedSound.volume = settings.volume * 0.01;

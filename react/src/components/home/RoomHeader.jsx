@@ -10,6 +10,7 @@ import PersonIcon from "@material-ui/icons/Person";
 import HelpPopover from "components/home/HelpPopover";
 import { StateContext } from "contexts/StateContext";
 import React, { memo, useContext } from "react";
+import { DEFAULT_TITLE } from "utils/constant";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -40,6 +41,15 @@ const RoomHeader = memo((props) => {
    */
   const onAfkButtonClick = () => {
     setState((state) => {
+      if (state.isAfk) {
+        const link = document.querySelector("link[rel*='icon']");
+        link.href = "/favicon.ico";
+        document.title = DEFAULT_TITLE;
+      } else {
+        const link = document.querySelector("link[rel*='icon']");
+        link.href = "/favicon/chair_favicon.ico";
+        document.title = "離席中 | " + DEFAULT_TITLE;
+      }
       return { ...state, isAfk: !state.isAfk };
     });
     props.sendMessage();
