@@ -119,7 +119,13 @@ const TodoListMenu = memo((props) => {
         className={classes.menu}
         style={{ fontSize: "0.7rem" }}
       >
-        <MenuItem onClick={handleEdit} disabled={state.isTimerOn}>
+        <MenuItem
+          onClick={handleEdit}
+          disabled={
+            state.isTimerOn &&
+            Object.values(props.todoLists)[props.index].items.length > 0
+          }
+        >
           <EditIcon />
           リスト名を変更
         </MenuItem>
@@ -136,7 +142,10 @@ const TodoListMenu = memo((props) => {
         <MenuItem
           style={{ color: "red" }}
           onClick={handleDelete}
-          disabled={state.isTimerOn}
+          disabled={
+            state.isTimerOn &&
+            Object.values(props.todoLists)[props.index].items.length > 0
+          }
         >
           <DeleteIcon />
           リストを削除
