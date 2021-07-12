@@ -8,9 +8,9 @@ export const COUNT_INTERVAL = 1000;
 export const NUMBER_OF_TASKS_MAX = 32;
 /** ToDoリストの最大数 */
 export const NUMBER_OF_LISTS_MAX = 4;
-/** カテゴリーの文字数制限 */
+/** カテゴリーの最大文字数 */
 export const REPORT_ITEMS_CATEGORY_MAX = 45;
-/** 内容(タスク名)の文字数制限 */
+/** 内容(タスク名)の最大文字数 */
 export const REPORT_ITEMS_CONTENT_MAX = 45;
 /** 経過時間(秒)の最大値 */
 export const SPENT_SECOND_MAX = 1000 * 60 * 60 - 1;

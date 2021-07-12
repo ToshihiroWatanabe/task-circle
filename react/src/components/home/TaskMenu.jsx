@@ -144,7 +144,7 @@ const TaskMenu = memo((props) => {
             // タイマー作動中かつ選択中のタスク、または経過時間が0の場合は無効
             (Object.values(props.todoLists)[props.columnIndex].items[
               props.index
-            ].isSelected === true &&
+            ].isSelected &&
               state.isTimerOn) ||
             Object.values(props.todoLists)[props.columnIndex].items[props.index]
               .spentSecond === 0
@@ -159,7 +159,7 @@ const TaskMenu = memo((props) => {
           disabled={
             // タイマー作動中かつ選択中のタスクの場合は無効
             Object.values(props.todoLists)[props.columnIndex].items[props.index]
-              .isSelected === true && state.isTimerOn
+              .isSelected && state.isTimerOn
           }
         >
           <DeleteIcon />
