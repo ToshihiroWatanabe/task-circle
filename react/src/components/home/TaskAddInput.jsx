@@ -1,5 +1,6 @@
 import { Chip, IconButton, TextField, Tooltip } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
+import "components/home/TaskAddInput.css";
 import AddIcon from "@material-ui/icons/Add";
 import Downshift from "downshift";
 import PropTypes from "prop-types";
@@ -7,6 +8,7 @@ import React, { memo, useEffect, useState } from "react";
 import { NG_TASK_NAMES, NUMBER_OF_TASKS_MAX } from "utils/constant";
 import uuid from "uuid/v4";
 
+/** 最後にスペースバーを押した時刻 */
 let lastSpacePressed = 0;
 
 const useStyles = makeStyles((theme) => ({
@@ -261,7 +263,10 @@ const TaskAddInput = memo((props) => {
         }}
       </Downshift>
       <Tooltip title="タスクを追加">
-        <IconButton onClick={onAddButtonClick} style={{ marginLeft: "1rem" }}>
+        <IconButton
+          onClick={onAddButtonClick}
+          style={{ marginLeft: "1rem", width: "3rem", height: "3rem" }}
+        >
           <AddIcon />
         </IconButton>
       </Tooltip>
