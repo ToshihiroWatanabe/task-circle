@@ -96,15 +96,10 @@ const TaskAddInput = memo((props) => {
     }
   };
 
-  const handleChange = (item) => {
-    let newSelectedItem = [...categoryInput];
-    if (newSelectedItem.indexOf(item) === -1) {
-      newSelectedItem = [...newSelectedItem, item];
-    }
-    setInputValue("");
-    setCategoryInput(newSelectedItem);
-  };
-
+  /**
+   * カテゴリーの削除ボタンが押されたときの処理です。
+   * @param {*} item
+   */
   const handleDelete = (item) => () => {
     const newSelectedItem = [...categoryInput];
     newSelectedItem.splice(newSelectedItem.indexOf(item), 1);
@@ -214,7 +209,6 @@ const TaskAddInput = memo((props) => {
       <Downshift
         id="downshift-multiple"
         inputValue={inputValue}
-        onChange={handleChange}
         selectedItem={categoryInput}
       >
         {({ getInputProps }) => {
