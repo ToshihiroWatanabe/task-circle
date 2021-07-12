@@ -219,9 +219,19 @@ const TimerFab = memo((props) => {
             selectedTask !== null
               ? byteSlice(selectedTask.content, 20)
               : ""}
-            {settings.isPomodoroEnabled && state.pomodoroTimerType === "break"
-              ? "休憩"
-              : ""}
+            {settings.isPomodoroEnabled &&
+            state.pomodoroTimerType === "break" ? (
+              selectedTask === null ? (
+                <>
+                  <p style={{ margin: "0" }}>タスクが選択</p>
+                  されていません
+                </>
+              ) : (
+                "休憩"
+              )
+            ) : (
+              ""
+            )}
             {/* ポモドーロモードじゃないとき */}
             {!settings.isPomodoroEnabled &&
               selectedTask !== null &&
