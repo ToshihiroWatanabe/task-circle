@@ -24,10 +24,10 @@ const useStyles = makeStyles({
  */
 const TaskMenu = memo((props) => {
   const classes = useStyles();
-  const [state, setState] = useContext(StateContext);
+  const [state] = useContext(StateContext);
   const [anchorEl, setAnchorEl] = useState(null);
   const [editOpen, setEditOpen] = useState(false);
-  const [categories, setCategories] = useState([]);
+  const [categories] = useState([]);
 
   useEffect(() => {
     // 編集でEnterを押した時にメニューが開かないようにする
@@ -141,6 +141,7 @@ const TaskMenu = memo((props) => {
         <MenuItem
           onClick={handleReset}
           disabled={
+            // タイマー作動中かつ選択中のタスク、または経過時間が0の場合は無効
             (Object.values(props.todoLists)[props.columnIndex].items[
               props.index
             ].isSelected === true &&
@@ -156,6 +157,7 @@ const TaskMenu = memo((props) => {
           style={{ color: "red" }}
           onClick={handleDelete}
           disabled={
+            // タイマー作動中かつ選択中のタスクの場合は無効
             Object.values(props.todoLists)[props.columnIndex].items[props.index]
               .isSelected === true && state.isTimerOn
           }
