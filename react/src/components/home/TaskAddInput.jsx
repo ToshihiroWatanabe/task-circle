@@ -119,8 +119,8 @@ const TaskAddInput = memo((props) => {
    * 追加ボタンがクリックされたときの処理です。
    */
   const onAddButtonClick = () => {
-    if (validate()) {
-      const retrievedInputValue = retrieveEstimatedSecond(inputValue.trim());
+    const retrievedInputValue = retrieveEstimatedSecond(inputValue.trim());
+    if (validate(retrievedInputValue.content)) {
       props.setTodoLists((todoLists) => {
         Object.values(todoLists)[props.index].items.push({
           id: uuid(),
@@ -142,28 +142,20 @@ const TaskAddInput = memo((props) => {
   /**
    * 入力された値を検証します。
    */
-  const validate = () => {
-    const estimatedTimeInput =
-      inputValue.match(/\d+:[0-5]*[0-9]:[0-5]*[0-9]/) !== null
-        ? inputValue.match(/\d+:[0-5]*[0-9]:[0-5]*[0-9]/)[0]
-        : null;
-    const content =
-      estimatedTimeInput !== null
-        ? inputValue.trim().split(estimatedTimeInput)[0]
-        : inputValue.trim();
+  const validate = (input) => {
     if (
       Object.values(props.todoLists)[props.index].items.length >
       NUMBER_OF_TASKS_MAX
     ) {
       setHelperText("これ以上タスクを追加できません");
       return false;
-    } else if (content.length < 1) {
+    } else if (input.length < 1) {
       setHelperText("タスク名を入力してください");
       return false;
-    } else if (NG_TASK_NAMES.includes(content)) {
+    } else if (NG_TASK_NAMES.includes(input)) {
       setHelperText("そのタスク名は使えません");
       return false;
-    } else if (content.length > 45) {
+    } else if (input.length > 45) {
       setHelperText("タスク名は45文字以内にしてください");
       return false;
     } else if (
@@ -182,15 +174,26 @@ const TaskAddInput = memo((props) => {
    * @returns 内容と目標時間のオブジェクト
    */
   const retrieveEstimatedSecond = (input) => {
-    const matched = input.match(/([0-1]*[0-9]|2[0-3]):[0-5]*[0-9]:[0-5]*[0-9]/);
-    if (matched) {
-      let matchedSplit = matched[0].split(":");
+    const HHMMSSmatched = input.match(
+      /([0-1]*[0-9]|2[0-3]):[0-5]*[0-9]:[0-5]*[0-9]/
+    );
+    const pomodoroMatched = input.match(/[0-9]*[0-9](pomo|ポモ)/);
+    if (HHMMSSmatched) {
+      let matchedSplit = HHMMSSmatched[0].split(":");
       let estimatedSecond =
         parseInt(matchedSplit[0]) * 3600 +
         parseInt(matchedSplit[1]) * 60 +
         parseInt(matchedSplit[2]);
       return {
-        content: input.split(matched[0])[0],
+        content: input.split(HHMMSSmatched[0])[0],
+        estimatedSecond: estimatedSecond,
+      };
+    } else if (pomodoroMatched) {
+      let matchedSplit = pomodoroMatched[0].split(/(pomo|ポモ)/);
+      let estimatedSecond = parseInt(matchedSplit[0]) * 25 * 60;
+      console.log(input.split(pomodoroMatched[0])[0]);
+      return {
+        content: input.split(pomodoroMatched[0])[0],
         estimatedSecond: estimatedSecond,
       };
     }
