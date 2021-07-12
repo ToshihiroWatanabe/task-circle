@@ -1,4 +1,4 @@
-import { makeStyles, Typography, useTheme } from "@material-ui/core";
+import { Typography } from "@material-ui/core";
 import faintTickAudio from "audio/faintTick.mp3";
 import startedAudio from "audio/notification_simple-01.mp3";
 import stoppedAudio from "audio/notification_simple-02.mp3";
@@ -80,14 +80,10 @@ let workVideoPlayer = null;
 let breakVideoPlayer = null;
 let videoPlayDone = true;
 
-const useStyles = makeStyles((theme) => ({}));
-
 /**
  * ホームのコンポーネントです。
  */
 const Home = memo((props) => {
-  const classes = useStyles();
-  const theme = useTheme();
   const [state, setState] = useContext(StateContext);
   const [todoLists, setTodoLists] = useContext(TodoListsContext);
   const [settings] = useContext(SettingsContext);
@@ -198,41 +194,36 @@ const Home = memo((props) => {
    * BGM用の動画を再生します。
    */
   const playVideo = () => {
-    if (
-      (!settings.isPomodoroEnabled || state.pomodoroTimerType !== "break") &&
-      workVideoId !== "" &&
-      workVideoPlayer !== null
-    ) {
-      workVideoPlayer.setVolume(settings.workVideoVolume);
-      workVideoPlayer.playVideo();
-    }
-    if (
-      settings.isPomodoroEnabled &&
-      state.pomodoroTimerType === "break" &&
-      breakVideoId !== "" &&
-      breakVideoPlayer !== null
-    ) {
-      breakVideoPlayer.setVolume(settings.breakVideoVolume);
-      breakVideoPlayer.playVideo();
-    }
+    setState((state) => {
+      if (
+        (!settings.isPomodoroEnabled || state.pomodoroTimerType !== "break") &&
+        workVideoId !== "" &&
+        workVideoPlayer !== null
+      ) {
+        workVideoPlayer.setVolume(settings.workVideoVolume);
+        workVideoPlayer.playVideo();
+      }
+      if (
+        settings.isPomodoroEnabled &&
+        state.pomodoroTimerType === "break" &&
+        breakVideoId !== "" &&
+        breakVideoPlayer !== null
+      ) {
+        breakVideoPlayer.setVolume(settings.breakVideoVolume);
+        breakVideoPlayer.playVideo();
+      }
+      return state;
+    });
   };
+
   /**
    * BGM用の動画を停止します。
    */
   const stopVideo = () => {
-    if (
-      (!settings.isPomodoroEnabled || state.pomodoroTimerType !== "break") &&
-      workVideoId !== "" &&
-      workVideoPlayer !== null
-    ) {
+    if (workVideoId !== "" && workVideoPlayer !== null) {
       workVideoPlayer.stopVideo();
     }
-    if (
-      settings.isPomodoroEnabled &&
-      state.pomodoroTimerType === "break" &&
-      breakVideoId !== "" &&
-      breakVideoPlayer !== null
-    ) {
+    if (breakVideoId !== "" && breakVideoPlayer !== null) {
       breakVideoPlayer.stopVideo();
     }
   };
@@ -382,6 +373,10 @@ const Home = memo((props) => {
               // faviconをデフォルトに戻す
               const link = document.querySelector("link[rel*='icon']");
               link.href = "/favicon.ico";
+              // 動画をストップ
+              stopVideo();
+              // 動画IDを更新
+              updateVideoId();
               achievedSound.volume = settings.volume * 0.01;
               achievedSound.play();
               // 通知
@@ -443,6 +438,10 @@ const Home = memo((props) => {
               // faviconをデフォルトに戻す
               const link = document.querySelector("link[rel*='icon']");
               link.href = "/favicon.ico";
+              // 動画をストップ
+              stopVideo();
+              // 動画IDを更新
+              updateVideoId();
               achievedSound.volume = settings.volume * 0.01;
               achievedSound.play();
               props.sendMessage();
