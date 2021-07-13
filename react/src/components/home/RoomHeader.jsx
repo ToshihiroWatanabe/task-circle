@@ -30,10 +30,6 @@ const RoomHeader = memo((props) => {
    */
   const onExitButtonClick = () => {
     props.onLeave();
-    setState((state) => {
-      localStorage.setItem("state", JSON.stringify({ isInRoom: false }));
-      return { ...state, isInRoom: false };
-    });
   };
 
   /**

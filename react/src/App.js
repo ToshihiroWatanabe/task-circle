@@ -163,7 +163,12 @@ const App = memo(() => {
    */
   const onLeave = () => {
     setState((state) => {
-      return { ...state, isAfk: false, nameInRoom: "" };
+      // 離席中ならfaviconを元に戻す
+      if (state.isAfk) {
+        const link = document.querySelector("link[rel*='icon']");
+        link.href = "/favicon.ico";
+      }
+      return { ...state, isAfk: false, isInRoom: false, nameInRoom: "" };
     });
     setSessions([]);
     $websocket.current.sendMessage("/session/leave", JSON.stringify({}));
