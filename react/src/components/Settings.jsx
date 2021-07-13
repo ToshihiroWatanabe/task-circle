@@ -242,7 +242,7 @@ const Settings = memo(() => {
           サウンド設定
         </Typography>
         <FormHelperText>
-          一部の設定はタイマーを停止させないと反映されません。
+          一部の設定はタイマーを停止させないと反映されないことがあります。
         </FormHelperText>
         <FormControl component="fieldset" className={classes.formControl}>
           <FormLabel className={classes.formLabel}>🍅作業用BGM</FormLabel>
