@@ -7,6 +7,7 @@ import {
   FormControl,
   Popper,
   Select,
+  Switch,
   TextField,
   useMediaQuery,
   useTheme,
@@ -69,31 +70,20 @@ const TaskEditDialog = memo((props) => {
     hour: 0,
     minute: 0,
     second: 0,
+    achievedThenStop: false,
   });
   const [state, setState] = useContext(StateContext);
 
   useEffect(() => {
+    const selectedTask = Object.values(props.todoLists)[props.columnIndex]
+      .items[props.index];
     setValue((value) => {
-      value.category = Object.values(props.todoLists)[props.columnIndex].items[
-        props.index
-      ].category;
-      value.content = Object.values(props.todoLists)[props.columnIndex].items[
-        props.index
-      ].content;
-      value.hour = Math.floor(
-        Object.values(props.todoLists)[props.columnIndex].items[props.index]
-          .estimatedSecond / 3600
-      );
-      value.minute = Math.floor(
-        (Object.values(props.todoLists)[props.columnIndex].items[props.index]
-          .estimatedSecond /
-          60) %
-          60
-      );
-      value.second = Math.floor(
-        Object.values(props.todoLists)[props.columnIndex].items[props.index]
-          .estimatedSecond % 60
-      );
+      value.category = selectedTask.category;
+      value.content = selectedTask.content;
+      value.hour = Math.floor(selectedTask.estimatedSecond / 3600);
+      value.minute = Math.floor((selectedTask.estimatedSecond / 60) % 60);
+      value.second = Math.floor(selectedTask.estimatedSecond % 60);
+      value.achievedThenStop = selectedTask.achievedThenStop;
       return { ...value };
     });
   }, []);
@@ -121,6 +111,7 @@ const TaskEditDialog = memo((props) => {
                 item.content = value.content;
                 item.estimatedSecond =
                   value.hour * 3600 + value.minute * 60 + value.second;
+                item.achievedThenStop = value.achievedThenStop;
               }
               return item;
             }
@@ -549,6 +540,13 @@ const TaskEditDialog = memo((props) => {
             </FormControl>
             秒
           </div>
+          目標達成時にアラームを鳴らす
+          <Switch
+            checked={value.achievedThenStop}
+            onChange={() => {
+              setValue({ ...value, achievedThenStop: !value.achievedThenStop });
+            }}
+          />
         </DialogContent>
         <DialogActions>
           <Button onClick={handleCancel} color="primary">
