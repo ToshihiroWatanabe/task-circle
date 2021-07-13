@@ -28,6 +28,8 @@ PCではタイマーボタンのドラッグ移動と拡大縮小ができます
 
 現在入室しているユーザーの状態をリアルタイムで表示します。
 
+![TaskCircle Room 2021-07-13](https://user-images.githubusercontent.com/79039863/125460246-a971419b-eebb-4368-a4a9-52e608244fa6.gif)
+
 ## YouTubeの動画をBGMとして再生する
 
 設定でYouTubeの動画のURLを貼ると、タイマー作動中にBGMとして流せます。
