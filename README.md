@@ -4,7 +4,15 @@
 
 ![TaskCircle 2021-07-10](https://user-images.githubusercontent.com/79039863/125162472-fbd6de80-e1c2-11eb-9cbc-1dcdb4a47de8.gif)
 
-フロントエンドはReact、バックエンドはSpring Bootで制作しています。
+## Overview
+
+タスク管理＆タイマーアプリです。
+
+フロントエンドはReact、バックエンドはSpring Bootで制作しています。詳しい説明はそれぞれのREADME.mdをご覧ください。
+
+[React(フロントエンド)のREADME.md](/react/README.md)
+
+[Spring Boot(バックエンド)のREADME.md](/springboot/README.md)
 
 ## Requirement
 
@@ -69,4 +77,8 @@ npmで依存関係をインストールします。
 Reactアプリケーションを起動します。
 
 `npm start`
+
+## Author
+
+ワタナベトシヒロ
 
