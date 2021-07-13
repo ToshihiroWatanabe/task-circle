@@ -66,6 +66,12 @@ const useStyles = makeStyles((theme) => ({
       display: "none",
     },
   },
+  nothingSelected: {
+    [theme.breakpoints.down("sm")]: {
+      fontSize: "0.5rem",
+      marginBottom: "-0.3rem",
+    },
+  },
 }));
 
 /**
@@ -174,7 +180,6 @@ const TimerFab = memo((props) => {
           height={props.height}
         />
         <div style={{ transform: `scale(calc(${parseInt(props.width)}/180))` }}>
-          {/* <div style={{ transform: `scale(2)` }}> */}
           {/* カウント */}
           <div className={classes.timerCount}>
             {settings.isPomodoroEnabled &&
@@ -219,19 +224,11 @@ const TimerFab = memo((props) => {
             selectedTask !== null
               ? byteSlice(selectedTask.content, 20)
               : ""}
-            {settings.isPomodoroEnabled &&
-            state.pomodoroTimerType === "break" ? (
-              selectedTask === null ? (
-                <>
-                  <p style={{ margin: "0" }}>タスクが選択</p>
-                  されていません
-                </>
-              ) : (
-                "休憩"
-              )
-            ) : (
-              ""
-            )}
+            {settings.isPomodoroEnabled && state.pomodoroTimerType === "break"
+              ? selectedTask === null
+                ? ""
+                : "休憩"
+              : ""}
             {/* ポモドーロモードじゃないとき */}
             {!settings.isPomodoroEnabled &&
               selectedTask !== null &&
@@ -250,7 +247,7 @@ const TimerFab = memo((props) => {
           {/* タスクが選択されていません */}
           <div className={classes.nothingSelected}>
             {settings.isPomodoroEnabled &&
-              state.pomodoroTimerType === "work" &&
+              /* state.pomodoroTimerType === "work" && */
               selectedTask === null && (
                 <>
                   <p style={{ margin: "0" }}>タスクが選択</p>
