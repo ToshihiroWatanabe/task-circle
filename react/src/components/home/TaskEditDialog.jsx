@@ -543,6 +543,9 @@ const TaskEditDialog = memo((props) => {
           目標達成時にアラームを鳴らす
           <Switch
             checked={value.achievedThenStop}
+            disabled={
+              value.hour === 0 && value.minute === 0 && value.second === 0
+            }
             onChange={() => {
               setValue({ ...value, achievedThenStop: !value.achievedThenStop });
             }}
