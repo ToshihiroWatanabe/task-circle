@@ -1,3 +1,3 @@
 # task-circle/springboot
 
-JavaのフレームワークSpring Bootで制作したバックエンドWebアプリケーションです。
+Javaのフレームワーク「Spring Boot」で制作したバックエンドWebアプリケーションです。
