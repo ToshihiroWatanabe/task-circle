@@ -28,7 +28,7 @@
 ### データベースの作成
 
 MySQLでデータベースを作成し、
-springboot\src\main\resources\schema.sqlにあるSQL文でテーブルを作成してください。
+[springboot/src/main/resources/schema.sql](/springboot/src/main/resources/schema.sql)にあるSQL文でテーブルを作成してください。
 
 ### 環境変数の設定
 
