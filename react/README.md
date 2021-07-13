@@ -16,13 +16,19 @@ JavaScriptのライブラリ「React」を使ったフロントエンドWebア�
 
 PCではタイマーボタンのドラッグ移動と拡大縮小ができます。右クリックでタイマーの種類の切り替えができます。
 
+![TaskCircle TimerRND 2021-07-13](https://user-images.githubusercontent.com/79039863/125473178-a213afc1-9069-46cd-8b20-bae1a664171f.gif)
+
 ## ポモドーロタイマー
 
 作業と休憩を一定のサイクルで繰り返す時間管理術「ポモドーロ・テクニック」のためのタイマーに切り替えることができます。
 
+![image](https://user-images.githubusercontent.com/79039863/125463286-d3533a23-87b9-4804-bb9c-dd83cf9577e3.png)
+
 ## 動的favicon＆動的タイトル
 
 タイマー開始時や終了時にfaviconが変化し、タスク名や経過時間、残り時間がタイトルに反映されます。
+
+![TaskCircle TimerFAB 2021-07-13](https://user-images.githubusercontent.com/79039863/125471767-8263543c-dc6a-4a75-aed9-c811fe5d8c1d.gif)
 
 ## ルーム機能
 
