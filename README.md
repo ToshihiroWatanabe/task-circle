@@ -1,12 +1,12 @@
 # task-circle（タスクサークル）
 
-## Demo
+## Demo デモ
 
 ![TaskCircle 2021-07-10](https://user-images.githubusercontent.com/79039863/125162472-fbd6de80-e1c2-11eb-9cbc-1dcdb4a47de8.gif)
 
-## Overview
+## Overview 概要
 
-タスク管理とタイマー機能のあるWebアプリケーションです。
+**タスク管理**と**タイマー**、**他のユーザーのステータス表示機能**のあるWebアプリケーションです。
 
 フロントエンドはReact、バックエンドはSpring Bootで制作しています。詳しい説明はそれぞれのREADME.mdをご覧ください。
 
@@ -14,16 +14,14 @@
 
 [Spring Boot(バックエンド)のREADME.md](/springboot/README.md)
 
-## Requirement
-
-動作環境は以下の通りです。
+## Requirement 動作環境
 
 - Java 11.0.10
 - Apache Maven 3.8.1
 - npm 7.16.0
 - MySQL 8.0.25
 
-## Install
+## Install インストール方法
 
 ### データベースの作成
 
@@ -78,7 +76,7 @@ Reactアプリケーションを起動します。
 
 `npm start`
 
-## Author
+## Author 作者
 
 ワタナベトシヒロ
 
