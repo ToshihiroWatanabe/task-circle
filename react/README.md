@@ -8,9 +8,13 @@ JavaScriptのライブラリ「React」を使ったフロントエンドWebア�
 
 タスクをドラッグ移動で並べ替えることができます。Todoリストの列を追加し、タスクを別の列へ移動することもできます。
 
+![TaskCircle ToDoList 2021-07-13](https://user-images.githubusercontent.com/79039863/125474590-41c34d6a-8868-4e9e-8b57-e1412dbfbd0f.gif)
+
 ## 直前の操作を元に戻す
 
 リセットや削除をした直後に、その操作をキャンセルして元に戻すことができます。
+
+![TaskCircle Undo 2021-07-13](https://user-images.githubusercontent.com/79039863/125475464-812a4567-157b-4241-b83c-9b2953183a3d.gif)
 
 ## ドラッグ移動＆リサイズ可能なタイマーボタン
 
