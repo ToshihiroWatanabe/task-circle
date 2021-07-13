@@ -20,7 +20,7 @@ Javaのフレームワーク「Spring Boot」で制作したバックエンドWe
 
 URI(エンドポイント)|リクエスト|パラメータ|説明
 ---|---|---|---
-[/api/auth/login](/springboot/src/main/java/app/taskcircle/controller/AuthController.java)|POST|リクエストボディ･･･メールアドレス、トークンID|ログインまたは新規登録します。
+[/api/auth/login](/springboot/src/main/java/app/taskcircle/controller/AuthController.java)|POST|リクエストボディ･･･トークンID、メールアドレス|ログインまたは新規登録します。
 [/api/todolist/findbytokenid](/springboot/src/main/java/app/taskcircle/controller/TodoListController.java)|POST|リクエストボディ･･･トークンID|ToDoリストを取得します。
 [/api/todolist/update](/springboot/src/main/java/app/taskcircle/controller/TodoListController.java)|POST|リクエストボディ･･･トークンID、ToDoリスト|ToDoリストを更新します。
 [/api/setting/findbytokenid](/springboot/src/main/java/app/taskcircle/controller/SettingController.java)|POST|リクエストボディ･･･トークンID|設定を取得します。
