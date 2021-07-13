@@ -34,7 +34,7 @@ MySQLでデータベースを作成し、
 
 環境変数名|説明
 ---|---
-MYSQL_URL|jdbc:mysql://ホスト名:ポート番号/データベース名
+MYSQL_URL|jdbc:mysql://**ホスト名**:**ポート番号**/**データベース名**
 MYSQL_USERNAME|データベースに接続するユーザー名
 MYSQL_PASSWORD|データベースに接続するユーザーのパスワード
 
