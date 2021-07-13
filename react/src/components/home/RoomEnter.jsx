@@ -1,12 +1,8 @@
 import { Button, TextField, Tooltip } from "@material-ui/core";
 import { makeStyles, useTheme } from "@material-ui/core/styles";
 import { StateContext } from "contexts/StateContext";
-import React, { memo, useContext, useState } from "react";
+import React, { memo, useContext, useEffect, useState } from "react";
 import { NG_USER_NAMES } from "utils/constant";
-
-const localStorageGetItemNameInRoom = localStorage.getItem("nameInRoom")
-  ? localStorage.getItem("nameInRoom")
-  : "";
 
 const useStyles = makeStyles((theme) => ({
   root: {},
@@ -24,8 +20,16 @@ const RoomEnter = memo((props) => {
   const classes = useStyles();
   const theme = useTheme();
   const [state, setState] = useContext(StateContext);
-  const [nameInRoom, setNameInRoom] = useState(localStorageGetItemNameInRoom);
+  const [nameInRoom, setNameInRoom] = useState("");
   const [helperText, setHelperText] = useState("");
+
+  useEffect(() => {
+    setNameInRoom(
+      localStorage.getItem("nameInRoom")
+        ? localStorage.getItem("nameInRoom")
+        : ""
+    );
+  }, []);
 
   /**
    * 入力欄の値が変化したときの処理です。
