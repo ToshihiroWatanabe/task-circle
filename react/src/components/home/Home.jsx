@@ -86,7 +86,7 @@ let videoPlayDone = true;
 const Home = memo((props) => {
   const [state, setState] = useContext(StateContext);
   const [todoLists, setTodoLists] = useContext(TodoListsContext);
-  const [settings] = useContext(SettingsContext);
+  const [settings, setSettings] = useContext(SettingsContext);
   const [statistics, setStatistics] = useContext(StatisticsContext);
   const [sessions, setSessions] = useContext(SessionsContext);
   // 動画の読み込みが終わったかどうか
@@ -561,18 +561,25 @@ const Home = memo((props) => {
         document.title = DEFAULT_TITLE;
         return state;
       }
-      if (settings.isPomodoroEnabled) {
-        document.title =
-          "(" +
-          secondToHHMMSS(state.pomodoroTimeLeft).substring(3) +
-          ") " +
-          (state.pomodoroTimerType === "work" ? content : "休憩中") +
-          " | " +
-          DEFAULT_TITLE;
-      } else {
-        document.title =
-          content + " (" + secondToHHMMSS(spentSecond) + ") | " + DEFAULT_TITLE;
-      }
+      setSettings((settings) => {
+        if (settings.isPomodoroEnabled) {
+          document.title =
+            "(" +
+            secondToHHMMSS(state.pomodoroTimeLeft).substring(3) +
+            ") " +
+            (state.pomodoroTimerType === "work" ? content : "休憩中") +
+            " | " +
+            DEFAULT_TITLE;
+        } else {
+          document.title =
+            content +
+            " (" +
+            secondToHHMMSS(spentSecond) +
+            ") | " +
+            DEFAULT_TITLE;
+        }
+        return settings;
+      });
       return state;
     });
   };
