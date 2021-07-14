@@ -3,7 +3,7 @@ import Popover from "@material-ui/core/Popover";
 import { makeStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
 import HelpOutlineOutlinedIcon from "@material-ui/icons/HelpOutlineOutlined";
-import React, { memo } from "react";
+import React, { memo, useState } from "react";
 
 const useStyles = makeStyles((theme) => ({
   popover: {
@@ -20,7 +20,7 @@ const useStyles = makeStyles((theme) => ({
  */
 const HelpPopover = memo((props) => {
   const classes = useStyles();
-  const [anchorEl, setAnchorEl] = React.useState(null);
+  const [anchorEl, setAnchorEl] = useState(null);
 
   const handlePopoverOpen = (event) => {
     setAnchorEl(event.currentTarget);

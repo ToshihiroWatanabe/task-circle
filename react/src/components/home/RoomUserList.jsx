@@ -80,16 +80,14 @@ const RoomUserList = memo((props) => {
               <Divider />
               <ListItem alignItems="flex-start" style={{ paddingTop: 4 }}>
                 <ListItemAvatar style={{ marginLeft: "-0.4rem" }}>
-                  <>
-                    <Avatar
-                      style={{
-                        backgroundColor: getAvatarColor(session.userName),
-                        color: "white",
-                      }}
-                    >
-                      {session.userName.charAt(0).toUpperCase()}
-                    </Avatar>
-                  </>
+                  <Avatar
+                    style={{
+                      backgroundColor: getAvatarColor(session.userName),
+                      color: "white",
+                    }}
+                  >
+                    {session.userName.charAt(0).toUpperCase()}
+                  </Avatar>
                 </ListItemAvatar>
 
                 <ListItemText

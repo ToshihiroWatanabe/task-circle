@@ -174,9 +174,11 @@ const TaskAddInput = memo((props) => {
    * @returns 内容と目標時間のオブジェクト
    */
   const retrieveEstimatedSecond = (input) => {
+    /** HH:MM:SS表記にマッチしているかどうか */
     const HHMMSSmatched = input.match(
       /([0-1]*[0-9]|2[0-3]):[0-5]*[0-9]:[0-5]*[0-9]/
     );
+    /** ポモドーロ数表記にマッチしているかどうか */
     const pomodoroMatched = input.match(/[0-9]*[0-9](pomo|ポモ)/);
     if (HHMMSSmatched) {
       let matchedSplit = HHMMSSmatched[0].split(":");
