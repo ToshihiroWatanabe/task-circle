@@ -168,10 +168,12 @@ const App = memo(() => {
         const link = document.querySelector("link[rel*='icon']");
         link.href = "/favicon.ico";
       }
+      if (state.isConnected) {
+        $websocket.current.sendMessage("/session/leave", JSON.stringify({}));
+      }
       return { ...state, isAfk: false, isInRoom: false, nameInRoom: "" };
     });
     setSessions([]);
-    $websocket.current.sendMessage("/session/leave", JSON.stringify({}));
   };
 
   /**
