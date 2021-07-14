@@ -32,7 +32,6 @@ const GoogleButton = memo((props) => {
    * @param {*} response
    */
   const login = (response) => {
-    console.info(response);
     setState((state) => {
       return { ...state, isInSync: true, isInRoom: false };
     });
