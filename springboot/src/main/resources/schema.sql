@@ -28,10 +28,6 @@ CREATE TABLE IF NOT EXISTS users(
     email VARCHAR(100) NOT NULL UNIQUE,
     -- トークンID
     token_id TEXT(2048),
-    -- ユーザー名
-    user_name VARCHAR(24),
-    -- プロフィール画像のURL
-    image_url VARCHAR(255),
     -- 作成時刻
     created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     -- 更新時刻
