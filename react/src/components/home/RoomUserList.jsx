@@ -86,7 +86,6 @@ const RoomUserList = memo((props) => {
                         backgroundColor: getAvatarColor(session.userName),
                         color: "white",
                       }}
-                      src={session.imageUrl}
                     >
                       {session.userName.charAt(0).toUpperCase()}
                     </Avatar>

@@ -57,7 +57,7 @@ public class AuthController {
                 settingService.create(user.getUserUuid());
                 return "registered";
             } catch (DuplicateKeyException e) {
-                userService.updateTokenAndImageUrl(user);
+                userService.updateTokenId(user);
                 System.out.println("ログイン: " + user.getEmail());
                 return "logined";
             }

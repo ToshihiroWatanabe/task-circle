@@ -13,8 +13,6 @@ public class SessionRequest {
     private String sessionId;
     /** ユーザー名 */
     private String userName;
-    /** メールアドレス */
-    private String email;
     /** セッションタイプ */
     private String sessionType;
     /** 内容 */

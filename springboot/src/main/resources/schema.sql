@@ -4,8 +4,6 @@ CREATE TABLE IF NOT EXISTS sessions(
     session_id VARCHAR(36) NOT NULL PRIMARY KEY,
     -- ユーザー名
     user_name VARCHAR(24) NOT NULL,
-    -- メールアドレス
-    email VARCHAR(100) UNIQUE,
     -- セッションタイプ(work, breakなど)
     session_type VARCHAR(50),
     -- 内容(タスク名など)
@@ -16,7 +14,9 @@ CREATE TABLE IF NOT EXISTS sessions(
     started_at DATETIME,
     -- 終了予定時刻
     finish_at DATETIME,
+    -- 作成時刻
     created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    -- 更新時刻
     updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
@@ -32,7 +32,9 @@ CREATE TABLE IF NOT EXISTS users(
     user_name VARCHAR(24),
     -- プロフィール画像のURL
     image_url VARCHAR(255),
+    -- 作成時刻
     created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    -- 更新時刻
     updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
@@ -42,6 +44,7 @@ CREATE TABLE IF NOT EXISTS todo_lists(
     user_uuid VARCHAR(36) NOT NULL PRIMARY KEY,
     -- Todoリスト
     todo_list JSON,
+    -- 更新時刻
     updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     CHECK (JSON_VALID(todo_list)),
     FOREIGN KEY (user_uuid) REFERENCES users(user_uuid)
@@ -53,10 +56,8 @@ CREATE TABLE IF NOT EXISTS settings(
     user_uuid VARCHAR(36) NOT NULL PRIMARY KEY,
     -- 設定
     setting JSON,
+    -- 更新時刻
     updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     CHECK (JSON_VALID(setting)),
     FOREIGN KEY (user_uuid) REFERENCES users(user_uuid)
 );
-
--- 個人の統計テーブル
--- 全体の統計テーブル

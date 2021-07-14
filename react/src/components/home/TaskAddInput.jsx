@@ -191,7 +191,6 @@ const TaskAddInput = memo((props) => {
     } else if (pomodoroMatched) {
       let matchedSplit = pomodoroMatched[0].split(/(pomo|ポモ)/);
       let estimatedSecond = parseInt(matchedSplit[0]) * 25 * 60;
-      console.log(input.split(pomodoroMatched[0])[0]);
       return {
         content: input.split(pomodoroMatched[0])[0],
         estimatedSecond: estimatedSecond,

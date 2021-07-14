@@ -3,21 +3,20 @@
 <mapper namespace="app.taskcircle.mapper.SessionMapper">
 
     <select id="findAll" resultType="Session">
-        SELECT session_id, user_name, email, session_type, content, is_timer_on, started_at, finish_at, created_at, updated_at FROM sessions
+        SELECT session_id, user_name, session_type, content, is_timer_on, started_at, finish_at, created_at, updated_at FROM sessions
     </select>
 
     <insert id="create" parameterType="Session">
         INSERT INTO sessions(
-            session_id, user_name, email, session_type, content, is_timer_on, started_at, finish_at)
+            session_id, user_name, session_type, content, is_timer_on, started_at, finish_at)
             VALUES(
-                #{sessionId}, #{userName}, #{email}, #{sessionType}, #{content}, #{isTimerOn}, #{startedAt}, #{finishAt}
+                #{sessionId}, #{userName}, #{sessionType}, #{content}, #{isTimerOn}, #{startedAt}, #{finishAt}
             )
     </insert>
 
     <update id="update" parameterType="Session">
         UPDATE sessions SET
         user_name = #{userName},
-        email = #{email},
         session_type = #{sessionType},
         content = #{content},
         is_timer_on = #{isTimerOn},

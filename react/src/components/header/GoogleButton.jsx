@@ -54,7 +54,6 @@ const GoogleButton = memo((props) => {
           if (res.data === "logined") {
             // DBのTodoリストを取得
             TodoListService.findByTokenId(response.tokenId).then((r) => {
-              console.log(r);
               // ローカルのデータより新しいかどうか比較する
               if (
                 new Date(r.data.updatedAt).getTime() >
@@ -80,7 +79,6 @@ const GoogleButton = memo((props) => {
             });
             // DBの設定を取得
             SettingService.findByTokenId(response.tokenId).then((r) => {
-              console.log(r);
               // ローカルのデータより新しいかどうか比較する
               if (
                 new Date(r.data.updatedAt).getTime() >

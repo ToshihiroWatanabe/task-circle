@@ -15,8 +15,4 @@ public class User {
     private String email;
     /** トークンID */
     private String tokenId;
-    /** 名前 */
-    private String name;
-    /** プロフィール画像のURL */
-    private String imageUrl;
 }

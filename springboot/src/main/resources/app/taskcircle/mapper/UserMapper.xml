@@ -15,17 +15,9 @@
             )
     </insert>
 
-    <update id="update" parameterType="User">
+    <update id="updateTokenId" parameterType="User">
         UPDATE users SET
-        name = #{name},
-        image_url = #{imageUrl}
-        WHERE email = #{email}
-    </update>
-
-    <update id="updateTokenAndImageUrl" parameterType="User">
-        UPDATE users SET
-        token_id = #{tokenId},
-        image_url = #{imageUrl}
+        token_id = #{tokenId}
         WHERE email = #{email}
     </update>
 

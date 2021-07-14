@@ -53,8 +53,8 @@ public class UserService {
      * @param user ユーザー情報
      * @return 成功した場合はtrue
      */
-    public boolean updateTokenAndImageUrl(User user) {
-        return userMapper.updateTokenAndImageUrl(user);
+    public boolean updateTokenId(User user) {
+        return userMapper.updateTokenId(user);
     }
 
 }

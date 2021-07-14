@@ -39,6 +39,6 @@ public interface UserMapper {
      * @param user ユーザー情報
      * @return 成功した場合はtrue
      */
-    public boolean updateTokenAndImageUrl(User user);
+    public boolean updateTokenId(User user);
 
 }
