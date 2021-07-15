@@ -1,4 +1,3 @@
-// @ts-nocheck
 import {
   Avatar,
   Divider,
@@ -29,12 +28,13 @@ const useStyles = makeStyles((theme) => ({
 /**
  * ルームのユーザーリストのコンポーネントです。
  */
-const RoomUserList = memo((props) => {
+const RoomUserList = memo((props: { sessions: any }) => {
   const classes = useStyles();
   const [dateNow, setDateNow] = useState(Date.now() + 1000);
 
   useEffect(() => {
     // 現在時刻を更新
+    // @ts-ignore
     refreshInterval = setInterval(() => {
       setDateNow(Date.now() + 1000);
     }, 1000);
@@ -75,7 +75,7 @@ const RoomUserList = memo((props) => {
             </div>
           </>
         )}
-        {props.sessions.map((session, index) => {
+        {props.sessions.map((session: any, index: number) => {
           return (
             <Fragment key={index}>
               <Divider />

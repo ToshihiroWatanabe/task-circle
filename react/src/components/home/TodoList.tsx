@@ -78,7 +78,7 @@ const TodoList = memo((props) => {
   const theme = useTheme();
   const { state, setState } = useContext(StateContext);
   const { settings } = useContext(SettingsContext);
-  const [isTagsInputFocused, setIsTagsInputFocused] = useState(-1);
+  const [isInputFocused, setIsInputFocused] = useState(-1);
   const [previousTodoLists, setPreviousTodoLists] = useState({});
   const [undoSnackbarOpen, setUndoSnackbarOpen] = useState(false);
   const [undoSnackbarMessage, setUndoSnackbarMessage] = useState("");
@@ -635,14 +635,8 @@ const TodoList = memo((props) => {
                   }}
                 >
                   <TaskAddInput
-                    fullWidth
-                    variant="outlined"
-                    name="tags"
-                    size="small"
-                    placeholder="タスクを追加"
-                    isTagsInputFocused={isTagsInputFocused}
-                    setIsTagsInputFocused={setIsTagsInputFocused}
-                    todoLists={props.todoLists}
+                    isInputFocused={isInputFocused}
+                    setIsInputFocused={setIsInputFocused}
                     setTodoLists={props.setTodoLists}
                     updateTodoLists={props.updateTodoLists}
                     index={columnIndex}
@@ -651,7 +645,7 @@ const TodoList = memo((props) => {
                       marginTop: "0.25rem",
                       marginLeft: "0.2rem",
                       backgroundColor:
-                        isTagsInputFocused === columnIndex
+                        isInputFocused === columnIndex
                           ? theme.palette.type === "light"
                             ? "white"
                             : "#424242"

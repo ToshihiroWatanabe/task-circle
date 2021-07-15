@@ -1,5 +1,5 @@
-// @ts-nocheck
 import { Button, useTheme } from "@material-ui/core";
+// @ts-ignore
 import stoppedAudio from "audio/notification_simple-02.mp3";
 import { SettingsContext } from "contexts/SettingsContext";
 import { StateContext } from "contexts/StateContext";
@@ -12,7 +12,7 @@ const stoppedSound = new Audio(stoppedAudio);
 /**
  * 作業・休憩切り替えボタンの切り替えボタンのコンポーネントです。
  */
-const TimerToggleButton = memo((props) => {
+const TimerToggleButton = memo((props: { sendMessage: any }) => {
   const theme = useTheme();
   const { state, setState } = useContext(StateContext);
   const { settings } = useContext(SettingsContext);
@@ -21,7 +21,7 @@ const TimerToggleButton = memo((props) => {
    * 切り替えボタンがクリックされたときの処理です。
    */
   const onClick = () => {
-    setState((state) => {
+    setState((state: any) => {
       if (state.isTimerOn) {
         state.isTimerOn = false;
         // 効果音
@@ -37,7 +37,7 @@ const TimerToggleButton = memo((props) => {
       return { ...state };
     });
     if (state.isTimerOn) {
-      refreshTitle();
+      refreshTitle("", 0);
     } else {
       document.title = DEFAULT_TITLE;
     }
@@ -49,8 +49,8 @@ const TimerToggleButton = memo((props) => {
   /**
    * ページのタイトルを更新します。
    */
-  const refreshTitle = (content, spentSecond) => {
-    setState((state) => {
+  const refreshTitle = (content: string, spentSecond: number) => {
+    setState((state: any) => {
       if (settings.isPomodoroEnabled) {
         document.title =
           "(" +

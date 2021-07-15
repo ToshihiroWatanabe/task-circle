@@ -1,4 +1,3 @@
-// @ts-nocheck
 import BottomNavigation from "@material-ui/core/BottomNavigation";
 import BottomNavigationAction from "@material-ui/core/BottomNavigationAction";
 import { makeStyles } from "@material-ui/core/styles";
@@ -21,87 +20,98 @@ const useStyles = makeStyles({
 /**
  * ボトムナビゲーションのコンポーネントです。
  */
-const LabelBottomNavigation = memo((props) => {
-  const classes = useStyles();
+const LabelBottomNavigation = memo(
+  (props: {
+    bottomNavigationValue: string;
+    setBottomNavigationValue: any;
+    todoLists: any;
+  }) => {
+    const classes = useStyles();
 
-  const handleChange = (event, newValue) => {
-    props.setBottomNavigationValue(newValue);
-  };
-  /**
-   * ToDoリストボタンがクリックされたときの処理です。
-   * @param {*} index
-   */
-  const onListButtonClick = (index) => {
-    if (index === 0) {
-      document.getElementsByTagName("main")[0].scrollTo({
-        left: 0,
-        behavior: "smooth",
-      });
-    } else {
-      const todoListAndRoomWidth =
-        document.getElementById("todoListAndRoom").children[0].clientWidth +
-        document.getElementById("todoListAndRoom").children[1].clientWidth;
-      const todoListLength = Object.values(props.todoLists).length;
-      // リスト数が最大数以上のとき
-      if (todoListLength >= NUMBER_OF_LISTS_MAX) {
+    const handleChange = (event: any, newValue: string) => {
+      props.setBottomNavigationValue(newValue);
+    };
+    /**
+     * ToDoリストボタンがクリックされたときの処理です。
+     * @param {*} index
+     */
+    const onListButtonClick = (index: number) => {
+      if (index === 0) {
         document.getElementsByTagName("main")[0].scrollTo({
-          left:
-            (todoListAndRoomWidth * index) / (todoListLength + 1) + index * 4,
+          left: 0,
           behavior: "smooth",
         });
       } else {
-        // リスト数が最大数未満のとき
-        document.getElementsByTagName("main")[0].scrollTo({
-          left:
-            (todoListAndRoomWidth * index) / (todoListLength + 1) - index * 8,
-          behavior: "smooth",
-        });
+        const todoListAndRoomWidth =
+          // @ts-ignore
+          document.getElementById("todoListAndRoom").children[0].clientWidth +
+          // @ts-ignore
+          document.getElementById("todoListAndRoom").children[1].clientWidth;
+        const todoListLength = Object.values(props.todoLists).length;
+        // リスト数が最大数以上のとき
+        if (todoListLength >= NUMBER_OF_LISTS_MAX) {
+          document.getElementsByTagName("main")[0].scrollTo({
+            left:
+              (todoListAndRoomWidth * index) / (todoListLength + 1) + index * 4,
+            behavior: "smooth",
+          });
+        } else {
+          // リスト数が最大数未満のとき
+          document.getElementsByTagName("main")[0].scrollTo({
+            left:
+              (todoListAndRoomWidth * index) / (todoListLength + 1) - index * 8,
+            behavior: "smooth",
+          });
+        }
       }
-    }
-  };
+    };
 
-  /**
-   * ルームボタンがクリックされたときの処理です。
-   */
-  const onRoomButtonClick = () => {
-    const todoListAndRoomWidth =
-      document.getElementById("todoListAndRoom").children[0].clientWidth +
-      document.getElementById("todoListAndRoom").children[1].clientWidth;
-    document.getElementsByTagName("main")[0].scrollTo({
-      left: todoListAndRoomWidth,
-      behavior: "smooth",
-    });
-  };
+    /**
+     * ルームボタンがクリックされたときの処理です。
+     */
+    const onRoomButtonClick = () => {
+      const todoListAndRoomWidth =
+        // @ts-ignore
+        document.getElementById("todoListAndRoom").children[0].clientWidth +
+        // @ts-ignore
+        document.getElementById("todoListAndRoom").children[1].clientWidth;
+      document.getElementsByTagName("main")[0].scrollTo({
+        left: todoListAndRoomWidth,
+        behavior: "smooth",
+      });
+    };
 
-  return (
-    <BottomNavigation
-      value={props.bottomNavigationValue}
-      onChange={handleChange}
-      className={classes.root}
-    >
-      {Object.values(props.todoLists).map((todoList, index) => {
-        return (
-          <BottomNavigationAction
-            key={index}
-            label={todoList.name}
-            value={"list" + (index + 1)}
-            icon={<ListAltIcon />}
-            onClick={() => {
-              onListButtonClick(index);
-            }}
-          />
-        );
-      })}
-      <BottomNavigationAction
-        label="ルーム"
-        value="room"
-        icon={<PeopleIcon />}
-        onClick={() => {
-          onRoomButtonClick();
-        }}
-      />
-    </BottomNavigation>
-  );
-});
+    return (
+      <BottomNavigation
+        value={props.bottomNavigationValue}
+        onChange={handleChange}
+        className={classes.root}
+      >
+        {Object.values(props.todoLists).map((todoList, index) => {
+          return (
+            <BottomNavigationAction
+              key={index}
+              // @ts-ignore
+              label={todoList.name}
+              value={"list" + (index + 1)}
+              icon={<ListAltIcon />}
+              onClick={() => {
+                onListButtonClick(index);
+              }}
+            />
+          );
+        })}
+        <BottomNavigationAction
+          label="ルーム"
+          value="room"
+          icon={<PeopleIcon />}
+          onClick={() => {
+            onRoomButtonClick();
+          }}
+        />
+      </BottomNavigation>
+    );
+  }
+);
 
 export default LabelBottomNavigation;

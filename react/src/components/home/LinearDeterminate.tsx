@@ -1,4 +1,3 @@
-// @ts-nocheck
 import LinearProgress from "@material-ui/core/LinearProgress";
 import { makeStyles } from "@material-ui/core/styles";
 import React, { memo } from "react";
@@ -9,18 +8,20 @@ const useStyles = makeStyles({
   },
 });
 
-const LinearDeterminate = memo((props) => {
-  const classes = useStyles();
-  return (
-    <div className={classes.root}>
-      <LinearProgress
-        variant="determinate"
-        value={props.progress}
-        color={props.color}
-        style={{ height: props.thickness }}
-      />
-    </div>
-  );
-});
+const LinearDeterminate = memo(
+  (props: { progress: number; color: any; thickness: number }) => {
+    const classes = useStyles();
+    return (
+      <div className={classes.root}>
+        <LinearProgress
+          variant="determinate"
+          value={props.progress}
+          color={props.color}
+          style={{ height: props.thickness }}
+        />
+      </div>
+    );
+  }
+);
 
 export default LinearDeterminate;

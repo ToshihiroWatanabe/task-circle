@@ -1,4 +1,3 @@
-// @ts-nocheck
 import { Card, makeStyles, useTheme } from "@material-ui/core";
 import RoomEnter from "components/home/RoomEnter";
 import RoomHeader from "components/home/RoomHeader";
@@ -23,37 +22,49 @@ const useStyles = makeStyles((theme) => ({
 /**
  * ルームのコンポーネントです。
  */
-const Room = memo((props) => {
-  const theme = useTheme();
-  const classes = useStyles();
-  const { state } = useContext(StateContext);
+const Room = memo(
+  (props: { sessions: any; onLeave: any; sendMessage: any; onEnter: any }) => {
+    const theme = useTheme();
+    const classes = useStyles();
+    const { state } = useContext(StateContext);
 
-  return (
-    <>
-      <Card
-        className={classes.roomCard}
-        style={{ paddingBottom: state.isInRoom ? 0 : "" }}
-      >
-        <RoomHeader
-          sessions={props.sessions}
-          onLeave={props.onLeave}
-          sendMessage={props.sendMessage}
-        />
-        {/* 入室前 */}
-        {!state.isInRoom && (
-          <RoomEnter onEnter={props.onEnter} isConnected={state.isConnected} />
-        )}
-        {/* 入室後 */}
-        {state.isInRoom && !state.isConnected && (
-          <>サーバーとの接続が切れました。</>
-        )}
-        {state.isInRoom && <RoomUserList sessions={props.sessions} />}
-      </Card>
-      <div
-        style={{ minWidth: theme.spacing(1), width: theme.spacing(1) }}
-      ></div>
-    </>
-  );
-});
+    return (
+      <>
+        <Card
+          className={classes.roomCard}
+          style={{ paddingBottom: state.isInRoom ? 0 : "" }}
+        >
+          <RoomHeader
+            // @ts-ignore
+            sessions={props.sessions}
+            onLeave={props.onLeave}
+            sendMessage={props.sendMessage}
+          />
+          {/* 入室前 */}
+          {!state.isInRoom && (
+            <RoomEnter
+              onEnter={props.onEnter}
+              // @ts-ignore
+              isConnected={state.isConnected}
+            />
+          )}
+          {/* 入室後 */}
+          {state.isInRoom && !state.isConnected && (
+            <>サーバーとの接続が切れました。</>
+          )}
+          {state.isInRoom && (
+            <RoomUserList
+              // @ts-ignore
+              sessions={props.sessions}
+            />
+          )}
+        </Card>
+        <div
+          style={{ minWidth: theme.spacing(1), width: theme.spacing(1) }}
+        ></div>
+      </>
+    );
+  }
+);
 
 export default Room;
