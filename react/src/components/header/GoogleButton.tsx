@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { useTheme } from "@material-ui/core";
 import "components/header/GoogleButton.css";
 import SimpleSnackbar from "components/SimpleSnackbar";

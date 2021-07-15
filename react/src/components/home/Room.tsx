@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { Card, makeStyles, useTheme } from "@material-ui/core";
 import RoomEnter from "components/home/RoomEnter";
 import RoomHeader from "components/home/RoomHeader";

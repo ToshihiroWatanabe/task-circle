@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { IconButton, Snackbar } from "@material-ui/core";
 import CloseIcon from "@material-ui/icons/Close";
 import React, { Fragment, memo } from "react";

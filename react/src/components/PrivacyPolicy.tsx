@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { Box, Card, makeStyles, Typography } from "@material-ui/core";
 import React from "react";
 

@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { useMediaQuery, useTheme, Zoom } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import TimerFab from "components/home/TimerFab";

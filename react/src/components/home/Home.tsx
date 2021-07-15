@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { Typography } from "@material-ui/core";
 import faintTickAudio from "audio/faintTick.mp3";
 import startedAudio from "audio/notification_simple-01.mp3";

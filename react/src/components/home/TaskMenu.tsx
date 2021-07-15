@@ -1,3 +1,4 @@
+// @ts-nocheck
 import {
   IconButton,
   makeStyles,
@@ -9,9 +10,9 @@ import DeleteIcon from "@material-ui/icons/Delete";
 import EditIcon from "@material-ui/icons/Edit";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
 import RotateLeftIcon from "@material-ui/icons/RotateLeft";
-import TodoListEditDialog from "components/home/TodoListEditDialog";
+import TaskEditDialog from "components/home/TaskEditDialog";
 import { StateContext } from "contexts/StateContext";
-import React, { memo, useContext, useState } from "react";
+import React, { memo, useContext, useEffect, useState } from "react";
 
 const useStyles = makeStyles({
   menu: {
@@ -20,13 +21,23 @@ const useStyles = makeStyles({
 });
 
 /**
- * ToDoリストメニューのコンポーネントです。
+ * タスクメニューのコンポーネントです。
  */
-const TodoListMenu = memo((props) => {
+const TaskMenu = memo((props) => {
   const classes = useStyles();
-  const [state, setState] = useContext(StateContext);
+  const [state] = useContext(StateContext);
   const [anchorEl, setAnchorEl] = useState(null);
   const [editOpen, setEditOpen] = useState(false);
+  const [categories] = useState([]);
+
+  useEffect(() => {
+    // 編集でEnterを押した時にメニューが開かないようにする
+    if (!editOpen) {
+      setTimeout(() => {
+        setAnchorEl(false);
+      }, 50);
+    }
+  }, [editOpen]);
 
   /**
    * メニューアイコンがクリックされたときの処理です。
@@ -43,35 +54,35 @@ const TodoListMenu = memo((props) => {
   };
 
   /**
-   * リスト名を変更がクリックされたときの処理です。
+   * 編集がクリックされたときの処理です。
    */
   const handleEdit = () => {
     setEditOpen(true);
+    setAnchorEl(null);
   };
 
   /**
-   * 全ての経過時間をリセットがクリックされたときの処理です。
+   * リセットがクリックされたときの処理です。
    */
   const handleReset = () => {
     props.setTodoLists((todoLists) => {
       props.setPreviousTodoLists(JSON.parse(JSON.stringify({ ...todoLists })));
       const newTodoLists = {
         ...todoLists,
-        [Object.keys(todoLists)[props.index]]: {
-          ...Object.values(todoLists)[props.index],
-          items: Object.values(todoLists)[props.index].items.map(
+        [Object.keys(todoLists)[props.columnIndex]]: {
+          ...Object.values(todoLists)[props.columnIndex],
+          items: Object.values(todoLists)[props.columnIndex].items.map(
             (item, index) => {
-              item.spentSecond = 0;
-              item.estimatedSecond = 0;
+              if (index === props.index) {
+                item.spentSecond = 0;
+                props.setUndoSnackbarMessage("経過時間をリセットしました");
+                props.setUndoSnackbarOpen(true);
+              }
               return item;
             }
           ),
         },
       };
-      props.setUndoSnackbarMessage(
-        Object.values(todoLists)[props.index].name + "の時間をリセットしました"
-      );
-      props.setUndoSnackbarOpen(true);
       props.updateTodoLists(newTodoLists);
       return newTodoLists;
     });
@@ -86,12 +97,19 @@ const TodoListMenu = memo((props) => {
       props.setPreviousTodoLists(JSON.parse(JSON.stringify({ ...todoLists })));
       const newTodoLists = {
         ...todoLists,
+        [Object.keys(todoLists)[props.columnIndex]]: {
+          ...Object.values(todoLists)[props.columnIndex],
+          items: Object.values(todoLists)[props.columnIndex].items.filter(
+            (value, index) => {
+              if (index === props.index) {
+                props.setUndoSnackbarMessage("削除しました");
+                props.setUndoSnackbarOpen(true);
+              }
+              return index !== props.index;
+            }
+          ),
+        },
       };
-      delete newTodoLists[Object.keys(todoLists)[props.index]];
-      props.setUndoSnackbarMessage(
-        Object.values(todoLists)[props.index].name + "を削除しました"
-      );
-      props.setUndoSnackbarOpen(true);
       props.updateTodoLists(newTodoLists);
       return newTodoLists;
     });
@@ -100,13 +118,12 @@ const TodoListMenu = memo((props) => {
 
   return (
     <>
-      <Tooltip title="リストメニュー" placement="top">
+      <Tooltip title="タスクメニュー">
         <IconButton
-          size="small"
           edge={"end"}
           onClick={handleClick}
           color="inherit"
-          aria-label="リストメニュー切替"
+          aria-label="タスクメニュー切替"
         >
           <MoreVertIcon />
         </IconButton>
@@ -117,51 +134,52 @@ const TodoListMenu = memo((props) => {
         open={Boolean(anchorEl)}
         onClose={handleClose}
         className={classes.menu}
-        style={{ fontSize: "0.7rem" }}
       >
-        <MenuItem
-          onClick={handleEdit}
-          disabled={
-            state.isTimerOn &&
-            Object.values(props.todoLists)[props.index].items.length > 0
-          }
-        >
+        <MenuItem onClick={handleEdit}>
           <EditIcon />
-          リスト名を変更
+          タスクを編集
         </MenuItem>
         <MenuItem
           onClick={handleReset}
           disabled={
-            state.isTimerOn ||
-            Object.values(props.todoLists)[props.index].items.length === 0
+            // タイマー作動中かつ選択中のタスク、または経過時間が0の場合は無効
+            (Object.values(props.todoLists)[props.columnIndex].items[
+              props.index
+            ].isSelected &&
+              state.isTimerOn) ||
+            Object.values(props.todoLists)[props.columnIndex].items[props.index]
+              .spentSecond === 0
           }
         >
           <RotateLeftIcon />
-          時間をリセット
+          経過時間を戻す
         </MenuItem>
         <MenuItem
           style={{ color: "red" }}
           onClick={handleDelete}
           disabled={
-            state.isTimerOn &&
-            Object.values(props.todoLists)[props.index].items.length > 0
+            // タイマー作動中かつ選択中のタスクの場合は無効
+            Object.values(props.todoLists)[props.columnIndex].items[props.index]
+              .isSelected && state.isTimerOn
           }
         >
           <DeleteIcon />
-          リストを削除
+          タスクを削除
         </MenuItem>
       </Menu>
-      <TodoListEditDialog
+      <TaskEditDialog
         open={editOpen}
         setOpen={setEditOpen}
         index={props.index}
-        defaultValue={props.column.name}
-        formDialogTitle="リスト名を変更"
-        label="リスト名"
+        columnIndex={props.columnIndex}
+        todoLists={props.todoLists}
+        setTodoLists={props.setTodoLists}
+        categories={categories}
+        sendMessage={props.sendMessage}
         updateTodoLists={props.updateTodoLists}
       />
     </>
   );
 });
 
-export default TodoListMenu;
+export default TaskMenu;

@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { Button, useTheme } from "@material-ui/core";
 import stoppedAudio from "audio/notification_simple-02.mp3";
 import { SettingsContext } from "contexts/SettingsContext";

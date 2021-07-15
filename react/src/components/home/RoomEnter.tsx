@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { Button, TextField, Tooltip } from "@material-ui/core";
 import { makeStyles, useTheme } from "@material-ui/core/styles";
 import { StateContext } from "contexts/StateContext";
