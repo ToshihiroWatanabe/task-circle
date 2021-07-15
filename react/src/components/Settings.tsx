@@ -354,8 +354,8 @@ const Settings = memo(() => {
               }
             })()}
             <Box mt={1} />
+            {/* @ts-ignore */}
             <VolumeSlider
-              // @ts-ignore
               helperText="音量(休憩用BGM)"
               settings={settings}
               setSettings={setSettings}
@@ -367,8 +367,8 @@ const Settings = memo(() => {
             開始・停止・アラーム音
           </FormLabel>
           <Box mt={1} />
+          {/* @ts-ignore */}
           <VolumeSlider
-            // @ts-ignore
             helperText="その他の音"
             settings={settings}
             setSettings={setSettings}
@@ -377,8 +377,8 @@ const Settings = memo(() => {
         <FormControl component="fieldset" className={classes.formControl}>
           <FormLabel className={classes.formLabel}>チクタク音</FormLabel>
           <Box mt={1} />
+          {/* @ts-ignore */}
           <VolumeSlider
-            // @ts-ignore
             helperText="チクタク音"
             settings={settings}
             setSettings={setSettings}
