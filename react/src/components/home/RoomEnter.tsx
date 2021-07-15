@@ -1,9 +1,8 @@
-// @ts-nocheck
 import { Button, TextField, Tooltip } from "@material-ui/core";
-import { makeStyles, useTheme } from "@material-ui/core/styles";
+import { makeStyles } from "@material-ui/core/styles";
 import { StateContext } from "contexts/StateContext";
 import React, { memo, useContext, useEffect, useState } from "react";
-import { NG_USER_NAMES } from "utils/constant.ts";
+import { NG_USER_NAMES } from "utils/constant";
 
 const useStyles = makeStyles((theme) => ({
   root: {},
@@ -17,15 +16,15 @@ const useStyles = makeStyles((theme) => ({
 /**
  * ルームに入室する前に表示されるコンポーネントです。
  */
-const RoomEnter = memo((props) => {
+const RoomEnter = memo((props: { onEnter: any }) => {
   const classes = useStyles();
-  const theme = useTheme();
   const { state, setState } = useContext(StateContext);
   const [nameInRoom, setNameInRoom] = useState("");
   const [helperText, setHelperText] = useState("");
 
   useEffect(() => {
     setNameInRoom(
+      // @ts-ignore
       localStorage.getItem("nameInRoom")
         ? localStorage.getItem("nameInRoom")
         : ""
@@ -36,7 +35,7 @@ const RoomEnter = memo((props) => {
    * 入力欄の値が変化したときの処理です。
    * @param {*} event
    */
-  const onTextFieldChange = (event) => {
+  const onTextFieldChange = (event: any) => {
     setNameInRoom(event.target.value);
     if (helperText !== "") {
       setHelperText("");
@@ -47,7 +46,7 @@ const RoomEnter = memo((props) => {
    * キーが押されたときの処理です。
    * @param {*} event
    */
-  const onKeyDown = (event) => {
+  const onKeyDown = (event: any) => {
     if (event.keyCode === 13) {
       onEnterButtonClick(event);
     }
@@ -56,12 +55,12 @@ const RoomEnter = memo((props) => {
   /**
    * 入室ボタンがクリックされたときの処理です。
    */
-  const onEnterButtonClick = (event) => {
+  const onEnterButtonClick = (event: any) => {
     event.preventDefault();
     localStorage.setItem("nameInRoom", nameInRoom);
     if (validate(nameInRoom)) {
       // 入室
-      setState((state) => {
+      setState((state: any) => {
         const newState = {
           ...state,
           isInRoom: true,
@@ -76,7 +75,7 @@ const RoomEnter = memo((props) => {
   /**
    * 入力された名前を検証します。
    */
-  const validate = (name) => {
+  const validate = (name: string) => {
     if (name.trim() === "") {
       setHelperText("名前を入力してください");
       return false;

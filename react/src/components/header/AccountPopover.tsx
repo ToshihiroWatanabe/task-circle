@@ -1,4 +1,3 @@
-// @ts-nocheck
 import {
   Box,
   IconButton,
@@ -16,8 +15,8 @@ import { StateContext } from "contexts/StateContext";
 import { StatisticsContext } from "contexts/StatisticsContext";
 import React, { memo, useContext, useState } from "react";
 import { Link } from "react-router-dom";
-import { secondToHHMMSS } from "utils/convert.ts";
-import "./AccountPopover.css";
+import { secondToHHMMSS } from "utils/convert";
+import "components/header/AccountPopover.css";
 
 const useStyles = makeStyles((theme) => ({
   link: {
@@ -32,7 +31,7 @@ const useStyles = makeStyles((theme) => ({
 const AccountPopover = memo((props) => {
   const classes = useStyles();
   const theme = useTheme();
-  const { state, setState } = useContext(StateContext);
+  const { state } = useContext(StateContext);
   const { statistics } = useContext(StatisticsContext);
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
@@ -45,7 +44,7 @@ const AccountPopover = memo((props) => {
    * アイコンがクリックされたときの処理です。
    * @param {*} event
    */
-  const handleClick = (event) => {
+  const handleClick = (event: any) => {
     setAnchorEl(event.currentTarget);
   };
   const handleClose = () => {
@@ -91,7 +90,6 @@ const AccountPopover = memo((props) => {
           horizontal: "center",
         }}
         getContentAnchorEl={null}
-        className={classes.popover}
       >
         <Tooltip
           title={
@@ -115,6 +113,7 @@ const AccountPopover = memo((props) => {
         <Box mt={"1rem"} />
         <div style={{ display: "flex", alignItems: "center" }}>
           <GoogleButton
+            // @ts-ignore
             maskedEmail={maskedEmail}
             setMaskedEmail={setMaskedEmail}
           />
