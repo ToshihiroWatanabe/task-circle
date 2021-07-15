@@ -1,4 +1,3 @@
-// @ts-nocheck
 import {
   Divider,
   Icon,
@@ -15,10 +14,10 @@ import SyncProgress from "components/SyncProgress";
 import { SettingsContext } from "contexts/SettingsContext";
 import { StateContext } from "contexts/StateContext";
 import React, { memo, useContext, useState } from "react";
-import SettingService from "services/setting.service.ts";
-import "./TimerPopover.css";
+import SettingService from "services/setting.service";
+import "components/header/TimerPopover.css";
 
-const workTimerLength = [];
+const workTimerLength: { label: string; value: number }[] = [];
 workTimerLength.push({ label: "5", value: 5 * 60 });
 workTimerLength.push({ label: "10", value: 10 * 60 });
 workTimerLength.push({ label: "15", value: 15 * 60 });
@@ -29,7 +28,7 @@ workTimerLength.push({ label: "45", value: 45 * 60 });
 workTimerLength.push({ label: "60", value: 60 * 60 });
 workTimerLength.push({ label: "90", value: 90 * 60 });
 
-const breakTimerLength = [];
+const breakTimerLength: { label: string; value: number }[] = [];
 breakTimerLength.push({ label: "5", value: 5 * 60 });
 breakTimerLength.push({ label: "10", value: 10 * 60 });
 breakTimerLength.push({ label: "15", value: 15 * 60 });
@@ -44,7 +43,7 @@ const useStyles = makeStyles((theme) => ({}));
 /**
  * タイマーポップオーバーのコンポーネントです。
  */
-const TimerPopover = memo((props) => {
+const TimerPopover = memo((props: { sendMessage: any }) => {
   const classes = useStyles();
   const { state, setState } = useContext(StateContext);
   const { settings, setSettings } = useContext(SettingsContext);
@@ -55,24 +54,27 @@ const TimerPopover = memo((props) => {
   /**
    * ローカルストレージとDBの設定を更新します。
    */
-  const updateSettings = (settings) => {
+  const updateSettings = (settings: any) => {
     localStorage.setItem("settings", JSON.stringify(settings));
-    localStorage.setItem("settingsUpdatedAt", Date.now());
+    localStorage.setItem("settingsUpdatedAt", Date.now().toString());
     if (state.isLogined) {
       setIsInSync(true);
     }
     clearTimeout(updateTimeout);
+    // @ts-ignore
     updateTimeout = setTimeout(() => {
       if (state.isLogined) {
         // DBの設定を取得
         SettingService.findByTokenId(state.tokenId).then((r) => {
           // ローカルのデータより新しいかどうか比較する
           if (
+            // @ts-ignore
             new Date(r.data.updatedAt).getTime() >
+            // @ts-ignore
             localStorage.getItem("settingsUpdatedAt")
           ) {
             // ローカルのデータをDBのデータに上書きする
-            setSettings((settings) => {
+            setSettings((settings: any) => {
               const newSettings = {
                 ...settings,
                 ...JSON.parse(r.data.setting),
@@ -80,14 +82,14 @@ const TimerPopover = memo((props) => {
               localStorage.setItem("settings", JSON.stringify(newSettings));
               localStorage.setItem(
                 "settingsUpdatedAt",
-                new Date(r.data.updatedAt).getTime()
+                new Date(r.data.updatedAt).getTime().toString()
               );
               return newSettings;
             });
           }
           setIsInSync(false);
         });
-        setSettings((settings) => {
+        setSettings((settings: any) => {
           SettingService.update(state.tokenId, JSON.stringify(settings));
           return settings;
         });
@@ -99,7 +101,7 @@ const TimerPopover = memo((props) => {
    * アイコンがクリックされたときの処理です。
    * @param {*} event
    */
-  const handleClick = (event) => {
+  const handleClick = (event: any) => {
     setAnchorEl(event.currentTarget);
   };
   const handleClose = () => {
@@ -110,7 +112,7 @@ const TimerPopover = memo((props) => {
    * ポモドーロタイマーのオンオフが切り替わったときの処理です。
    */
   const onPomodoroEnabledChanged = () => {
-    setSettings((settings) => {
+    setSettings((settings: any) => {
       const newSettings = {
         ...settings,
         isPomodoroEnabled: !settings.isPomodoroEnabled,
@@ -124,7 +126,7 @@ const TimerPopover = memo((props) => {
    * 自動スタートのオンオフが切り替わったときの処理です。
    */
   const onBreakAutoStartChanged = () => {
-    setSettings((settings) => {
+    setSettings((settings: any) => {
       const newSettings = {
         ...settings,
         isBreakAutoStart: !settings.isBreakAutoStart,
@@ -138,9 +140,9 @@ const TimerPopover = memo((props) => {
    * 作業タイマーの時間の選択肢が選ばれたときの処理です。
    * @param {*} event
    */
-  const onWorkTimerLengthChange = (event) => {
-    setSettings((settings) => {
-      setState((state) => {
+  const onWorkTimerLengthChange = (event: any) => {
+    setSettings((settings: any) => {
+      setState((state: any) => {
         if (state.pomodoroTimerType === "work") {
           state.pomodoroTimeLeft = event.target.value;
         }
@@ -156,9 +158,9 @@ const TimerPopover = memo((props) => {
    * 休憩タイマーの時間の選択肢が選ばれたときの処理です。
    * @param {*} event
    */
-  const onBreakTimerLengthChange = (event) => {
-    setSettings((settings) => {
-      setState((state) => {
+  const onBreakTimerLengthChange = (event: any) => {
+    setSettings((settings: any) => {
+      setState((state: any) => {
         if (state.pomodoroTimerType === "break") {
           state.pomodoroTimeLeft = event.target.value;
         }
@@ -282,7 +284,10 @@ const TimerPopover = memo((props) => {
         </Typography>
         <Divider style={{ margin: "0.5rem 0.5rem 0 0.5rem" }} />
         <Typography component="div" style={{ padding: "0.5rem 0 0 1rem" }}>
-          <TimerToggleButton sendMessage={props.sendMessage} />
+          <TimerToggleButton
+            // @ts-ignore
+            sendMessage={props.sendMessage}
+          />
         </Typography>
       </Popover>
       <SyncProgress isInSync={isInSync} />

@@ -1,4 +1,3 @@
-// @ts-nocheck
 import {
   AppBar,
   Button,
@@ -24,16 +23,27 @@ import MenuIcon from "@material-ui/icons/Menu";
 import SettingsIcon from "@material-ui/icons/Settings";
 import AccountPopover from "components/header/AccountPopover";
 import TimerPopover from "components/header/TimerPopover";
-import PropTypes from "prop-types";
 import React, { Fragment, memo, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { DRAWER_WIDTH } from "utils/constant.ts";
+import { DRAWER_WIDTH } from "utils/constant";
 
 const pages = [
   { label: "ホーム", path: "/" },
   { label: "設定", path: "/settings" },
   { label: "このアプリについて", path: "/about" },
 ];
+
+interface Props {
+  sendMessage: any;
+  isDarkModeOn: boolean;
+  setIsDarkModeOn: any;
+  onSyncButtonClick: any;
+  /**
+   * Injected by the documentation to work in an iframe.
+   * You won't need it on your project.
+   */
+  windowProps?: () => Window;
+}
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -59,7 +69,7 @@ const useStyles = makeStyles((theme) => ({
 /**
  * ドロワーのコンポーネントです。
  */
-const ResponsiveDrawer = memo((props) => {
+const ResponsiveDrawer = memo((props: Props) => {
   const { windowProps } = props;
   const classes = useStyles();
   const theme = useTheme();
@@ -67,10 +77,13 @@ const ResponsiveDrawer = memo((props) => {
   const [mobileOpen, setMobileOpen] = useState(false);
 
   // リストの項目が押されたときの処理です。
-  const handleListItemClick = (index) => {
+  const handleListItemClick = () => {
     setMobileOpen(false);
   };
 
+  /**
+   * ドロワーを開閉するときの処理です。
+   */
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
   };
@@ -79,9 +92,8 @@ const ResponsiveDrawer = memo((props) => {
    * ヘッダーのタイトルがクリックされたときの処理です。
    */
   const onHeaderTitleClick = () => {
+    //@ts-ignore
     document.getElementsByClassName("links")[0].click();
-    // ページトップへ移動
-    // window.scrollTo(0, 0);
   };
 
   const drawer = (
@@ -98,7 +110,7 @@ const ResponsiveDrawer = memo((props) => {
             >
               <ListItem
                 button
-                onClick={() => handleListItemClick(index)}
+                onClick={() => handleListItemClick()}
                 data-num={index.toString()}
               >
                 <ListItemIcon>
@@ -120,7 +132,7 @@ const ResponsiveDrawer = memo((props) => {
 
   return (
     <div className={classes.root}>
-      <AppBar position="fixed" className={classes.appBar}>
+      <AppBar position="fixed">
         <Toolbar>
           <IconButton
             color="inherit"
@@ -131,12 +143,7 @@ const ResponsiveDrawer = memo((props) => {
           >
             <MenuIcon />
           </IconButton>
-          <Typography
-            variant="h6"
-            className={classes.title}
-            onClick={onHeaderTitleClick}
-            noWrap
-          >
+          <Typography variant="h6" onClick={onHeaderTitleClick} noWrap>
             TaskCircle
           </Typography>
           <span style={{ flexGrow: 1 }}></span>
@@ -163,13 +170,17 @@ const ResponsiveDrawer = memo((props) => {
           )}
           {/* ポモドーロ切り替えアイコン */}
           <div style={{ display: location.pathname === "/" ? "" : "none" }}>
-            <TimerPopover sendMessage={props.sendMessage} />
+            <TimerPopover
+              //@ts-ignore
+              sendMessage={props.sendMessage}
+            />
           </div>
           {/* ダークモード切り替えアイコン */}
           <Tooltip title="ダークモード切り替え">
             <IconButton
               color="inherit"
               onClick={() => {
+                //@ts-ignore
                 localStorage.setItem("isDarkModeOn", !props.isDarkModeOn);
                 props.setIsDarkModeOn(!props.isDarkModeOn);
               }}
@@ -187,7 +198,10 @@ const ResponsiveDrawer = memo((props) => {
             </IconButton>
           )}
           {/* アカウントボタン */}
-          <AccountPopover onSyncButtonClick={props.onSyncButtonClick} />
+          <AccountPopover
+            //@ts-ignore
+            onSyncButtonClick={props.onSyncButtonClick}
+          />
         </Toolbar>
       </AppBar>
       <nav aria-label="mailbox folders">
@@ -215,13 +229,5 @@ const ResponsiveDrawer = memo((props) => {
     </div>
   );
 });
-
-ResponsiveDrawer.propTypes = {
-  /**
-   * Injected by the documentation to work in an iframe.
-   * You won't need it on your project.
-   */
-  window: PropTypes.func,
-};
 
 export default ResponsiveDrawer;

@@ -11,7 +11,7 @@ import {
 } from "@material-ui/core";
 import { Skeleton } from "@material-ui/lab";
 import React, { Fragment, memo, useEffect, useState } from "react";
-import { getAvatarColor } from "utils/color.ts";
+import { getAvatarColor } from "utils/color";
 
 /** 更新のsetInterval ID */
 let refreshInterval = 0;

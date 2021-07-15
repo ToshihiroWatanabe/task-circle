@@ -4,8 +4,8 @@ import stoppedAudio from "audio/notification_simple-02.mp3";
 import { SettingsContext } from "contexts/SettingsContext";
 import { StateContext } from "contexts/StateContext";
 import React, { memo, useContext } from "react";
-import { DEFAULT_TITLE } from "utils/constant.ts";
-import { secondToHHMMSS } from "utils/convert.ts";
+import { DEFAULT_TITLE } from "utils/constant";
+import { secondToHHMMSS } from "utils/convert";
 
 const stoppedSound = new Audio(stoppedAudio);
 

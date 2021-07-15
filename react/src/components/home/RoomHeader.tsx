@@ -11,7 +11,7 @@ import PersonIcon from "@material-ui/icons/Person";
 import HelpPopover from "components/home/HelpPopover";
 import { StateContext } from "contexts/StateContext";
 import React, { memo, useContext } from "react";
-import { DEFAULT_TITLE } from "utils/constant.ts";
+import { DEFAULT_TITLE } from "utils/constant";
 
 const useStyles = makeStyles((theme) => ({
   root: {
