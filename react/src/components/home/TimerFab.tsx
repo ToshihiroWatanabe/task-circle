@@ -129,12 +129,23 @@ const TimerFab = memo((props) => {
    */
   const onFabContextMenu = (event) => {
     event.preventDefault();
+    // タイマーがオンの場合はボタンを押させて止める
+    setState((state) => {
+      if (state.isTimerOn) {
+        props.onPlayButtonClick(0, "fab");
+      }
+      return state;
+    });
     // 通常タイマー → 作業 → 休憩 → ...
-    setSettings((settings) => {
+    setTimeout(() => {
       setState((state) => {
-        if (state.isTimerOn) {
-          props.onPlayButtonClick(0, "fab");
-        }
+        setSettings((settings) => {
+          const newSettings = {
+            ...settings,
+            isPomodoroEnabled: state.pomodoroTimerType !== "break",
+          };
+          return newSettings;
+        });
         const newState = {
           ...state,
           pomodoroTimerType:
@@ -148,12 +159,7 @@ const TimerFab = memo((props) => {
         };
         return newState;
       });
-      const newSettings = {
-        ...settings,
-        isPomodoroEnabled: state.pomodoroTimerType === "break" ? false : true,
-      };
-      return newSettings;
-    });
+    }, 1);
   };
 
   return (
