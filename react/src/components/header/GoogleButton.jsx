@@ -6,9 +6,9 @@ import { StateContext } from "contexts/StateContext";
 import { TodoListsContext } from "contexts/TodoListsContext";
 import React, { memo, useContext, useState } from "react";
 import { GoogleLogin, GoogleLogout } from "react-google-login";
-import AuthService from "services/auth.service";
-import SettingService from "services/setting.service";
-import TodoListService from "services/todoList.service";
+import AuthService from "services/auth.service.ts";
+import SettingService from "services/setting.service.ts";
+import TodoListService from "services/todoList.service.ts";
 import { maskEmail } from "utils/string";
 
 /**

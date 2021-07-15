@@ -15,7 +15,7 @@ import { StatisticsContext } from "contexts/StatisticsContext";
 import { TodoListsContext } from "contexts/TodoListsContext";
 import React, { memo, useContext, useEffect, useState } from "react";
 import YouTube from "react-youtube";
-import TodoListService from "services/todoList.service";
+import TodoListService from "services/todoList.service.ts";
 import { changeFaviconTo } from "utils/changeFavicon";
 import {
   COUNT_INTERVAL,

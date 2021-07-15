@@ -4,10 +4,10 @@ import http from "http-common";
  * Todoリストに関するAPIのリクエストを送信します。
  */
 class TodoListService {
-  findByTokenId(tokenId) {
+  findByTokenId(tokenId: string) {
     return http.post("/todolist/findbytokenid", { tokenId });
   }
-  update(tokenId, todoList) {
+  update(tokenId: string, todoList: string) {
     return http.post("/todolist/update", { tokenId, todoList });
   }
 }

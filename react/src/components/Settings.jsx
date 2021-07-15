@@ -27,7 +27,7 @@ import { SettingsContext } from "contexts/SettingsContext";
 import { StateContext } from "contexts/StateContext";
 import React, { memo, useContext, useState } from "react";
 import YouTube from "react-youtube";
-import SettingService from "services/setting.service";
+import SettingService from "services/setting.service.ts";
 
 let updateTimeout = 0;
 

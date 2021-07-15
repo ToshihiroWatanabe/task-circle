@@ -11,7 +11,7 @@ import React from "react";
 import ReactDOM from "react-dom";
 import { BrowserRouter } from "react-router-dom";
 import reportWebVitals from "reportWebVitals.ts";
-import * as serviceWorkerRegistration from "serviceWorkerRegistration";
+import * as serviceWorkerRegistration from "serviceWorkerRegistration.ts";
 
 ReactDOM.render(
   <ErrorBoundary>

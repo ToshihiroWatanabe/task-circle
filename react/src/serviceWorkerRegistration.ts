@@ -6,7 +6,12 @@ const isLocalhost = Boolean(
     )
 );
 
-export function register(config) {
+type Config = {
+  onSuccess?: (registration: ServiceWorkerRegistration) => void;
+  onUpdate?: (registration: ServiceWorkerRegistration) => void;
+};
+
+export function register(config?: Config) {
   if (process.env.NODE_ENV === "production" && "serviceWorker" in navigator) {
     const publicUrl = new URL(process.env.PUBLIC_URL, window.location.href);
     if (publicUrl.origin !== window.location.origin) {
@@ -14,7 +19,6 @@ export function register(config) {
     }
 
     window.addEventListener("load", () => {
-      // const swUrl = `${process.env.PUBLIC_URL}/service-worker.js`;
       const swUrl = `https://task-circle.net/service-worker.js`;
 
       if (isLocalhost) {
@@ -33,7 +37,7 @@ export function register(config) {
   }
 }
 
-function registerValidSW(swUrl, config) {
+function registerValidSW(swUrl: string, config?: Config) {
   navigator.serviceWorker
     .register(swUrl)
     .then((registration) => {
@@ -56,7 +60,6 @@ function registerValidSW(swUrl, config) {
             } else {
               console.log("Content is cached for offline use.");
 
-              // Execute callback
               if (config && config.onSuccess) {
                 config.onSuccess(registration);
               }
@@ -70,7 +73,7 @@ function registerValidSW(swUrl, config) {
     });
 }
 
-function checkValidServiceWorker(swUrl, config) {
+function checkValidServiceWorker(swUrl: string, config?: Config) {
   fetch(swUrl, {
     headers: { "Service-Worker": "script" },
   })
