@@ -1,4 +1,3 @@
-// @ts-nocheck
 import { useMediaQuery, useTheme } from "@material-ui/core";
 import {
   createMuiTheme,
@@ -113,16 +112,16 @@ const App: React.FC = memo(() => {
 
   useEffect(() => {
     // 初期値とローカルストレージからの値を統合
-    setTodoLists((todoLists) => {
+    setTodoLists((todoLists: any) => {
       return { ...todoLists, ...localStorageGetItemTodoLists };
     });
-    setStatistics((statistics) => {
+    setStatistics((statistics: any) => {
       return { ...statistics, ...localStorageGetItemStatistics };
     });
     setTimeout(() => {
-      setSettings((settings) => {
+      setSettings((settings: any) => {
         const newSettings = { ...settings, ...localStorageGetItemSettings };
-        setState((state) => {
+        setState((state: any) => {
           return {
             ...state,
             pomodoroTimeLeft: newSettings.workTimerLength,
@@ -137,7 +136,7 @@ const App: React.FC = memo(() => {
    * WebSocketで接続されたときの処理です。
    */
   const onConnected = () => {
-    setState((state) => {
+    setState((state: any) => {
       return { ...state, isConnected: true };
     });
     console.info("ルームサーバーに接続しました。");
@@ -150,7 +149,7 @@ const App: React.FC = memo(() => {
    * WebSocketが切断されたときの処理です。
    */
   const onDisconnected = () => {
-    setState((state) => {
+    setState((state: any) => {
       return { ...state, isConnected: false };
     });
     console.info("サーバーとの接続が切れました。");
@@ -168,7 +167,7 @@ const App: React.FC = memo(() => {
    * 退室時の処理です。
    */
   const onLeave = () => {
-    setState((state) => {
+    setState((state: any) => {
       // 離席中ならfaviconを元に戻す
       if (state.isAfk) {
         const link: any = document.querySelector("link[rel*='icon']");
@@ -191,9 +190,9 @@ const App: React.FC = memo(() => {
     if (!state.isInRoom) {
       return;
     }
-    setSessions((sessions) => {
+    setSessions((sessions: any) => {
       let sessionUpdated = false;
-      let newSessions = sessions.map((session, index) => {
+      let newSessions = sessions.map((session: any) => {
         if (session.sessionId === message.sessionId) {
           sessionUpdated = true;
           return message;
@@ -215,8 +214,8 @@ const App: React.FC = memo(() => {
     if (!state.isInRoom) {
       return;
     }
-    setSessions((sessions) => {
-      const newSessions = sessions.filter((session, index) => {
+    setSessions((sessions: any) => {
+      const newSessions = sessions.filter((session: any) => {
         return session.sessionId !== message.sessionId;
       });
       return [...newSessions];
@@ -227,7 +226,7 @@ const App: React.FC = memo(() => {
    * findAllのメッセージを受信したときの処理です。
    */
   const onFindAllMessageReceived = (message: any) => {
-    setSessions((sessions) => {
+    setSessions((sessions: any) => {
       let newSessions = [...sessions, ...message];
       newSessions = newSessions.map((session) => {
         return {
@@ -252,33 +251,36 @@ const App: React.FC = memo(() => {
     } else if (!state.isInRoom && messageType !== "enter") {
       return;
     }
-    setState((state) => {
+    setState((state: any) => {
       const selectedTask =
-        Object.values(todoLists).filter((column) => {
+        Object.values(todoLists).filter((column: any) => {
           return (
-            column.items.filter((item) => {
+            column.items.filter((item: any) => {
               return item.isSelected;
             })[0] !== undefined
           );
         }).length > 0
-          ? Object.values(todoLists)
-              .filter((column) => {
+          ? // @ts-ignore
+            Object.values(todoLists)
+              .filter((column: any) => {
                 return (
-                  column.items.filter((item) => {
+                  column.items.filter((item: any) => {
                     return item.isSelected;
                   })[0] !== undefined
                 );
               })[0]
-              .items.filter((item) => {
+              .items.filter((item: any) => {
                 return item.isSelected;
               })[0]
           : null;
       if (messageType === "enter") {
+        // @ts-ignore
         $websocket.current.sendMessage(
           "/session/findall",
           sessionFindAllTopicsId
         );
       }
+      // @ts-ignore
       $websocket.current.sendMessage(
         messageType !== undefined ? "/session/" + messageType : "/session",
         JSON.stringify({
@@ -331,8 +333,8 @@ const App: React.FC = memo(() => {
     <>
       <MuiThemeProvider theme={darkTheme}>
         {/* ドロワー */}
+        {/* @ts-ignore */}
         <ResponsiveDrawer
-          // @ts-ignore
           sendMessage={sendMessage}
           isDarkModeOn={isDarkModeOn}
           setIsDarkModeOn={setIsDarkModeOn}
