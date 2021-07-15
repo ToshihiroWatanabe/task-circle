@@ -24,6 +24,7 @@ const useStyles = makeStyles((theme) => ({
 const TaskAddInput = memo(
   (props: {
     tags: any;
+    todoLists: any;
     setTodoLists: any;
     updateTodoLists: any;
     style: any;

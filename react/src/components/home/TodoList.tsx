@@ -637,6 +637,7 @@ const TodoList = memo((props) => {
                   <TaskAddInput
                     isInputFocused={isInputFocused}
                     setIsInputFocused={setIsInputFocused}
+                    todoLists={props.todoLists}
                     setTodoLists={props.setTodoLists}
                     updateTodoLists={props.updateTodoLists}
                     index={columnIndex}
