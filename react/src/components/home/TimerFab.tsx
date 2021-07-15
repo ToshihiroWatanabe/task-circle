@@ -200,6 +200,7 @@ const TimerFab = memo((props) => {
               <span
                 style={{
                   fontSize:
+                    // 1時間以上のとき
                     selectedTask.spentSecond > 3600
                       ? useMediaQueryThemeBreakpointsUpMd
                         ? "2rem"
@@ -208,7 +209,8 @@ const TimerFab = memo((props) => {
                         : useMediaQueryThemeBreakpointsDownSm
                         ? "1.4rem"
                         : ""
-                      : useMediaQueryThemeBreakpointsUpMd
+                      : // 1時間未満のとき
+                      useMediaQueryThemeBreakpointsUpMd
                       ? "2.5rem"
                       : useMediaQueryThemeBreakpointsDownXs
                       ? "1rem"
@@ -253,15 +255,7 @@ const TimerFab = memo((props) => {
           </div>
           {/* タスクが選択されていません */}
           <div className={classes.nothingSelected}>
-            {settings.isPomodoroEnabled &&
-              /* state.pomodoroTimerType === "work" && */
-              selectedTask === null && (
-                <>
-                  <p style={{ margin: "0" }}>タスクが選択</p>
-                  されていません
-                </>
-              )}
-            {!settings.isPomodoroEnabled && selectedTask === null && (
+            {selectedTask === null && (
               <>
                 <p style={{ margin: "0" }}>タスクが選択</p>
                 されていません

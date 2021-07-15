@@ -276,7 +276,7 @@ const TodoList = memo((props) => {
    * ツイートボタンがクリックされたときの処理です。
    */
   const onTweetButtonClick = (index) => {
-    let url =
+    const url =
       "https://twitter.com/intent/tweet?text=" +
       taskItemsToBuildUp(
         Object.values(props.todoLists)[index].items

@@ -28,6 +28,7 @@
 
 - Java 11.0.10
 - Apache Maven 3.8.1
+- Node.js 14.16.1
 - npm 7.16.0
 - MySQL 8.0.25
 
