@@ -1,9 +1,13 @@
-// @ts-nocheck
 import { Typography } from "@material-ui/core";
+// @ts-ignore
 import faintTickAudio from "audio/faintTick.mp3";
+// @ts-ignore
 import startedAudio from "audio/notification_simple-01.mp3";
+// @ts-ignore
 import stoppedAudio from "audio/notification_simple-02.mp3";
+// @ts-ignore
 import achievedAudio from "audio/sound02.mp3";
+// @ts-ignore
 import tickAudio from "audio/tick.mp3";
 import Room from "components/home/Room";
 import TimerRnd from "components/home/TimerRnd";
@@ -76,15 +80,15 @@ const playerOptions = {
 };
 
 /** 作業用BGM動画プレーヤー */
-let workVideoPlayer = null;
+let workVideoPlayer: any = null;
 /** 休憩用BGM動画プレーヤー */
-let breakVideoPlayer = null;
+let breakVideoPlayer: any = null;
 let videoPlayDone = true;
 
 /**
  * ホームのコンポーネントです。
  */
-const Home = memo((props) => {
+const Home = memo((props: { sendMessage: any; onEnter: any; onLeave: any }) => {
   const { state, setState } = useContext(StateContext);
   const { todoLists, setTodoLists } = useContext(TodoListsContext);
   const { settings, setSettings } = useContext(SettingsContext);
@@ -155,7 +159,7 @@ const Home = memo((props) => {
   /**
    * 動画プレーヤーが準備完了したときの処理です。
    */
-  const onPlayerReady = (event) => {
+  const onPlayerReady = (event: any) => {
     if (event.target.h.id === "workVideoPlayer") {
       workVideoPlayer = event.target;
       if (event.target.playerInfo.videoData.title !== "") {
@@ -173,7 +177,7 @@ const Home = memo((props) => {
   /**
    * 動画プレーヤーの状態が変わったときの処理です。
    */
-  const onPlayerStateChange = (event) => {
+  const onPlayerStateChange = (event: any) => {
     if (event.data === 1) {
       videoPlayDone = false;
     }
@@ -195,7 +199,7 @@ const Home = memo((props) => {
    * BGM用の動画を再生します。
    */
   const playVideo = () => {
-    setState((state) => {
+    setState((state: any) => {
       if (
         (!settings.isPomodoroEnabled || state.pomodoroTimerType !== "break") &&
         workVideoId !== "" &&
@@ -233,16 +237,17 @@ const Home = memo((props) => {
    * タイマーの開始・停止ボタンがクリックされたときの処理です。
    * @param {*} type taskかfab
    */
-  const onPlayButtonClick = (type) => {
-    setState((state) => {
+  const onPlayButtonClick = (type: string) => {
+    setState((state: any) => {
       return { ...state, isTimerOn: !state.isTimerOn };
     });
-    setState((state) => {
+    setState((state: any) => {
       // state.isTimerOn = !state.isTimerOn;
       if (state.isTimerOn) {
         // タイマー開始
         startedAt = Date.now();
         lastCountedAt = Date.now();
+        // @ts-ignore
         timerCountTimeout = setTimeout(timerCount, getTimeout());
         // 離席解除
         state.isAfk = false;
@@ -264,7 +269,7 @@ const Home = memo((props) => {
         ) {
           changeFaviconTo("coffee");
         } else {
-          const link = document.querySelector("link[rel*='icon']");
+          const link: any = document.querySelector("link[rel*='icon']");
           link.href = "/favicon/taskcircle_timer_on_favicon.ico";
         }
         // 開始の効果音
@@ -282,7 +287,7 @@ const Home = memo((props) => {
         }
         document.title = DEFAULT_TITLE;
         // faviconをデフォルトに戻す
-        const link = document.querySelector("link[rel*='icon']");
+        const link: any = document.querySelector("link[rel*='icon']");
         link.href = "/favicon.ico";
         // 停止の効果音
         stoppedSound.volume = settings.volume * 0.01;
@@ -303,9 +308,10 @@ const Home = memo((props) => {
    * タイマーのカウント処理です。
    */
   const timerCount = () => {
-    setState((state) => {
-      setTodoLists((todoLists) => {
+    setState((state: any) => {
+      setTodoLists((todoLists: any) => {
         if (state.isTimerOn) {
+          // @ts-ignore
           timerCountTimeout = setTimeout(timerCount, getTimeout());
           // 前回のカウントから1.5秒以上経っていると一度にカウントする量が増える
           const dateNow = Date.now();
@@ -322,15 +328,16 @@ const Home = memo((props) => {
           lastCountedAt = Date.now();
           setTimeout(() => {
             /** 選択しているタスク */
+            // @ts-ignore
             const selectedItem = Object.values(todoLists)
-              .filter((column, index) => {
+              .filter((column: any) => {
                 return (
-                  column.items.filter((item, index) => {
+                  column.items.filter((item: any) => {
                     return item.isSelected;
                   })[0] !== undefined
                 );
               })[0]
-              .items.filter((item, index) => {
+              .items.filter((item: any) => {
                 return item.isSelected;
               })[0];
             // 目標時間を超えた かつ 目標時間を超えたときに停止する設定のとき
@@ -340,21 +347,22 @@ const Home = memo((props) => {
               selectedItem.spentSecond >= selectedItem.estimatedSecond
             ) {
               // 目標時間を超えたときに停止する設定をオフにする
+              // @ts-ignore
               Object.values(todoLists)
-                .filter((column, index) => {
+                .filter((column: any) => {
                   return (
-                    column.items.filter((item, index) => {
+                    column.items.filter((item: any) => {
                       return item.isSelected;
                     })[0] !== undefined
                   );
                 })[0]
-                .items.map((item, index) => {
+                .items.map((item: any) => {
                   if (item.isSelected && item.achievedThenStop) {
                     item.achievedThenStop = false;
                   }
                   return item;
                 });
-              setState((state) => {
+              setState((state: any) => {
                 state.isTimerOn = false;
                 // ポモドーロの作業休憩切り替え
                 if (settings.isPomodoroEnabled) {
@@ -375,7 +383,7 @@ const Home = memo((props) => {
               });
               clearTimeout(timerCountTimeout);
               // faviconをデフォルトに戻す
-              const link = document.querySelector("link[rel*='icon']");
+              const link: any = document.querySelector("link[rel*='icon']");
               link.href = "/favicon.ico";
               // 動画をストップ
               stopVideo();
@@ -398,7 +406,7 @@ const Home = memo((props) => {
               state.pomodoroTimeLeft <= 0
             ) {
               // ポモドーロタイマーのカウントが0以下のとき
-              setState((state) => {
+              setState((state: any) => {
                 state.isTimerOn = false;
                 // 通知
                 if (
@@ -440,7 +448,7 @@ const Home = memo((props) => {
               });
               clearTimeout(timerCountTimeout);
               // faviconをデフォルトに戻す
-              const link = document.querySelector("link[rel*='icon']");
+              const link: any = document.querySelector("link[rel*='icon']");
               link.href = "/favicon.ico";
               // 動画をストップ
               stopVideo();
@@ -474,20 +482,22 @@ const Home = memo((props) => {
 
   /**
    * 時間の加減算をします。
+   * @param {number} count カウント
    */
-  const spendTime = (count) => {
+  const spendTime = (count: number) => {
     setTimeout(() => {
-      setState((state) => {
-        setTodoLists((todoLists) => {
+      setState((state: any) => {
+        setTodoLists((todoLists: any) => {
+          // @ts-ignore
           Object.values(todoLists)
-            .filter((column, index) => {
+            .filter((column: any) => {
               return (
-                column.items.filter((item, index) => {
+                column.items.filter((item: any) => {
                   return item.isSelected;
                 })[0] !== undefined
               );
             })[0]
-            .items.map((item, index) => {
+            .items.map((item: any) => {
               if (item.isSelected) {
                 if (
                   !settings.isPomodoroEnabled ||
@@ -517,11 +527,11 @@ const Home = memo((props) => {
   /**
    * 統計を更新します。
    */
-  const updateStatistics = (state, count) => {
+  const updateStatistics = (state: any, count: number) => {
     setTimeout(() => {
       // 日付変更時刻は午前4時
       // 最終更新がない、初めての更新の場合
-      setStatistics((statistics) => {
+      setStatistics((statistics: any) => {
         if (state.pomodoroTimerType !== "break") {
           if (statistics.updatedAt === 0) {
             statistics.todaySpentSecond += ONCE_COUNT * count;
@@ -529,11 +539,11 @@ const Home = memo((props) => {
             const updatedAt = new Date(statistics.updatedAt);
             const now = new Date();
             // 0時～3時台の場合は前日扱いにする
-            if (updatedAt.getHours < 4) {
-              updatedAt.setDate(updatedAt.getDate - 1);
+            if (updatedAt.getHours() < 4) {
+              updatedAt.setDate(updatedAt.getDate() - 1);
             }
-            if (now.getHours < 4) {
-              now.setDate(now.getDate - 1);
+            if (now.getHours() < 4) {
+              now.setDate(now.getDate() - 1);
             }
             // 1日経っていない場合
             if (now.getDate() - updatedAt.getDate() < 1) {
@@ -559,13 +569,13 @@ const Home = memo((props) => {
   /**
    * ページのタイトルを更新します。
    */
-  const refreshTitle = (content, spentSecond) => {
-    setState((state) => {
+  const refreshTitle = (content: string, spentSecond: number) => {
+    setState((state: any) => {
       if (!state.isTimerOn) {
         document.title = DEFAULT_TITLE;
         return state;
       }
-      setSettings((settings) => {
+      setSettings((settings: any) => {
         if (settings.isPomodoroEnabled) {
           document.title =
             "(" +
@@ -591,13 +601,14 @@ const Home = memo((props) => {
   /**
    * ローカルストレージとDBのTodoリストを更新します。
    */
-  const updateTodoLists = (todoLists) => {
+  const updateTodoLists = (todoLists: any) => {
     localStorage.setItem("todoLists", JSON.stringify(todoLists));
-    localStorage.setItem("todoListsUpdatedAt", Date.now());
+    localStorage.setItem("todoListsUpdatedAt", Date.now().toString());
     if (state.isLogined) {
       setIsInSync(true);
     }
     clearTimeout(updateTimeout);
+    // @ts-ignore
     updateTimeout = setTimeout(() => {
       if (state.isLogined) {
         // DBの設定を取得
@@ -609,12 +620,15 @@ const Home = memo((props) => {
             ? localStorage.getItem("todoListsUpdatedAt")
             : 0;
           if (
+            // @ts-ignore
             new Date(r.data.updatedAt).getTime() >
+            // @ts-ignore
             localStorage.getItem("todoListsUpdatedAt")
           ) {
             // ローカルのデータをDBのデータに上書きする
-            setTodoLists((todoLists) => {
+            setTodoLists((todoLists: any) => {
               const newTodoLists =
+                // @ts-ignore
                 localStorageGetItemTodoListsUpdatedAt > 0
                   ? {
                       ...todoLists,
@@ -624,14 +638,14 @@ const Home = memo((props) => {
               localStorage.setItem("todoLists", JSON.stringify(newTodoLists));
               localStorage.setItem(
                 "todoListsUpdatedAt",
-                new Date(r.data.updatedAt).getTime()
+                new Date(r.data.updatedAt).getTime().toString()
               );
               return newTodoLists;
             });
           }
           setIsInSync(false);
         });
-        setTodoLists((todoLists) => {
+        setTodoLists((todoLists: any) => {
           TodoListService.update(state.tokenId, JSON.stringify(todoLists));
           return todoLists;
         });
@@ -643,6 +657,7 @@ const Home = memo((props) => {
     <>
       <div style={{ display: "flex" }} id="todoListAndRoom">
         <TodoList
+          // @ts-ignore
           todoLists={todoLists}
           setTodoLists={setTodoLists}
           onPlayButtonClick={onPlayButtonClick}
@@ -650,6 +665,7 @@ const Home = memo((props) => {
           updateTodoLists={updateTodoLists}
         />
         <Room
+          // @ts-ignore
           sessions={sessions}
           onEnter={props.onEnter}
           onLeave={props.onLeave}
@@ -657,12 +673,17 @@ const Home = memo((props) => {
         />
       </div>
       {/* タイマー */}
-      <TimerRnd todoLists={todoLists} onPlayButtonClick={onPlayButtonClick} />
+      <TimerRnd
+        // @ts-ignore
+        todoLists={todoLists}
+        onPlayButtonClick={onPlayButtonClick}
+      />
       {/* 作業用BGM動画 */}
       {workVideoId !== "" && (
         <>
           <YouTube
             videoId={workVideoId}
+            // @ts-ignore
             opts={playerOptions}
             onReady={onPlayerReady}
             onStateChange={onPlayerStateChange}
@@ -681,6 +702,7 @@ const Home = memo((props) => {
         <>
           <YouTube
             videoId={breakVideoId}
+            // @ts-ignore
             opts={playerOptions}
             onReady={onPlayerReady}
             onStateChange={onPlayerStateChange}
