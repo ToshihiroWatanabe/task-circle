@@ -134,7 +134,7 @@ const App = memo(() => {
     setState((state) => {
       return { ...state, isConnected: true };
     });
-    console.info("サーバーに接続しました。");
+    console.info("ルームサーバーに接続しました。");
     if (state.isInRoom) {
       sendMessage("enter");
     }
