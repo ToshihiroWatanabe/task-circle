@@ -76,8 +76,8 @@ const useStyles = makeStyles((theme) => ({
 const TodoList = memo((props) => {
   const classes = useStyles();
   const theme = useTheme();
-  const [state, setState] = useContext(StateContext);
-  const [settings] = useContext(SettingsContext);
+  const { state, setState } = useContext(StateContext);
+  const { settings } = useContext(SettingsContext);
   const [isTagsInputFocused, setIsTagsInputFocused] = useState(-1);
   const [previousTodoLists, setPreviousTodoLists] = useState({});
   const [undoSnackbarOpen, setUndoSnackbarOpen] = useState(false);

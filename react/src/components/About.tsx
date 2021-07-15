@@ -107,8 +107,8 @@ const About = () => {
           rel="noopener"
         >
           <Button size="small" variant="outlined" style={{ color: "black" }}>
-            <GitHubIcon />
-            ソースコードを見る
+            <GitHubIcon style={{ marginRight: "0.5rem" }} />
+            使い方やソースコードを見る
           </Button>
         </Link>
 

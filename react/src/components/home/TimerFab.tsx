@@ -81,8 +81,8 @@ const useStyles = makeStyles((theme) => ({
 const TimerFab = memo((props) => {
   const classes = useStyles();
   const theme = useTheme();
-  const [state, setState] = useContext(StateContext);
-  const [settings, setSettings] = useContext(SettingsContext);
+  const { state, setState } = useContext(StateContext);
+  const { settings, setSettings } = useContext(SettingsContext);
   const useMediaQueryThemeBreakpointsUpMd = useMediaQuery(
     theme.breakpoints.up("md")
   );

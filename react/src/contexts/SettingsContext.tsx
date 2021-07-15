@@ -1,6 +1,11 @@
 import React, { createContext, memo, useState } from "react";
 
-export const SettingsContext = createContext([{}, () => {}]);
+export const SettingsContext = createContext(
+  {} as {
+    settings: any;
+    setSettings: React.Dispatch<React.SetStateAction<any>>;
+  }
+);
 
 /**
  * 設定のグローバルstateを提供します。
@@ -38,7 +43,7 @@ export const SettingsContextProvider = memo((props) => {
   });
 
   return (
-    <SettingsContext.Provider value={[settings, setSettings]}>
+    <SettingsContext.Provider value={{ settings, setSettings }}>
       {props.children}
     </SettingsContext.Provider>
   );

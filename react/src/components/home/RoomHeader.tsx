@@ -24,7 +24,7 @@ const useStyles = makeStyles((theme) => ({
  */
 const RoomHeader = memo((props) => {
   const classes = useStyles();
-  const [state, setState] = useContext(StateContext);
+  const { state, setState } = useContext(StateContext);
 
   /**
    * 退室ボタンがクリックされたときの処理です。

@@ -73,7 +73,7 @@ const TaskEditDialog = memo((props) => {
     second: 0,
     achievedThenStop: false,
   });
-  const [state, setState] = useContext(StateContext);
+  const { state } = useContext(StateContext);
 
   useEffect(() => {
     const selectedTask = Object.values(props.todoLists)[props.columnIndex]

@@ -1,6 +1,11 @@
 import React, { createContext, memo, useState } from "react";
 
-export const StateContext = createContext([{}, () => {}]);
+export const StateContext = createContext(
+  {} as {
+    state: any;
+    setState: React.Dispatch<React.SetStateAction<any>>;
+  }
+);
 
 /**
  * グローバルstateを提供します。
@@ -31,7 +36,7 @@ export const StateContextProvider = memo((props) => {
   });
 
   return (
-    <StateContext.Provider value={[state, setState]}>
+    <StateContext.Provider value={{ state, setState }}>
       {props.children}
     </StateContext.Provider>
   );

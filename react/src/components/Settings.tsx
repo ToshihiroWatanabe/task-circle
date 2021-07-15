@@ -92,8 +92,8 @@ const useStyles = makeStyles((theme) => ({
  */
 const Settings = memo(() => {
   const classes = useStyles();
-  const [state, setState] = useContext(StateContext);
-  const [settings, setSettings] = useContext(SettingsContext);
+  const { state, setState } = useContext(StateContext);
+  const { settings, setSettings } = useContext(SettingsContext);
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [workVideoTitle, setWorkVideoTitle] = useState("");
   const [breakVideoTitle, setBreakVideoTitle] = useState("");

@@ -85,11 +85,11 @@ let videoPlayDone = true;
  * ホームのコンポーネントです。
  */
 const Home = memo((props) => {
-  const [state, setState] = useContext(StateContext);
-  const [todoLists, setTodoLists] = useContext(TodoListsContext);
-  const [settings, setSettings] = useContext(SettingsContext);
-  const [statistics, setStatistics] = useContext(StatisticsContext);
-  const [sessions, setSessions] = useContext(SessionsContext);
+  const { state, setState } = useContext(StateContext);
+  const { todoLists, setTodoLists } = useContext(TodoListsContext);
+  const { settings, setSettings } = useContext(SettingsContext);
+  const { statistics, setStatistics } = useContext(StatisticsContext);
+  const { sessions, setSessions } = useContext(SessionsContext);
   // 動画の読み込みが終わったかどうか
   const [workVideoOnReady, setWorkVideoOnReady] = useState(false);
   const [breakVideoOnReady, setBreakVideoOnReady] = useState(false);

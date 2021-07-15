@@ -1,6 +1,11 @@
 import React, { createContext, memo, useState } from "react";
 
-export const StatisticsContext = createContext([{}, () => {}]);
+export const StatisticsContext = createContext(
+  {} as {
+    statistics: any;
+    setStatistics: React.Dispatch<React.SetStateAction<any>>;
+  }
+);
 
 /**
  * 統計のグローバルstateを提供します。
@@ -17,7 +22,7 @@ export const StatisticsContextProvider = memo((props) => {
   });
 
   return (
-    <StatisticsContext.Provider value={[statistics, setStatistics]}>
+    <StatisticsContext.Provider value={{ statistics, setStatistics }}>
       {props.children}
     </StatisticsContext.Provider>
   );

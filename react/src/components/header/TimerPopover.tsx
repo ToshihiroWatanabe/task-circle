@@ -46,8 +46,8 @@ const useStyles = makeStyles((theme) => ({}));
  */
 const TimerPopover = memo((props) => {
   const classes = useStyles();
-  const [state, setState] = useContext(StateContext);
-  const [settings, setSettings] = useContext(SettingsContext);
+  const { state, setState } = useContext(StateContext);
+  const { settings, setSettings } = useContext(SettingsContext);
   const [anchorEl, setAnchorEl] = useState(null);
   const [isInSync, setIsInSync] = useState(false);
   const open = Boolean(anchorEl);

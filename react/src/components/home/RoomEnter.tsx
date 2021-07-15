@@ -20,7 +20,7 @@ const useStyles = makeStyles((theme) => ({
 const RoomEnter = memo((props) => {
   const classes = useStyles();
   const theme = useTheme();
-  const [state, setState] = useContext(StateContext);
+  const { state, setState } = useContext(StateContext);
   const [nameInRoom, setNameInRoom] = useState("");
   const [helperText, setHelperText] = useState("");
 

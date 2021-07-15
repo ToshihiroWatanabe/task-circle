@@ -25,7 +25,7 @@ const useStyles = makeStyles({
  */
 const TodoListMenu = memo((props) => {
   const classes = useStyles();
-  const [state, setState] = useContext(StateContext);
+  const { state } = useContext(StateContext);
   const [anchorEl, setAnchorEl] = useState(null);
   const [editOpen, setEditOpen] = useState(false);
 

@@ -24,7 +24,7 @@ let enterKeyIsDown = false;
 const TodoListEditDialog = memo((props) => {
   const classes = useStyles();
   let inRef = null;
-  const [todoLists, setTodoLists] = useContext(TodoListsContext);
+  const { todoLists, setTodoLists } = useContext(TodoListsContext);
   const [helperText, setHelperText] = useState("");
 
   /**

@@ -25,7 +25,7 @@ const useStyles = makeStyles({
  */
 const TaskMenu = memo((props) => {
   const classes = useStyles();
-  const [state] = useContext(StateContext);
+  const { state } = useContext(StateContext);
   const [anchorEl, setAnchorEl] = useState(null);
   const [editOpen, setEditOpen] = useState(false);
   const [categories] = useState([]);

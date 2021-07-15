@@ -87,11 +87,11 @@ const useStyles = makeStyles((theme) => ({
 const App: React.FC = memo(() => {
   const classes = useStyles();
   const theme = useTheme();
-  const [state, setState] = useContext(StateContext);
-  const [settings, setSettings] = useContext(SettingsContext);
-  const [statistics, setStatistics] = useContext(StatisticsContext);
-  const [sessions, setSessions] = useContext(SessionsContext);
-  const [todoLists, setTodoLists] = useContext(TodoListsContext);
+  const { state, setState } = useContext(StateContext);
+  const { settings, setSettings } = useContext(SettingsContext);
+  const { statistics, setStatistics } = useContext(StatisticsContext);
+  const { sessions, setSessions } = useContext(SessionsContext);
+  const { todoLists, setTodoLists } = useContext(TodoListsContext);
   const [isDarkModeOn, setIsDarkModeOn] = useState(
     localStorageGetItemIsDarkModeOn
   );

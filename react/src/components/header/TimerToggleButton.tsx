@@ -14,8 +14,8 @@ const stoppedSound = new Audio(stoppedAudio);
  */
 const TimerToggleButton = memo((props) => {
   const theme = useTheme();
-  const [state, setState] = useContext(StateContext);
-  const [settings] = useContext(SettingsContext);
+  const { state, setState } = useContext(StateContext);
+  const { settings } = useContext(SettingsContext);
 
   /**
    * 切り替えボタンがクリックされたときの処理です。

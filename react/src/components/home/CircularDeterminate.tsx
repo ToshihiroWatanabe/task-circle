@@ -35,8 +35,8 @@ const useStyles = makeStyles((theme) => ({
 const CircularDeterminate = memo((props) => {
   const classes = useStyles();
   const theme = useTheme();
-  const [state] = useContext(StateContext);
-  const [settings] = useContext(SettingsContext);
+  const { state } = useContext(StateContext);
+  const { settings } = useContext(SettingsContext);
 
   const selectedTask =
     Object.values(props.todoLists).filter((column, index) => {

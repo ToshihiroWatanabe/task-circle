@@ -26,7 +26,7 @@ const useStyles = makeStyles((theme) => ({
 const Room = memo((props) => {
   const theme = useTheme();
   const classes = useStyles();
-  const [state, setState] = useContext(StateContext);
+  const { state } = useContext(StateContext);
 
   return (
     <>

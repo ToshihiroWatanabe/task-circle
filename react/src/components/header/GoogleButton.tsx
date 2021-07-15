@@ -22,9 +22,9 @@ const CLIENT_ID = process.env.REACT_APP_CLIENT_ID;
  */
 const GoogleButton = memo((props) => {
   const theme = useTheme();
-  const [state, setState] = useContext(StateContext);
-  const [todoLists, setTodoLists] = useContext(TodoListsContext);
-  const [settings, setSettings] = useContext(SettingsContext);
+  const { state, setState } = useContext(StateContext);
+  const { todoLists, setTodoLists } = useContext(TodoListsContext);
+  const { settings, setSettings } = useContext(SettingsContext);
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMassage] = useState("");
 

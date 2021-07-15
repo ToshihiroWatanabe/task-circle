@@ -32,8 +32,8 @@ const useStyles = makeStyles((theme) => ({
 const AccountPopover = memo((props) => {
   const classes = useStyles();
   const theme = useTheme();
-  const [state, setState] = useContext(StateContext);
-  const [statistics] = useContext(StatisticsContext);
+  const { state, setState } = useContext(StateContext);
+  const { statistics } = useContext(StatisticsContext);
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
   // メールアドレスが隠されているかどうか
