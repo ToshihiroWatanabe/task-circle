@@ -9,7 +9,7 @@ import { GoogleLogin, GoogleLogout } from "react-google-login";
 import AuthService from "services/auth.service.ts";
 import SettingService from "services/setting.service.ts";
 import TodoListService from "services/todoList.service.ts";
-import { maskEmail } from "utils/string";
+import { maskEmail } from "utils/string.ts";
 
 /**
  * クライアントID

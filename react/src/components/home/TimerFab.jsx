@@ -8,7 +8,7 @@ import { SettingsContext } from "contexts/SettingsContext";
 import { StateContext } from "contexts/StateContext";
 import React, { memo, useContext } from "react";
 import { secondToHHMMSS, secondToHHMMSS_ja } from "utils/convert.ts";
-import { byteSlice } from "utils/string";
+import { byteSlice } from "utils/string.ts";
 import "./TimerFab.css";
 
 const useStyles = makeStyles((theme) => ({
