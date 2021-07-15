@@ -1,4 +1,4 @@
-// @ts-nocheck
+// @ts-noCheck
 import CircularProgress from "@material-ui/core/CircularProgress";
 import { makeStyles, useTheme } from "@material-ui/core/styles";
 import { SettingsContext } from "contexts/SettingsContext";
@@ -13,8 +13,6 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   fab: {
-    // width: "10rem !important",
-    // height: "10rem !important",
     position: "absolute",
     right: 0,
     bottom: 0,
@@ -39,22 +37,22 @@ const CircularDeterminate = memo((props) => {
   const { settings } = useContext(SettingsContext);
 
   const selectedTask =
-    Object.values(props.todoLists).filter((column, index) => {
+    Object.values(props.todoLists).filter((column) => {
       return (
-        column.items.filter((item, index) => {
+        column.items.filter((item) => {
           return item.isSelected;
         })[0] !== undefined
       );
     }).length > 0
       ? Object.values(props.todoLists)
-          .filter((column, index) => {
+          .filter((column) => {
             return (
-              column.items.filter((item, index) => {
+              column.items.filter((item) => {
                 return item.isSelected;
               })[0] !== undefined
             );
           })[0]
-          .items.filter((item, index) => {
+          .items.filter((item) => {
             return item.isSelected;
           })[0]
       : null;

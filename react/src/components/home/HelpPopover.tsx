@@ -1,4 +1,3 @@
-// @ts-nocheck
 import { IconButton } from "@material-ui/core";
 import Popover from "@material-ui/core/Popover";
 import { makeStyles } from "@material-ui/core/styles";
@@ -19,19 +18,25 @@ const useStyles = makeStyles((theme) => ({
  * ヘルプのポップオーバーのコンポーネントです。
  * @param {*} props
  */
-const HelpPopover = memo((props) => {
+const HelpPopover = memo((props: { message: string }) => {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = useState(null);
+  const open = Boolean(anchorEl);
 
-  const handlePopoverOpen = (event) => {
+  /**
+   * ポップオーバーが開かれるときの処理です。
+   * @param event
+   */
+  const handlePopoverOpen = (event: any) => {
     setAnchorEl(event.currentTarget);
   };
 
+  /**
+   * ポップオーバーが閉じられるときの処理です。
+   */
   const handlePopoverClose = () => {
     setAnchorEl(null);
   };
-
-  const open = Boolean(anchorEl);
 
   return (
     <div>

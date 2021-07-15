@@ -95,22 +95,22 @@ const TimerFab = memo((props) => {
 
   /** 選択されているタスク */
   const selectedTask =
-    Object.values(props.todoLists).filter((column, index) => {
+    Object.values(props.todoLists).filter((column) => {
       return (
-        column.items.filter((item, index) => {
+        column.items.filter((item) => {
           return item.isSelected;
         })[0] !== undefined
       );
     }).length > 0
       ? Object.values(props.todoLists)
-          .filter((column, index) => {
+          .filter((column) => {
             return (
-              column.items.filter((item, index) => {
+              column.items.filter((item) => {
                 return item.isSelected;
               })[0] !== undefined
             );
           })[0]
-          .items.filter((item, index) => {
+          .items.filter((item) => {
             return item.isSelected;
           })[0]
       : null;

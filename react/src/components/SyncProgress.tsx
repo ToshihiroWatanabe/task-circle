@@ -1,4 +1,3 @@
-// @ts-nocheck
 import { CircularProgress } from "@material-ui/core";
 import React, { memo } from "react";
 
@@ -6,7 +5,7 @@ import React, { memo } from "react";
  * 同期中の表示のコンポーネントです。
  * @param {*} props
  */
-const SyncProgress = memo((props) => {
+const SyncProgress = memo((props: { isInSync: boolean }) => {
   return (
     <>
       <div

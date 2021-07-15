@@ -254,22 +254,22 @@ const App: React.FC = memo(() => {
     }
     setState((state) => {
       const selectedTask =
-        Object.values(todoLists).filter((column, index) => {
+        Object.values(todoLists).filter((column) => {
           return (
-            column.items.filter((item, index) => {
+            column.items.filter((item) => {
               return item.isSelected;
             })[0] !== undefined
           );
         }).length > 0
           ? Object.values(todoLists)
-              .filter((column, index) => {
+              .filter((column) => {
                 return (
-                  column.items.filter((item, index) => {
+                  column.items.filter((item) => {
                     return item.isSelected;
                   })[0] !== undefined
                 );
               })[0]
-              .items.filter((item, index) => {
+              .items.filter((item) => {
                 return item.isSelected;
               })[0]
           : null;
