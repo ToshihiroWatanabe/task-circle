@@ -15,7 +15,7 @@ import { StateContext } from "contexts/StateContext";
 import { StatisticsContext } from "contexts/StatisticsContext";
 import React, { memo, useContext, useState } from "react";
 import { Link } from "react-router-dom";
-import { secondToHHMMSS } from "utils/convert";
+import { secondToHHMMSS } from "utils/convert.ts";
 import "./AccountPopover.css";
 
 const useStyles = makeStyles((theme) => ({

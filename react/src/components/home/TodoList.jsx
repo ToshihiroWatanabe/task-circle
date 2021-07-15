@@ -29,13 +29,13 @@ import { StateContext } from "contexts/StateContext";
 import React, { memo, useContext, useState } from "react";
 import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
 import { Link } from "react-router-dom";
-import { NUMBER_OF_LISTS_MAX, NUMBER_OF_TASKS_MAX } from "utils/constant";
-import { secondToHHMMSS, taskItemsToBuildUp } from "utils/convert";
+import { NUMBER_OF_LISTS_MAX, NUMBER_OF_TASKS_MAX } from "utils/constant.ts";
+import { secondToHHMMSS, taskItemsToBuildUp } from "utils/convert.ts";
 import {
   copyTasksToClipboard,
   copyTasksToClipboard_BuildUp,
   copyTasksToClipboard_ja,
-} from "utils/export";
+} from "utils/export.ts";
 import uuid from "uuid/v4";
 
 const useStyles = makeStyles((theme) => ({

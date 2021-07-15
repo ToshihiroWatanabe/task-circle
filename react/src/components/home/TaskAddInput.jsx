@@ -5,7 +5,7 @@ import AddIcon from "@material-ui/icons/Add";
 import Downshift from "downshift";
 import PropTypes from "prop-types";
 import React, { memo, useEffect, useState } from "react";
-import { NG_TASK_NAMES, NUMBER_OF_TASKS_MAX } from "utils/constant";
+import { NG_TASK_NAMES, NUMBER_OF_TASKS_MAX } from "utils/constant.ts";
 import uuid from "uuid/v4";
 
 /** 最後にスペースバーを押した時刻 */

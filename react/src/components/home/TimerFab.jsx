@@ -7,7 +7,7 @@ import CircularDeterminate from "components/home/CircularDeterminate";
 import { SettingsContext } from "contexts/SettingsContext";
 import { StateContext } from "contexts/StateContext";
 import React, { memo, useContext } from "react";
-import { secondToHHMMSS, secondToHHMMSS_ja } from "utils/convert";
+import { secondToHHMMSS, secondToHHMMSS_ja } from "utils/convert.ts";
 import { byteSlice } from "utils/string";
 import "./TimerFab.css";
 

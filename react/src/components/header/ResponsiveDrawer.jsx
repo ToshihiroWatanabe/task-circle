@@ -26,7 +26,7 @@ import TimerPopover from "components/header/TimerPopover";
 import PropTypes from "prop-types";
 import React, { Fragment, memo, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { DRAWER_WIDTH } from "utils/constant";
+import { DRAWER_WIDTH } from "utils/constant.ts";
 
 const pages = [
   { label: "ホーム", path: "/" },

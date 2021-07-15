@@ -1,9 +1,9 @@
 /**
  * 秒をHH:MM:SS形式の文字列に変換します。
- * @param {*} second 秒
+ * @param {number} second 秒
  * @returns HH:MM:SS形式の文字列
  */
-export const secondToHHMMSS = (second) => {
+export const secondToHHMMSS = (second: number) => {
   let output = "";
   let hour = Math.floor(second / 3600);
   let minute = Math.floor((second / 60) % 60);
@@ -18,10 +18,10 @@ export const secondToHHMMSS = (second) => {
 
 /**
  * 秒を「HH時間MM分SS秒」の文字列に変換します。
- * @param {*} second 秒
+ * @param {number} second 秒
  * @returns 「HH時間MM分SS秒」の文字列
  */
-export const secondToHHMMSS_ja = (second) => {
+export const secondToHHMMSS_ja = (second: number) => {
   let output = "";
   let hour = Math.floor(second / 3600);
   let minute = Math.floor((second / 60) % 60);
@@ -43,10 +43,10 @@ export const secondToHHMMSS_ja = (second) => {
 
 /**
  * 秒を「HH時間MM分」のMMをゼロ埋めした文字列に変換します。
- * @param {*} second 秒
+ * @param {number} second 秒
  * @returns 「HH時間MM分」のMMをゼロ埋めした文字列
  */
-export const secondToHHMM_00_ja = (second) => {
+export const secondToHHMM_00_ja = (second: number) => {
   let output = "";
   let hour = Math.floor(second / 3600);
   let minute = Math.floor((second / 60) % 60);
@@ -71,11 +71,11 @@ export const secondToHHMM_00_ja = (second) => {
  * @param {*} items
  * @returns
  */
-export const taskItemsToBuildUp = (items) => {
+export const taskItemsToBuildUp = (items: any) => {
   let text = "";
   let totalSecond = 0;
   // 日付
-  let newDate = new Date();
+  let newDate: any = new Date();
   text += "🌟";
   text +=
     newDate.getHours < 4
@@ -87,7 +87,7 @@ export const taskItemsToBuildUp = (items) => {
   text += "\r\n";
   text += "\r\n";
   text += "💡やったこと\r\n";
-  items.forEach((item) => {
+  items.forEach((item: any) => {
     if (item.category !== "") {
       text += "《" + item.category + "》";
     }

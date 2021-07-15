@@ -5,7 +5,7 @@ import ListAltIcon from "@material-ui/icons/ListAlt";
 import PeopleIcon from "@material-ui/icons/People";
 import "components/home/LabelBottomNavigation.css";
 import React, { memo } from "react";
-import { NUMBER_OF_LISTS_MAX } from "utils/constant";
+import { NUMBER_OF_LISTS_MAX } from "utils/constant.ts";
 
 const useStyles = makeStyles({
   root: {

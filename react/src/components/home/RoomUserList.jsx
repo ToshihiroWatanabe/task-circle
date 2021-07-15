@@ -10,7 +10,7 @@ import {
 } from "@material-ui/core";
 import { Skeleton } from "@material-ui/lab";
 import React, { Fragment, memo, useEffect, useState } from "react";
-import { getAvatarColor } from "utils/color";
+import { getAvatarColor } from "utils/color.ts";
 
 /** 更新のsetInterval ID */
 let refreshInterval = 0;

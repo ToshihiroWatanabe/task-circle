@@ -16,14 +16,14 @@ import { TodoListsContext } from "contexts/TodoListsContext";
 import React, { memo, useContext, useEffect, useState } from "react";
 import YouTube from "react-youtube";
 import TodoListService from "services/todoList.service.ts";
-import { changeFaviconTo } from "utils/changeFavicon";
+import { changeFaviconTo } from "utils/changeFavicon.ts";
 import {
   COUNT_INTERVAL,
   DEFAULT_TITLE,
   ONCE_COUNT,
   SPENT_SECOND_MAX,
-} from "utils/constant";
-import { secondToHHMMSS } from "utils/convert";
+} from "utils/constant.ts";
+import { secondToHHMMSS } from "utils/convert.ts";
 
 /** タイマーのカウントのsetTimeoutのID */
 let timerCountTimeout = 0;

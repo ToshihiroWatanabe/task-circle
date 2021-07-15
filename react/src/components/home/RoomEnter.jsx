@@ -2,7 +2,7 @@ import { Button, TextField, Tooltip } from "@material-ui/core";
 import { makeStyles, useTheme } from "@material-ui/core/styles";
 import { StateContext } from "contexts/StateContext";
 import React, { memo, useContext, useEffect, useState } from "react";
-import { NG_USER_NAMES } from "utils/constant";
+import { NG_USER_NAMES } from "utils/constant.ts";
 
 const useStyles = makeStyles((theme) => ({
   root: {},

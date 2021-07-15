@@ -24,7 +24,7 @@ const COLORS = [
  * @param {string} name ユーザー名
  * @returns カラーコード
  */
-export const getAvatarColor = (name) => {
+export const getAvatarColor = (name: string) => {
   let hash = 0;
   for (let i = 0; i < name.length; i++) {
     hash = 31 * hash + name.charCodeAt(i);

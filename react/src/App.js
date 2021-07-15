@@ -19,7 +19,7 @@ import React, { memo, useContext, useEffect, useRef, useState } from "react";
 import { Route, Switch, useLocation } from "react-router-dom";
 import SockJsClient from "react-stomp";
 import { themeTemplate } from "theme";
-import { SOCKET_URL } from "utils/constant";
+import { SOCKET_URL } from "utils/constant.ts";
 import uuid from "uuid/v4";
 
 const sessionFindAllTopicsId = uuid();

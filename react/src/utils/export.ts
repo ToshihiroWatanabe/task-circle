@@ -7,10 +7,10 @@ import {
 /**
  * タスクをHH:MM:SS形式でクリップボードにコピーします。
  */
-export const copyTasksToClipboard = (items) => {
+export const copyTasksToClipboard = (items: any) => {
   let text = "";
   let totalSecond = 0;
-  items.forEach((item) => {
+  items.forEach((item: any) => {
     if (item.category !== "") {
       text += "《" + item.category + "》";
     }
@@ -32,10 +32,10 @@ export const copyTasksToClipboard = (items) => {
 /**
  * タスクを「HH時間MM分SS秒」形式でクリップボードにコピーします。
  */
-export const copyTasksToClipboard_ja = (items) => {
+export const copyTasksToClipboard_ja = (items: any) => {
   let text = "";
   let totalSecond = 0;
-  items.forEach((item) => {
+  items.forEach((item: any) => {
     if (item.category !== "") {
       text += "《" + item.category + "》";
     }
@@ -57,11 +57,11 @@ export const copyTasksToClipboard_ja = (items) => {
 /**
  * タスクをBuildUp形式でクリップボードにコピーします。
  */
-export const copyTasksToClipboard_BuildUp = (items) => {
+export const copyTasksToClipboard_BuildUp = (items: any) => {
   let text = "";
   let totalSecond = 0;
   // 日付
-  let newDate = new Date();
+  let newDate: any = new Date();
   text += "🌟*";
   text +=
     newDate.getHours < 4
@@ -73,7 +73,7 @@ export const copyTasksToClipboard_BuildUp = (items) => {
   text += "*\r\n";
   text += "\r\n";
   text += "💡*やったこと*\r\n";
-  items.forEach((item) => {
+  items.forEach((item: any) => {
     if (item.category !== "") {
       text += "《" + item.category + "》";
     }
@@ -93,15 +93,21 @@ export const copyTasksToClipboard_BuildUp = (items) => {
 
 /**
  * テキストをクリップボードにコピーします。
- * @param {*} text
+ * @param {string} text
  */
-const copyToClipboard = (text) => {
+const copyToClipboard = (text: string) => {
   // 一時的に要素を追加
-  let textArea = document.createElement("textarea");
+  const textArea = document.createElement("textarea");
   textArea.innerHTML = text;
   textArea.id = "copyArea";
-  document.getElementById("app").appendChild(textArea);
-  textArea.select(document.getElementById("copyArea"));
-  document.execCommand("Copy");
-  document.getElementById("copyArea").remove();
+  const documentGetElementByIdApp = document.getElementById("app");
+  if (documentGetElementByIdApp) {
+    documentGetElementByIdApp.appendChild(textArea);
+  }
+  const documentGetElementByIdCopyArea = document.getElementById("copyArea");
+  if (documentGetElementByIdCopyArea) {
+    textArea.select();
+    document.execCommand("Copy");
+    documentGetElementByIdCopyArea.remove();
+  }
 };
