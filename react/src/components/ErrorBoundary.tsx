@@ -1,16 +1,24 @@
-// @ts-nocheck
-import React from "react";
+import React, { Component, ReactNode } from "react";
+
+interface Props {
+  children: ReactNode;
+}
+
+interface State {
+  error: any;
+  errorInfo: any;
+}
 
 /**
  * エラー画面を描画するコンポーネントです。
  */
-class ErrorBoundary extends React.Component {
-  constructor(props) {
+class ErrorBoundary extends Component<Props, State> {
+  constructor(props: Props) {
     super(props);
     this.state = { error: null, errorInfo: null };
   }
 
-  componentDidCatch(error, errorInfo) {
+  componentDidCatch(error: any, errorInfo: any) {
     this.setState({ error, errorInfo });
   }
 
