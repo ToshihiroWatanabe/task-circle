@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { useMediaQuery, useTheme } from "@material-ui/core";
 import {
   createMuiTheme,
@@ -17,26 +18,31 @@ import { StatisticsContext } from "contexts/StatisticsContext";
 import { TodoListsContext } from "contexts/TodoListsContext";
 import React, { memo, useContext, useEffect, useRef, useState } from "react";
 import { Route, Switch, useLocation } from "react-router-dom";
+//@ts-ignore
 import SockJsClient from "react-stomp";
-import { themeTemplate } from "theme.ts";
-import { SOCKET_URL } from "utils/constant.ts";
+import { themeTemplate } from "theme";
+import { SOCKET_URL } from "utils/constant";
+//@ts-ignore
 import uuid from "uuid/v4";
 
 const sessionFindAllTopicsId = uuid();
 
 /** ローカルストレージから取得した設定 */
 const localStorageGetItemSettings = localStorage.getItem("settings")
-  ? JSON.parse(localStorage.getItem("settings"))
+  ? //@ts-ignore
+    JSON.parse(localStorage.getItem("settings"))
   : {};
 
 /** ローカルストレージから取得した統計 */
 const localStorageGetItemStatistics = localStorage.getItem("statistics")
-  ? JSON.parse(localStorage.getItem("statistics"))
+  ? //@ts-ignore
+    JSON.parse(localStorage.getItem("statistics"))
   : {};
 
 /** ローカルストレージから取得したTodoリスト */
 const localStorageGetItemTodoLists = localStorage.getItem("todoLists")
-  ? JSON.parse(localStorage.getItem("todoLists"))
+  ? //@ts-ignore
+    JSON.parse(localStorage.getItem("todoLists"))
   : {
       [uuid()]: {
         name: "リスト1",
@@ -78,7 +84,7 @@ const useStyles = makeStyles((theme) => ({
 /**
  * Appコンポーネントです。
  */
-const App = memo(() => {
+const App: React.FC = memo(() => {
   const classes = useStyles();
   const theme = useTheme();
   const [state, setState] = useContext(StateContext);
@@ -165,10 +171,11 @@ const App = memo(() => {
     setState((state) => {
       // 離席中ならfaviconを元に戻す
       if (state.isAfk) {
-        const link = document.querySelector("link[rel*='icon']");
+        const link: any = document.querySelector("link[rel*='icon']");
         link.href = "/favicon.ico";
       }
       if (state.isConnected) {
+        // @ts-ignore
         $websocket.current.sendMessage("/session/leave", JSON.stringify({}));
       }
       return { ...state, isAfk: false, isInRoom: false, nameInRoom: "" };
@@ -180,7 +187,7 @@ const App = memo(() => {
    * セッションのメッセージを受信したときの処理です。
    * @param {*} message
    */
-  const onSessionMessageReceived = (message) => {
+  const onSessionMessageReceived = (message: any) => {
     if (!state.isInRoom) {
       return;
     }
@@ -204,7 +211,7 @@ const App = memo(() => {
    * 退室メッセージを受信したときの処理です。
    * @param {*} message
    */
-  const onLeaveMessageReceived = (message) => {
+  const onLeaveMessageReceived = (message: any) => {
     if (!state.isInRoom) {
       return;
     }
@@ -219,7 +226,7 @@ const App = memo(() => {
   /**
    * findAllのメッセージを受信したときの処理です。
    */
-  const onFindAllMessageReceived = (message) => {
+  const onFindAllMessageReceived = (message: any) => {
     setSessions((sessions) => {
       let newSessions = [...sessions, ...message];
       newSessions = newSessions.map((session) => {
@@ -238,7 +245,7 @@ const App = memo(() => {
   /**
    * WebSocketのメッセージを送信します。
    */
-  const sendMessage = (messageType) => {
+  const sendMessage = (messageType: string) => {
     if (!state.isConnected && messageType !== "enter") {
       console.error("接続されていません");
       return;
@@ -300,7 +307,7 @@ const App = memo(() => {
   /**
    * スクロールされたときの処理です。
    */
-  const onScroll = (event) => {
+  const onScroll = (event: any) => {
     if (location.pathname !== "/" || !useMediaQueryThemeBreakpointsDownXs) {
       return;
     }
@@ -325,6 +332,7 @@ const App = memo(() => {
       <MuiThemeProvider theme={darkTheme}>
         {/* ドロワー */}
         <ResponsiveDrawer
+          // @ts-ignore
           sendMessage={sendMessage}
           isDarkModeOn={isDarkModeOn}
           setIsDarkModeOn={setIsDarkModeOn}
@@ -343,6 +351,7 @@ const App = memo(() => {
             }}
           >
             <Home
+              // @ts-ignore
               sendMessage={sendMessage}
               onEnter={onEnter}
               onLeave={onLeave}
@@ -350,6 +359,7 @@ const App = memo(() => {
             {/* ボトムナビゲーション */}
             {useMediaQueryThemeBreakpointsDownXs && (
               <LabelBottomNavigation
+                // @ts-ignore
                 todoLists={todoLists}
                 bottomNavigationValue={bottomNavigationValue}
                 setBottomNavigationValue={setBottomNavigationValue}
@@ -376,18 +386,18 @@ const App = memo(() => {
           topics={["/topic/session"]}
           onConnect={onConnected}
           onDisconnect={onDisconnected}
-          onMessage={(msg) => onSessionMessageReceived(msg)}
+          onMessage={(msg: any) => onSessionMessageReceived(msg)}
           ref={$websocket}
         />
         <SockJsClient
           url={SOCKET_URL}
           topics={["/topic/session/leave"]}
-          onMessage={(msg) => onLeaveMessageReceived(msg)}
+          onMessage={(msg: any) => onLeaveMessageReceived(msg)}
         />
         <SockJsClient
           url={SOCKET_URL}
           topics={["/topic/session/findall/" + sessionFindAllTopicsId]}
-          onMessage={(msg) => onFindAllMessageReceived(msg)}
+          onMessage={(msg: any) => onFindAllMessageReceived(msg)}
         />
       </MuiThemeProvider>
     </>
