@@ -1,4 +1,3 @@
-// @ts-nocheck
 import {
   Box,
   Button,
@@ -26,6 +25,7 @@ import SyncProgress from "components/SyncProgress";
 import VolumeSlider from "components/VolumeSlider";
 import { SettingsContext } from "contexts/SettingsContext";
 import { StateContext } from "contexts/StateContext";
+import { AnyARecord } from "dns";
 import React, { memo, useContext, useState } from "react";
 import YouTube from "react-youtube";
 import SettingService from "services/setting.service";
@@ -59,10 +59,6 @@ const useStyles = makeStyles((theme) => ({
     margin: theme.spacing(1),
     width: "100%",
   },
-  allDeleteButton: {
-    margin: theme.spacing(3),
-    textTransform: "none !important",
-  },
   urlField: {
     width: "100%",
   },
@@ -92,7 +88,7 @@ const useStyles = makeStyles((theme) => ({
  */
 const Settings = memo(() => {
   const classes = useStyles();
-  const { state, setState } = useContext(StateContext);
+  const { state } = useContext(StateContext);
   const { settings, setSettings } = useContext(SettingsContext);
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [workVideoTitle, setWorkVideoTitle] = useState("");
@@ -105,8 +101,8 @@ const Settings = memo(() => {
    * 設定に変化があったときの処理です。
    * @param {} event
    */
-  const handleChange = (event) => {
-    setSettings((settings) => {
+  const handleChange = (event: any) => {
+    setSettings((settings: any) => {
       if (event.target.name === "workVideoUrl") {
         setWorkVideoTitle("");
         setRenderWorkVideo(false);
@@ -135,24 +131,27 @@ const Settings = memo(() => {
   /**
    * ローカルストレージとDBの設定を更新します。
    */
-  const updateSettings = (settings) => {
+  const updateSettings = (settings: AnyARecord) => {
     localStorage.setItem("settings", JSON.stringify(settings));
-    localStorage.setItem("settingsUpdatedAt", Date.now());
+    localStorage.setItem("settingsUpdatedAt", Date.now().toString());
     if (state.isLogined) {
       setIsInSync(true);
     }
     clearTimeout(updateTimeout);
+    // @ts-ignore
     updateTimeout = setTimeout(() => {
       if (state.isLogined) {
         // DBの設定を取得
         SettingService.findByTokenId(state.tokenId).then((r) => {
           // ローカルのデータより新しいかどうか比較する
           if (
+            // @ts-ignore
             new Date(r.data.updatedAt).getTime() >
+            // @ts-ignore
             localStorage.getItem("settingsUpdatedAt")
           ) {
             // ローカルのデータをDBのデータに上書きする
-            setSettings((settings) => {
+            setSettings((settings: any) => {
               const newSettings = {
                 ...settings,
                 ...JSON.parse(r.data.setting),
@@ -160,14 +159,14 @@ const Settings = memo(() => {
               localStorage.setItem("settings", JSON.stringify(newSettings));
               localStorage.setItem(
                 "settingsUpdatedAt",
-                new Date(r.data.updatedAt).getTime()
+                new Date(r.data.updatedAt).getTime().toString()
               );
               return newSettings;
             });
           }
           setIsInSync(false);
         });
-        setSettings((settings) => {
+        setSettings((settings: any) => {
           SettingService.update(state.tokenId, JSON.stringify(settings));
           return settings;
         });
@@ -178,7 +177,7 @@ const Settings = memo(() => {
   /**
    * 動画プレーヤーが準備完了したときの処理です。
    */
-  const onPlayerReady = (event) => {
+  const onPlayerReady = (event: any) => {
     if (event.target.h.id === "workVideoPlayer") {
       setWorkVideoTitle(event.target.playerInfo.videoData.title);
     }
@@ -203,8 +202,8 @@ const Settings = memo(() => {
    * 時間のフォーマット(クリップボードへのコピー時)が変更されたときの処理です。
    * @param {*} event
    */
-  const onTimeFormatToClipboardChange = (event) => {
-    setSettings((settings) => {
+  const onTimeFormatToClipboardChange = (event: any) => {
+    setSettings((settings: any) => {
       settings = { ...settings, timeFormatToClipboard: event.target.value };
       updateSettings(settings);
       return settings;
@@ -215,8 +214,8 @@ const Settings = memo(() => {
    * ツイートボタンのオンオフが変更されたときの処理です。
    * @param {*} evnet
    */
-  const onTweetButtonEnabledChange = (event) => {
-    setSettings((settings) => {
+  const onTweetButtonEnabledChange = (event: any) => {
+    setSettings((settings: any) => {
       settings = { ...settings, isTweetButtonEnabled: event.target.checked };
       updateSettings(settings);
       return settings;
@@ -227,8 +226,8 @@ const Settings = memo(() => {
    * ツイート時の定型文が変更されたときの処理です。
    * @param {*} event
    */
-  const onTweetTemplateChange = (event) => {
-    setSettings((settings) => {
+  const onTweetTemplateChange = (event: any) => {
+    setSettings((settings: any) => {
       settings = { ...settings, tweetTemplate: event.target.value };
       updateSettings(settings);
       return settings;
@@ -279,6 +278,7 @@ const Settings = memo(() => {
                       videoId={
                         settings.workVideoUrl.split(/v=|\//).slice(-1)[0]
                       }
+                      // @ts-ignore
                       opts={playerOptions}
                       onReady={onPlayerReady}
                       id="workVideoPlayer"
@@ -295,6 +295,7 @@ const Settings = memo(() => {
             })()}
             <Box mt={1} />
             <VolumeSlider
+              // @ts-ignore
               helperText="音量(作業用BGM)"
               settings={settings}
               setSettings={setSettings}
@@ -307,6 +308,7 @@ const Settings = memo(() => {
           <Box mt={1} />
           <FormGroup>
             <TextField
+              // @ts-ignore
               className={classes.urlField}
               label="YouTube動画のURL"
               onChange={handleChange}
@@ -336,6 +338,7 @@ const Settings = memo(() => {
                       videoId={
                         settings.breakVideoUrl.split(/v=|\//).slice(-1)[0]
                       }
+                      // @ts-ignore
                       opts={playerOptions}
                       onReady={onPlayerReady}
                       id="breakVideoPlayer"
@@ -352,6 +355,7 @@ const Settings = memo(() => {
             })()}
             <Box mt={1} />
             <VolumeSlider
+              // @ts-ignore
               helperText="音量(休憩用BGM)"
               settings={settings}
               setSettings={setSettings}
@@ -364,6 +368,7 @@ const Settings = memo(() => {
           </FormLabel>
           <Box mt={1} />
           <VolumeSlider
+            // @ts-ignore
             helperText="その他の音"
             settings={settings}
             setSettings={setSettings}
@@ -373,6 +378,7 @@ const Settings = memo(() => {
           <FormLabel className={classes.formLabel}>チクタク音</FormLabel>
           <Box mt={1} />
           <VolumeSlider
+            // @ts-ignore
             helperText="チクタク音"
             settings={settings}
             setSettings={setSettings}
@@ -457,8 +463,9 @@ const Settings = memo(() => {
           onChange={onTweetTemplateChange}
         ></TextField>
       </Card>
-      {/* Snackbar */}
+      {/* スナックバー */}
       <SimpleSnackbar
+        // @ts-ignore
         open={snackbarOpen}
         setOpen={setSnackbarOpen}
         message="適用しました！"
