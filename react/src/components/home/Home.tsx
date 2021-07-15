@@ -235,7 +235,10 @@ const Home = memo((props) => {
    */
   const onPlayButtonClick = (type) => {
     setState((state) => {
-      state.isTimerOn = !state.isTimerOn;
+      return { ...state, isTimerOn: !state.isTimerOn };
+    });
+    setState((state) => {
+      // state.isTimerOn = !state.isTimerOn;
       if (state.isTimerOn) {
         // タイマー開始
         startedAt = Date.now();
