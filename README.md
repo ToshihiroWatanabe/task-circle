@@ -1,10 +1,12 @@
-# task-circle（タスクサークル）
+<h1 align="center">
+<img src="https://user-images.githubusercontent.com/79039863/125913153-6f4fe7a0-4357-44ef-8080-4b3652b5c67d.jpg" alt="TaskCircle" title="TaskCircle">
+</h1>
 
-## Demo デモ
+<h4 align="center">作業状況を仲間と共有できる、タスク管理＆タイマーWebアプリです。</h4>
 
 ![TaskCircle 2021-07-10](https://user-images.githubusercontent.com/79039863/125162472-fbd6de80-e1c2-11eb-9cbc-1dcdb4a47de8.gif)
 
-## Overview 概要
+# 🚀概要
 
 **タスク管理**と**タイマー**、**他のユーザーのステータス表示機能**のあるWebアプリケーションです。
 
@@ -14,7 +16,7 @@
 
 [Spring Boot(バックエンド)のREADME.md](/springboot/README.md)
 
-## Guide 使い方
+# ▶使い方
 
 ![TaskCircle_QuickStartGuide_1](https://user-images.githubusercontent.com/79039863/125425089-ce0972c5-b7ea-4c47-b917-ae6bd2e5e632.png)
 
@@ -24,7 +26,19 @@
 
 ![TaskCircle_QuickStartGuide_4](https://user-images.githubusercontent.com/79039863/125425277-bd286a68-8cc4-4c35-b1a1-757847d78c9f.png)
 
-## Requirement 動作環境
+# 👨‍💻使用技術
+
+- React (Create React App)
+- TypeScript
+- Material-UI
+- Spring Boot
+- WebSocket
+- MyBatis
+- MySQL
+
+# 🔧インストール方法
+
+## 動作環境
 
 - Java 11.0.10
 - Apache Maven 3.8.1
@@ -32,14 +46,12 @@
 - npm 7.16.0
 - MySQL 8.0.25
 
-## Install インストール方法
-
-### データベースの作成
+## データベースの作成
 
 MySQLでデータベースを作成し、
 [springboot/src/main/resources/schema.sql](/springboot/src/main/resources/schema.sql)にあるSQL文でテーブルを作成してください。
 
-### 環境変数の設定
+## 環境変数の設定
 
 #### Spring Boot用の環境変数
 
@@ -51,43 +63,42 @@ MYSQL_PASSWORD|データベースに接続するユーザーのパスワード
 
 #### React用の環境変数
 
-.envファイルに記述する際は変数名の先頭にREACT_APP_を付けてください。
-
 環境変数名|説明
 ---|---
-CLIENT_ID|Google OAuthのクライアントID(これが無くてもログイン機能以外は動作します)
+REACT_APP_CLIENT_ID|Google OAuthのクライアントID(これが無くてもログイン機能以外は動作します)
 
-### インストールと実行
+## インストールと実行
 
-GitHubからリポジトリをクローンします。
-
-`git clone https://github.com/ToshihiroWatanabe/task-circle.git`
-
+リポジトリをクローンします。
+```
+git clone https://github.com/ToshihiroWatanabe/task-circle.git
+```
 Spring Bootプロジェクトのディレクトリに移動します。
-
-`cd task-circle/springboot`
-
+```
+cd task-circle/springboot
+```
 Mavenで依存関係をインストールします。
-
-`mvn install`
-
+```
+mvn install
+```
 Spring Bootアプリケーションを起動します。
-
-`mvn spring-boot:run`
-
+```
+mvn spring-boot:run
+```
 Reactプロジェクトのディレクトリに移動します。
-
-`cd ../react`
-
+```
+cd ../react
+```
 npmで依存関係をインストールします。
-
-`npm install`
-
+```
+npm install
+```
 Reactアプリケーションを起動します。
+```
+npm start
+```
 
-`npm start`
-
-## Author 作者
+# 作者
 
 ワタナベトシヒロ
 
