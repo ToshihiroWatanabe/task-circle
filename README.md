@@ -4,6 +4,16 @@
 
 <h4 align="center">作業状況を仲間と共有できる、タスク管理＆タイマーWebアプリです。</h4>
 
+
+<p align="center">
+  <a href="#概要">概要</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
+  <a href="#使い方">使い方</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
+  <a href="#使用技術">使用技術</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
+  <a href="#インストール手順">インストール手順</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
+  <a href="#作者">作者</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
+  <a href="#license">License</a>
+</p>
+
 ![TaskCircle 2021-07-10](https://user-images.githubusercontent.com/79039863/125162472-fbd6de80-e1c2-11eb-9cbc-1dcdb4a47de8.gif)
 
 # 🚀概要
@@ -36,7 +46,7 @@
 - MyBatis
 - MySQL
 
-# 🔧インストール方法
+# 🔧インストール手順
 
 ## 動作環境
 
@@ -102,3 +112,6 @@ npm start
 
 ワタナベトシヒロ
 
+# License
+
+MIT
