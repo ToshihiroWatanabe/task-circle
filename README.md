@@ -1,5 +1,5 @@
 <h1 align="center">
-<img src="https://user-images.githubusercontent.com/79039863/125913153-6f4fe7a0-4357-44ef-8080-4b3652b5c67d.jpg" alt="TaskCircle" title="TaskCircle">
+<img src="https://user-images.githubusercontent.com/79039863/125965026-0afa11d2-9678-4e71-82e3-683bd205fee0.png" alt="TaskCircle" title="TaskCircle" width="500">
 </h1>
 
 <h4 align="center">作業状況を仲間と共有できる、タスク管理＆タイマーWebアプリです。</h4>
@@ -42,7 +42,7 @@
 - TypeScript
 - Material-UI
 - Spring Boot
-- WebSocket
+- WebSocket (STOMP, SockJS)
 - MyBatis
 - MySQL
 
