@@ -25,6 +25,7 @@ const useStyles = makeStyles({
 const TodoListMenu = memo(
   (props: {
     index: number;
+    todoLists: any;
     setTodoLists: any;
     setPreviousTodoLists: any;
     setUndoSnackbarMessage: any;

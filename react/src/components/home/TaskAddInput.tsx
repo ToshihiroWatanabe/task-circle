@@ -23,7 +23,6 @@ const useStyles = makeStyles((theme) => ({
  */
 const TaskAddInput = memo(
   (props: {
-    tags: any;
     todoLists: any;
     setTodoLists: any;
     updateTodoLists: any;
@@ -33,10 +32,6 @@ const TaskAddInput = memo(
     const [helperText, setHelperText] = useState("");
     const [inputValue, setInputValue] = useState("");
     const [categoryInput, setCategoryInput] = useState([]);
-
-    useEffect(() => {
-      setCategoryInput(props.tags);
-    }, [props.tags]);
 
     useEffect(() => {
       selectedTags(categoryInput);

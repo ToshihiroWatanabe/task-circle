@@ -1,4 +1,3 @@
-// @ts-nocheck
 import { useMediaQuery, useTheme, Zoom } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import TimerFab from "components/home/TimerFab";
@@ -26,7 +25,7 @@ const useStyles = makeStyles((theme) => ({
 /**
  * リサイズ＆ドラッグ移動可能なタイマーのコンポーネントです。
  */
-const TimerRnd = memo((props) => {
+const TimerRnd = memo((props: { todoLists: any; onPlayButtonClick: any }) => {
   const classes = useStyles();
   const theme = useTheme();
   const location = useLocation();
@@ -58,22 +57,23 @@ const TimerRnd = memo((props) => {
 
   /** 選択されているタスク */
   const selectedTask =
-    Object.values(props.todoLists).filter((column) => {
+    Object.values(props.todoLists).filter((column: any) => {
       return (
-        column.items.filter((item) => {
+        column.items.filter((item: any) => {
           return item.isSelected;
         })[0] !== undefined
       );
     }).length > 0
-      ? Object.values(props.todoLists)
-          .filter((column) => {
+      ? //@ts-ignore
+        Object.values(props.todoLists)
+          .filter((column: any) => {
             return (
-              column.items.filter((item) => {
+              column.items.filter((item: any) => {
                 return item.isSelected;
               })[0] !== undefined
             );
           })[0]
-          .items.filter((item) => {
+          .items.filter((item: any) => {
             return item.isSelected;
           })[0]
       : null;
@@ -81,7 +81,9 @@ const TimerRnd = memo((props) => {
   // URLに変更があったとき
   useEffect(() => {
     if (location.pathname === "/") {
+      // @ts-ignore
       if (positionY + 80 + parseInt(height) > window.innerHeight) {
+        // @ts-ignore
         setPositionY(window.innerHeight - 80 - parseInt(height));
       }
     }
@@ -93,7 +95,7 @@ const TimerRnd = memo((props) => {
    * @param {*} dir
    * @param {*} refToElement
    */
-  const onResize = (e, dir, refToElement) => {
+  const onResize = (e: any, dir: any, refToElement: any) => {
     setWidth(refToElement.style.width);
     setHeight(refToElement.style.height);
   };
@@ -101,7 +103,7 @@ const TimerRnd = memo((props) => {
   /**
    * リサイズが終わったときの処理です。
    */
-  const onResizeStop = (e, dir, refToElement, delta) => {
+  const onResizeStop = (e: any, dir: any, refToElement: any, delta: any) => {
     setPositionX(dir.match(/.*Left/) ? positionX - delta.width : positionX);
     setPositionY(dir.match(/top.*/) ? positionY - delta.height : positionY);
   };
@@ -111,7 +113,7 @@ const TimerRnd = memo((props) => {
    * @param {*} e
    * @param {*} d
    */
-  const onDragStop = (e, d) => {
+  const onDragStop = (e: any, d: any) => {
     setTimeout(() => {
       setIsDragging(false);
     }, 1);
@@ -132,6 +134,7 @@ const TimerRnd = memo((props) => {
             }}
             unmountOnExit
           >
+            {/* @ts-ignore */}
             <TimerFab
               todoLists={props.todoLists}
               isDragging={isDragging}
@@ -159,6 +162,7 @@ const TimerRnd = memo((props) => {
             x: positionX,
             y: positionY,
           }}
+          // @ts-ignore
           default={{
             width: DEFAULT_WIDTH,
             height: DEFAULT_HEIGHT,
@@ -170,6 +174,7 @@ const TimerRnd = memo((props) => {
                 : "solid 1px #111",
             borderRadius: "8px",
             background: theme.palette.type === "light" ? "#f0f0f0" : "#424242",
+            // @ts-ignore
             zIndex: "1",
           }}
         >
