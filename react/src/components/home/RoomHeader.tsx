@@ -49,7 +49,9 @@ const RoomHeader = memo(
         }
         return { ...state, isAfk: !state.isAfk };
       });
-      props.sendMessage();
+      if (state.isConnected) {
+        props.sendMessage();
+      }
     };
 
     return (

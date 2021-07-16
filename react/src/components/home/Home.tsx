@@ -297,7 +297,7 @@ const Home = memo((props: { sendMessage: any; onEnter: any; onLeave: any }) => {
         // 動画IDを更新
         updateVideoId();
       }
-      if (state.isInRoom) {
+      if (state.isConnected && state.isInRoom) {
         props.sendMessage();
       }
       return { ...state };
@@ -400,7 +400,9 @@ const Home = memo((props: { sendMessage: any; onEnter: any; onLeave: any }) => {
                   body: "タイマーを停止しました。",
                 });
               }
-              props.sendMessage();
+              if (state.isConnected && state.isInRoom) {
+                props.sendMessage();
+              }
             } else if (
               settings.isPomodoroEnabled &&
               state.pomodoroTimeLeft <= 0
@@ -456,7 +458,9 @@ const Home = memo((props: { sendMessage: any; onEnter: any; onLeave: any }) => {
               updateVideoId();
               achievedSound.volume = settings.volume * 0.01;
               achievedSound.play();
-              props.sendMessage();
+              if (state.isConnected && state.isInRoom) {
+                props.sendMessage();
+              }
             } else {
               // チクタク音を鳴らす
               if (settings.tickVolume === 10) {

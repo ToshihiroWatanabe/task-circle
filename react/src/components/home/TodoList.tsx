@@ -183,7 +183,7 @@ const TodoList = memo((props) => {
         props.updateTodoLists({ ...todoLists });
         return { ...todoLists };
       });
-      if (state.isTimerOn) {
+      if (state.isConnected && state.isInRoom && state.isTimerOn) {
         props.sendMessage();
       }
     }

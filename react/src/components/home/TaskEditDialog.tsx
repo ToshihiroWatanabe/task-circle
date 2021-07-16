@@ -128,7 +128,9 @@ const TaskEditDialog = memo((props) => {
       Object.values(props.todoLists)[props.columnIndex].items[props.index]
         .isSelected
     ) {
-      props.sendMessage();
+      if (state.isConnected && state.isInRoom) {
+        props.sendMessage();
+      }
     }
   };
 

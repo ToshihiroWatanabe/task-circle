@@ -41,7 +41,7 @@ const TimerToggleButton = memo((props: { sendMessage: any }) => {
     } else {
       document.title = DEFAULT_TITLE;
     }
-    if (state.isInRoom) {
+    if (state.isConnected && state.isInRoom) {
       props.sendMessage();
     }
   };

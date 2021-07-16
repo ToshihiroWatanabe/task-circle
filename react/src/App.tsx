@@ -245,13 +245,13 @@ const App: React.FC = memo(() => {
    * WebSocketのメッセージを送信します。
    */
   const sendMessage = (messageType: string) => {
-    if (!state.isConnected && messageType !== "enter") {
-      console.error("接続されていません");
-      return;
-    } else if (!state.isInRoom && messageType !== "enter") {
-      return;
-    }
     setState((state: any) => {
+      if (!state.isConnected && messageType !== "enter") {
+        console.error("接続されていません");
+        return state;
+      } else if (!state.isInRoom && messageType !== "enter") {
+        return state;
+      }
       const selectedTask =
         Object.values(todoLists).filter((column: any) => {
           return (
