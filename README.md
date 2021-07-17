@@ -65,6 +65,8 @@ MySQLでデータベースを作成し、
 
 #### Spring Boot用の環境変数
 
+環境変数を設定するか、[springboot/src/main/resources/application.properties](/springboot/src/main/resources/application.properties)のデータベースの接続に関する記述を書き換えてください。
+
 環境変数名|説明
 ---|---
 MYSQL_URL|jdbc:mysql://**ホスト名**:**ポート番号**/**データベース名**
@@ -73,9 +75,11 @@ MYSQL_PASSWORD|データベースに接続するユーザーのパスワード
 
 #### React用の環境変数
 
+ログイン機能を使用する場合は、reactディレクトリに.envファイルを作成し、環境変数を記述してください。
+
 環境変数名|説明
 ---|---
-REACT_APP_CLIENT_ID|Google OAuthのクライアントID(これが無くてもログイン機能以外は動作します)
+REACT_APP_CLIENT_ID|Google OAuthのクライアントID
 
 ## インストールと実行
 
