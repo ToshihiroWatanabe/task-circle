@@ -116,6 +116,7 @@ const RoomEnter = memo((props: { onEnter: any }) => {
               color="primary"
               onClick={(event) => onEnterButtonClick(event)}
               disabled={!state.isConnected}
+              style={{ height: "2.4rem" }}
             >
               入室
             </Button>
