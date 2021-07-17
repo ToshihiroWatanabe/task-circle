@@ -28,6 +28,11 @@ const useStyles = makeStyles((theme) => ({
 
 /**
  * 進行状況サークルのコンポーネントです。
+ *
+ * 通常タイマーで目標時間設定あり、目標未達成→オレンジ
+ * 通常タイマーで目標時間設定あり、目標達成済み→水色
+ * 作業タイマー→赤
+ * 休憩タイマー→黄
  */
 const CircularDeterminate = memo(
   (props: { todoLists: any; width: any; height: any }) => {
@@ -36,6 +41,7 @@ const CircularDeterminate = memo(
     const { state } = useContext(StateContext);
     const { settings } = useContext(SettingsContext);
 
+    // 選択されているタスク
     const selectedTask =
       Object.values(props.todoLists).filter((column: any) => {
         return (
@@ -74,17 +80,18 @@ const CircularDeterminate = memo(
           }
           thickness={1}
           style={{
-            width: props.width !== "undifined" ? props.width : "",
-            height: props.height !== "undifined" ? props.height : "",
+            width: props.width ? props.width : "",
+            height: props.height ? props.height : "",
             // @ts-ignore
             color: settings.isPomodoroEnabled
               ? state.pomodoroTimerType === "work"
                 ? "red"
                 : "yellow"
-              : selectedTask &&
+              : // ポモドーロじゃないとき
+              selectedTask !== null &&
                 selectedTask.spentSecond > selectedTask.estimatedSecond
               ? theme.palette.primary.light
-              : theme.palette.secondary,
+              : theme.palette.secondary.main,
           }}
         />
       </div>
