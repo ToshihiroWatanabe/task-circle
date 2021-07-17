@@ -675,6 +675,8 @@ const TodoList = memo(
                       todoLists={props.todoLists}
                       setTodoLists={props.setTodoLists}
                       updateTodoLists={props.updateTodoLists}
+                      setIsInputFocused={setIsInputFocused}
+                      index={columnIndex}
                       style={{
                         width: "105%",
                         marginTop: "0.25rem",

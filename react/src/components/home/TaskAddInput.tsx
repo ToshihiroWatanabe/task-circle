@@ -26,7 +26,9 @@ const TaskAddInput = memo(
     todoLists: any;
     setTodoLists: any;
     updateTodoLists: any;
+    setIsInputFocused: any;
     style: any;
+    index: number;
   }) => {
     const classes = useStyles();
     const [helperText, setHelperText] = useState("");
@@ -138,9 +140,10 @@ const TaskAddInput = memo(
      */
     const validate = (input: string) => {
       if (
+        Object.values(props.todoLists)[props.index] &&
         // @ts-ignore
         Object.values(props.todoLists)[props.index].items.length >
-        NUMBER_OF_TASKS_MAX
+          NUMBER_OF_TASKS_MAX
       ) {
         setHelperText("これ以上タスクを追加できません");
         return false;
