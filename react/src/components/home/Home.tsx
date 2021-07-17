@@ -324,6 +324,7 @@ const Home = memo((props: { sendMessage: any; onEnter: any; onLeave: any }) => {
             count++;
           }
           spendTime(count);
+          updateTodoLists(todoLists);
           updateStatistics(state, count);
           lastCountedAt = Date.now();
           setTimeout(() => {
