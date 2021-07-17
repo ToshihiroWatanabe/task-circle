@@ -3,6 +3,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import { StateContext } from "contexts/StateContext";
 import React, { memo, useContext, useEffect, useState } from "react";
 import { NG_USER_NAMES } from "utils/constant";
+import "components/home/RoomEnter.css";
 
 const useStyles = makeStyles((theme) => ({
   root: {},
@@ -91,7 +92,7 @@ const RoomEnter = memo((props: { onEnter: any }) => {
 
   return (
     <div className={classes.root}>
-      <form className={classes.form}>
+      <form id="roomEnterForm" className={classes.form}>
         <TextField
           label="名前"
           id="nameInRoom"
@@ -123,7 +124,7 @@ const RoomEnter = memo((props: { onEnter: any }) => {
               color="primary"
               onClick={(event) => onEnterButtonClick(event)}
               disabled={!state.isConnected}
-              style={{ height: "2.4rem" }}
+              style={{ height: "2.4rem", borderRadius: "0 4px 4px 0" }}
             >
               入室
             </Button>
