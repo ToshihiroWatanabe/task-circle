@@ -9,7 +9,7 @@ const useStyles = makeStyles((theme) => ({
   form: {
     display: "flex",
     justifyContent: "center",
-    alignItems: "baseline",
+    // alignItems: "baseline",
   },
 }));
 
@@ -109,7 +109,14 @@ const RoomEnter = memo((props: { onEnter: any }) => {
           placement="top"
           title={state.isConnected ? "" : "接続されていません"}
         >
-          <div style={{ position: "relative", bottom: "0.15rem" }}>
+          <div
+            style={{
+              position: "relative",
+              bottom: "0.15rem",
+              marginTop: "11px",
+              marginBottom: "4px",
+            }}
+          >
             <Button
               type="submit"
               variant="contained"
