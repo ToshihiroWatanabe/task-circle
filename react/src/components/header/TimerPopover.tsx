@@ -16,6 +16,7 @@ import { StateContext } from "contexts/StateContext";
 import React, { memo, useContext, useState } from "react";
 import SettingService from "services/setting.service";
 import "components/header/TimerPopover.css";
+import TimerIcon from "@material-ui/icons/Timer";
 
 const workTimerLength: { label: string; value: number }[] = [];
 workTimerLength.push({ label: "5", value: 5 * 60 });
@@ -174,23 +175,29 @@ const TimerPopover = memo((props: { sendMessage: any }) => {
 
   return (
     <>
-      <Tooltip title="ポモドーロタイマー">
+      <Tooltip title="タイマーメニュー">
         <IconButton onClick={handleClick}>
-          <Icon>
-            <img
-              alt="tomato"
-              src={
-                process.env.PUBLIC_URL + "/favicon/tomato/apple-touch-icon.png"
-              }
-              style={{
-                width: "1.25rem",
-                height: "1.25rem",
-                filter: settings.isPomodoroEnabled
-                  ? "drop-shadow(0px 0px 1.25px #000)"
-                  : "contrast(20%)",
-              }}
-            />
-          </Icon>
+          {settings.isPomodoroEnabled && (
+            <Icon>
+              <img
+                alt="tomato"
+                src={
+                  process.env.PUBLIC_URL +
+                  "/favicon/tomato/apple-touch-icon.png"
+                }
+                style={{
+                  width: "1.25rem",
+                  height: "1.25rem",
+                  filter: settings.isPomodoroEnabled
+                    ? "drop-shadow(0px 0px 1.25px #000)"
+                    : "contrast(20%)",
+                }}
+              />
+            </Icon>
+          )}
+          {!settings.isPomodoroEnabled && (
+            <TimerIcon style={{ color: "white" }} />
+          )}
         </IconButton>
       </Tooltip>
       <Popover
