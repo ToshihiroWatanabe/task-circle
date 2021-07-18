@@ -85,7 +85,7 @@ const CircularDeterminate = memo(
             // @ts-ignore
             color: settings.isPomodoroEnabled
               ? state.pomodoroTimerType === "work"
-                ? "red"
+                ? "#de2a42"
                 : "yellow"
               : // ポモドーロじゃないとき
               selectedTask !== null &&

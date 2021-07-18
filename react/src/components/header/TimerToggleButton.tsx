@@ -80,7 +80,7 @@ const TimerToggleButton = memo((props: { sendMessage: any }) => {
           border:
             state.pomodoroTimerType === "work"
               ? "solid 1px yellow"
-              : "solid 2px red",
+              : "solid 2px #de2a42",
         }}
       >
         {state.pomodoroTimerType === "work" ? "休憩" : "作業"}に切り替える
