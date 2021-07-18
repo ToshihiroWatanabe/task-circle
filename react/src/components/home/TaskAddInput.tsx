@@ -136,7 +136,8 @@ const TaskAddInput = memo(
     };
 
     /**
-     * 入力された値を検証します。
+     * 入力された文字列を検証します。
+     * @param {string} input 入力された文字列
      */
     const validate = (input: string) => {
       if (
@@ -179,6 +180,8 @@ const TaskAddInput = memo(
       );
       /** ポモドーロ数表記にマッチしているかどうか */
       const pomodoroMatched = input.match(/[0-9]*[0-9](pomo|ポモ)/);
+      /** ◯h◯m◯s表記にマッチしているかどうか */
+      // TODO:
       if (HHMMSSmatched) {
         let matchedSplit = HHMMSSmatched[0].split(":");
         let estimatedSecond =
@@ -186,14 +189,14 @@ const TaskAddInput = memo(
           parseInt(matchedSplit[1]) * 60 +
           parseInt(matchedSplit[2]);
         return {
-          content: input.split(HHMMSSmatched[0])[0],
+          content: input.split(HHMMSSmatched[0])[0].trim(),
           estimatedSecond: estimatedSecond,
         };
       } else if (pomodoroMatched) {
         let matchedSplit = pomodoroMatched[0].split(/(pomo|ポモ)/);
         let estimatedSecond = parseInt(matchedSplit[0]) * 25 * 60;
         return {
-          content: input.split(pomodoroMatched[0])[0],
+          content: input.split(pomodoroMatched[0])[0].trim(),
           estimatedSecond: estimatedSecond,
         };
       }
