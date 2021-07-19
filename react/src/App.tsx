@@ -109,7 +109,10 @@ const App: React.FC = memo(() => {
         ...globalState,
         pomodoroTimeLeft: globalState.settings.workTimerLength,
         todoLists: localStorageGetItemTodoLists,
-        statistics: localStorageGetItemStatistics,
+        statistics: {
+          ...globalState.statistics,
+          ...localStorageGetItemStatistics,
+        },
         settings: { ...globalState.settings, ...localStorageGetItemSettings },
       };
     });
