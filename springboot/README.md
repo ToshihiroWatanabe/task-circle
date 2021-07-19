@@ -29,4 +29,4 @@ URI(エンドポイント)|リクエスト|パラメータ|説明
 
 ## データベース
 
-DDL(テーブル生成する文)は[/springboot/src/main/resources/schema.sql](/springboot/src/main/resources/schema.sql)を参照してください。
+DDL(テーブルを作成する文)は[/springboot/src/main/resources/schema.sql](/springboot/src/main/resources/schema.sql)を参照してください。
