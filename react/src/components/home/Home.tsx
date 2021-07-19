@@ -308,48 +308,30 @@ const Home = memo((props: { sendMessage: any; onEnter: any; onLeave: any }) => {
    * タイマーのカウント処理です。
    */
   const timerCount = () => {
-    setState((state: any) => {
-      setTodoLists((todoLists: any) => {
-        if (state.isTimerOn) {
-          // @ts-ignore
-          timerCountTimeout = setTimeout(timerCount, getTimeout());
-          // 前回のカウントから1.5秒以上経っていると一度にカウントする量が増える
-          const dateNow = Date.now();
-          let count = 0;
-          for (
-            let i = 0;
-            i <= dateNow - lastCountedAt - COUNT_INTERVAL / 2;
-            i += COUNT_INTERVAL
-          ) {
-            count++;
-          }
-          spendTime(count);
-          updateTodoLists(todoLists);
-          updateStatistics(state, count);
-          lastCountedAt = Date.now();
-          setTimeout(() => {
-            /** 選択しているタスク */
+    setSettings((settings: any) => {
+      setState((state: any) => {
+        setTodoLists((todoLists: any) => {
+          if (state.isTimerOn) {
             // @ts-ignore
-            const selectedItem = Object.values(todoLists)
-              .filter((column: any) => {
-                return (
-                  column.items.filter((item: any) => {
-                    return item.isSelected;
-                  })[0] !== undefined
-                );
-              })[0]
-              .items.filter((item: any) => {
-                return item.isSelected;
-              })[0];
-            // 目標時間を超えた かつ 目標時間を超えたときに停止する設定のとき
-            if (
-              selectedItem &&
-              selectedItem.achievedThenStop &&
-              selectedItem.spentSecond >= selectedItem.estimatedSecond
+            timerCountTimeout = setTimeout(timerCount, getTimeout());
+            // 前回のカウントから1.5秒以上経っていると一度にカウントする量が増える
+            const dateNow = Date.now();
+            let count = 0;
+            for (
+              let i = 0;
+              i <= dateNow - lastCountedAt - COUNT_INTERVAL / 2;
+              i += COUNT_INTERVAL
             ) {
-              // 目標時間を超えたときに停止する設定をオフにする
+              count++;
+            }
+            [state, todoLists] = spendTime(count, state, todoLists, settings);
+            updateTodoLists(todoLists);
+            updateStatistics(state, count);
+            lastCountedAt = Date.now();
+            setTimeout(() => {
+              /** 選択しているタスク */
               // @ts-ignore
-              Object.values(todoLists)
+              const selectedItem = Object.values(todoLists)
                 .filter((column: any) => {
                   return (
                     column.items.filter((item: any) => {
@@ -357,16 +339,99 @@ const Home = memo((props: { sendMessage: any; onEnter: any; onLeave: any }) => {
                     })[0] !== undefined
                   );
                 })[0]
-                .items.map((item: any) => {
-                  if (item.isSelected && item.achievedThenStop) {
-                    item.achievedThenStop = false;
+                .items.filter((item: any) => {
+                  return item.isSelected;
+                })[0];
+              // 目標時間を超えた かつ 目標時間を超えたときに停止する設定のとき
+              if (
+                selectedItem &&
+                selectedItem.achievedThenStop &&
+                selectedItem.spentSecond >= selectedItem.estimatedSecond
+              ) {
+                // 目標時間を超えたときに停止する設定をオフにする
+                // @ts-ignore
+                Object.values(todoLists)
+                  .filter((column: any) => {
+                    return (
+                      column.items.filter((item: any) => {
+                        return item.isSelected;
+                      })[0] !== undefined
+                    );
+                  })[0]
+                  .items.map((item: any) => {
+                    if (item.isSelected && item.achievedThenStop) {
+                      item.achievedThenStop = false;
+                    }
+                    return item;
+                  });
+                setState((state: any) => {
+                  state.isTimerOn = false;
+                  // ポモドーロの作業休憩切り替え
+                  if (settings.isPomodoroEnabled) {
+                    if (state.pomodoroTimerType === "work") {
+                      state.pomodoroTimerType = "break";
+                      state.pomodoroTimeLeft = settings.breakTimerLength;
+                    } else if (state.pomodoroTimerType === "break") {
+                      state.pomodoroTimerType = "work";
+                      state.pomodoroTimeLeft = settings.workTimerLength;
+                    }
+                    if (settings.isBreakAutoStart) {
+                      setTimeout(() => {
+                        onPlayButtonClick("fab");
+                      }, 100);
+                    }
                   }
-                  return item;
+                  return { ...state };
                 });
-              setState((state: any) => {
-                state.isTimerOn = false;
-                // ポモドーロの作業休憩切り替え
-                if (settings.isPomodoroEnabled) {
+                clearTimeout(timerCountTimeout);
+                // faviconをデフォルトに戻す
+                const link: any = document.querySelector("link[rel*='icon']");
+                link.href = "/favicon.ico";
+                // 動画をストップ
+                stopVideo();
+                // 動画IDを更新
+                updateVideoId();
+                achievedSound.volume = settings.volume * 0.01;
+                achievedSound.play();
+                // 通知
+                if (
+                  window.Notification &&
+                  Notification.permission === "granted"
+                ) {
+                  new Notification("目標時間を達成しました！", {
+                    body: "タイマーを停止しました。",
+                  });
+                }
+                if (state.isConnected && state.isInRoom) {
+                  props.sendMessage();
+                }
+              } else if (
+                settings.isPomodoroEnabled &&
+                state.pomodoroTimeLeft <= 0
+              ) {
+                // ポモドーロタイマーのカウントが0以下のとき
+                setState((state: any) => {
+                  state.isTimerOn = false;
+                  // 通知
+                  if (
+                    window.Notification &&
+                    Notification.permission === "granted"
+                  ) {
+                    if (state.pomodoroTimerType === "work") {
+                      new Notification("ポモドーロが終わりました！", {
+                        body: settings.isBreakAutoStart
+                          ? "休憩を自動スタートします。"
+                          : "タイマーを停止しました。",
+                        icon: "/favicon/coffee/apple-touch-icon.png",
+                      });
+                    } else if (state.pomodoroTimerType === "break") {
+                      new Notification("休憩が終わりました！", {
+                        body: "タイマーを停止しました。",
+                        icon: "/favicon/tomato/apple-touch-icon.png",
+                      });
+                    }
+                  }
+                  // ポモドーロの作業休憩切り替え
                   if (state.pomodoroTimerType === "work") {
                     state.pomodoroTimerType = "break";
                     state.pomodoroTimeLeft = settings.breakTimerLength;
@@ -374,114 +439,52 @@ const Home = memo((props: { sendMessage: any; onEnter: any; onLeave: any }) => {
                     state.pomodoroTimerType = "work";
                     state.pomodoroTimeLeft = settings.workTimerLength;
                   }
-                  if (settings.isBreakAutoStart) {
+                  if (
+                    settings.isBreakAutoStart &&
+                    state.pomodoroTimerType === "break"
+                  ) {
                     setTimeout(() => {
                       onPlayButtonClick("fab");
                     }, 100);
                   }
-                }
-                return { ...state };
-              });
-              clearTimeout(timerCountTimeout);
-              // faviconをデフォルトに戻す
-              const link: any = document.querySelector("link[rel*='icon']");
-              link.href = "/favicon.ico";
-              // 動画をストップ
-              stopVideo();
-              // 動画IDを更新
-              updateVideoId();
-              achievedSound.volume = settings.volume * 0.01;
-              achievedSound.play();
-              // 通知
-              if (
-                window.Notification &&
-                Notification.permission === "granted"
-              ) {
-                new Notification("目標時間を達成しました！", {
-                  body: "タイマーを停止しました。",
-                });
-              }
-              if (state.isConnected && state.isInRoom) {
-                props.sendMessage();
-              }
-            } else if (
-              settings.isPomodoroEnabled &&
-              state.pomodoroTimeLeft <= 0
-            ) {
-              // ポモドーロタイマーのカウントが0以下のとき
-              setState((state: any) => {
-                state.isTimerOn = false;
-                // 通知
-                if (
-                  window.Notification &&
-                  Notification.permission === "granted"
-                ) {
-                  if (state.pomodoroTimerType === "work") {
-                    new Notification("ポモドーロが終わりました！", {
-                      body: settings.isBreakAutoStart
-                        ? "休憩を自動スタートします。"
-                        : "タイマーを停止しました。",
-                      icon: "/favicon/coffee/apple-touch-icon.png",
-                    });
-                  } else if (state.pomodoroTimerType === "break") {
-                    new Notification("休憩が終わりました！", {
-                      body: "タイマーを停止しました。",
-                      icon: "/favicon/tomato/apple-touch-icon.png",
-                    });
-                  }
-                }
-                // ポモドーロの作業休憩切り替え
-                if (state.pomodoroTimerType === "work") {
-                  state.pomodoroTimerType = "break";
-                  state.pomodoroTimeLeft = settings.breakTimerLength;
-                } else if (state.pomodoroTimerType === "break") {
-                  state.pomodoroTimerType = "work";
-                  state.pomodoroTimeLeft = settings.workTimerLength;
-                }
-                if (
-                  settings.isBreakAutoStart &&
-                  state.pomodoroTimerType === "break"
-                ) {
-                  setTimeout(() => {
-                    onPlayButtonClick("fab");
-                  }, 100);
-                }
 
-                return { ...state };
-              });
-              clearTimeout(timerCountTimeout);
-              // faviconをデフォルトに戻す
-              const link: any = document.querySelector("link[rel*='icon']");
-              link.href = "/favicon.ico";
-              // 動画をストップ
-              stopVideo();
-              // 動画IDを更新
-              updateVideoId();
-              achievedSound.volume = settings.volume * 0.01;
-              achievedSound.play();
-              if (state.isConnected && state.isInRoom) {
-                props.sendMessage();
+                  return { ...state };
+                });
+                clearTimeout(timerCountTimeout);
+                // faviconをデフォルトに戻す
+                const link: any = document.querySelector("link[rel*='icon']");
+                link.href = "/favicon.ico";
+                // 動画をストップ
+                stopVideo();
+                // 動画IDを更新
+                updateVideoId();
+                achievedSound.volume = settings.volume * 0.01;
+                achievedSound.play();
+                if (state.isConnected && state.isInRoom) {
+                  props.sendMessage();
+                }
+              } else {
+                // チクタク音を鳴らす
+                if (settings.tickVolume === 10) {
+                  faintTickSound.play();
+                } else if (settings.tickVolume === 50) {
+                  tickSound.volume = settings.tickVolume * 0.002;
+                  tickSound.play();
+                } else if (settings.tickVolume === 100) {
+                  tickSound.volume = settings.tickVolume * 0.01;
+                  tickSound.play();
+                }
               }
-            } else {
-              // チクタク音を鳴らす
-              if (settings.tickVolume === 10) {
-                faintTickSound.play();
-              } else if (settings.tickVolume === 50) {
-                tickSound.volume = settings.tickVolume * 0.002;
-                tickSound.play();
-              } else if (settings.tickVolume === 100) {
-                tickSound.volume = settings.tickVolume * 0.01;
-                tickSound.play();
-              }
-            }
-          }, 2);
-        } else if (!state.isTimerOn) {
-          updateTodoLists(todoLists);
-          clearTimeout(timerCountTimeout);
-        }
-        return todoLists;
+            }, 2);
+          } else if (!state.isTimerOn) {
+            updateTodoLists(todoLists);
+            clearTimeout(timerCountTimeout);
+          }
+          return { ...todoLists };
+        });
+        return { ...state };
       });
-      return state;
+      return { ...settings };
     });
   };
 
@@ -489,44 +492,43 @@ const Home = memo((props: { sendMessage: any; onEnter: any; onLeave: any }) => {
    * 時間の加減算をします。
    * @param {number} count カウント
    */
-  const spendTime = (count: number) => {
-    setTimeout(() => {
-      setState((state: any) => {
-        setTodoLists((todoLists: any) => {
-          // @ts-ignore
-          Object.values(todoLists)
-            .filter((column: any) => {
-              return (
-                column.items.filter((item: any) => {
-                  return item.isSelected;
-                })[0] !== undefined
-              );
-            })[0]
-            .items.map((item: any) => {
-              if (item.isSelected) {
-                if (
-                  !settings.isPomodoroEnabled ||
-                  state.pomodoroTimerType !== "break"
-                ) {
-                  item.spentSecond += ONCE_COUNT * count;
-                  if (item.spentSecond > SPENT_SECOND_MAX) {
-                    item.spentSecond = SPENT_SECOND_MAX;
-                  }
-                }
-                setTimeout(() => {
-                  refreshTitle(item.content, item.spentSecond);
-                }, 2);
-              }
-              return item;
-            });
-          return { ...todoLists };
-        });
-        if (settings.isPomodoroEnabled) {
-          state.pomodoroTimeLeft -= ONCE_COUNT * count;
+  const spendTime = (
+    count: number,
+    state: any,
+    todoLists: any,
+    settings: any
+  ) => {
+    // @ts-ignore
+    Object.values(todoLists)
+      .filter((column: any) => {
+        return (
+          column.items.filter((item: any) => {
+            return item.isSelected;
+          })[0] !== undefined
+        );
+      })[0]
+      .items.map((item: any) => {
+        if (item.isSelected) {
+          if (
+            !settings.isPomodoroEnabled ||
+            state.pomodoroTimerType !== "break"
+          ) {
+            item.spentSecond += ONCE_COUNT * count;
+            if (item.spentSecond > SPENT_SECOND_MAX) {
+              item.spentSecond = SPENT_SECOND_MAX;
+            }
+          }
+          setTimeout(() => {
+            refreshTitle(item.content, item.spentSecond);
+          }, 2);
         }
-        return { ...state };
+        return item;
       });
-    }, 1);
+
+    if (settings.isPomodoroEnabled) {
+      state.pomodoroTimeLeft -= ONCE_COUNT * count;
+    }
+    return [{ ...state }, { ...todoLists }];
   };
 
   /**
