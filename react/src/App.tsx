@@ -10,11 +10,7 @@ import Home from "components/home/Home";
 import LabelBottomNavigation from "components/home/LabelBottomNavigation";
 import PrivacyPolicy from "components/PrivacyPolicy";
 import Settings from "components/Settings";
-import { SessionsContext } from "contexts/SessionsContext";
-import { SettingsContext } from "contexts/SettingsContext";
-import { StateContext } from "contexts/StateContext";
-import { StatisticsContext } from "contexts/StatisticsContext";
-import { TodoListsContext } from "contexts/TodoListsContext";
+import { GlobalStateContext } from "contexts/GlobalStateContext";
 import React, { memo, useContext, useEffect, useRef, useState } from "react";
 import { Route, Switch, useLocation } from "react-router-dom";
 //@ts-ignore
@@ -86,11 +82,7 @@ const useStyles = makeStyles((theme) => ({
 const App: React.FC = memo(() => {
   const classes = useStyles();
   const theme = useTheme();
-  const { state, setState } = useContext(StateContext);
-  const { settings, setSettings } = useContext(SettingsContext);
-  const { statistics, setStatistics } = useContext(StatisticsContext);
-  const { sessions, setSessions } = useContext(SessionsContext);
-  const { todoLists, setTodoLists } = useContext(TodoListsContext);
+  const { globalState, setGlobalState } = useContext(GlobalStateContext);
   const [isDarkModeOn, setIsDarkModeOn] = useState(
     localStorageGetItemIsDarkModeOn
   );
@@ -112,35 +104,26 @@ const App: React.FC = memo(() => {
 
   useEffect(() => {
     // 初期値とローカルストレージからの値を統合
-    setTodoLists((todoLists: any) => {
-      return { ...todoLists, ...localStorageGetItemTodoLists };
+    setGlobalState((globalState: any) => {
+      return {
+        ...globalState,
+        pomodoroTimeLeft: globalState.settings.workTimerLength,
+        todoLists: localStorageGetItemTodoLists,
+        statistics: localStorageGetItemStatistics,
+        settings: localStorageGetItemSettings,
+      };
     });
-    setStatistics((statistics: any) => {
-      return { ...statistics, ...localStorageGetItemStatistics };
-    });
-    setTimeout(() => {
-      setSettings((settings: any) => {
-        const newSettings = { ...settings, ...localStorageGetItemSettings };
-        setState((state: any) => {
-          return {
-            ...state,
-            pomodoroTimeLeft: newSettings.workTimerLength,
-          };
-        });
-        return newSettings;
-      });
-    }, 1);
   }, []);
 
   /**
    * WebSocketで接続されたときの処理です。
    */
   const onConnected = () => {
-    setState((state: any) => {
-      return { ...state, isConnected: true };
+    setGlobalState((globalState: any) => {
+      return { ...globalState, isConnected: true };
     });
     console.info("ルームサーバーに接続しました。");
-    if (state.isInRoom) {
+    if (globalState.isInRoom) {
       sendMessage("enter");
     }
   };
@@ -149,11 +132,10 @@ const App: React.FC = memo(() => {
    * WebSocketが切断されたときの処理です。
    */
   const onDisconnected = () => {
-    setState((state: any) => {
-      return { ...state, isConnected: false };
+    setGlobalState((globalState: any) => {
+      return { ...globalState, isConnected: false, sessions: [] };
     });
     console.info("サーバーとの接続が切れました。");
-    setSessions([]);
   };
 
   /**
@@ -167,19 +149,24 @@ const App: React.FC = memo(() => {
    * 退室時の処理です。
    */
   const onLeave = () => {
-    setState((state: any) => {
+    setGlobalState((globalState: any) => {
       // 離席中ならfaviconを元に戻す
-      if (state.isAfk) {
+      if (globalState.isAfk) {
         const link: any = document.querySelector("link[rel*='icon']");
         link.href = "/favicon.ico";
       }
-      if (state.isConnected) {
+      if (globalState.isConnected) {
         // @ts-ignore
         $websocket.current.sendMessage("/session/leave", JSON.stringify({}));
       }
-      return { ...state, isAfk: false, isInRoom: false, nameInRoom: "" };
+      return {
+        ...globalState,
+        isAfk: false,
+        isInRoom: false,
+        nameInRoom: "",
+        sessions: [],
+      };
     });
-    setSessions([]);
   };
 
   /**
@@ -187,12 +174,12 @@ const App: React.FC = memo(() => {
    * @param {*} message
    */
   const onSessionMessageReceived = (message: any) => {
-    if (!state.isInRoom) {
+    if (!globalState.isInRoom) {
       return;
     }
-    setSessions((sessions: any) => {
+    setGlobalState((globalState: any) => {
       let sessionUpdated = false;
-      let newSessions = sessions.map((session: any) => {
+      let newSessions = globalState.sessions.map((session: any) => {
         if (session.sessionId === message.sessionId) {
           sessionUpdated = true;
           return message;
@@ -202,7 +189,7 @@ const App: React.FC = memo(() => {
       if (!sessionUpdated) {
         newSessions = [...newSessions, message];
       }
-      return newSessions;
+      return { ...globalState, sessions: newSessions };
     });
   };
 
@@ -211,14 +198,14 @@ const App: React.FC = memo(() => {
    * @param {*} message
    */
   const onLeaveMessageReceived = (message: any) => {
-    if (!state.isInRoom) {
+    if (!globalState.isInRoom) {
       return;
     }
-    setSessions((sessions: any) => {
-      const newSessions = sessions.filter((session: any) => {
+    setGlobalState((globalState: any) => {
+      const newSessions = globalState.sessions.filter((session: any) => {
         return session.sessionId !== message.sessionId;
       });
-      return [...newSessions];
+      return { ...globalState, sessions: newSessions };
     });
   };
 
@@ -226,8 +213,8 @@ const App: React.FC = memo(() => {
    * findAllのメッセージを受信したときの処理です。
    */
   const onFindAllMessageReceived = (message: any) => {
-    setSessions((sessions: any) => {
-      let newSessions = [...sessions, ...message];
+    setGlobalState((globalState: any) => {
+      let newSessions = [...globalState.sessions, ...message];
       newSessions = newSessions.map((session) => {
         return {
           ...session,
@@ -237,7 +224,7 @@ const App: React.FC = memo(() => {
           finishAt: (session.finishAt = new Date(session.finishAt).getTime()),
         };
       });
-      return newSessions;
+      return { ...globalState, sessions: newSessions };
     });
   };
 
@@ -245,15 +232,15 @@ const App: React.FC = memo(() => {
    * WebSocketのメッセージを送信します。
    */
   const sendMessage = (messageType: string) => {
-    setState((state: any) => {
-      if (!state.isConnected && messageType !== "enter") {
+    setGlobalState((globalState: any) => {
+      if (!globalState.isConnected && messageType !== "enter") {
         console.error("接続されていません");
-        return state;
-      } else if (!state.isInRoom && messageType !== "enter") {
-        return state;
+        return globalState;
+      } else if (!globalState.isInRoom && messageType !== "enter") {
+        return globalState;
       }
       const selectedTask =
-        Object.values(todoLists).filter((column: any) => {
+        Object.values(globalState.todoLists).filter((column: any) => {
           return (
             column.items.filter((item: any) => {
               return item.isSelected;
@@ -261,7 +248,7 @@ const App: React.FC = memo(() => {
           );
         }).length > 0
           ? // @ts-ignore
-            Object.values(todoLists)
+            Object.values(globalState.todoLists)
               .filter((column: any) => {
                 return (
                   column.items.filter((item: any) => {
@@ -285,24 +272,25 @@ const App: React.FC = memo(() => {
         messageType !== undefined ? "/session/" + messageType : "/session",
         JSON.stringify({
           userName: localStorage.getItem("nameInRoom"),
-          sessionType: state.isAfk
+          sessionType: globalState.isAfk
             ? "afk"
-            : settings.isPomodoroEnabled
-            ? state.pomodoroTimerType
+            : globalState.settings.isPomodoroEnabled
+            ? globalState.pomodoroTimerType
             : "normalWork",
           content: selectedTask !== null ? selectedTask.content : "",
-          isTimerOn: state.isTimerOn,
-          startedAt: state.isTimerOn || state.isAfk ? Date.now() : 0,
+          isTimerOn: globalState.isTimerOn,
+          startedAt:
+            globalState.isTimerOn || globalState.isAfk ? Date.now() : 0,
           finishAt:
-            settings.isPomodoroEnabled && state.isTimerOn
-              ? Date.now() + state.pomodoroTimeLeft * 1000
+            globalState.settings.isPomodoroEnabled && globalState.isTimerOn
+              ? Date.now() + globalState.pomodoroTimeLeft * 1000
               : selectedTask && selectedTask.estimatedSecond > 0
               ? Date.now() +
                 (selectedTask.estimatedSecond - selectedTask.spentSecond) * 1000
               : 0,
         })
       );
-      return state;
+      return globalState;
     });
   };
 

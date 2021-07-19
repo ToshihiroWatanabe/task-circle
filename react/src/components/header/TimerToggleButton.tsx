@@ -1,8 +1,7 @@
 import { Button, useTheme } from "@material-ui/core";
 // @ts-ignore
 import stoppedAudio from "audio/notification_simple-02.mp3";
-import { SettingsContext } from "contexts/SettingsContext";
-import { StateContext } from "contexts/StateContext";
+import { GlobalStateContext } from "contexts/GlobalStateContext";
 import React, { memo, useContext } from "react";
 import { DEFAULT_TITLE } from "utils/constant";
 import { secondToHHMMSS } from "utils/convert";
@@ -14,34 +13,33 @@ const stoppedSound = new Audio(stoppedAudio);
  */
 const TimerToggleButton = memo((props: { sendMessage: any }) => {
   const theme = useTheme();
-  const { state, setState } = useContext(StateContext);
-  const { settings } = useContext(SettingsContext);
+  const { globalState, setGlobalState } = useContext(GlobalStateContext);
 
   /**
    * 切り替えボタンがクリックされたときの処理です。
    */
   const onClick = () => {
-    setState((state: any) => {
-      if (state.isTimerOn) {
-        state.isTimerOn = false;
+    setGlobalState((globalState: any) => {
+      if (globalState.isTimerOn) {
+        globalState.isTimerOn = false;
         // 効果音
         stoppedSound.play();
       }
-      if (state.pomodoroTimerType === "work") {
-        state.pomodoroTimerType = "break";
-        state.pomodoroTimeLeft = settings.breakTimerLength;
+      if (globalState.pomodoroTimerType === "work") {
+        globalState.pomodoroTimerType = "break";
+        globalState.pomodoroTimeLeft = globalState.settings.breakTimerLength;
       } else {
-        state.pomodoroTimerType = "work";
-        state.pomodoroTimeLeft = settings.workTimerLength;
+        globalState.pomodoroTimerType = "work";
+        globalState.pomodoroTimeLeft = globalState.settings.workTimerLength;
       }
-      return { ...state };
+      return { ...globalState };
     });
-    if (state.isTimerOn) {
+    if (globalState.isTimerOn) {
       refreshTitle("", 0);
     } else {
       document.title = DEFAULT_TITLE;
     }
-    if (state.isConnected && state.isInRoom) {
+    if (globalState.isConnected && globalState.isInRoom) {
       props.sendMessage();
     }
   };
@@ -50,20 +48,20 @@ const TimerToggleButton = memo((props: { sendMessage: any }) => {
    * ページのタイトルを更新します。
    */
   const refreshTitle = (content: string, spentSecond: number) => {
-    setState((state: any) => {
-      if (settings.isPomodoroEnabled) {
+    setGlobalState((globalState: any) => {
+      if (globalState.settings.isPomodoroEnabled) {
         document.title =
           "(" +
-          secondToHHMMSS(state.pomodoroTimeLeft).substring(3) +
+          secondToHHMMSS(globalState.pomodoroTimeLeft).substring(3) +
           ") " +
-          (state.pomodoroTimerType === "work" ? content : "休憩中") +
+          (globalState.pomodoroTimerType === "work" ? content : "休憩中") +
           " | " +
           DEFAULT_TITLE;
       } else {
         document.title =
           content + " (" + secondToHHMMSS(spentSecond) + ") | " + DEFAULT_TITLE;
       }
-      return state;
+      return globalState;
     });
   };
 
@@ -71,19 +69,19 @@ const TimerToggleButton = memo((props: { sendMessage: any }) => {
     <>
       <Button
         onClick={onClick}
-        disabled={!settings.isPomodoroEnabled}
+        disabled={!globalState.settings.isPomodoroEnabled}
         variant="contained"
         style={{
           backgroundColor:
             theme.palette.type === "light" ? "whitesmoke" : "#555",
           color: theme.palette.type === "light" ? "#000" : "#FFF",
           border:
-            state.pomodoroTimerType === "work"
+            globalState.pomodoroTimerType === "work"
               ? "solid 1px yellow"
               : "solid 2px #de2a42",
         }}
       >
-        {state.pomodoroTimerType === "work" ? "休憩" : "作業"}に切り替える
+        {globalState.pomodoroTimerType === "work" ? "休憩" : "作業"}に切り替える
       </Button>
     </>
   );

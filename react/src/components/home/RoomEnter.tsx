@@ -1,6 +1,6 @@
 import { Button, TextField, Tooltip } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-import { StateContext } from "contexts/StateContext";
+import { GlobalStateContext } from "contexts/GlobalStateContext";
 import React, { memo, useContext, useEffect, useState } from "react";
 import { NG_USER_NAMES } from "utils/constant";
 import "components/home/RoomEnter.css";
@@ -19,7 +19,7 @@ const useStyles = makeStyles((theme) => ({
  */
 const RoomEnter = memo((props: { onEnter: any }) => {
   const classes = useStyles();
-  const { state, setState } = useContext(StateContext);
+  const { globalState, setGlobalState } = useContext(GlobalStateContext);
   const [nameInRoom, setNameInRoom] = useState("");
   const [helperText, setHelperText] = useState("");
 
@@ -61,9 +61,9 @@ const RoomEnter = memo((props: { onEnter: any }) => {
     localStorage.setItem("nameInRoom", nameInRoom);
     if (validate(nameInRoom)) {
       // 入室
-      setState((state: any) => {
+      setGlobalState((globalState: any) => {
         const newState = {
-          ...state,
+          ...globalState,
           isInRoom: true,
           nameInRoom: nameInRoom,
         };
@@ -108,7 +108,7 @@ const RoomEnter = memo((props: { onEnter: any }) => {
         />
         <Tooltip
           placement="top"
-          title={state.isConnected ? "" : "接続されていません"}
+          title={globalState.isConnected ? "" : "接続されていません"}
         >
           <div
             style={{
@@ -123,7 +123,7 @@ const RoomEnter = memo((props: { onEnter: any }) => {
               variant="contained"
               color="primary"
               onClick={(event) => onEnterButtonClick(event)}
-              disabled={!state.isConnected}
+              disabled={!globalState.isConnected}
               style={{ height: "2.4rem", borderRadius: "0 4px 4px 0" }}
             >
               入室

@@ -8,7 +8,7 @@ import {
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 import PersonIcon from "@material-ui/icons/Person";
 import HelpPopover from "components/home/HelpPopover";
-import { StateContext } from "contexts/StateContext";
+import { GlobalStateContext } from "contexts/GlobalStateContext";
 import React, { memo, useContext } from "react";
 import { DEFAULT_TITLE } from "utils/constant";
 
@@ -24,7 +24,7 @@ const useStyles = makeStyles((theme) => ({
 const RoomHeader = memo(
   (props: { onLeave: any; sendMessage: any; sessions: any }) => {
     const classes = useStyles();
-    const { state, setState } = useContext(StateContext);
+    const { globalState, setGlobalState } = useContext(GlobalStateContext);
 
     /**
      * 退室ボタンがクリックされたときの処理です。
@@ -37,8 +37,8 @@ const RoomHeader = memo(
      * 離席ボタンがクリックされたときの処理です。
      */
     const onAfkButtonClick = () => {
-      setState((state: any) => {
-        if (state.isAfk) {
+      setGlobalState((globalState: any) => {
+        if (globalState.isAfk) {
           const link: any = document.querySelector("link[rel*='icon']");
           link.href = "/favicon.ico";
           document.title = DEFAULT_TITLE;
@@ -47,9 +47,9 @@ const RoomHeader = memo(
           link.href = "/favicon/chair_favicon.ico";
           document.title = "離席中 | " + DEFAULT_TITLE;
         }
-        return { ...state, isAfk: !state.isAfk };
+        return { ...globalState, isAfk: !globalState.isAfk };
       });
-      if (state.isConnected) {
+      if (globalState.isConnected) {
         props.sendMessage();
       }
     };
@@ -65,13 +65,15 @@ const RoomHeader = memo(
         >
           <Tooltip
             title={
-              state.nameInRoom !== "" ? state.nameInRoom + "として入室中" : ""
+              globalState.nameInRoom !== ""
+                ? globalState.nameInRoom + "として入室中"
+                : ""
             }
             placement="top"
           >
             <Typography component="span">ルーム</Typography>
           </Tooltip>
-          {state.isInRoom && (
+          {globalState.isInRoom && (
             <>
               <PersonIcon
                 fontSize="inherit"
@@ -81,7 +83,7 @@ const RoomHeader = memo(
             </>
           )}
         </div>
-        {!state.isInRoom && (
+        {!globalState.isInRoom && (
           <>
             <HelpPopover
               message={
@@ -90,17 +92,17 @@ const RoomHeader = memo(
             />
           </>
         )}
-        {state.isInRoom && (
+        {globalState.isInRoom && (
           <>
             <Button
               size="small"
-              variant={state.isAfk ? "contained" : "outlined"}
+              variant={globalState.isAfk ? "contained" : "outlined"}
               onClick={onAfkButtonClick}
-              disabled={state.isTimerOn}
+              disabled={globalState.isTimerOn}
               style={{ marginRight: "0.2rem" }}
-              color={state.isAfk ? "primary" : "default"}
+              color={globalState.isAfk ? "primary" : "default"}
             >
-              {state.isAfk ? "離席解除" : "離席する"}
+              {globalState.isAfk ? "離席解除" : "離席する"}
             </Button>
             <Tooltip title="退室する" placement="top">
               <IconButton

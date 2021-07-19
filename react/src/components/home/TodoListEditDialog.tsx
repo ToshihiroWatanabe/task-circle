@@ -7,7 +7,7 @@ import {
   TextField,
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-import { TodoListsContext } from "contexts/TodoListsContext";
+import { GlobalStateContext } from "contexts/GlobalStateContext";
 import React, { memo, useContext, useState } from "react";
 
 const useStyles = makeStyles((theme) => ({
@@ -30,7 +30,7 @@ const TodoListEditDialog = memo(
   }) => {
     const classes = useStyles();
     let inRef: any = null;
-    const { todoLists, setTodoLists } = useContext(TodoListsContext);
+    const { globalState, setGlobalState } = useContext(GlobalStateContext);
     const [helperText, setHelperText] = useState("");
 
     /**
@@ -50,12 +50,12 @@ const TodoListEditDialog = memo(
         setHelperText("リスト名は12文字以内にしてください");
       } else {
         // Todoリスト
-        setTodoLists((todoLists: any) => {
+        setGlobalState((globalState: any) => {
           // @ts-ignore
-          Object.values(todoLists)[props.index].name = inRef.value;
+          Object.values(globalState.todoLists)[props.index].name = inRef.value;
           // @ts-ignore
-          props.updateTodoLists(todoLists);
-          return { ...todoLists };
+          props.updateTodoLists(globalState.todoLists);
+          return { ...globalState, todoLists: globalState.todoLists };
         });
         props.setOpen(false);
       }

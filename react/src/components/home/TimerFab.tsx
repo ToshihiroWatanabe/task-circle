@@ -4,8 +4,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import PlayArrowIcon from "@material-ui/icons/PlayArrow";
 import StopIcon from "@material-ui/icons/Stop";
 import CircularDeterminate from "components/home/CircularDeterminate";
-import { SettingsContext } from "contexts/SettingsContext";
-import { StateContext } from "contexts/StateContext";
+import { GlobalStateContext } from "contexts/GlobalStateContext";
 import React, { memo, useContext } from "react";
 import { secondToHHMMSS, secondToHHMMSS_ja } from "utils/convert";
 import { byteSlice } from "utils/string";
@@ -87,8 +86,7 @@ const TimerFab = memo(
   }) => {
     const classes = useStyles();
     const theme = useTheme();
-    const { state, setState } = useContext(StateContext);
-    const { settings, setSettings } = useContext(SettingsContext);
+    const { globalState, setGlobalState } = useContext(GlobalStateContext);
     const useMediaQueryThemeBreakpointsUpMd = useMediaQuery(
       theme.breakpoints.up("md")
     );
@@ -137,34 +135,33 @@ const TimerFab = memo(
     const onFabContextMenu = (event: any) => {
       event.preventDefault();
       // タイマーがオンの場合はボタンを押させて止める
-      setState((state: any) => {
-        if (state.isTimerOn) {
+      setGlobalState((globalState: any) => {
+        if (globalState.isTimerOn) {
           props.onPlayButtonClick(0, "fab");
         }
-        return state;
+        return globalState;
       });
       // 通常タイマー → 作業 → 休憩 → ...
       setTimeout(() => {
-        setState((state: any) => {
-          setSettings((settings: any) => {
-            const newSettings = {
-              ...settings,
-              isPomodoroEnabled: state.pomodoroTimerType !== "break",
-            };
-            return newSettings;
-          });
+        setGlobalState((globalState: any) => {
+          const newSettings = {
+            ...globalState.settings,
+            isPomodoroEnabled: globalState.pomodoroTimerType !== "break",
+          };
           const newState = {
-            ...state,
+            ...globalState.state,
             pomodoroTimerType:
-              settings.isPomodoroEnabled && state.pomodoroTimerType === "work"
+              globalState.settings.isPomodoroEnabled &&
+              globalState.pomodoroTimerType === "work"
                 ? "break"
                 : "work",
             pomodoroTimeLeft:
-              settings.isPomodoroEnabled && state.pomodoroTimerType === "work"
-                ? settings.breakTimerLength
-                : settings.workTimerLength,
+              globalState.settings.isPomodoroEnabled &&
+              globalState.pomodoroTimerType === "work"
+                ? globalState.settings.breakTimerLength
+                : globalState.settings.workTimerLength,
           };
-          return newState;
+          return { ...globalState, ...newState, settings: newSettings };
         });
       }, 1);
     };
@@ -198,57 +195,59 @@ const TimerFab = memo(
           >
             {/* カウント */}
             <div className={classes.timerCount}>
-              {settings.isPomodoroEnabled &&
-                Math.floor(state.pomodoroTimeLeft / 60) +
+              {globalState.settings.isPomodoroEnabled &&
+                Math.floor(globalState.pomodoroTimeLeft / 60) +
                   ":" +
-                  (Math.floor(state.pomodoroTimeLeft % 60) < 10
-                    ? "0" + Math.floor(state.pomodoroTimeLeft % 60)
-                    : Math.floor(state.pomodoroTimeLeft % 60))}
+                  (Math.floor(globalState.pomodoroTimeLeft % 60) < 10
+                    ? "0" + Math.floor(globalState.pomodoroTimeLeft % 60)
+                    : Math.floor(globalState.pomodoroTimeLeft % 60))}
               {/* ポモドーロモードでないとき */}
-              {!settings.isPomodoroEnabled && selectedTask !== null && (
-                <span
-                  style={{
-                    fontSize:
-                      // 1時間以上のとき
-                      selectedTask.spentSecond > 3600
-                        ? useMediaQueryThemeBreakpointsUpMd
-                          ? "2rem"
+              {!globalState.settings.isPomodoroEnabled &&
+                selectedTask !== null && (
+                  <span
+                    style={{
+                      fontSize:
+                        // 1時間以上のとき
+                        selectedTask.spentSecond > 3600
+                          ? useMediaQueryThemeBreakpointsUpMd
+                            ? "2rem"
+                            : useMediaQueryThemeBreakpointsDownXs
+                            ? "0.8rem"
+                            : useMediaQueryThemeBreakpointsDownSm
+                            ? "1.4rem"
+                            : ""
+                          : // 1時間未満のとき
+                          useMediaQueryThemeBreakpointsUpMd
+                          ? "2.75rem"
                           : useMediaQueryThemeBreakpointsDownXs
-                          ? "0.8rem"
+                          ? "1rem"
                           : useMediaQueryThemeBreakpointsDownSm
-                          ? "1.4rem"
-                          : ""
-                        : // 1時間未満のとき
-                        useMediaQueryThemeBreakpointsUpMd
-                        ? "2.75rem"
-                        : useMediaQueryThemeBreakpointsDownXs
-                        ? "1rem"
-                        : useMediaQueryThemeBreakpointsDownSm
-                        ? "2rem"
-                        : "",
-                  }}
-                >
-                  {selectedTask.spentSecond < 3600
-                    ? secondToHHMMSS(selectedTask.spentSecond).substring(3)
-                    : secondToHHMMSS(selectedTask.spentSecond)}
-                </span>
-              )}
+                          ? "2rem"
+                          : "",
+                    }}
+                  >
+                    {selectedTask.spentSecond < 3600
+                      ? secondToHHMMSS(selectedTask.spentSecond).substring(3)
+                      : secondToHHMMSS(selectedTask.spentSecond)}
+                  </span>
+                )}
             </div>
             {/* タスク名 */}
             <div className={classes.content}>
               {/* ポモドーロがオン かつ 作業タイマー かつ 選択しているタスクが存在するとき */}
-              {settings.isPomodoroEnabled &&
-              state.pomodoroTimerType === "work" &&
+              {globalState.settings.isPomodoroEnabled &&
+              globalState.pomodoroTimerType === "work" &&
               selectedTask !== null
                 ? byteSlice(selectedTask.content, 20)
                 : ""}
-              {settings.isPomodoroEnabled && state.pomodoroTimerType === "break"
+              {globalState.settings.isPomodoroEnabled &&
+              globalState.pomodoroTimerType === "break"
                 ? selectedTask === null
                   ? ""
                   : "休憩"
                 : ""}
               {/* ポモドーロモードじゃないとき */}
-              {!settings.isPomodoroEnabled &&
+              {!globalState.settings.isPomodoroEnabled &&
                 selectedTask !== null &&
                 selectedTask.estimatedSecond - selectedTask.spentSecond > 0 && (
                   <p style={{ margin: "0" }}>
@@ -258,7 +257,7 @@ const TimerFab = memo(
                     )}
                   </p>
                 )}
-              {!settings.isPomodoroEnabled && selectedTask !== null
+              {!globalState.settings.isPomodoroEnabled && selectedTask !== null
                 ? byteSlice(selectedTask.content, 20)
                 : ""}
             </div>
@@ -273,12 +272,12 @@ const TimerFab = memo(
             </div>
             {/* 再生・停止アイコン */}
             <div>
-              {selectedTask !== null && !state.isTimerOn && (
+              {selectedTask !== null && !globalState.isTimerOn && (
                 <>
                   <PlayArrowIcon className={classes.playStopIcon} />
                 </>
               )}
-              {selectedTask !== null && state.isTimerOn && (
+              {selectedTask !== null && globalState.isTimerOn && (
                 <>
                   <StopIcon className={classes.playStopIcon} />
                 </>

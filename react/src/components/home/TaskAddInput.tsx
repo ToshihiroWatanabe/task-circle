@@ -3,7 +3,8 @@ import { makeStyles } from "@material-ui/core/styles";
 import "components/home/TaskAddInput.css";
 import AddIcon from "@material-ui/icons/Add";
 import Downshift from "downshift";
-import React, { memo, useEffect, useState } from "react";
+import { GlobalStateContext } from "contexts/GlobalStateContext";
+import React, { memo, useContext, useEffect, useState } from "react";
 import { NG_TASK_NAMES, NUMBER_OF_TASKS_MAX } from "utils/constant";
 // @ts-ignore
 import uuid from "uuid/v4";
@@ -23,8 +24,6 @@ const useStyles = makeStyles((theme) => ({
  */
 const TaskAddInput = memo(
   (props: {
-    todoLists: any;
-    setTodoLists: any;
     updateTodoLists: any;
     setIsInputFocused: any;
     style: any;
@@ -34,6 +33,7 @@ const TaskAddInput = memo(
     const [helperText, setHelperText] = useState("");
     const [inputValue, setInputValue] = useState("");
     const [categoryInput, setCategoryInput] = useState([]);
+    const { globalState, setGlobalState } = useContext(GlobalStateContext);
 
     useEffect(() => {
       selectedTags(categoryInput);
@@ -116,9 +116,9 @@ const TaskAddInput = memo(
     const onAddButtonClick = () => {
       const retrievedInputValue = retrieveEstimatedSecond(inputValue.trim());
       if (validate(retrievedInputValue.content)) {
-        props.setTodoLists((todoLists: any) => {
+        setGlobalState((globalState: any) => {
           // @ts-ignore
-          Object.values(todoLists)[props.index].items.push({
+          Object.values(globalState.todoLists)[props.index].items.push({
             id: uuid(),
             category: categoryInput.length > 0 ? categoryInput[0] : "",
             content: retrievedInputValue.content,
@@ -127,8 +127,8 @@ const TaskAddInput = memo(
             isSelected: false,
             achievedThenStop: false,
           });
-          props.updateTodoLists(todoLists);
-          return { ...todoLists };
+          props.updateTodoLists(globalState.todoLists);
+          return { ...globalState };
         });
         setCategoryInput([]);
         setInputValue("");
@@ -141,9 +141,9 @@ const TaskAddInput = memo(
      */
     const validate = (input: string) => {
       if (
-        Object.values(props.todoLists)[props.index] &&
+        Object.values(globalState.todoLists)[props.index] &&
         // @ts-ignore
-        Object.values(props.todoLists)[props.index].items.length >
+        Object.values(globalState.todoLists)[props.index].items.length >
           NUMBER_OF_TASKS_MAX
       ) {
         setHelperText("これ以上タスクを追加できません");

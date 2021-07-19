@@ -10,7 +10,7 @@ import EditIcon from "@material-ui/icons/Edit";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
 import RotateLeftIcon from "@material-ui/icons/RotateLeft";
 import TodoListEditDialog from "components/home/TodoListEditDialog";
-import { StateContext } from "contexts/StateContext";
+import { GlobalStateContext } from "contexts/GlobalStateContext";
 import React, { memo, useContext, useState } from "react";
 
 const useStyles = makeStyles({
@@ -25,8 +25,6 @@ const useStyles = makeStyles({
 const TodoListMenu = memo(
   (props: {
     index: number;
-    todoLists: any;
-    setTodoLists: any;
     setPreviousTodoLists: any;
     setUndoSnackbarMessage: any;
     setUndoSnackbarOpen: any;
@@ -34,7 +32,7 @@ const TodoListMenu = memo(
     column: any;
   }) => {
     const classes = useStyles();
-    const { state } = useContext(StateContext);
+    const { globalState, setGlobalState } = useContext(GlobalStateContext);
     const [anchorEl, setAnchorEl] = useState(null);
     const [editOpen, setEditOpen] = useState(false);
 
@@ -63,17 +61,17 @@ const TodoListMenu = memo(
      * 全ての経過時間をリセットがクリックされたときの処理です。
      */
     const handleReset = () => {
-      props.setTodoLists((todoLists: any) => {
+      setGlobalState((globalState: any) => {
         props.setPreviousTodoLists(
-          JSON.parse(JSON.stringify({ ...todoLists }))
+          JSON.parse(JSON.stringify({ ...globalState.todoLists }))
         );
         const newTodoLists = {
-          ...todoLists,
-          [Object.keys(todoLists)[props.index]]: {
+          ...globalState.todoLists,
+          [Object.keys(globalState.todoLists)[props.index]]: {
             // @ts-ignore
-            ...Object.values(todoLists)[props.index],
+            ...Object.values(globalState.todoLists)[props.index],
             // @ts-ignore
-            items: Object.values(todoLists)[props.index].items.map(
+            items: Object.values(globalState.todoLists)[props.index].items.map(
               // @ts-ignore
               (item, index) => {
                 item.spentSecond = 0;
@@ -85,12 +83,12 @@ const TodoListMenu = memo(
         };
         props.setUndoSnackbarMessage(
           // @ts-ignore
-          Object.values(todoLists)[props.index].name +
+          Object.values(globalState.todoLists)[props.index].name +
             "の時間をリセットしました"
         );
         props.setUndoSnackbarOpen(true);
         props.updateTodoLists(newTodoLists);
-        return newTodoLists;
+        return { ...globalState, todoLists: newTodoLists };
       });
       setAnchorEl(null);
     };
@@ -99,21 +97,22 @@ const TodoListMenu = memo(
      * 削除がクリックされたときの処理です。
      */
     const handleDelete = () => {
-      props.setTodoLists((todoLists: any) => {
+      setGlobalState((globalState: any) => {
         props.setPreviousTodoLists(
-          JSON.parse(JSON.stringify({ ...todoLists }))
+          JSON.parse(JSON.stringify({ ...globalState.todoLists }))
         );
         const newTodoLists = {
-          ...todoLists,
+          ...globalState.todoLists,
         };
-        delete newTodoLists[Object.keys(todoLists)[props.index]];
+        delete newTodoLists[Object.keys(globalState.todoLists)[props.index]];
         props.setUndoSnackbarMessage(
           // @ts-ignore
-          Object.values(todoLists)[props.index].name + "を削除しました"
+          Object.values(globalState.todoLists)[props.index].name +
+            "を削除しました"
         );
         props.setUndoSnackbarOpen(true);
         props.updateTodoLists(newTodoLists);
-        return newTodoLists;
+        return { ...globalState, todoLists: newTodoLists };
       });
       setAnchorEl(null);
     };
@@ -142,9 +141,9 @@ const TodoListMenu = memo(
           <MenuItem
             onClick={handleEdit}
             disabled={
-              state.isTimerOn &&
+              globalState.isTimerOn &&
               // @ts-ignore
-              Object.values(props.todoLists)[props.index].items.length > 0
+              Object.values(globalState.todoLists)[props.index].items.length > 0
             }
           >
             <EditIcon />
@@ -153,9 +152,10 @@ const TodoListMenu = memo(
           <MenuItem
             onClick={handleReset}
             disabled={
-              state.isTimerOn ||
+              globalState.isTimerOn ||
               // @ts-ignore
-              Object.values(props.todoLists)[props.index].items.length === 0
+              Object.values(globalState.todoLists)[props.index].items.length ===
+                0
             }
           >
             <RotateLeftIcon />
@@ -165,9 +165,9 @@ const TodoListMenu = memo(
             style={{ color: "red" }}
             onClick={handleDelete}
             disabled={
-              state.isTimerOn &&
+              globalState.isTimerOn &&
               // @ts-ignore
-              Object.values(props.todoLists)[props.index].items.length > 0
+              Object.values(globalState.todoLists)[props.index].items.length > 0
             }
           >
             <DeleteIcon />

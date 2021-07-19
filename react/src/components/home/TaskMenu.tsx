@@ -10,7 +10,7 @@ import EditIcon from "@material-ui/icons/Edit";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
 import RotateLeftIcon from "@material-ui/icons/RotateLeft";
 import TaskEditDialog from "components/home/TaskEditDialog";
-import { StateContext } from "contexts/StateContext";
+import { GlobalStateContext } from "contexts/GlobalStateContext";
 import React, { memo, useContext, useEffect, useState } from "react";
 
 const useStyles = makeStyles({
@@ -24,8 +24,6 @@ const useStyles = makeStyles({
  */
 const TaskMenu = memo(
   (props: {
-    todoLists: any;
-    setTodoLists: any;
     setPreviousTodoLists: any;
     columnIndex: number;
     updateTodoLists: any;
@@ -35,7 +33,7 @@ const TaskMenu = memo(
     setUndoSnackbarOpen: any;
   }) => {
     const classes = useStyles();
-    const { state } = useContext(StateContext);
+    const { globalState, setGlobalState } = useContext(GlobalStateContext);
     const [anchorEl, setAnchorEl] = useState(null);
     const [editOpen, setEditOpen] = useState(false);
     const [categories] = useState([]);
@@ -76,17 +74,19 @@ const TaskMenu = memo(
      * リセットがクリックされたときの処理です。
      */
     const handleReset = () => {
-      props.setTodoLists((todoLists: any) => {
+      setGlobalState((globalState: any) => {
         props.setPreviousTodoLists(
-          JSON.parse(JSON.stringify({ ...todoLists }))
+          JSON.parse(JSON.stringify({ ...globalState.todoLists }))
         );
         const newTodoLists = {
-          ...todoLists,
-          [Object.keys(todoLists)[props.columnIndex]]: {
+          ...globalState.todoLists,
+          [Object.keys(globalState.todoLists)[props.columnIndex]]: {
             // @ts-ignore
-            ...Object.values(todoLists)[props.columnIndex],
+            ...Object.values(globalState.todoLists)[props.columnIndex],
             // @ts-ignore
-            items: Object.values(todoLists)[props.columnIndex].items.map(
+            items: Object.values(globalState.todoLists)[
+              props.columnIndex
+            ].items.map(
               // @ts-ignore
               (item, index) => {
                 if (index === props.index) {
@@ -109,17 +109,19 @@ const TaskMenu = memo(
      * 削除がクリックされたときの処理です。
      */
     const handleDelete = () => {
-      props.setTodoLists((todoLists: any) => {
+      setGlobalState((globalState: any) => {
         props.setPreviousTodoLists(
-          JSON.parse(JSON.stringify({ ...todoLists }))
+          JSON.parse(JSON.stringify({ ...globalState.todoLists }))
         );
         const newTodoLists = {
-          ...todoLists,
-          [Object.keys(todoLists)[props.columnIndex]]: {
+          ...globalState.todoLists,
+          [Object.keys(globalState.todoLists)[props.columnIndex]]: {
             // @ts-ignore
-            ...Object.values(todoLists)[props.columnIndex],
+            ...Object.values(globalState.todoLists)[props.columnIndex],
             // @ts-ignore
-            items: Object.values(todoLists)[props.columnIndex].items.filter(
+            items: Object.values(globalState.todoLists)[
+              props.columnIndex
+            ].items.filter(
               // @ts-ignore
               (value, index) => {
                 if (index === props.index) {
@@ -132,7 +134,7 @@ const TaskMenu = memo(
           },
         };
         props.updateTodoLists(newTodoLists);
-        return newTodoLists;
+        return { ...globalState, todoLists: newTodoLists };
       });
       setAnchorEl(null);
     };
@@ -165,12 +167,12 @@ const TaskMenu = memo(
             disabled={
               // タイマー作動中かつ選択中のタスク、または経過時間が0の場合は無効
               // @ts-ignore
-              (Object.values(props.todoLists)[props.columnIndex].items[
+              (Object.values(globalState.todoLists)[props.columnIndex].items[
                 props.index
               ].isSelected &&
-                state.isTimerOn) ||
+                globalState.isTimerOn) ||
               // @ts-ignore
-              Object.values(props.todoLists)[props.columnIndex].items[
+              Object.values(globalState.todoLists)[props.columnIndex].items[
                 props.index
               ].spentSecond === 0
             }
@@ -184,9 +186,9 @@ const TaskMenu = memo(
             disabled={
               // タイマー作動中かつ選択中のタスクの場合は無効
               // @ts-ignore
-              Object.values(props.todoLists)[props.columnIndex].items[
+              Object.values(globalState.todoLists)[props.columnIndex].items[
                 props.index
-              ].isSelected && state.isTimerOn
+              ].isSelected && globalState.isTimerOn
             }
           >
             <DeleteIcon />
@@ -198,8 +200,8 @@ const TaskMenu = memo(
           setOpen={setEditOpen}
           index={props.index}
           columnIndex={props.columnIndex}
-          todoLists={props.todoLists}
-          setTodoLists={props.setTodoLists}
+          todoLists={globalState.todoLists}
+          setTodoLists={globalState.setTodoLists}
           categories={categories}
           sendMessage={props.sendMessage}
           updateTodoLists={props.updateTodoLists}

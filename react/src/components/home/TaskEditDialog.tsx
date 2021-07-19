@@ -16,7 +16,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import Autocomplete, {
   createFilterOptions,
 } from "@material-ui/lab/Autocomplete";
-import { StateContext } from "contexts/StateContext";
+import { GlobalStateContext } from "contexts/GlobalStateContext";
 import React, { memo, useContext, useEffect, useState } from "react";
 
 /** 時間 */
@@ -83,7 +83,7 @@ const TaskEditDialog = memo(
       second: 0,
       achievedThenStop: false,
     });
-    const { state } = useContext(StateContext);
+    const { globalState, setGlobalState } = useContext(GlobalStateContext);
 
     useEffect(() => {
       // @ts-ignore
@@ -111,38 +111,38 @@ const TaskEditDialog = memo(
      * 決定したときの処理です。
      */
     const handleAccept = () => {
-      props.setTodoLists((todoLists: any) => {
+      setGlobalState((globalState: any) => {
         const newTodoLists = {
-          ...todoLists,
-          [Object.keys(todoLists)[props.columnIndex]]: {
+          ...globalState.todoLists,
+          [Object.keys(globalState.todoLists)[props.columnIndex]]: {
             // @ts-ignore
-            ...Object.values(todoLists)[props.columnIndex],
+            ...Object.values(globalState.todoLists)[props.columnIndex],
             // @ts-ignore
-            items: Object.values(todoLists)[props.columnIndex].items.map(
-              (item: any, index: number) => {
-                if (index === props.index) {
-                  item.category = value.category;
-                  item.content = value.content;
-                  item.estimatedSecond =
-                    value.hour * 3600 + value.minute * 60 + value.second;
-                  item.achievedThenStop = value.achievedThenStop;
-                }
-                return item;
+            items: Object.values(globalState.todoLists)[
+              props.columnIndex
+            ].items.map((item: any, index: number) => {
+              if (index === props.index) {
+                item.category = value.category;
+                item.content = value.content;
+                item.estimatedSecond =
+                  value.hour * 3600 + value.minute * 60 + value.second;
+                item.achievedThenStop = value.achievedThenStop;
               }
-            ),
+              return item;
+            }),
           },
         };
         props.updateTodoLists(newTodoLists);
-        return newTodoLists;
+        return { ...globalState, todoLists: newTodoLists };
       });
       props.setOpen(false);
       if (
-        state.isTimerOn &&
+        globalState.isTimerOn &&
         // @ts-ignore
         Object.values(props.todoLists)[props.columnIndex].items[props.index]
           .isSelected
       ) {
-        if (state.isConnected && state.isInRoom) {
+        if (globalState.isConnected && globalState.isInRoom) {
           props.sendMessage();
         }
       }

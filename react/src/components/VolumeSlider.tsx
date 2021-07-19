@@ -4,7 +4,8 @@ import { makeStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
 import VolumeDown from "@material-ui/icons/VolumeDown";
 import VolumeUp from "@material-ui/icons/VolumeUp";
-import React, { memo } from "react";
+import React, { memo, useContext } from "react";
+import { GlobalStateContext } from "contexts/GlobalStateContext";
 
 /** setTimeoutのID */
 let changeTimeout = 0;
@@ -39,13 +40,9 @@ const useStyles = makeStyles({
  * 音量スライダーのコンポーネントです。
  */
 const VolumeSlider = memo(
-  (props: {
-    helperText: string;
-    settings: any;
-    setSettings: any;
-    updateSettings: any;
-  }) => {
+  (props: { helperText: string; updateSettings: any }) => {
     const classes = useStyles();
+    const { globalState, setGlobalState } = useContext(GlobalStateContext);
 
     /**
      * 入力値に変化があったときの処理です。
@@ -54,18 +51,38 @@ const VolumeSlider = memo(
      */
     const handleChange = (event: any, newValue: number) => {
       if (props.helperText.match(/.*作業.*/)) {
-        props.setSettings({ ...props.settings, workVideoVolume: newValue });
+        setGlobalState((globalState: any) => {
+          return {
+            ...globalState,
+            settings: { ...globalState.settings, workVideoVolume: newValue },
+          };
+        });
       } else if (props.helperText.match(/.*休憩.*/)) {
-        props.setSettings({ ...props.settings, breakVideoVolume: newValue });
+        setGlobalState((globalState: any) => {
+          return {
+            ...globalState,
+            settings: { ...globalState.settings, breakVideoVolume: newValue },
+          };
+        });
       } else if (props.helperText.match(/.*チクタク.*/)) {
-        props.setSettings({ ...props.settings, tickVolume: newValue });
+        setGlobalState((globalState: any) => {
+          return {
+            ...globalState,
+            settings: { ...globalState.settings, tickVolume: newValue },
+          };
+        });
       } else {
-        props.setSettings({ ...props.settings, volume: newValue });
+        setGlobalState((globalState: any) => {
+          return {
+            ...globalState,
+            settings: { ...globalState.settings, volume: newValue },
+          };
+        });
       }
       clearTimeout(changeTimeout);
       // @ts-ignore
       changeTimeout = setTimeout(() => {
-        props.updateSettings(props.settings);
+        props.updateSettings(globalState.settings);
       }, 500);
     };
 
@@ -82,12 +99,12 @@ const VolumeSlider = memo(
             <Slider
               value={
                 props.helperText.match(/.*作業.*/)
-                  ? props.settings.workVideoVolume
+                  ? globalState.settings.workVideoVolume
                   : props.helperText.match(/.*休憩.*/)
-                  ? props.settings.breakVideoVolume
+                  ? globalState.settings.breakVideoVolume
                   : props.helperText.match(/.*チクタク.*/)
-                  ? props.settings.tickVolume
-                  : props.settings.volume
+                  ? globalState.settings.tickVolume
+                  : globalState.settings.volume
               }
               // @ts-ignore
               onChange={handleChange}

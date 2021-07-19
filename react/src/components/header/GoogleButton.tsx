@@ -1,9 +1,7 @@
 import { useTheme } from "@material-ui/core";
 import "components/header/GoogleButton.css";
 import SimpleSnackbar from "components/SimpleSnackbar";
-import { SettingsContext } from "contexts/SettingsContext";
-import { StateContext } from "contexts/StateContext";
-import { TodoListsContext } from "contexts/TodoListsContext";
+import { GlobalStateContext } from "contexts/GlobalStateContext";
 import React, { memo, useContext, useState } from "react";
 import { GoogleLogin, GoogleLogout } from "react-google-login";
 import AuthService from "services/auth.service";
@@ -21,9 +19,7 @@ const CLIENT_ID = process.env.REACT_APP_CLIENT_ID;
  */
 const GoogleButton = memo((props: any) => {
   const theme = useTheme();
-  const { state, setState } = useContext(StateContext);
-  const { todoLists, setTodoLists } = useContext(TodoListsContext);
-  const { settings, setSettings } = useContext(SettingsContext);
+  const { globalState, setGlobalState } = useContext(GlobalStateContext);
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMassage] = useState("");
 
@@ -32,8 +28,8 @@ const GoogleButton = memo((props: any) => {
    * @param {*} response
    */
   const login = (response: any) => {
-    setState((state: any) => {
-      return { ...state, isInSync: true, isInRoom: false };
+    setGlobalState((globalState: any) => {
+      return { ...globalState, isInSync: true, isInRoom: false };
     });
     AuthService.login({
       tokenId: response.tokenId,
@@ -41,9 +37,9 @@ const GoogleButton = memo((props: any) => {
     })
       .then((res) => {
         if (res.data === "registered" || res.data === "logined") {
-          setState((state: any) => {
+          setGlobalState((globalState: any) => {
             return {
-              ...state,
+              ...globalState,
               isLogined: true,
               tokenId: response.tokenId,
               email: response.profileObj.email,
@@ -61,16 +57,16 @@ const GoogleButton = memo((props: any) => {
                 localStorage.getItem("todoListsUpdatedAt")
               ) {
                 // ローカルのデータをDBのデータに上書きする
-                setTodoLists((todoLists: any) => {
+                setGlobalState((globalState: any) => {
                   const newTodoLists = {
-                    ...todoLists,
+                    ...globalState.todoLists,
                     ...JSON.parse(r.data.todoList),
                   };
                   localStorage.setItem(
                     "todoLists",
                     JSON.stringify(newTodoLists)
                   );
-                  return newTodoLists;
+                  return { ...globalState, todoLists: newTodoLists };
                 });
                 localStorage.setItem(
                   "todoListsUpdatedAt",
@@ -88,13 +84,13 @@ const GoogleButton = memo((props: any) => {
                 localStorage.getItem("settingsUpdatedAt")
               ) {
                 // ローカルのデータをDBのデータに上書きする
-                setSettings((settings: any) => {
+                setGlobalState((globalState: any) => {
                   const newSettings = {
-                    ...settings,
+                    ...globalState.settings,
                     ...JSON.parse(r.data.setting),
                   };
                   localStorage.setItem("settings", JSON.stringify(newSettings));
-                  return newSettings;
+                  return { ...globalState, settings: newSettings };
                 });
                 localStorage.setItem(
                   "settingsUpdatedAt",
@@ -103,22 +99,28 @@ const GoogleButton = memo((props: any) => {
               }
             });
           }
-          TodoListService.update(response.tokenId, JSON.stringify(todoLists));
-          SettingService.update(response.tokenId, JSON.stringify(settings));
-          setState((state: any) => {
-            return { ...state, isInSync: false };
+          TodoListService.update(
+            response.tokenId,
+            JSON.stringify(globalState.todoLists)
+          );
+          SettingService.update(
+            response.tokenId,
+            JSON.stringify(globalState.settings)
+          );
+          setGlobalState((globalState: any) => {
+            return { ...globalState, isInSync: false };
           });
         } else {
           handleLoginFailure();
-          setState((state: any) => {
-            return { ...state, isInSync: false };
+          setGlobalState((globalState: any) => {
+            return { ...globalState, isInSync: false };
           });
         }
       })
       .catch(() => {
         handleLoginFailure();
-        setState((state: any) => {
-          return { ...state, isInSync: false };
+        setGlobalState((globalState: any) => {
+          return { ...globalState, isInSync: false };
         });
       });
   };
@@ -128,8 +130,8 @@ const GoogleButton = memo((props: any) => {
    * @param {*} response
    */
   const logout = (response: any) => {
-    setState((state: any) => {
-      return { ...state, isLogined: false, tokenId: "", email: "" };
+    setGlobalState((globalState: any) => {
+      return { ...globalState, isLogined: false, tokenId: "", email: "" };
     });
     props.setMaskedEmail("");
   };
@@ -152,7 +154,7 @@ const GoogleButton = memo((props: any) => {
 
   return (
     <div id="googleButton">
-      {state.isLogined ? (
+      {globalState.isLogined ? (
         // @ts-ignore
         <GoogleLogout
           clientId={CLIENT_ID}

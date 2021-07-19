@@ -23,8 +23,7 @@ import YouTubeIcon from "@material-ui/icons/YouTube";
 import SimpleSnackbar from "components/SimpleSnackbar";
 import SyncProgress from "components/SyncProgress";
 import VolumeSlider from "components/VolumeSlider";
-import { SettingsContext } from "contexts/SettingsContext";
-import { StateContext } from "contexts/StateContext";
+import { GlobalStateContext } from "contexts/GlobalStateContext";
 import { AnyARecord } from "dns";
 import React, { memo, useContext, useState } from "react";
 import YouTube from "react-youtube";
@@ -88,8 +87,7 @@ const useStyles = makeStyles((theme) => ({
  */
 const Settings = memo(() => {
   const classes = useStyles();
-  const { state } = useContext(StateContext);
-  const { settings, setSettings } = useContext(SettingsContext);
+  const { globalState, setGlobalState } = useContext(GlobalStateContext);
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [workVideoTitle, setWorkVideoTitle] = useState("");
   const [breakVideoTitle, setBreakVideoTitle] = useState("");
@@ -102,7 +100,7 @@ const Settings = memo(() => {
    * @param {} event
    */
   const handleChange = (event: any) => {
-    setSettings((settings: any) => {
+    setGlobalState((globalState: any) => {
       if (event.target.name === "workVideoUrl") {
         setWorkVideoTitle("");
         setRenderWorkVideo(false);
@@ -117,14 +115,14 @@ const Settings = memo(() => {
           setRenderBreakVideo(true);
         }, 10);
       }
-      settings = {
-        ...settings,
+      const newSettings = {
+        ...globalState.settings,
         [event.target.name]: event.target.name.match(/.*VideoUrl/)
           ? event.target.value
           : event.target.checked,
       };
-      updateSettings(settings);
-      return settings;
+      updateSettings(newSettings);
+      return { ...globalState, settings: newSettings };
     });
   };
 
@@ -134,15 +132,15 @@ const Settings = memo(() => {
   const updateSettings = (settings: AnyARecord) => {
     localStorage.setItem("settings", JSON.stringify(settings));
     localStorage.setItem("settingsUpdatedAt", Date.now().toString());
-    if (state.isLogined) {
+    if (globalState.isLogined) {
       setIsInSync(true);
     }
     clearTimeout(updateTimeout);
     // @ts-ignore
     updateTimeout = setTimeout(() => {
-      if (state.isLogined) {
+      if (globalState.isLogined) {
         // DBの設定を取得
-        SettingService.findByTokenId(state.tokenId).then((r) => {
+        SettingService.findByTokenId(globalState.tokenId).then((r) => {
           // ローカルのデータより新しいかどうか比較する
           if (
             // @ts-ignore
@@ -151,9 +149,9 @@ const Settings = memo(() => {
             localStorage.getItem("settingsUpdatedAt")
           ) {
             // ローカルのデータをDBのデータに上書きする
-            setSettings((settings: any) => {
+            setGlobalState((globalState: any) => {
               const newSettings = {
-                ...settings,
+                ...globalState.settings,
                 ...JSON.parse(r.data.setting),
               };
               localStorage.setItem("settings", JSON.stringify(newSettings));
@@ -161,14 +159,17 @@ const Settings = memo(() => {
                 "settingsUpdatedAt",
                 new Date(r.data.updatedAt).getTime().toString()
               );
-              return newSettings;
+              return { ...globalState, settings: newSettings };
             });
           }
           setIsInSync(false);
         });
-        setSettings((settings: any) => {
-          SettingService.update(state.tokenId, JSON.stringify(settings));
-          return settings;
+        setGlobalState((globalState: any) => {
+          SettingService.update(
+            globalState.tokenId,
+            JSON.stringify(globalState.settings)
+          );
+          return globalState;
         });
       }
     }, 100);
@@ -203,10 +204,13 @@ const Settings = memo(() => {
    * @param {*} event
    */
   const onTimeFormatToClipboardChange = (event: any) => {
-    setSettings((settings: any) => {
-      settings = { ...settings, timeFormatToClipboard: event.target.value };
-      updateSettings(settings);
-      return settings;
+    setGlobalState((globalState: any) => {
+      const newSettings = {
+        ...globalState.settings,
+        timeFormatToClipboard: event.target.value,
+      };
+      updateSettings(newSettings);
+      return { ...globalState, settings: newSettings };
     });
   };
 
@@ -215,10 +219,13 @@ const Settings = memo(() => {
    * @param {*} evnet
    */
   const onTweetButtonEnabledChange = (event: any) => {
-    setSettings((settings: any) => {
-      settings = { ...settings, isTweetButtonEnabled: event.target.checked };
-      updateSettings(settings);
-      return settings;
+    setGlobalState((globalState: any) => {
+      const newSettings = {
+        ...globalState.settings,
+        isTweetButtonEnabled: event.target.checked,
+      };
+      updateSettings(newSettings);
+      return { ...globalState, settings: newSettings };
     });
   };
 
@@ -227,10 +234,13 @@ const Settings = memo(() => {
    * @param {*} event
    */
   const onTweetTemplateChange = (event: any) => {
-    setSettings((settings: any) => {
-      settings = { ...settings, tweetTemplate: event.target.value };
-      updateSettings(settings);
-      return settings;
+    setGlobalState((globalState: any) => {
+      const newSettings = {
+        ...globalState.settings,
+        tweetTemplate: event.target.value,
+      };
+      updateSettings(newSettings);
+      return { ...globalState, settings: newSettings };
     });
   };
 
@@ -253,13 +263,13 @@ const Settings = memo(() => {
               label="YouTube動画のURL"
               onChange={handleChange}
               name="workVideoUrl"
-              value={settings.workVideoUrl}
+              value={globalState.settings.workVideoUrl}
               onFocus={(event) => {
                 event.target.select();
               }}
             ></TextField>
             {(() => {
-              if (settings.workVideoUrl !== "" && renderWorkVideo) {
+              if (globalState.settings.workVideoUrl !== "" && renderWorkVideo) {
                 return (
                   <>
                     <br />
@@ -276,7 +286,9 @@ const Settings = memo(() => {
                     </Typography>
                     <YouTube
                       videoId={
-                        settings.workVideoUrl.split(/v=|\//).slice(-1)[0]
+                        globalState.settings.workVideoUrl
+                          .split(/v=|\//)
+                          .slice(-1)[0]
                       }
                       // @ts-ignore
                       opts={playerOptions}
@@ -297,8 +309,6 @@ const Settings = memo(() => {
             <VolumeSlider
               // @ts-ignore
               helperText="音量(作業用BGM)"
-              settings={settings}
-              setSettings={setSettings}
               updateSettings={updateSettings}
             />
           </FormGroup>
@@ -313,13 +323,16 @@ const Settings = memo(() => {
               label="YouTube動画のURL"
               onChange={handleChange}
               name="breakVideoUrl"
-              value={settings.breakVideoUrl}
+              value={globalState.settings.breakVideoUrl}
               onFocus={(event) => {
                 event.target.select();
               }}
             ></TextField>
             {(() => {
-              if (settings.breakVideoUrl !== "" && renderBreakVideo) {
+              if (
+                globalState.settings.breakVideoUrl !== "" &&
+                renderBreakVideo
+              ) {
                 return (
                   <>
                     <br />
@@ -336,7 +349,9 @@ const Settings = memo(() => {
                     </Typography>
                     <YouTube
                       videoId={
-                        settings.breakVideoUrl.split(/v=|\//).slice(-1)[0]
+                        globalState.settings.breakVideoUrl
+                          .split(/v=|\//)
+                          .slice(-1)[0]
                       }
                       // @ts-ignore
                       opts={playerOptions}
@@ -357,8 +372,7 @@ const Settings = memo(() => {
             {/* @ts-ignore */}
             <VolumeSlider
               helperText="音量(休憩用BGM)"
-              settings={settings}
-              setSettings={setSettings}
+              updateSettings={updateSettings}
             />
           </FormGroup>
         </FormControl>
@@ -370,8 +384,7 @@ const Settings = memo(() => {
           {/* @ts-ignore */}
           <VolumeSlider
             helperText="その他の音"
-            settings={settings}
-            setSettings={setSettings}
+            updateSettings={updateSettings}
           />
         </FormControl>
         <FormControl component="fieldset" className={classes.formControl}>
@@ -380,10 +393,9 @@ const Settings = memo(() => {
           {/* @ts-ignore */}
           <VolumeSlider
             helperText="チクタク音"
-            settings={settings}
-            setSettings={setSettings}
+            updateSettings={updateSettings}
           />
-          {settings.tickVolume === 0 && (
+          {globalState.settings.tickVolume === 0 && (
             <Typography variant="caption">
               チクタク音のボリュームを0にすると、動作が不安定になる場合があります。
             </Typography>
@@ -425,7 +437,7 @@ const Settings = memo(() => {
         <Select
           native
           style={{ width: "16rem" }}
-          value={settings.timeFormatToClipboard}
+          value={globalState.settings.timeFormatToClipboard}
           onChange={onTimeFormatToClipboardChange}
         >
           <option value={"HH:MM:SS"}>HH:MM:SS</option>
@@ -444,7 +456,7 @@ const Settings = memo(() => {
           <TwitterIcon color="primary" />
           ツイートボタン
           <Switch
-            checked={settings.isTweetButtonEnabled}
+            checked={globalState.settings.isTweetButtonEnabled}
             onChange={onTweetButtonEnabledChange}
             inputProps={{
               "aria-label": "checkbox",
@@ -453,7 +465,7 @@ const Settings = memo(() => {
         </Typography>
         <TextField
           label="定型文"
-          value={settings.tweetTemplate}
+          value={globalState.settings.tweetTemplate}
           size="small"
           placeholder="#TaskCircle"
           variant="outlined"

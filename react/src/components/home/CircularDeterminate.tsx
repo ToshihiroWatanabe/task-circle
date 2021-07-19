@@ -1,7 +1,6 @@
 import CircularProgress from "@material-ui/core/CircularProgress";
 import { makeStyles, useTheme } from "@material-ui/core/styles";
-import { SettingsContext } from "contexts/SettingsContext";
-import { StateContext } from "contexts/StateContext";
+import { GlobalStateContext } from "contexts/GlobalStateContext";
 import React, { memo, useContext } from "react";
 
 const useStyles = makeStyles((theme) => ({
@@ -38,8 +37,7 @@ const CircularDeterminate = memo(
   (props: { todoLists: any; width: any; height: any }) => {
     const classes = useStyles();
     const theme = useTheme();
-    const { state } = useContext(StateContext);
-    const { settings } = useContext(SettingsContext);
+    const { globalState } = useContext(GlobalStateContext);
 
     // 選択されているタスク
     const selectedTask =
@@ -70,10 +68,14 @@ const CircularDeterminate = memo(
           className={classes.fab}
           variant="determinate"
           value={
-            settings.isPomodoroEnabled
-              ? state.pomodoroTimerType === "work"
-                ? (state.pomodoroTimeLeft / settings.workTimerLength) * -100
-                : (state.pomodoroTimeLeft / settings.breakTimerLength) * -100
+            globalState.settings.isPomodoroEnabled
+              ? globalState.pomodoroTimerType === "work"
+                ? (globalState.pomodoroTimeLeft /
+                    globalState.settings.workTimerLength) *
+                  -100
+                : (globalState.pomodoroTimeLeft /
+                    globalState.settings.breakTimerLength) *
+                  -100
               : selectedTask !== null && selectedTask.estimatedSecond > 0
               ? (selectedTask.spentSecond / selectedTask.estimatedSecond) * 100
               : 0
@@ -82,9 +84,8 @@ const CircularDeterminate = memo(
           style={{
             width: props.width ? props.width : "",
             height: props.height ? props.height : "",
-            // @ts-ignore
-            color: settings.isPomodoroEnabled
-              ? state.pomodoroTimerType === "work"
+            color: globalState.settings.isPomodoroEnabled
+              ? globalState.pomodoroTimerType === "work"
                 ? "#de2a42"
                 : "yellow"
               : // ポモドーロじゃないとき

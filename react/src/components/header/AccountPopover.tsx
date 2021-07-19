@@ -11,8 +11,7 @@ import AccountCircleIcon from "@material-ui/icons/AccountCircle";
 import VisibilityIcon from "@material-ui/icons/Visibility";
 import VisibilityOffIcon from "@material-ui/icons/VisibilityOff";
 import GoogleButton from "components/header/GoogleButton";
-import { StateContext } from "contexts/StateContext";
-import { StatisticsContext } from "contexts/StatisticsContext";
+import { GlobalStateContext } from "contexts/GlobalStateContext";
 import React, { memo, useContext, useState } from "react";
 import { Link } from "react-router-dom";
 import { secondToHHMMSS } from "utils/convert";
@@ -31,8 +30,7 @@ const useStyles = makeStyles((theme) => ({
 const AccountPopover = memo((props) => {
   const classes = useStyles();
   const theme = useTheme();
-  const { state } = useContext(StateContext);
-  const { statistics } = useContext(StatisticsContext);
+  const { globalState } = useContext(GlobalStateContext);
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
   // メールアドレスが隠されているかどうか
@@ -58,7 +56,7 @@ const AccountPopover = memo((props) => {
           onClick={handleClick}
           color={
             theme.palette.type === "light"
-              ? state.isLogined
+              ? globalState.isLogined
                 ? "inherit"
                 : "default"
               : "default"
@@ -67,7 +65,7 @@ const AccountPopover = memo((props) => {
             color:
               theme.palette.type === "light"
                 ? ""
-                : state.isLogined
+                : globalState.isLogined
                 ? "white"
                 : "RGB(0,0,0,0.54)",
           }}
@@ -94,19 +92,19 @@ const AccountPopover = memo((props) => {
         <Tooltip
           title={
             "昨日の合計作業時間 " +
-            (statistics.yesterdaySpentSecond > 0
-              ? secondToHHMMSS(statistics.yesterdaySpentSecond)
+            (globalState.statistics.yesterdaySpentSecond > 0
+              ? secondToHHMMSS(globalState.statistics.yesterdaySpentSecond)
               : "なし")
           }
           placement="top"
         >
           <Typography>
-            {statistics.updatedAt > 0
-              ? new Date(statistics.updatedAt).toLocaleDateString()
+            {globalState.statistics.updatedAt > 0
+              ? new Date(globalState.statistics.updatedAt).toLocaleDateString()
               : new Date().toLocaleDateString()}
             の合計作業時間{" "}
-            {statistics.todaySpentSecond > 0
-              ? secondToHHMMSS(statistics.todaySpentSecond)
+            {globalState.statistics.todaySpentSecond > 0
+              ? secondToHHMMSS(globalState.statistics.todaySpentSecond)
               : "なし"}
           </Typography>
         </Tooltip>
@@ -127,7 +125,7 @@ const AccountPopover = memo((props) => {
           </Link>
         </div>
         <Box mt={"0.5rem"} />
-        {state.isLogined && (
+        {globalState.isLogined && (
           <>
             {/* メールアドレス表示 */}
             <Typography variant="caption" style={{ display: "flex" }}>
@@ -146,7 +144,7 @@ const AccountPopover = memo((props) => {
               )}
               {showEmail && (
                 <>
-                  {"ログイン中: " + state.email}
+                  {"ログイン中: " + globalState.email}
                   <Tooltip title="メールを非表示">
                     <VisibilityIcon
                       onClick={() => {

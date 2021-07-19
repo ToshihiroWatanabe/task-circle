@@ -24,8 +24,7 @@ import TaskAddInput from "components/home/TaskAddInput";
 import TaskMenu from "components/home/TaskMenu";
 import "components/home/TodoList.css";
 import TodoListMenu from "components/home/TodoListMenu";
-import { SettingsContext } from "contexts/SettingsContext";
-import { StateContext } from "contexts/StateContext";
+import { GlobalStateContext } from "contexts/GlobalStateContext";
 import React, { memo, useContext, useState } from "react";
 import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
 import { Link } from "react-router-dom";
@@ -76,15 +75,12 @@ const useStyles = makeStyles((theme) => ({
 const TodoList = memo(
   (props: {
     updateTodoLists: any;
-    todoLists: any;
-    setTodoLists: any;
     sendMessage: any;
     onPlayButtonClick: any;
   }) => {
     const classes = useStyles();
     const theme = useTheme();
-    const { state } = useContext(StateContext);
-    const { settings } = useContext(SettingsContext);
+    const { globalState, setGlobalState } = useContext(GlobalStateContext);
     const [isInputFocused, setIsInputFocused] = useState(-1);
     const [previousTodoLists, setPreviousTodoLists] = useState({});
     const [undoSnackbarOpen, setUndoSnackbarOpen] = useState(false);
@@ -137,7 +133,9 @@ const TodoList = memo(
             items: destItems,
           },
         };
-        setTodoLists(newTodoLists);
+        setGlobalState((globalState: any) => {
+          return { ...globalState, todoLists: newTodoLists };
+        });
         props.updateTodoLists(newTodoLists);
       } else {
         // 同じカラムでの移動だったとき
@@ -152,7 +150,9 @@ const TodoList = memo(
             items: copiedItems,
           },
         };
-        setTodoLists(newTodoLists);
+        setGlobalState((globalState: any) => {
+          return { ...globalState, todoLists: newTodoLists };
+        });
         props.updateTodoLists(newTodoLists);
       }
     };
@@ -178,23 +178,29 @@ const TodoList = memo(
         !["決定", "キャンセル"].includes(event.target.innerText) &&
         event.target.style.opacity !== "0"
       ) {
-        props.setTodoLists((todoLists: any) => {
+        setGlobalState((globalState: any) => {
           // クリックされたタスクだけisSelectedをtrueにする
-          Object.values(todoLists).map((column: any, columnI: number) => {
-            column.items.map((item: any, itemI: number) => {
-              if (columnI === columnIndex && itemI === taskIndex) {
-                item.isSelected = true;
-              } else {
-                item.isSelected = false;
-              }
-              return item;
-            });
-            return column;
-          });
-          props.updateTodoLists({ ...todoLists });
-          return { ...todoLists };
+          Object.values(globalState.todoLists).map(
+            (column: any, columnI: number) => {
+              column.items.map((item: any, itemI: number) => {
+                if (columnI === columnIndex && itemI === taskIndex) {
+                  item.isSelected = true;
+                } else {
+                  item.isSelected = false;
+                }
+                return item;
+              });
+              return column;
+            }
+          );
+          props.updateTodoLists({ ...globalState.todoLists });
+          return { ...globalState };
         });
-        if (state.isConnected && state.isInRoom && state.isTimerOn) {
+        if (
+          globalState.isConnected &&
+          globalState.isInRoom &&
+          globalState.isTimerOn
+        ) {
           props.sendMessage();
         }
       }
@@ -206,10 +212,10 @@ const TodoList = memo(
     const onUndoButtonClick = () => {
       if (Object.values(previousTodoLists).length > 0) {
         setPreviousTodoLists((previousTodoLists) => {
-          props.setTodoLists(() => {
+          setGlobalState((globalState: any) => {
             const newTodoLists = { ...previousTodoLists };
             props.updateTodoLists(newTodoLists);
-            return newTodoLists;
+            return { ...globalState, todoLists: newTodoLists };
           });
         });
         setPreviousTodoLists({});
@@ -226,24 +232,27 @@ const TodoList = memo(
      */
     const onClipboardButtonClick = (index: number) => {
       if (
-        settings.timeFormatToClipboard === "HH時間MM分SS秒" &&
+        globalState.settings.timeFormatToClipboard === "HH時間MM分SS秒" &&
         // @ts-ignore
-        copyTasksToClipboard_ja(Object.values(props.todoLists)[index].items)
+        copyTasksToClipboard_ja(
+          // @ts-ignore
+          Object.values(globalState.todoLists)[index].items
+        )
       ) {
         setSimpleSnackbarMessage("タスクをコピーしました！");
         setSimpleSnackbarOpen(true);
       } else if (
-        settings.timeFormatToClipboard === "BuildUp" &&
+        globalState.settings.timeFormatToClipboard === "BuildUp" &&
         copyTasksToClipboard_BuildUp(
           // @ts-ignore
-          Object.values(props.todoLists)[index].items
+          Object.values(globalState.todoLists)[index].items
         )
       ) {
         setSimpleSnackbarMessage("タスクをコピーしました！");
         setSimpleSnackbarOpen(true);
       } else if (
         // @ts-ignore
-        copyTasksToClipboard(Object.values(props.todoLists)[index].items)
+        copyTasksToClipboard(Object.values(globalState.todoLists)[index].items)
       ) {
         setSimpleSnackbarMessage("タスクをコピーしました！");
         setSimpleSnackbarOpen(true);
@@ -262,16 +271,16 @@ const TodoList = memo(
         Object.values(props.todoLists)[columnIndex].items[taskIndex]
           .estimatedSecond
       ) {
-        props.setTodoLists((todoLists: any) => {
+        setGlobalState((globalState: any) => {
           // @ts-ignore
-          Object.values(todoLists)[columnIndex].items[
+          Object.values(globalState.todoLists)[columnIndex].items[
             taskIndex
           ].achievedThenStop =
             // @ts-ignore
-            !Object.values(todoLists)[columnIndex].items[taskIndex]
+            !Object.values(globalState.todoLists)[columnIndex].items[taskIndex]
               .achievedThenStop;
-          props.updateTodoLists(todoLists);
-          return { ...todoLists };
+          props.updateTodoLists(globalState.todoLists);
+          return { ...globalState };
         });
       }
     };
@@ -280,16 +289,16 @@ const TodoList = memo(
      * ToDoリストを追加するボタンがクリックされたときの処理です。
      */
     const onAddListButtonClick = () => {
-      props.setTodoLists((todoLists: any) => {
+      setGlobalState((globalState: any) => {
         const newTodoLists = {
-          ...todoLists,
+          ...globalState.todoLists,
           [uuid()]: {
-            name: "リスト" + (Object.keys(todoLists).length + 1),
+            name: "リスト" + (Object.keys(globalState.todoLists).length + 1),
             items: [],
           },
         };
         props.updateTodoLists(newTodoLists);
-        return newTodoLists;
+        return { ...globalState, todoLists: newTodoLists };
       });
     };
 
@@ -304,7 +313,7 @@ const TodoList = memo(
           Object.values(props.todoLists)[index].items
         ).replaceAll("\r\n", "%0A") +
         "%0A%0A" +
-        settings.tweetTemplate.replaceAll("#", "%23");
+        globalState.settings.tweetTemplate.replaceAll("#", "%23");
       window.open(url);
     };
 
@@ -312,10 +321,10 @@ const TodoList = memo(
       <div className={classes.root}>
         <DragDropContext
           onDragEnd={(result) =>
-            onDragEnd(result, props.todoLists, props.setTodoLists)
+            onDragEnd(result, globalState.todoLists, globalState.setTodoLists)
           }
         >
-          {Object.entries(props.todoLists).map(
+          {Object.entries(globalState.todoLists).map(
             // @ts-ignore
             ([columnId, column], columnIndex: number) => {
               return (
@@ -349,7 +358,7 @@ const TodoList = memo(
                         {/* @ts-ignore */}
                         <Typography>{column.name}</Typography>
                       </div>
-                      {settings.isTweetButtonEnabled && (
+                      {globalState.settings.isTweetButtonEnabled && (
                         <Tooltip title="ツイートする" placement="top">
                           <IconButton
                             size="small"
@@ -379,8 +388,6 @@ const TodoList = memo(
                       <TodoListMenu
                         index={columnIndex}
                         column={column}
-                        todoLists={props.todoLists}
-                        setTodoLists={props.setTodoLists}
                         setPreviousTodoLists={setPreviousTodoLists}
                         setUndoSnackbarOpen={setUndoSnackbarOpen}
                         setUndoSnackbarMessage={setUndoSnackbarMessage}
@@ -435,9 +442,11 @@ const TodoList = memo(
                                       style={{
                                         backgroundColor:
                                           item.isSelected &&
-                                          state.isTimerOn &&
-                                          (!settings.isPomodoroEnabled ||
-                                            state.pomodoroTimerType !== "break")
+                                          globalState.isTimerOn &&
+                                          (!globalState.settings
+                                            .isPomodoroEnabled ||
+                                            globalState.pomodoroTimerType !==
+                                              "break")
                                             ? theme.palette.primary.main
                                             : snapshot.isDragging
                                             ? theme.palette.type === "light"
@@ -448,9 +457,11 @@ const TodoList = memo(
                                             : "#424242",
                                         color:
                                           item.isSelected &&
-                                          state.isTimerOn &&
-                                          (!settings.isPomodoroEnabled ||
-                                            state.pomodoroTimerType !== "break")
+                                          globalState.isTimerOn &&
+                                          (!globalState.settings
+                                            .isPomodoroEnabled ||
+                                            globalState.pomodoroTimerType !==
+                                              "break")
                                             ? "#FFF"
                                             : snapshot.isDragging
                                             ? theme.palette.type === "light"
@@ -482,19 +493,23 @@ const TodoList = memo(
                                           }
                                         >
                                           {/* タイマーがオフのときは再生アイコン */}
-                                          {!state.isTimerOn && (
+                                          {!globalState.isTimerOn && (
                                             <PlayArrowIcon />
                                           )}
                                           {/* 停止アイコン */}
-                                          {(!settings.isPomodoroEnabled ||
-                                            state.pomodoroTimerType !==
+                                          {(!globalState.settings
+                                            .isPomodoroEnabled ||
+                                            globalState.pomodoroTimerType !==
                                               "break") &&
-                                            state.isTimerOn && <StopIcon />}
+                                            globalState.isTimerOn && (
+                                              <StopIcon />
+                                            )}
                                           {/* コーヒーアイコン */}
-                                          {settings.isPomodoroEnabled &&
-                                            state.pomodoroTimerType ===
+                                          {globalState.settings
+                                            .isPomodoroEnabled &&
+                                            globalState.pomodoroTimerType ===
                                               "break" &&
-                                            state.isTimerOn && (
+                                            globalState.isTimerOn && (
                                               <FreeBreakfastOutlinedIcon />
                                             )}
                                         </IconButton>
@@ -602,8 +617,6 @@ const TodoList = memo(
                                         <TaskMenu
                                           index={index}
                                           columnIndex={columnIndex}
-                                          todoLists={props.todoLists}
-                                          setTodoLists={props.setTodoLists}
                                           setPreviousTodoLists={
                                             setPreviousTodoLists
                                           }
@@ -672,8 +685,6 @@ const TodoList = memo(
                     }}
                   >
                     <TaskAddInput
-                      todoLists={props.todoLists}
-                      setTodoLists={props.setTodoLists}
                       updateTodoLists={props.updateTodoLists}
                       setIsInputFocused={setIsInputFocused}
                       index={columnIndex}
@@ -707,7 +718,8 @@ const TodoList = memo(
           )}
         </DragDropContext>
         {/* ToDoリストを追加 */}
-        {Object.keys(props.todoLists).length < NUMBER_OF_LISTS_MAX && (
+        {/* @ts-ignore */}
+        {Object.keys(globalState.todoLists).length < NUMBER_OF_LISTS_MAX && (
           <Tooltip
             title="ToDoリストを追加"
             onMouseMove={(e) =>

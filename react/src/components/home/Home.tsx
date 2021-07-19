@@ -13,11 +13,7 @@ import Room from "components/home/Room";
 import TimerRnd from "components/home/TimerRnd";
 import TodoList from "components/home/TodoList";
 import SyncProgress from "components/SyncProgress";
-import { SessionsContext } from "contexts/SessionsContext";
-import { SettingsContext } from "contexts/SettingsContext";
-import { StateContext } from "contexts/StateContext";
-import { StatisticsContext } from "contexts/StatisticsContext";
-import { TodoListsContext } from "contexts/TodoListsContext";
+import { GlobalStateContext } from "contexts/GlobalStateContext";
 import React, { memo, useContext, useEffect, useState } from "react";
 import YouTube from "react-youtube";
 import TodoListService from "services/todoList.service";
@@ -89,69 +85,75 @@ let videoPlayDone = true;
  * ホームのコンポーネントです。
  */
 const Home = memo((props: { sendMessage: any; onEnter: any; onLeave: any }) => {
-  const { state, setState } = useContext(StateContext);
-  const { todoLists, setTodoLists } = useContext(TodoListsContext);
-  const { settings, setSettings } = useContext(SettingsContext);
-  const { statistics, setStatistics } = useContext(StatisticsContext);
-  const { sessions, setSessions } = useContext(SessionsContext);
+  const { globalState, setGlobalState } = useContext(GlobalStateContext);
   // 動画の読み込みが終わったかどうか
   const [workVideoOnReady, setWorkVideoOnReady] = useState(false);
   const [breakVideoOnReady, setBreakVideoOnReady] = useState(false);
   // 作業用BGMの動画ID
   const [workVideoId, setWorkVideoId] = useState(
-    settings.workVideoUrl.split(/v=|\//).slice(-1)[0]
+    globalState.settings.workVideoUrl.split(/v=|\//).slice(-1)[0]
   );
   // 休憩用BGMの動画ID
   const [breakVideoId, setBreakVideoId] = useState(
-    settings.breakVideoUrl.split(/v=|\//).slice(-1)[0]
+    globalState.settings.breakVideoUrl.split(/v=|\//).slice(-1)[0]
   );
   const [isInSync, setIsInSync] = useState(false);
 
   // 設定の動画URLに変化があったとき
   useEffect(() => {
     // タイマーが作動していないとき
-    if (!state.isTimerOn) {
+    if (!globalState.isTimerOn) {
       // 動画IDを更新
       updateVideoId();
     }
-  }, [settings.workVideoUrl, settings.breakVideoUrl]);
+  }, [globalState.settings.workVideoUrl, globalState.settings.breakVideoUrl]);
 
   // 設定の作業用動画の音量に変化があったとき
   useEffect(() => {
     // 作業用動画が存在しているとき
     if (workVideoPlayer !== null) {
       // ボリュームを調整
-      workVideoPlayer.setVolume(settings.workVideoVolume);
+      workVideoPlayer.setVolume(globalState.settings.workVideoVolume);
     }
-  }, [settings.workVideoVolume]);
+  }, [globalState.settings.workVideoVolume]);
   // 設定の休憩用動画の音量に変化があったとき
   useEffect(() => {
     // 休憩用動画が存在しているとき
     if (breakVideoPlayer !== null) {
       // ボリュームを調整
-      breakVideoPlayer.setVolume(settings.breakVideoVolume);
+      breakVideoPlayer.setVolume(globalState.settings.breakVideoVolume);
     }
-  }, [settings.breakVideoVolume]);
+  }, [globalState.settings.breakVideoVolume]);
 
   /**
    * 動画IDを更新します。
    */
   const updateVideoId = () => {
     // 動画URLが変わっていたら動画IDを更新
-    if (settings.workVideoUrl.split(/v=|\//).slice(-1)[0] !== workVideoId) {
+    if (
+      globalState.settings.workVideoUrl.split(/v=|\//).slice(-1)[0] !==
+      workVideoId
+    ) {
       setWorkVideoOnReady(false);
       workVideoPlayer = null;
       setWorkVideoId("");
       setTimeout(() => {
-        setWorkVideoId(settings.workVideoUrl.split(/v=|\//).slice(-1)[0]);
+        setWorkVideoId(
+          globalState.settings.workVideoUrl.split(/v=|\//).slice(-1)[0]
+        );
       }, 10);
     }
-    if (settings.breakVideoUrl.split(/v=|\//).slice(-1)[0] !== breakVideoId) {
+    if (
+      globalState.settings.breakVideoUrl.split(/v=|\//).slice(-1)[0] !==
+      breakVideoId
+    ) {
       setBreakVideoOnReady(false);
       breakVideoPlayer = null;
       setBreakVideoId("");
       setTimeout(() => {
-        setBreakVideoId(settings.breakVideoUrl.split(/v=|\//).slice(-1)[0]);
+        setBreakVideoId(
+          globalState.settings.breakVideoUrl.split(/v=|\//).slice(-1)[0]
+        );
       }, 10);
     }
   };
@@ -184,11 +186,11 @@ const Home = memo((props: { sendMessage: any; onEnter: any; onLeave: any }) => {
     // 動画が終わったとき
     if (event.data === 0 && !videoPlayDone) {
       if (event.target.h.id === "workVideoPlayer") {
-        workVideoPlayer.setVolume(settings.workVideoVolume);
+        workVideoPlayer.setVolume(globalState.settings.workVideoVolume);
         workVideoPlayer.playVideo();
       }
       if (event.target.h.id === "breakVideoPlayer") {
-        breakVideoPlayer.setVolume(settings.breakVideoVolume);
+        breakVideoPlayer.setVolume(globalState.settings.breakVideoVolume);
         breakVideoPlayer.playVideo();
       }
       videoPlayDone = true;
@@ -199,25 +201,26 @@ const Home = memo((props: { sendMessage: any; onEnter: any; onLeave: any }) => {
    * BGM用の動画を再生します。
    */
   const playVideo = () => {
-    setState((state: any) => {
+    setGlobalState((globalState: any) => {
       if (
-        (!settings.isPomodoroEnabled || state.pomodoroTimerType !== "break") &&
+        (!globalState.settings.isPomodoroEnabled ||
+          globalState.pomodoroTimerType !== "break") &&
         workVideoId !== "" &&
         workVideoPlayer !== null
       ) {
-        workVideoPlayer.setVolume(settings.workVideoVolume);
+        workVideoPlayer.setVolume(globalState.settings.workVideoVolume);
         workVideoPlayer.playVideo();
       }
       if (
-        settings.isPomodoroEnabled &&
-        state.pomodoroTimerType === "break" &&
+        globalState.settings.isPomodoroEnabled &&
+        globalState.pomodoroTimerType === "break" &&
         breakVideoId !== "" &&
         breakVideoPlayer !== null
       ) {
-        breakVideoPlayer.setVolume(settings.breakVideoVolume);
+        breakVideoPlayer.setVolume(globalState.settings.breakVideoVolume);
         breakVideoPlayer.playVideo();
       }
-      return state;
+      return globalState;
     });
   };
 
@@ -238,34 +241,37 @@ const Home = memo((props: { sendMessage: any; onEnter: any; onLeave: any }) => {
    * @param {*} type taskかfab
    */
   const onPlayButtonClick = (type: string) => {
-    setState((state: any) => {
-      return { ...state, isTimerOn: !state.isTimerOn };
+    setGlobalState((globalState: any) => {
+      return { ...globalState, isTimerOn: !globalState.isTimerOn };
     });
-    setState((state: any) => {
+    setGlobalState((globalState: any) => {
       // state.isTimerOn = !state.isTimerOn;
-      if (state.isTimerOn) {
+      if (globalState.isTimerOn) {
         // タイマー開始
         startedAt = Date.now();
         lastCountedAt = Date.now();
         // @ts-ignore
         timerCountTimeout = setTimeout(timerCount, getTimeout());
         // 離席解除
-        state.isAfk = false;
+        globalState.isAfk = false;
         // ポモドーロが休憩タイマーなら作業に切り替える
         if (
           type === "task" &&
-          settings.isPomodoroEnabled &&
-          state.pomodoroTimerType === "break"
+          globalState.settings.isPomodoroEnabled &&
+          globalState.pomodoroTimerType === "break"
         ) {
-          state.pomodoroTimerType = "work";
-          state.pomodoroTimeLeft = settings.workTimerLength;
+          globalState.pomodoroTimerType = "work";
+          globalState.pomodoroTimeLeft = globalState.settings.workTimerLength;
         }
         // favicon変更
-        if (settings.isPomodoroEnabled && state.pomodoroTimerType === "work") {
+        if (
+          globalState.settings.isPomodoroEnabled &&
+          globalState.pomodoroTimerType === "work"
+        ) {
           changeFaviconTo("tomato");
         } else if (
-          settings.isPomodoroEnabled &&
-          state.pomodoroTimerType === "break"
+          globalState.settings.isPomodoroEnabled &&
+          globalState.pomodoroTimerType === "break"
         ) {
           changeFaviconTo("coffee");
         } else {
@@ -273,34 +279,34 @@ const Home = memo((props: { sendMessage: any; onEnter: any; onLeave: any }) => {
           link.href = "/favicon/taskcircle_timer_on_favicon.ico";
         }
         // 開始の効果音
-        startedSound.volume = settings.volume * 0.01;
+        startedSound.volume = globalState.settings.volume * 0.01;
         startedSound.play();
         // BGM用の動画を再生
         playVideo();
       } else {
         // タイマー終了
-        if (state.pomodoroTimerType === "work") {
-          state.pomodoroTimeLeft = settings.workTimerLength;
+        if (globalState.pomodoroTimerType === "work") {
+          globalState.pomodoroTimeLeft = globalState.settings.workTimerLength;
         }
-        if (state.pomodoroTimerType === "break") {
-          state.pomodoroTimeLeft = settings.breakTimerLength;
+        if (globalState.pomodoroTimerType === "break") {
+          globalState.pomodoroTimeLeft = globalState.settings.breakTimerLength;
         }
         document.title = DEFAULT_TITLE;
         // faviconをデフォルトに戻す
         const link: any = document.querySelector("link[rel*='icon']");
         link.href = "/favicon.ico";
         // 停止の効果音
-        stoppedSound.volume = settings.volume * 0.01;
+        stoppedSound.volume = globalState.settings.volume * 0.01;
         stoppedSound.play();
         // 動画をストップ
         stopVideo();
         // 動画IDを更新
         updateVideoId();
       }
-      if (state.isConnected && state.isInRoom) {
+      if (globalState.isConnected && globalState.isInRoom) {
         props.sendMessage();
       }
-      return { ...state };
+      return { ...globalState };
     });
   };
 
@@ -308,183 +314,178 @@ const Home = memo((props: { sendMessage: any; onEnter: any; onLeave: any }) => {
    * タイマーのカウント処理です。
    */
   const timerCount = () => {
-    setSettings((settings: any) => {
-      setState((state: any) => {
-        setTodoLists((todoLists: any) => {
-          if (state.isTimerOn) {
-            // @ts-ignore
-            timerCountTimeout = setTimeout(timerCount, getTimeout());
-            // 前回のカウントから1.5秒以上経っていると一度にカウントする量が増える
-            const dateNow = Date.now();
-            let count = 0;
-            for (
-              let i = 0;
-              i <= dateNow - lastCountedAt - COUNT_INTERVAL / 2;
-              i += COUNT_INTERVAL
-            ) {
-              count++;
-            }
-            [state, todoLists] = spendTime(count, state, todoLists, settings);
-            updateTodoLists(todoLists);
-            updateStatistics(state, count);
-            lastCountedAt = Date.now();
-            setTimeout(() => {
-              /** 選択しているタスク */
-              // @ts-ignore
-              const selectedItem = Object.values(todoLists)
-                .filter((column: any) => {
-                  return (
-                    column.items.filter((item: any) => {
-                      return item.isSelected;
-                    })[0] !== undefined
-                  );
-                })[0]
-                .items.filter((item: any) => {
+    setGlobalState((globalState: any) => {
+      if (globalState.isTimerOn) {
+        // @ts-ignore
+        timerCountTimeout = setTimeout(timerCount, getTimeout());
+        // 前回のカウントから1.5秒以上経っていると一度にカウントする量が増える
+        const dateNow = Date.now();
+        let count = 0;
+        for (
+          let i = 0;
+          i <= dateNow - lastCountedAt - COUNT_INTERVAL / 2;
+          i += COUNT_INTERVAL
+        ) {
+          count++;
+        }
+        globalState = spendTime(count, globalState);
+        updateTodoLists(globalState.todoLists);
+        updateStatistics(globalState, count);
+        lastCountedAt = Date.now();
+        setTimeout(() => {
+          /** 選択しているタスク */
+          // @ts-ignore
+          const selectedItem = Object.values(globalState.todoLists)
+            .filter((column: any) => {
+              return (
+                column.items.filter((item: any) => {
                   return item.isSelected;
-                })[0];
-              // 目標時間を超えた かつ 目標時間を超えたときに停止する設定のとき
-              if (
-                selectedItem &&
-                selectedItem.achievedThenStop &&
-                selectedItem.spentSecond >= selectedItem.estimatedSecond
-              ) {
-                // 目標時間を超えたときに停止する設定をオフにする
-                // @ts-ignore
-                Object.values(todoLists)
-                  .filter((column: any) => {
-                    return (
-                      column.items.filter((item: any) => {
-                        return item.isSelected;
-                      })[0] !== undefined
-                    );
-                  })[0]
-                  .items.map((item: any) => {
-                    if (item.isSelected && item.achievedThenStop) {
-                      item.achievedThenStop = false;
-                    }
-                    return item;
-                  });
-                setState((state: any) => {
-                  state.isTimerOn = false;
-                  // ポモドーロの作業休憩切り替え
-                  if (settings.isPomodoroEnabled) {
-                    if (state.pomodoroTimerType === "work") {
-                      state.pomodoroTimerType = "break";
-                      state.pomodoroTimeLeft = settings.breakTimerLength;
-                    } else if (state.pomodoroTimerType === "break") {
-                      state.pomodoroTimerType = "work";
-                      state.pomodoroTimeLeft = settings.workTimerLength;
-                    }
-                    if (settings.isBreakAutoStart) {
-                      setTimeout(() => {
-                        onPlayButtonClick("fab");
-                      }, 100);
-                    }
-                  }
-                  return { ...state };
-                });
-                clearTimeout(timerCountTimeout);
-                // faviconをデフォルトに戻す
-                const link: any = document.querySelector("link[rel*='icon']");
-                link.href = "/favicon.ico";
-                // 動画をストップ
-                stopVideo();
-                // 動画IDを更新
-                updateVideoId();
-                achievedSound.volume = settings.volume * 0.01;
-                achievedSound.play();
-                // 通知
-                if (
-                  window.Notification &&
-                  Notification.permission === "granted"
-                ) {
-                  new Notification("目標時間を達成しました！", {
-                    body: "タイマーを停止しました。",
-                  });
+                })[0] !== undefined
+              );
+            })[0]
+            .items.filter((item: any) => {
+              return item.isSelected;
+            })[0];
+          // 目標時間を超えた かつ 目標時間を超えたときに停止する設定のとき
+          if (
+            selectedItem &&
+            selectedItem.achievedThenStop &&
+            selectedItem.spentSecond >= selectedItem.estimatedSecond
+          ) {
+            // 目標時間を超えたときに停止する設定をオフにする
+            // @ts-ignore
+            Object.values(todoLists)
+              .filter((column: any) => {
+                return (
+                  column.items.filter((item: any) => {
+                    return item.isSelected;
+                  })[0] !== undefined
+                );
+              })[0]
+              .items.map((item: any) => {
+                if (item.isSelected && item.achievedThenStop) {
+                  item.achievedThenStop = false;
                 }
-                if (state.isConnected && state.isInRoom) {
-                  props.sendMessage();
+                return item;
+              });
+            setGlobalState((globalState: any) => {
+              globalState.isTimerOn = false;
+              // ポモドーロの作業休憩切り替え
+              if (globalState.settings.isPomodoroEnabled) {
+                if (globalState.pomodoroTimerType === "work") {
+                  globalState.pomodoroTimerType = "break";
+                  globalState.pomodoroTimeLeft =
+                    globalState.settings.breakTimerLength;
+                } else if (globalState.pomodoroTimerType === "break") {
+                  globalState.pomodoroTimerType = "work";
+                  globalState.pomodoroTimeLeft =
+                    globalState.settings.workTimerLength;
                 }
-              } else if (
-                settings.isPomodoroEnabled &&
-                state.pomodoroTimeLeft <= 0
-              ) {
-                // ポモドーロタイマーのカウントが0以下のとき
-                setState((state: any) => {
-                  state.isTimerOn = false;
-                  // 通知
-                  if (
-                    window.Notification &&
-                    Notification.permission === "granted"
-                  ) {
-                    if (state.pomodoroTimerType === "work") {
-                      new Notification("ポモドーロが終わりました！", {
-                        body: settings.isBreakAutoStart
-                          ? "休憩を自動スタートします。"
-                          : "タイマーを停止しました。",
-                        icon: "/favicon/coffee/apple-touch-icon.png",
-                      });
-                    } else if (state.pomodoroTimerType === "break") {
-                      new Notification("休憩が終わりました！", {
-                        body: "タイマーを停止しました。",
-                        icon: "/favicon/tomato/apple-touch-icon.png",
-                      });
-                    }
-                  }
-                  // ポモドーロの作業休憩切り替え
-                  if (state.pomodoroTimerType === "work") {
-                    state.pomodoroTimerType = "break";
-                    state.pomodoroTimeLeft = settings.breakTimerLength;
-                  } else if (state.pomodoroTimerType === "break") {
-                    state.pomodoroTimerType = "work";
-                    state.pomodoroTimeLeft = settings.workTimerLength;
-                  }
-                  if (
-                    settings.isBreakAutoStart &&
-                    state.pomodoroTimerType === "break"
-                  ) {
-                    setTimeout(() => {
-                      onPlayButtonClick("fab");
-                    }, 100);
-                  }
-
-                  return { ...state };
-                });
-                clearTimeout(timerCountTimeout);
-                // faviconをデフォルトに戻す
-                const link: any = document.querySelector("link[rel*='icon']");
-                link.href = "/favicon.ico";
-                // 動画をストップ
-                stopVideo();
-                // 動画IDを更新
-                updateVideoId();
-                achievedSound.volume = settings.volume * 0.01;
-                achievedSound.play();
-                if (state.isConnected && state.isInRoom) {
-                  props.sendMessage();
-                }
-              } else {
-                // チクタク音を鳴らす
-                if (settings.tickVolume === 10) {
-                  faintTickSound.play();
-                } else if (settings.tickVolume === 50) {
-                  tickSound.volume = settings.tickVolume * 0.002;
-                  tickSound.play();
-                } else if (settings.tickVolume === 100) {
-                  tickSound.volume = settings.tickVolume * 0.01;
-                  tickSound.play();
+                if (globalState.settings.isBreakAutoStart) {
+                  setTimeout(() => {
+                    onPlayButtonClick("fab");
+                  }, 100);
                 }
               }
-            }, 2);
-          } else if (!state.isTimerOn) {
-            updateTodoLists(todoLists);
+              return { ...globalState };
+            });
             clearTimeout(timerCountTimeout);
+            // faviconをデフォルトに戻す
+            const link: any = document.querySelector("link[rel*='icon']");
+            link.href = "/favicon.ico";
+            // 動画をストップ
+            stopVideo();
+            // 動画IDを更新
+            updateVideoId();
+            achievedSound.volume = globalState.settings.volume * 0.01;
+            achievedSound.play();
+            // 通知
+            if (window.Notification && Notification.permission === "granted") {
+              new Notification("目標時間を達成しました！", {
+                body: "タイマーを停止しました。",
+              });
+            }
+            if (globalState.isConnected && globalState.isInRoom) {
+              props.sendMessage();
+            }
+          } else if (
+            globalState.settings.isPomodoroEnabled &&
+            globalState.pomodoroTimeLeft <= 0
+          ) {
+            // ポモドーロタイマーのカウントが0以下のとき
+            setGlobalState((globalState: any) => {
+              globalState.isTimerOn = false;
+              // 通知
+              if (
+                window.Notification &&
+                Notification.permission === "granted"
+              ) {
+                if (globalState.pomodoroTimerType === "work") {
+                  new Notification("ポモドーロが終わりました！", {
+                    body: globalState.settings.isBreakAutoStart
+                      ? "休憩を自動スタートします。"
+                      : "タイマーを停止しました。",
+                    icon: "/favicon/coffee/apple-touch-icon.png",
+                  });
+                } else if (globalState.pomodoroTimerType === "break") {
+                  new Notification("休憩が終わりました！", {
+                    body: "タイマーを停止しました。",
+                    icon: "/favicon/tomato/apple-touch-icon.png",
+                  });
+                }
+              }
+              // ポモドーロの作業休憩切り替え
+              if (globalState.pomodoroTimerType === "work") {
+                globalState.pomodoroTimerType = "break";
+                globalState.pomodoroTimeLeft =
+                  globalState.settings.breakTimerLength;
+              } else if (globalState.pomodoroTimerType === "break") {
+                globalState.pomodoroTimerType = "work";
+                globalState.pomodoroTimeLeft =
+                  globalState.settings.workTimerLength;
+              }
+              if (
+                globalState.settings.isBreakAutoStart &&
+                globalState.pomodoroTimerType === "break"
+              ) {
+                setTimeout(() => {
+                  onPlayButtonClick("fab");
+                }, 100);
+              }
+
+              return { ...globalState };
+            });
+            clearTimeout(timerCountTimeout);
+            // faviconをデフォルトに戻す
+            const link: any = document.querySelector("link[rel*='icon']");
+            link.href = "/favicon.ico";
+            // 動画をストップ
+            stopVideo();
+            // 動画IDを更新
+            updateVideoId();
+            achievedSound.volume = globalState.settings.volume * 0.01;
+            achievedSound.play();
+            if (globalState.isConnected && globalState.isInRoom) {
+              props.sendMessage();
+            }
+          } else {
+            // チクタク音を鳴らす
+            if (globalState.settings.tickVolume === 10) {
+              faintTickSound.play();
+            } else if (globalState.settings.tickVolume === 50) {
+              tickSound.volume = globalState.settings.tickVolume * 0.002;
+              tickSound.play();
+            } else if (globalState.settings.tickVolume === 100) {
+              tickSound.volume = globalState.settings.tickVolume * 0.01;
+              tickSound.play();
+            }
           }
-          return { ...todoLists };
-        });
-        return { ...state };
-      });
-      return { ...settings };
+        }, 2);
+      } else if (!globalState.isTimerOn) {
+        updateTodoLists(globalState.todoLists);
+        clearTimeout(timerCountTimeout);
+      }
+      return { ...globalState };
     });
   };
 
@@ -492,14 +493,9 @@ const Home = memo((props: { sendMessage: any; onEnter: any; onLeave: any }) => {
    * 時間の加減算をします。
    * @param {number} count カウント
    */
-  const spendTime = (
-    count: number,
-    state: any,
-    todoLists: any,
-    settings: any
-  ) => {
+  const spendTime = (count: number, globalState: any) => {
     // @ts-ignore
-    Object.values(todoLists)
+    Object.values(globalState.todoLists)
       .filter((column: any) => {
         return (
           column.items.filter((item: any) => {
@@ -510,23 +506,28 @@ const Home = memo((props: { sendMessage: any; onEnter: any; onLeave: any }) => {
       .items.map((item: any) => {
         if (item.isSelected) {
           if (
-            !settings.isPomodoroEnabled ||
-            state.pomodoroTimerType !== "break"
+            !globalState.settings.isPomodoroEnabled ||
+            globalState.pomodoroTimerType !== "break"
           ) {
             item.spentSecond += ONCE_COUNT * count;
             if (item.spentSecond > SPENT_SECOND_MAX) {
               item.spentSecond = SPENT_SECOND_MAX;
             }
           }
-          refreshTitle(item.content, item.spentSecond, state, settings);
+          refreshTitle(
+            item.content,
+            item.spentSecond,
+            globalState,
+            globalState.settings
+          );
         }
         return item;
       });
 
-    if (settings.isPomodoroEnabled) {
-      state.pomodoroTimeLeft -= ONCE_COUNT * count;
+    if (globalState.settings.isPomodoroEnabled) {
+      globalState.pomodoroTimeLeft -= ONCE_COUNT * count;
     }
-    return [{ ...state }, { ...todoLists }];
+    return { ...globalState };
   };
 
   /**
@@ -536,12 +537,12 @@ const Home = memo((props: { sendMessage: any; onEnter: any; onLeave: any }) => {
     setTimeout(() => {
       // 日付変更時刻は午前4時
       // 最終更新がない、初めての更新の場合
-      setStatistics((statistics: any) => {
+      setGlobalState((globalState: any) => {
         if (state.pomodoroTimerType !== "break") {
-          if (statistics.updatedAt === 0) {
-            statistics.todaySpentSecond += ONCE_COUNT * count;
+          if (globalState.statistics.updatedAt === 0) {
+            globalState.statistics.todaySpentSecond += ONCE_COUNT * count;
           } else {
-            const updatedAt = new Date(statistics.updatedAt);
+            const updatedAt = new Date(globalState.statistics.updatedAt);
             const now = new Date();
             // 0時～3時台の場合は前日扱いにする
             if (updatedAt.getHours() < 4) {
@@ -552,21 +553,25 @@ const Home = memo((props: { sendMessage: any; onEnter: any; onLeave: any }) => {
             }
             // 1日経っていない場合
             if (now.getDate() - updatedAt.getDate() < 1) {
-              statistics.todaySpentSecond += ONCE_COUNT * count;
+              globalState.statistics.todaySpentSecond += ONCE_COUNT * count;
             } else if (now.getDate() - updatedAt.getDate() === 1) {
               // 1日経っていた場合
-              statistics.yesterdaySpentSecond = statistics.todaySpentSecond;
-              statistics.todaySpentSecond = ONCE_COUNT * count;
+              globalState.statistics.yesterdaySpentSecond =
+                globalState.statistics.todaySpentSecond;
+              globalState.statistics.todaySpentSecond = ONCE_COUNT * count;
             } else if (now.getDate() - updatedAt.getDate() > 1) {
               // 2日以上経っていた場合
-              statistics.yesterdaySpentSecond = 0;
-              statistics.todaySpentSecond = ONCE_COUNT * count;
+              globalState.statistics.yesterdaySpentSecond = 0;
+              globalState.statistics.todaySpentSecond = ONCE_COUNT * count;
             }
           }
-          statistics.updatedAt = Date.now();
-          localStorage.setItem("statistics", JSON.stringify(statistics));
+          globalState.statistics.updatedAt = Date.now();
+          localStorage.setItem(
+            "statistics",
+            JSON.stringify(globalState.statistics)
+          );
         }
-        return { ...statistics };
+        return { ...globalState };
       });
     }, 3);
   };
@@ -604,15 +609,15 @@ const Home = memo((props: { sendMessage: any; onEnter: any; onLeave: any }) => {
   const updateTodoLists = (todoLists: any) => {
     localStorage.setItem("todoLists", JSON.stringify(todoLists));
     localStorage.setItem("todoListsUpdatedAt", Date.now().toString());
-    if (state.isLogined) {
+    if (globalState.isLogined) {
       setIsInSync(true);
     }
     clearTimeout(updateTimeout);
     // @ts-ignore
     updateTimeout = setTimeout(() => {
-      if (state.isLogined) {
+      if (globalState.isLogined) {
         // DBの設定を取得
-        TodoListService.findByTokenId(state.tokenId).then((r) => {
+        TodoListService.findByTokenId(globalState.tokenId).then((r) => {
           // ローカルのデータより新しいかどうか比較する
           const localStorageGetItemTodoListsUpdatedAt = localStorage.getItem(
             "todoListsUpdatedAt"
@@ -626,12 +631,12 @@ const Home = memo((props: { sendMessage: any; onEnter: any; onLeave: any }) => {
             localStorage.getItem("todoListsUpdatedAt")
           ) {
             // ローカルのデータをDBのデータに上書きする
-            setTodoLists((todoLists: any) => {
+            setGlobalState((globalState: any) => {
               const newTodoLists =
                 // @ts-ignore
                 localStorageGetItemTodoListsUpdatedAt > 0
                   ? {
-                      ...todoLists,
+                      ...globalState.todoLists,
                       ...JSON.parse(r.data.todoList),
                     }
                   : JSON.parse(r.data.todoList);
@@ -645,9 +650,12 @@ const Home = memo((props: { sendMessage: any; onEnter: any; onLeave: any }) => {
           }
           setIsInSync(false);
         });
-        setTodoLists((todoLists: any) => {
-          TodoListService.update(state.tokenId, JSON.stringify(todoLists));
-          return todoLists;
+        setGlobalState((globalState: any) => {
+          TodoListService.update(
+            globalState.tokenId,
+            JSON.stringify(globalState.todoLists)
+          );
+          return globalState;
         });
       }
     }, 100);
@@ -657,16 +665,12 @@ const Home = memo((props: { sendMessage: any; onEnter: any; onLeave: any }) => {
     <>
       <div style={{ display: "flex" }} id="todoListAndRoom">
         <TodoList
-          // @ts-ignore
-          todoLists={todoLists}
-          setTodoLists={setTodoLists}
-          onPlayButtonClick={onPlayButtonClick}
-          sendMessage={props.sendMessage}
           updateTodoLists={updateTodoLists}
+          sendMessage={props.sendMessage}
+          onPlayButtonClick={onPlayButtonClick}
         />
         <Room
-          // @ts-ignore
-          sessions={sessions}
+          sessions={globalState.sessions}
           onEnter={props.onEnter}
           onLeave={props.onLeave}
           sendMessage={props.sendMessage}
@@ -674,8 +678,7 @@ const Home = memo((props: { sendMessage: any; onEnter: any; onLeave: any }) => {
       </div>
       {/* タイマー */}
       <TimerRnd
-        // @ts-ignore
-        todoLists={todoLists}
+        todoLists={globalState.todoLists}
         onPlayButtonClick={onPlayButtonClick}
       />
       {/* 作業用BGM動画 */}
@@ -716,6 +719,7 @@ const Home = memo((props: { sendMessage: any; onEnter: any; onLeave: any }) => {
           </Typography>
         </>
       )}
+      {/* @ts-ignore */}
       {(ONCE_COUNT !== 1 || COUNT_INTERVAL !== 1000) && (
         <div
           style={{
