@@ -26,3 +26,7 @@ URI(エンドポイント)|リクエスト|パラメータ|説明
 [/api/setting/findbytokenid](/springboot/src/main/java/app/taskcircle/controller/SettingController.java)|POST|リクエストボディ･･･トークンID|設定を取得します。
 [/api/setting/update](/springboot/src/main/java/app/taskcircle/controller/SettingController.java)|POST|リクエストボディ･･･トークンID、設定|設定を更新します。
 [/actuator/info](/springboot/src/main/resources/application.properties)|GET|なし|アプリのビルド時刻などを取得します。
+
+## データベース
+
+DDL(テーブル生成する文)は[/springboot/src/main/resources/schema.sql](/springboot/src/main/resources/schema.sql)を参照してください。
