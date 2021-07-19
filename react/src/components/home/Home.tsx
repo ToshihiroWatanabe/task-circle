@@ -397,7 +397,7 @@ const Home = memo((props: { sendMessage: any; onEnter: any; onLeave: any }) => {
                 window.Notification &&
                 Notification.permission === "granted"
               ) {
-                new Notification("目標時間に到達しました！", {
+                new Notification("目標時間を達成しました！", {
                   body: "タイマーを停止しました。",
                 });
               }
