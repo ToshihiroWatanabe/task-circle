@@ -110,7 +110,7 @@ const App: React.FC = memo(() => {
         pomodoroTimeLeft: globalState.settings.workTimerLength,
         todoLists: localStorageGetItemTodoLists,
         statistics: localStorageGetItemStatistics,
-        settings: localStorageGetItemSettings,
+        settings: { ...globalState.settings, ...localStorageGetItemSettings },
       };
     });
   }, []);
@@ -349,8 +349,7 @@ const App: React.FC = memo(() => {
             {/* ボトムナビゲーション */}
             {useMediaQueryThemeBreakpointsDownXs && (
               <LabelBottomNavigation
-                // @ts-ignore
-                todoLists={todoLists}
+                todoLists={globalState.todoLists}
                 bottomNavigationValue={bottomNavigationValue}
                 setBottomNavigationValue={setBottomNavigationValue}
               />
