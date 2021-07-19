@@ -26,9 +26,19 @@
 
 フロントエンドはReact、バックエンドはSpring Bootで制作しています。詳しい説明はそれぞれのREADME.mdをご覧ください。
 
+アプリの各種機能の紹介はこちら<br>
 [React(フロントエンド)のREADME.md](/react/README.md)
 
+APIの説明はこちら<br>
 [Spring Boot(バックエンド)のREADME.md](/springboot/README.md)
+
+<details>
+  <summary>デプロイ方法についての説明</summary>
+
+  - ビルド時は、まずReactアプリケーションをビルドしたものをSpring Bootプロジェクトに統合してから、Spring Bootアプリケーションをビルドします。<br>
+  - AWS上でEC2とRDSを作成し、EC上のTomcatでSpring Bootアプリケーションを起動させています。<br>
+  - CI/CDツールはCircleCIを利用していて、mainブランチへのプッシュがあると自動でデプロイされます。<br>
+</details>
 
 # ▶使い方
 
