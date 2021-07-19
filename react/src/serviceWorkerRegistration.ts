@@ -91,7 +91,7 @@ function checkValidServiceWorker(swUrl: string, config?: Config) {
       }
     })
     .catch(() => {
-      console.log(
+      console.info(
         "インターネット接続がありません。オフラインモードで起動します。"
       );
     });

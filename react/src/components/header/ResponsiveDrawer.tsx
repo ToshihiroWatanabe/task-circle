@@ -76,8 +76,6 @@ const ResponsiveDrawer = memo((props: Props) => {
   const location = useLocation();
   const [mobileOpen, setMobileOpen] = useState(false);
 
-  console.log("描画");
-
   // リストの項目が押されたときの処理です。
   const handleListItemClick = () => {
     setMobileOpen(false);
