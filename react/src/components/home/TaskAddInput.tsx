@@ -174,33 +174,58 @@ const TaskAddInput = memo(
      * @returns 内容と目標時間のオブジェクト
      */
     const retrieveEstimatedSecond = (input: string) => {
+      /** タスク名 */
+      let content = input;
+      let estimatedSecond = 0;
       /** HH:MM:SS表記にマッチしているかどうか */
       const HHMMSSmatched = input.match(
-        /([0-1]*[0-9]|2[0-3]):[0-5]*[0-9]:[0-5]*[0-9]/
+        /([0-1]*[0-9]|2[0-3]):[0-5]*[0-9]:[0-5]*[0-9]$/
       );
       /** ポモドーロ数表記にマッチしているかどうか */
-      const pomodoroMatched = input.match(/[0-9]*[0-9](pomo|ポモ)/);
+      const pomodoroMatched = input.match(/[0-9]*[0-9](pomo|ポモ)$/);
       /** ◯h◯m◯s表記にマッチしているかどうか */
-      // TODO:
+      const hmsMatched = input.match(
+        /[^0-9]+([0-9]*[0-9]h|[0-5]*[0-9]m|[0-5]*[0-9]s)$/
+      );
       if (HHMMSSmatched) {
         let matchedSplit = HHMMSSmatched[0].split(":");
-        let estimatedSecond =
+        estimatedSecond =
           parseInt(matchedSplit[0]) * 3600 +
           parseInt(matchedSplit[1]) * 60 +
           parseInt(matchedSplit[2]);
-        return {
-          content: input.split(HHMMSSmatched[0])[0].trim(),
-          estimatedSecond: estimatedSecond,
-        };
+        content = input.split(HHMMSSmatched[0])[0].trim();
       } else if (pomodoroMatched) {
         let matchedSplit = pomodoroMatched[0].split(/(pomo|ポモ)/);
-        let estimatedSecond = parseInt(matchedSplit[0]) * 25 * 60;
-        return {
-          content: input.split(pomodoroMatched[0])[0].trim(),
-          estimatedSecond: estimatedSecond,
-        };
+        estimatedSecond = parseInt(matchedSplit[0]) * 25 * 60;
+        content = input.split(pomodoroMatched[0])[0].trim();
+      } else if (hmsMatched) {
+        // h
+        if (input.match(/[^0-9]+([0-9]*[0-9]h)/)) {
+          content = input.split(/[0-9]*[0-9]h/)[0];
+          estimatedSecond =
+            parseInt(input.split(content)[1].split("h")[0]) * 60 * 60;
+          if (input.match(/h+[0-5]*[0-9]m/)) {
+            estimatedSecond += parseInt(input.split(/h|m/)[1]) * 60;
+            if (input.match(/m+[0-5]*[0-9]s/)) {
+              estimatedSecond += parseInt(input.split(/m|s/)[1]);
+            }
+          }
+          if (input.match(/h+[0-5]*[0-9]s/)) {
+            estimatedSecond += parseInt(input.split(/h|s/)[1]);
+          }
+        } else if (input.match(/[^0-9]+([0-5]*[0-9]m)/)) {
+          content = input.split(/[0-5]*[0-9]m/)[0];
+          estimatedSecond =
+            parseInt(input.split(content)[1].split("m")[0]) * 60;
+          if (input.match(/m+[0-5]*[0-9]s/)) {
+            estimatedSecond += parseInt(input.split(/m|s/)[1]);
+          }
+        } else if (input.match(/[^0-9]+([0-5]*[0-9]s)/)) {
+          content = input.split(/[0-5]*[0-9]s/)[0];
+          estimatedSecond = parseInt(input.split(content)[1].split("s")[0]);
+        }
       }
-      return { content: input, estimatedSecond: 0 };
+      return { content: content, estimatedSecond: estimatedSecond };
     };
 
     /**
