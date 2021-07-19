@@ -98,7 +98,7 @@ const VolumeSlider = memo(
           props.updateSettings(globalState.settings);
           return { ...globalState };
         });
-      }, 500);
+      }, 100);
     };
 
     return (

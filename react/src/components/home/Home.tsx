@@ -330,7 +330,7 @@ const Home = memo((props: { sendMessage: any; onEnter: any; onLeave: any }) => {
         }
         globalState = spendTime(count, globalState);
         updateTodoLists(globalState.todoLists);
-        updateStatistics(globalState, count);
+        globalState.statistics = updateStatistics(count, globalState);
         lastCountedAt = Date.now();
         setTimeout(() => {
           /** 選択しているタスク */
@@ -533,47 +533,40 @@ const Home = memo((props: { sendMessage: any; onEnter: any; onLeave: any }) => {
   /**
    * 統計を更新します。
    */
-  const updateStatistics = (state: any, count: number) => {
-    setTimeout(() => {
-      // 日付変更時刻は午前4時
-      // 最終更新がない、初めての更新の場合
-      setGlobalState((globalState: any) => {
-        if (state.pomodoroTimerType !== "break") {
-          if (globalState.statistics.updatedAt === 0) {
-            globalState.statistics.todaySpentSecond += ONCE_COUNT * count;
-          } else {
-            const updatedAt = new Date(globalState.statistics.updatedAt);
-            const now = new Date();
-            // 0時～3時台の場合は前日扱いにする
-            if (updatedAt.getHours() < 4) {
-              updatedAt.setDate(updatedAt.getDate() - 1);
-            }
-            if (now.getHours() < 4) {
-              now.setDate(now.getDate() - 1);
-            }
-            // 1日経っていない場合
-            if (now.getDate() - updatedAt.getDate() < 1) {
-              globalState.statistics.todaySpentSecond += ONCE_COUNT * count;
-            } else if (now.getDate() - updatedAt.getDate() === 1) {
-              // 1日経っていた場合
-              globalState.statistics.yesterdaySpentSecond =
-                globalState.statistics.todaySpentSecond;
-              globalState.statistics.todaySpentSecond = ONCE_COUNT * count;
-            } else if (now.getDate() - updatedAt.getDate() > 1) {
-              // 2日以上経っていた場合
-              globalState.statistics.yesterdaySpentSecond = 0;
-              globalState.statistics.todaySpentSecond = ONCE_COUNT * count;
-            }
-          }
-          globalState.statistics.updatedAt = Date.now();
-          localStorage.setItem(
-            "statistics",
-            JSON.stringify(globalState.statistics)
-          );
+  const updateStatistics = (count: number, state: any) => {
+    // 日付変更時刻は午前4時
+    // 最終更新がない、初めての更新の場合
+    if (state.pomodoroTimerType !== "break") {
+      if (state.statistics.updatedAt === 0) {
+        state.statistics.todaySpentSecond += ONCE_COUNT * count;
+      } else {
+        const updatedAt = new Date(state.statistics.updatedAt);
+        const now = new Date();
+        // 0時～3時台の場合は前日扱いにする
+        if (updatedAt.getHours() < 4) {
+          updatedAt.setDate(updatedAt.getDate() - 1);
         }
-        return { ...globalState };
-      });
-    }, 3);
+        if (now.getHours() < 4) {
+          now.setDate(now.getDate() - 1);
+        }
+        // 1日経っていない場合
+        if (now.getDate() - updatedAt.getDate() < 1) {
+          state.statistics.todaySpentSecond += ONCE_COUNT * count;
+        } else if (now.getDate() - updatedAt.getDate() === 1) {
+          // 1日経っていた場合
+          state.statistics.yesterdaySpentSecond =
+            state.statistics.todaySpentSecond;
+          state.statistics.todaySpentSecond = ONCE_COUNT * count;
+        } else if (now.getDate() - updatedAt.getDate() > 1) {
+          // 2日以上経っていた場合
+          state.statistics.yesterdaySpentSecond = 0;
+          state.statistics.todaySpentSecond = ONCE_COUNT * count;
+        }
+      }
+      state.statistics.updatedAt = Date.now();
+      localStorage.setItem("statistics", JSON.stringify(state.statistics));
+    }
+    return state.statistics;
   };
 
   /**
