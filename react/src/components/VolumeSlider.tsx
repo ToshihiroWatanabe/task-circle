@@ -4,7 +4,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
 import VolumeDown from "@material-ui/icons/VolumeDown";
 import VolumeUp from "@material-ui/icons/VolumeUp";
-import React, { memo, useContext } from "react";
+import React, { memo, useContext, useEffect, useState } from "react";
 import { GlobalStateContext } from "contexts/GlobalStateContext";
 
 /** setTimeoutのID */
@@ -42,7 +42,20 @@ const useStyles = makeStyles({
 const VolumeSlider = memo(
   (props: { helperText: string; updateSettings: any }) => {
     const classes = useStyles();
+    const [value, setValue] = useState(0);
     const { globalState, setGlobalState } = useContext(GlobalStateContext);
+
+    useEffect(() => {
+      if (props.helperText.match(/.*作業.*/)) {
+        setValue(globalState.settings.workVideoVolume);
+      } else if (props.helperText.match(/.*休憩.*/)) {
+        setValue(globalState.settings.breakVideoVolume);
+      } else if (props.helperText.match(/.*チクタク.*/)) {
+        setValue(globalState.settings.tickVolume);
+      } else {
+        setValue(globalState.settings.volume);
+      }
+    }, []);
 
     /**
      * 入力値に変化があったときの処理です。
@@ -50,39 +63,41 @@ const VolumeSlider = memo(
      * @param {*} newValue 新しい値
      */
     const handleChange = (event: any, newValue: number) => {
-      if (props.helperText.match(/.*作業.*/)) {
-        setGlobalState((globalState: any) => {
-          return {
-            ...globalState,
-            settings: { ...globalState.settings, workVideoVolume: newValue },
-          };
-        });
-      } else if (props.helperText.match(/.*休憩.*/)) {
-        setGlobalState((globalState: any) => {
-          return {
-            ...globalState,
-            settings: { ...globalState.settings, breakVideoVolume: newValue },
-          };
-        });
-      } else if (props.helperText.match(/.*チクタク.*/)) {
-        setGlobalState((globalState: any) => {
-          return {
-            ...globalState,
-            settings: { ...globalState.settings, tickVolume: newValue },
-          };
-        });
-      } else {
-        setGlobalState((globalState: any) => {
-          return {
-            ...globalState,
-            settings: { ...globalState.settings, volume: newValue },
-          };
-        });
-      }
+      setValue(newValue);
       clearTimeout(changeTimeout);
       // @ts-ignore
       changeTimeout = setTimeout(() => {
-        props.updateSettings(globalState.settings);
+        setGlobalState((globalState: any) => {
+          if (props.helperText.match(/.*作業.*/)) {
+            globalState = {
+              ...globalState,
+              settings: {
+                ...globalState.settings,
+                workVideoVolume: newValue,
+              },
+            };
+          } else if (props.helperText.match(/.*休憩.*/)) {
+            globalState = {
+              ...globalState,
+              settings: {
+                ...globalState.settings,
+                breakVideoVolume: newValue,
+              },
+            };
+          } else if (props.helperText.match(/.*チクタク.*/)) {
+            globalState = {
+              ...globalState,
+              settings: { ...globalState.settings, tickVolume: newValue },
+            };
+          } else {
+            globalState = {
+              ...globalState,
+              settings: { ...globalState.settings, volume: newValue },
+            };
+          }
+          props.updateSettings(globalState.settings);
+          return { ...globalState };
+        });
       }, 500);
     };
 
@@ -97,15 +112,7 @@ const VolumeSlider = memo(
           </Grid>
           <Grid item xs>
             <Slider
-              value={
-                props.helperText.match(/.*作業.*/)
-                  ? globalState.settings.workVideoVolume
-                  : props.helperText.match(/.*休憩.*/)
-                  ? globalState.settings.breakVideoVolume
-                  : props.helperText.match(/.*チクタク.*/)
-                  ? globalState.settings.tickVolume
-                  : globalState.settings.volume
-              }
+              value={value}
               // @ts-ignore
               onChange={handleChange}
               aria-labelledby="continuous-slider"
