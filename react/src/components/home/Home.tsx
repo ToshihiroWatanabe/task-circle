@@ -518,9 +518,7 @@ const Home = memo((props: { sendMessage: any; onEnter: any; onLeave: any }) => {
               item.spentSecond = SPENT_SECOND_MAX;
             }
           }
-          setTimeout(() => {
-            refreshTitle(item.content, item.spentSecond);
-          }, 2);
+          refreshTitle(item.content, item.spentSecond, state, settings);
         }
         return item;
       });
@@ -576,33 +574,28 @@ const Home = memo((props: { sendMessage: any; onEnter: any; onLeave: any }) => {
   /**
    * ページのタイトルを更新します。
    */
-  const refreshTitle = (content: string, spentSecond: number) => {
-    setState((state: any) => {
-      if (!state.isTimerOn) {
-        document.title = DEFAULT_TITLE;
-        return state;
-      }
-      setSettings((settings: any) => {
-        if (settings.isPomodoroEnabled) {
-          document.title =
-            "(" +
-            secondToHHMMSS(state.pomodoroTimeLeft).substring(3) +
-            ") " +
-            (state.pomodoroTimerType === "work" ? content : "休憩中") +
-            " | " +
-            DEFAULT_TITLE;
-        } else {
-          document.title =
-            content +
-            " (" +
-            secondToHHMMSS(spentSecond) +
-            ") | " +
-            DEFAULT_TITLE;
-        }
-        return settings;
-      });
+  const refreshTitle = (
+    content: string,
+    spentSecond: number,
+    state: any,
+    settings: any
+  ) => {
+    if (!state.isTimerOn) {
+      document.title = DEFAULT_TITLE;
       return state;
-    });
+    }
+    if (settings.isPomodoroEnabled) {
+      document.title =
+        "(" +
+        secondToHHMMSS(state.pomodoroTimeLeft).substring(3) +
+        ") " +
+        (state.pomodoroTimerType === "work" ? content : "休憩中") +
+        " | " +
+        DEFAULT_TITLE;
+    } else {
+      document.title =
+        content + " (" + secondToHHMMSS(spentSecond) + ") | " + DEFAULT_TITLE;
+    }
   };
 
   /**
