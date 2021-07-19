@@ -220,11 +220,11 @@ const TimerFab = memo(
                           : ""
                         : // 1時間未満のとき
                         useMediaQueryThemeBreakpointsUpMd
-                        ? "2.5rem"
+                        ? "2.75rem"
                         : useMediaQueryThemeBreakpointsDownXs
                         ? "1rem"
                         : useMediaQueryThemeBreakpointsDownSm
-                        ? "1.7rem"
+                        ? "2rem"
                         : "",
                   }}
                 >
