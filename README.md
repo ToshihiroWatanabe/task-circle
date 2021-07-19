@@ -44,7 +44,7 @@ APIの説明はこちら<br>
 
 ![TaskCircle_QuickStartGuide_1](https://user-images.githubusercontent.com/79039863/125425089-ce0972c5-b7ea-4c47-b917-ae6bd2e5e632.png)
 
-![TaskCircle_QuickStartGuide_2](https://user-images.githubusercontent.com/79039863/125425158-bf0085a0-b4cf-4088-84c6-efee6365636e.png)
+![TaskCircle_QuickStartGuide_2](https://user-images.githubusercontent.com/79039863/126100268-13ac01b3-6ce1-4d8b-a15f-205b2f860c99.png)
 
 ![TaskCircle_QuickStartGuide_3](https://user-images.githubusercontent.com/79039863/125425203-c1e9b5d6-135c-4b97-b2dc-f7dab6af188c.png)
 
