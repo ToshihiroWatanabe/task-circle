@@ -58,7 +58,7 @@ APIの説明はこちら<br>
 </details>
 <details>
   <summary>TypeScript</summary>
-  JavaScriptに型宣言をできるようにした言語です。
+  JavaScriptで型宣言をできるようにした言語です。
 </details>
 <details>
   <summary>Material-UI</summary>
