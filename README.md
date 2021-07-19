@@ -52,13 +52,34 @@ APIの説明はこちら<br>
 
 # 👨‍💻使用技術
 
-- React (Create React App)
-- TypeScript
-- Material-UI
-- Spring Boot
-- WebSocket (STOMP, SockJS)
-- MyBatis
-- MySQL
+<details>
+  <summary>React</summary>
+  JavaScriptのライブラリです。Create React Appでプロジェクトを作成しました。
+</details>
+<details>
+  <summary>TypeScript</summary>
+  JavaScriptに型宣言をできるようにした言語です。
+</details>
+<details>
+  <summary>Material-UI</summary>
+  ReactのUIフレームワークです。Googleが提唱するマテリアルデザインのようなUIを作ることができます。
+</details>
+<details>
+  <summary>Spring Boot</summary>
+  Javaのフレームワークです。バックエンド(サーバーサイド)アプリケーションとして利用しています。
+</details>
+<details>
+  <summary>WebSocket (STOMP, SockJS)</summary>
+  HTTP通信とは別の通信方法で、リアルタイムな双方向通信ができます。ルーム機能でタイマーの状況を送受信するのに利用しています。
+</details>
+<details>
+  <summary>MyBatis</summary>
+  Javaの世界とデータベースの世界をつなぐO/Rマッパーです。
+</details>
+<details>
+  <summary>MySQL</summary>
+  データベースを管理するためのシステムおよび言語です。基本的なCRUD処理(新規作成、取得、更新、削除)を行っています。
+</details>
 
 # 🔧インストール手順
 
