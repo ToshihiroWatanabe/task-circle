@@ -390,6 +390,8 @@ const Home = memo((props: { sendMessage: any; onEnter: any; onLeave: any }) => {
               return { ...globalState };
             });
             clearTimeout(timerCountTimeout);
+            // タイトルをデフォルトに戻す
+            document.title = DEFAULT_TITLE;
             // faviconをデフォルトに戻す
             const link: any = document.querySelector("link[rel*='icon']");
             link.href = "/favicon.ico";
@@ -456,6 +458,8 @@ const Home = memo((props: { sendMessage: any; onEnter: any; onLeave: any }) => {
               return { ...globalState };
             });
             clearTimeout(timerCountTimeout);
+            // タイトルをデフォルトに戻す
+            document.title = DEFAULT_TITLE;
             // faviconをデフォルトに戻す
             const link: any = document.querySelector("link[rel*='icon']");
             link.href = "/favicon.ico";
@@ -579,8 +583,7 @@ const Home = memo((props: { sendMessage: any; onEnter: any; onLeave: any }) => {
     settings: any
   ) => {
     if (!state.isTimerOn) {
-      document.title = DEFAULT_TITLE;
-      return state;
+      return;
     }
     if (settings.isPomodoroEnabled) {
       document.title =
