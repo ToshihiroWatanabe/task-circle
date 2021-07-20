@@ -100,7 +100,7 @@ const TaskMenu = memo(
           },
         };
         props.updateTodoLists(newTodoLists);
-        return newTodoLists;
+        return { ...globalState, todoLists: newTodoLists };
       });
       setAnchorEl(null);
     };

@@ -354,7 +354,7 @@ const Home = memo((props: { sendMessage: any; onEnter: any; onLeave: any }) => {
           ) {
             // 目標時間を超えたときに停止する設定をオフにする
             // @ts-ignore
-            Object.values(todoLists)
+            Object.values(globalState.todoLists)
               .filter((column: any) => {
                 return (
                   column.items.filter((item: any) => {
