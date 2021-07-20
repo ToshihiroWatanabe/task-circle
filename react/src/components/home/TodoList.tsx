@@ -582,6 +582,8 @@ const TodoList = memo(
                                                     color: item.achievedThenStop
                                                       ? "inherit"
                                                       : "#BBB",
+                                                    marginTop: "-3px",
+                                                    marginBottom: "-3px",
                                                   }}
                                                   onClick={() =>
                                                     onAlarmIconClick(
