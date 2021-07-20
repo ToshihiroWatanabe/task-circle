@@ -1,9 +1,10 @@
-import { useMediaQuery, useTheme, Zoom } from "@material-ui/core";
+import { useMediaQuery, useTheme } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import TimerFab from "components/home/TimerFab";
 import React, { memo, useEffect, useState } from "react";
 import { Rnd } from "react-rnd";
 import { useLocation } from "react-router-dom";
+import DragIndicatorIcon from "@material-ui/icons/DragIndicator";
 
 const DEFAULT_WIDTH = 180;
 const DEFAULT_HEIGHT = 180;
@@ -19,6 +20,13 @@ const useStyles = makeStyles((theme) => ({
     "& > *": {
       margin: theme.spacing(1),
     },
+  },
+  dragIndicator: {
+    position: "absolute",
+    display: "block",
+    top: "0",
+    right: "0",
+    color: "gray",
   },
 }));
 
@@ -40,11 +48,6 @@ const TimerRnd = memo((props: { todoLists: any; onPlayButtonClick: any }) => {
     theme.breakpoints.down("xs")
   );
 
-  const transitionDuration = {
-    enter: theme.transitions.duration.enteringScreen,
-    exit: theme.transitions.duration.leavingScreen,
-  };
-
   const [positionX, setPositionX] = useState(
     document.documentElement.clientWidth / 2 - DEFAULT_WIDTH / 2
   );
@@ -54,6 +57,7 @@ const TimerRnd = memo((props: { todoLists: any; onPlayButtonClick: any }) => {
   const [height, setHeight] = useState(DEFAULT_HEIGHT);
   const [width, setWidth] = useState(DEFAULT_WIDTH);
   const [isDragging, setIsDragging] = useState(false);
+  const [isHovered, setIsHovered] = useState(false);
 
   /** 選択されているタスク */
   const selectedTask =
@@ -136,21 +140,12 @@ const TimerRnd = memo((props: { todoLists: any; onPlayButtonClick: any }) => {
       {(useMediaQueryThemeBreakpointsOnlySm ||
         (selectedTask && useMediaQueryThemeBreakpointsDownXs)) && (
         <div className={classes.root}>
-          <Zoom
-            timeout={transitionDuration}
-            in={true}
-            style={{
-              transitionDelay: `${transitionDuration.exit}ms`,
-            }}
-            unmountOnExit
-          >
-            {/* @ts-ignore */}
-            <TimerFab
-              todoLists={props.todoLists}
-              isDragging={isDragging}
-              onPlayButtonClick={props.onPlayButtonClick}
-            />
-          </Zoom>
+          {/* @ts-ignore */}
+          <TimerFab
+            todoLists={props.todoLists}
+            isDragging={isDragging}
+            onPlayButtonClick={props.onPlayButtonClick}
+          />
         </div>
       )}
       {useMediaQueryThemeBreakpointsUpMd && (
@@ -168,6 +163,12 @@ const TimerRnd = memo((props: { todoLists: any; onPlayButtonClick: any }) => {
             setIsDragging(true);
           }}
           onDragStop={onDragStop}
+          onMouseEnter={() => {
+            setIsHovered(true);
+          }}
+          onMouseLeave={() => {
+            setIsHovered(false);
+          }}
           position={{
             x: positionX,
             y: positionY,
@@ -195,6 +196,11 @@ const TimerRnd = memo((props: { todoLists: any; onPlayButtonClick: any }) => {
             width={width}
             height={height}
           />
+          {isHovered && (
+            <div className={classes.dragIndicator}>
+              <DragIndicatorIcon fontSize="small" />
+            </div>
+          )}
         </Rnd>
       )}
     </>
