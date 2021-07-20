@@ -4,6 +4,11 @@
 
 <h4 align="center">作業状況を仲間と共有できる、タスク管理＆タイマーWebアプリです。</h4>
 
+<h4 align="center">
+<img alt="GitHub repo size" src="https://img.shields.io/github/repo-size/ToshihiroWatanabe/task-circle">
+<img alt="GitHub" src="https://img.shields.io/github/license/ToshihiroWatanabe/task-circle">
+</h4>
+  
 <p align="center">
   <a href="#概要">概要</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
   <a href="#使い方">使い方</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
