@@ -78,6 +78,16 @@ const TimerRnd = memo((props: { todoLists: any; onPlayButtonClick: any }) => {
           })[0]
       : null;
 
+  // ウインドウがリサイズされたとき
+  window.addEventListener("resize", () => {
+    if (positionY + 80 + height > window.innerHeight) {
+      setPositionY(window.innerHeight - 80 - height);
+    }
+    if (positionX + 20 + width > window.innerWidth) {
+      setPositionX(window.innerWidth - 20 - width);
+    }
+  });
+
   // URLに変更があったとき
   useEffect(() => {
     if (location.pathname === "/") {
