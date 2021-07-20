@@ -17,7 +17,7 @@
   <a href="#license">License</a>
 </p>
 
-![TaskCircle 2021-07-10](https://user-images.githubusercontent.com/79039863/125162472-fbd6de80-e1c2-11eb-9cbc-1dcdb4a47de8.gif)
+![TaskCircle 2021-07-10](https://user-images.githubusercontent.com/79039863/126265535-fe696cba-fe48-4c63-9933-e51c40aff972.gif)
 
 <h3 align="center">アプリはこちらで公開しています。<br>
 <a href="https://task-circle.net" align="center">https://task-circle.net</a>
