@@ -4,13 +4,11 @@
 
 <h4 align="center">作業状況を仲間と共有できる、タスク管理＆タイマーWebアプリです。</h4>
 
-
 <p align="center">
   <a href="#概要">概要</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
   <a href="#使い方">使い方</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
   <a href="#使用技術">使用技術</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
   <a href="#インストール手順">インストール手順</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
-  <a href="#作者">作者</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
   <a href="#license">License</a>
 </p>
 
@@ -40,7 +38,7 @@ APIの説明はこちら<br>
   - CI/CDツールはCircleCIを利用していて、mainブランチへのプッシュがあると自動でデプロイされます。<br>
 </details>
 
-# ▶使い方
+# 🔰使い方
 
 ![TaskCircle_QuickStartGuide_1](https://user-images.githubusercontent.com/79039863/125425089-ce0972c5-b7ea-4c47-b917-ae6bd2e5e632.png)
 
@@ -147,10 +145,8 @@ Reactアプリケーションを起動します。
 npm start
 ```
 
-# 作者
-
-ワタナベトシヒロ
-
 # License
 
-MIT
+The MIT License (MIT)
+
+Copyright © 2021 ワタナベトシヒロ
