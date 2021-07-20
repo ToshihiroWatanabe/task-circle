@@ -265,10 +265,10 @@ const TodoList = memo(
     const onAlarmIconClick = (columnIndex: number, taskIndex: number) => {
       if (
         // @ts-ignore
-        Object.values(props.todoLists)[columnIndex].items[taskIndex]
+        Object.values(globalState.todoLists)[columnIndex].items[taskIndex]
           .spentSecond <
         // @ts-ignore
-        Object.values(props.todoLists)[columnIndex].items[taskIndex]
+        Object.values(globalState.todoLists)[columnIndex].items[taskIndex]
           .estimatedSecond
       ) {
         setGlobalState((globalState: any) => {
@@ -310,7 +310,7 @@ const TodoList = memo(
         "https://twitter.com/intent/tweet?text=" +
         taskItemsToBuildUp(
           // @ts-ignore
-          Object.values(props.todoLists)[index].items
+          Object.values(globalState.todoLists)[index].items
         ).replaceAll("\r\n", "%0A") +
         "%0A%0A" +
         globalState.settings.tweetTemplate.replaceAll("#", "%23");
