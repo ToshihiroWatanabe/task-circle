@@ -305,7 +305,6 @@ const Settings = memo(() => {
                 );
               }
             })()}
-            <Box mt={1} />
             <VolumeSlider
               // @ts-ignore
               helperText="音量(作業用BGM)"
@@ -368,7 +367,6 @@ const Settings = memo(() => {
                 );
               }
             })()}
-            <Box mt={1} />
             {/* @ts-ignore */}
             <VolumeSlider
               helperText="音量(休憩用BGM)"
@@ -376,6 +374,7 @@ const Settings = memo(() => {
             />
           </FormGroup>
         </FormControl>
+        <Box mt={1} />
         <FormControl component="fieldset" className={classes.formControl}>
           <FormLabel className={classes.formLabel}>
             開始・停止・アラーム音
