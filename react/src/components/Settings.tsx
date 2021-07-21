@@ -396,7 +396,7 @@ const Settings = memo(() => {
           />
           {globalState.settings.tickVolume === 0 && (
             <Typography variant="caption">
-              チクタク音のボリュームを0にすると、動作が不安定になる場合があります。
+              BGMが設定されていない場合にチクタク音のボリュームを0にすると、動作が不安定になる場合があります。
             </Typography>
           )}
         </FormControl>
