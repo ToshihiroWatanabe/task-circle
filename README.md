@@ -8,7 +8,7 @@
 <img alt="GitHub repo size" src="https://img.shields.io/github/repo-size/ToshihiroWatanabe/task-circle">
 <img alt="GitHub" src="https://img.shields.io/github/license/ToshihiroWatanabe/task-circle">
 </h4>
-  
+
 <p align="center">
   <a href="#概要">概要</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
   <a href="#使い方">使い方</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
@@ -23,7 +23,7 @@
 <a href="https://task-circle.net" align="center">https://task-circle.net</a>
 </h3>
 
-# 🚀概要
+# 💡概要
 
 **タスク管理**と**タイマー**、**他のユーザーのステータス表示機能**のあるWebアプリケーションです。
 
@@ -68,6 +68,10 @@ APIの説明はこちら<br>
   ReactのUIフレームワークです。Googleが提唱するマテリアルデザインのようなUIを作ることができます。
 </details>
 <details>
+  <summary>Jest, React Testing Library</summary>
+  JavaScriptのテストランナーと、Reactコンポーネントのテストライブラリです。
+</details>
+<details>
   <summary>Spring Boot</summary>
   Javaのフレームワークです。バックエンド(サーバーサイド)アプリケーションとして利用しています。
 </details>
@@ -84,7 +88,7 @@ APIの説明はこちら<br>
   データベースを管理するためのシステムおよび言語です。基本的なCRUD処理(新規作成、取得、更新、削除)を行っています。
 </details>
 
-# 🔧インストール手順
+# 🛠インストール手順
 
 ## 動作環境
 
