@@ -30,3 +30,7 @@ URI(エンドポイント)|リクエスト|パラメータ|説明
 ## データベース
 
 DDL(テーブルを作成する文)は[/springboot/src/main/resources/schema.sql](/springboot/src/main/resources/schema.sql)を参照してください。
+
+### ER図
+
+![image](https://user-images.githubusercontent.com/79039863/126899287-8773f3d1-3dda-42a3-9c4f-91b6feeb4ba7.png)
