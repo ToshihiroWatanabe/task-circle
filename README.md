@@ -29,11 +29,11 @@
 
 フロントエンドはReact、バックエンドはSpring Bootで制作しています。詳しい説明はそれぞれのREADME.mdをご覧ください。
 
-アプリの各種機能の紹介はこちら<br>
-[React(フロントエンド)のREADME.md](/react/README.md)
+**アプリの機能の紹介はこちら↓**<br>
+[react/README.md](/react/README.md)
 
-APIの説明はこちら<br>
-[Spring Boot(バックエンド)のREADME.md](/springboot/README.md)
+**APIの表とER図はこちら↓**<br>
+[springboot/README.md](/springboot/README.md)
 
 <details>
   <summary>デプロイ方法についての説明</summary>
