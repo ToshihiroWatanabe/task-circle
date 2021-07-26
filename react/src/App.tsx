@@ -19,6 +19,7 @@ import { themeTemplate } from "theme";
 import { SOCKET_URL } from "utils/constant";
 //@ts-ignore
 import uuid from "uuid/v4";
+import { DEFAULT_TITLE } from "utils/constant";
 
 const sessionFindAllTopicsId = uuid();
 
@@ -153,10 +154,11 @@ const App: React.FC = memo(() => {
    */
   const onLeave = () => {
     setGlobalState((globalState: any) => {
-      // 離席中ならfaviconを元に戻す
+      // 離席中ならfaviconとタイトルを元に戻す
       if (globalState.isAfk) {
         const link: any = document.querySelector("link[rel*='icon']");
         link.href = "/favicon.ico";
+        document.title = DEFAULT_TITLE;
       }
       if (globalState.isConnected) {
         // @ts-ignore
