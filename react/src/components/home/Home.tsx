@@ -298,6 +298,8 @@ const Home = memo((props: { sendMessage: any; onEnter: any; onLeave: any }) => {
         // 停止の効果音
         stoppedSound.volume = globalState.settings.volume * 0.01;
         stoppedSound.play();
+        // timeoutをクリア
+        clearTimeout(timerCountTimeout);
         // 動画をストップ
         stopVideo();
         // 動画IDを更新
