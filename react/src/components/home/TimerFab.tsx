@@ -161,6 +161,8 @@ const TimerFab = memo(
                 ? globalState.settings.breakTimerLength
                 : globalState.settings.workTimerLength,
           };
+          localStorage.setItem("settings", JSON.stringify(newSettings));
+          localStorage.setItem("settingsUpdatedAt", Date.now().toString());
           return { ...globalState, ...newState, settings: newSettings };
         });
       }, 1);
