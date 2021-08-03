@@ -6,7 +6,7 @@
 
 <h4 align="center">
 <img alt="GitHub repo size" src="https://img.shields.io/github/repo-size/ToshihiroWatanabe/task-circle">
-<img alt="GitHub" src="https://img.shields.io/github/license/ToshihiroWatanabe/task-circle">
+<img alt="License MIT" src="https://img.shields.io/github/license/ToshihiroWatanabe/task-circle">
 </h4>
 
 <p align="center">
