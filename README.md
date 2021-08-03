@@ -41,6 +41,7 @@
   - ビルド時は、まずReactアプリケーションをビルドしたものをSpring Bootプロジェクトに統合してから、Spring Bootアプリケーションをビルドします。<br>
   - AWS上でEC2とRDSを作成し、EC上のTomcatでSpring Bootアプリケーションを起動させています。<br>
   - CI/CDツールはCircleCIを利用していて、mainブランチへのプッシュがあると自動でデプロイされます。<br>
+  - 独自ドメインを取得してRoute53に登録し、Let's Encryptで取得した証明書をTomcatにインストールし、80番と443番ポートの通信を8443番ポートへ転送してHTTPS化しています。<br>
 </details>
 
 # 🔰使い方
