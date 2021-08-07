@@ -140,8 +140,9 @@ const TimerRnd = memo((props: { todoLists: any; onPlayButtonClick: any }) => {
       {(useMediaQueryThemeBreakpointsOnlySm ||
         (selectedTask && useMediaQueryThemeBreakpointsDownXs)) && (
         <div className={classes.root}>
-          {/* @ts-ignore */}
           <TimerFab
+            width={0}
+            height={0}
             todoLists={props.todoLists}
             isDragging={isDragging}
             onPlayButtonClick={props.onPlayButtonClick}
@@ -173,8 +174,9 @@ const TimerRnd = memo((props: { todoLists: any; onPlayButtonClick: any }) => {
             x: positionX,
             y: positionY,
           }}
-          // @ts-ignore
           default={{
+            x: 0,
+            y: 0,
             width: DEFAULT_WIDTH,
             height: DEFAULT_HEIGHT,
           }}
@@ -185,8 +187,7 @@ const TimerRnd = memo((props: { todoLists: any; onPlayButtonClick: any }) => {
                 : "solid 1px #111",
             borderRadius: "8px",
             background: theme.palette.type === "light" ? "#f0f0f0" : "#424242",
-            // @ts-ignore
-            zIndex: "1",
+            zIndex: 1,
           }}
         >
           <TimerFab
