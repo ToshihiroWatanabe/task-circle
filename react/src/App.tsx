@@ -326,7 +326,6 @@ const App: React.FC = memo(() => {
     <>
       <MuiThemeProvider theme={darkTheme}>
         {/* ドロワー */}
-        {/* @ts-ignore */}
         <ResponsiveDrawer
           sendMessage={sendMessage}
           isDarkModeOn={isDarkModeOn}
@@ -346,7 +345,6 @@ const App: React.FC = memo(() => {
             }}
           >
             <Home
-              // @ts-ignore
               sendMessage={sendMessage}
               onEnter={onEnter}
               onLeave={onLeave}
