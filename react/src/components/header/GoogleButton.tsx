@@ -9,10 +9,10 @@ import SettingService from "services/setting.service";
 import TodoListService from "services/todoList.service";
 import { maskEmail } from "utils/string";
 
-/**
- * クライアントID
- */
-const CLIENT_ID = process.env.REACT_APP_CLIENT_ID;
+/** クライアントID */
+const CLIENT_ID = process.env.REACT_APP_CLIENT_ID
+  ? process.env.REACT_APP_CLIENT_ID
+  : "";
 
 /**
  * Googleでログイン/ログアウトするボタンのコンポーネントです。
@@ -127,9 +127,8 @@ const GoogleButton = memo((props: any) => {
 
   /**
    * ログアウト時の処理です。
-   * @param {*} response
    */
-  const logout = (response: any) => {
+  const logout = () => {
     setGlobalState((globalState: any) => {
       return { ...globalState, isLogined: false, tokenId: "", email: "" };
     });
@@ -155,17 +154,16 @@ const GoogleButton = memo((props: any) => {
   return (
     <div id="googleButton">
       {globalState.isLogined ? (
-        // @ts-ignore
         <GoogleLogout
           clientId={CLIENT_ID}
           buttonText="ログアウト"
           onLogoutSuccess={logout}
           onFailure={handleLogoutFailure}
+          // @ts-ignore
           theme={theme.palette.type}
         />
       ) : (
         <GoogleLogin
-          // @ts-ignore
           clientId={CLIENT_ID}
           buttonText="ログイン"
           onSuccess={login}
@@ -176,7 +174,6 @@ const GoogleButton = memo((props: any) => {
         />
       )}
       <SimpleSnackbar
-        // @ts-ignore
         open={snackbarOpen}
         setOpen={setSnackbarOpen}
         message={snackbarMessage}
