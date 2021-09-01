@@ -140,9 +140,8 @@ const TimerRnd = memo((props: { todoLists: any; onPlayButtonClick: any }) => {
       {(useMediaQueryThemeBreakpointsOnlySm ||
         (selectedTask && useMediaQueryThemeBreakpointsDownXs)) && (
         <div className={classes.root}>
+          {/* @ts-ignore */}
           <TimerFab
-            width={0}
-            height={0}
             todoLists={props.todoLists}
             isDragging={isDragging}
             onPlayButtonClick={props.onPlayButtonClick}
