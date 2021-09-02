@@ -1,0 +1,31 @@
+swagger: '2.0'
+paths:
+  /api/regist:
+    post:
+      consumes:
+        - application/x-www-form-urlencoded
+      parameters:
+        - name: hoge_id
+          in: query
+          description: クエリパラメータ
+          type: integer
+          required: true
+        - name: hoge_name
+          in: formData
+          description: 名前
+          required: true
+          type: string
+        - name: age
+          in: formData
+          description: 年齢
+          required: true
+          type: string
+        - name: comment
+          in: formData
+          description: コメント
+          type: string
+          required: true
+          maxLength: 1000
+    responses:
+      200:
+        description: ok
