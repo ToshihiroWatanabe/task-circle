@@ -12,6 +12,7 @@
 <p align="center">
   <a href="#概要">概要</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
   <a href="#使い方">使い方</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
+  <a href="#開発履歴">開発履歴</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
   <a href="#使用技術">使用技術</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
   <a href="#インストール手順">インストール手順</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
   <a href="#license">License</a>
@@ -53,6 +54,13 @@
 ![TaskCircle_QuickStartGuide_3](https://user-images.githubusercontent.com/79039863/125425203-c1e9b5d6-135c-4b97-b2dc-f7dab6af188c.png)
 
 ![TaskCircle_QuickStartGuide_4](https://user-images.githubusercontent.com/79039863/125425277-bd286a68-8cc4-4c35-b1a1-757847d78c9f.png)
+
+# 📅開発履歴
+
+2021年6月18日 Reactプロジェクトを作成  
+2021年6月29日 Spring Bootプロジェクトを追加  
+2021年7月 3日 AWSにデプロイし、アプリ公開  
+2021年7月15日 TypeScriptへの移行開始  
 
 # 👨‍💻使用技術
 
