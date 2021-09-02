@@ -1,6 +1,9 @@
 package app.taskcircle.mapper;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+
+import java.util.List;
 
 import app.taskcircle.model.Session;
 
@@ -20,7 +23,16 @@ class SessionMapperTest {
 
     @Nested
     class findAllメソッドでsessionsテーブルから全件取得できる事 {
+        List<Session> sessions = sessionMapper.findAll();
 
+        @Test
+        void _1件目のユーザー名を取得できる事() {
+            assertEquals("たすくん", sessions.get(0).getUserName());
+        }
+    }
+
+    @Nested
+    class updateメソッド {
         @Test
         void 空の値でセッションを更新できない事() {
             assertFalse(sessionMapper.update(new Session()));
