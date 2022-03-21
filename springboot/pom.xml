@@ -11,7 +11,7 @@
 	</parent>
 	<groupId>app</groupId>
 	<artifactId>taskcircle</artifactId>
-	<packaging>war</packaging>
+	<packaging>jar</packaging>
 	<version>1.0.0</version>
 	<name>taskcircle</name>
 	<description>TaskCircle project for Spring Boot</description>

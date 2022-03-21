@@ -21,7 +21,7 @@
 ![TaskCircle 2021-07-10](https://user-images.githubusercontent.com/79039863/126265535-fe696cba-fe48-4c63-9933-e51c40aff972.gif)
 
 <h3 align="center">アプリはこちらで公開しています。<br>
-<a href="https://task-circle.net" align="center">https://task-circle.net</a>
+<a href="https://task-circle.herokuapp.com" align="center">https://task-circle.herokuapp.com</a>
 </h3>
 
 # 💡概要
@@ -37,13 +37,13 @@
 [springboot/README.md](/springboot/README.md)
 
 <details>
-  <summary>デプロイ方法についての説明</summary>
+  <summary>(旧)AWSでのデプロイについて</summary>
 
-  - ビルド時は、まずReactアプリケーションをビルドしたものをSpring Bootプロジェクトに統合してから、Spring Bootアプリケーションをビルドします。<br>
-  - AWS上でEC2とRDSを作成し、EC上のTomcatでSpring Bootアプリケーションを起動させています。<br>
-  - CI/CDツールはCircleCIを利用していて、mainブランチへのプッシュがあると自動でデプロイされます。<br>
-  - 独自ドメインを取得してRoute53に登録し、Let's Encryptで取得した証明書をTomcatにインストールし、80番と443番ポートの通信を8443番ポートへ転送してHTTPS化しています。<br>
-</details>
+-   ビルド時は、まずReactアプリケーションをビルドしたものをSpring Bootプロジェクトに統合してから、Spring Bootアプリケーションをビルドします。<br>
+-   AWS上でEC2とRDSを作成し、EC2上のTomcatでSpring Bootアプリケーションを起動させています。<br>
+-   CI/CDツールはCircleCIを利用していて、mainブランチへのプッシュがあると自動でデプロイされます。<br>
+-   独自ドメインを取得してRoute53に登録し、Let's Encryptで取得した証明書をTomcatにインストールし、80番と443番ポートの通信を8443番ポートへ転送してHTTPS化しています。<br>
+    </details>
 
 # 🔰使い方
 
@@ -61,6 +61,7 @@
 2021年6月29日 Spring Bootプロジェクトを追加  
 2021年7月 3日 AWSにデプロイし、アプリ公開  
 2021年7月15日 TypeScriptへの移行開始  
+2022年3月21日 ホスティングサービスをAWSからHerokuに移行
 
 # 👨‍💻使用技術
 
@@ -101,11 +102,11 @@
 
 ## 動作環境
 
-- Java 11.0.10
-- Apache Maven 3.8.1
-- Node.js 14.16.1
-- npm 7.16.0
-- MySQL 8.0.25
+-   Java 11.0.10
+-   Apache Maven 3.8.1
+-   Node.js 14.16.1
+-   npm 7.16.0
+-   MySQL 8.0.25
 
 ## データベースの作成
 
@@ -118,50 +119,49 @@ MySQLでデータベースを作成し、
 
 環境変数を設定するか、[springboot/src/main/resources/application.properties](/springboot/src/main/resources/application.properties)のデータベースの接続に関する記述を書き換えてください。
 
-環境変数名|説明
----|---
-MYSQL_URL|jdbc:mysql://**ホスト名**:**ポート番号**/**データベース名**
-MYSQL_USERNAME|データベースに接続するユーザー名
-MYSQL_PASSWORD|データベースに接続するユーザーのパスワード
+| 環境変数名          | 説明                                          |
+| -------------- | ------------------------------------------- |
+| MYSQL_URL      | jdbc:mysql://**ホスト名**:**ポート番号**/**データベース名** |
+| MYSQL_USERNAME | データベースに接続するユーザー名                            |
+| MYSQL_PASSWORD | データベースに接続するユーザーのパスワード                       |
 
 #### React用の環境変数
 
 ログイン機能を使用する場合は、reactディレクトリに.envファイルを作成し、環境変数を記述してください。
 
-環境変数名|説明
----|---
-REACT_APP_CLIENT_ID|Google OAuthのクライアントID
+| 環境変数名               | 説明                    |
+| ------------------- | --------------------- |
+| REACT_APP_CLIENT_ID | Google OAuthのクライアントID |
 
 ## インストールと実行
 
 リポジトリをクローンします。
-```
-git clone https://github.com/ToshihiroWatanabe/task-circle.git
-```
+
+    git clone https://github.com/ToshihiroWatanabe/task-circle.git
+
 Spring Bootプロジェクトのディレクトリに移動します。
-```
-cd task-circle/springboot
-```
+
+    cd task-circle/springboot
+
 Mavenで依存関係をインストールします。
-```
-mvn install
-```
+
+    mvn install
+
 Spring Bootアプリケーションを起動します。
-```
-mvn spring-boot:run
-```
+
+    mvn spring-boot:run
+
 Reactプロジェクトのディレクトリに移動します。
-```
-cd ../react
-```
+
+    cd ../react
+
 npmで依存関係をインストールします。
-```
-npm install
-```
+
+    npm install
+
 Reactアプリケーションを起動します。
-```
-npm start
-```
+
+    npm start
 
 # License
 
