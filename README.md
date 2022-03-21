@@ -167,4 +167,4 @@ Reactアプリケーションを起動します。
 
 The MIT License (MIT)
 
-Copyright © 2021 ワタナベトシヒロ
+Copyright © 2022 ワタナベトシヒロ
