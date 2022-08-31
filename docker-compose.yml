@@ -1,0 +1,23 @@
+version: "3.8"
+services:
+  frontend:
+    build:
+      context: frontend
+      dockerfile: Dockerfile
+    volumes:
+      - ./frontend:/home/node
+      - node_modules_volume:/home/node/node_modules
+    ports:
+      - 8161:8161
+  backend:
+    build:
+      context: backend
+      dockerfile: Dockerfile
+    volumes:
+      - ./backend:/usr/src/app
+    ports:
+      - 8160:8160
+    depends_on:
+      - frontend
+volumes:
+  node_modules_volume:
