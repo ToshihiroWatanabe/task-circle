@@ -1,11 +1,10 @@
-# dependencies
-react/node_modules
+node_modules
 
 # testing
-react/coverage
+frontend/coverage
 
 # production
-react/build
+frontend/build
 
 # misc
 .DS_Store
@@ -18,7 +17,7 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
-springboot/target/
+backend/target/
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
 !**/src/test/**/target/
@@ -44,9 +43,6 @@ springboot/target/
 /dist/
 /nbdist/
 /.nb-gradle/
-springboot/build/
+backend/build/
 !**/src/main/**/build/
 !**/src/test/**/build/
-
-### VS Code ###
-.vscode/

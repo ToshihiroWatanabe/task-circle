@@ -1,0 +1,19 @@
+{
+  "configurations": [
+    {
+      "type": "java",
+      "name": "Spring Boot-Application<taskcircle>",
+      "request": "launch",
+      "cwd": "${workspaceFolder}/backend",
+      "console": "internalConsole",
+      "mainClass": "app.taskcircle.Application",
+      "projectName": "taskcircle",
+      "args": "",
+      "env": {
+        "MYSQL_URL": "jdbc:mysql://localhost:3306/taskcircledb",
+        "MYSQL_USERNAME": "root",
+        "MYSQL_PASSWORD": "root"
+      }
+    }
+  ]
+}

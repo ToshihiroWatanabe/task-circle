@@ -31,10 +31,10 @@
 フロントエンドはReact、バックエンドはSpring Bootで制作しています。詳しい説明はそれぞれのREADME.mdをご覧ください。
 
 **アプリの機能の紹介はこちら↓**<br>
-[react/README.md](/react/README.md)
+[frontend/README.md](/frontend/README.md)
 
 **APIの表とER図はこちら↓**<br>
-[springboot/README.md](/springboot/README.md)
+[backend/README.md](/backend/README.md)
 
 <details>
   <summary>(旧)AWSでのデプロイについて</summary>
@@ -111,13 +111,13 @@
 ## データベースの作成
 
 MySQLでデータベースを作成し、
-[springboot/src/main/resources/schema.sql](/springboot/src/main/resources/schema.sql)にあるSQL文でテーブルを作成してください。
+[backend/src/main/resources/schema.sql](/backend/src/main/resources/schema.sql)にあるSQL文でテーブルを作成してください。
 
 ## 環境変数の設定
 
 #### Spring Boot用の環境変数
 
-環境変数を設定するか、[springboot/src/main/resources/application.properties](/springboot/src/main/resources/application.properties)のデータベースの接続に関する記述を書き換えてください。
+環境変数を設定するか、[backend/src/main/resources/application.properties](/backend/src/main/resources/application.properties)のデータベースの接続に関する記述を書き換えてください。
 
 | 環境変数名          | 説明                                          |
 | -------------- | ------------------------------------------- |
@@ -141,7 +141,7 @@ MySQLでデータベースを作成し、
 
 Spring Bootプロジェクトのディレクトリに移動します。
 
-    cd task-circle/springboot
+    cd task-circle/backend
 
 Mavenで依存関係をインストールします。
 
@@ -153,7 +153,7 @@ Spring Bootアプリケーションを起動します。
 
 Reactプロジェクトのディレクトリに移動します。
 
-    cd ../react
+    cd ../frontend
 
 npmで依存関係をインストールします。
 
