@@ -9,15 +9,41 @@ services:
       - node_modules_volume:/home/node/node_modules
     ports:
       - 8161:8161
+
+  db:
+    image: mysql:8.0
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: taskcircledb
+      # MYSQL_USER: root
+      # MYSQL_PASSWORD: root
+      TZ: 'Asia/Tokyo'
+    command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    volumes:
+      - ./.docker/mysql/data:/var/lib/mysql
+      - ./.docker/mysql/conf/my.cnf:/etc/mysql/conf.d/my.cnf
+      - ./backend/src/main/resources:/docker-entrypoint-initdb.d
+    ports:
+    - 3306:3306
+    healthcheck:
+      test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost", "-uroot", "-proot"]
+      interval: 10s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+
   backend:
     build:
-      context: backend
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: backend/Dockerfile
     volumes:
-      - ./backend:/usr/src/app
+      - ./backend:/usr/src/backend
+    env_file:
+      - ./.env.local
     ports:
       - 8160:8160
     depends_on:
-      - frontend
+      db:
+        condition: service_healthy
 volumes:
   node_modules_volume:
