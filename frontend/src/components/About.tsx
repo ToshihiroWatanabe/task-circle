@@ -36,7 +36,7 @@ const About = () => {
       .create({
         // リクエスト送信先のURL
         baseURL:
-          process.env.NODE_ENV === "development" ? "http://localhost:8160" : "",
+          process.env.NODE_ENV === "development" ? "http://localhost:8080" : "",
         // ヘッダーでタイプをJSONに指定
         headers: {
           "Content-type": "application/json",

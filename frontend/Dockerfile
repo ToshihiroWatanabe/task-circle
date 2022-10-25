@@ -12,4 +12,4 @@ RUN BROWSER=none
 ENTRYPOINT ["npm","start"]
 
 # docker build . -t task-circle_frontend
-# docker run -p 8161:8161 -v $PWD:/usr/src task-circle_frontend
+# docker run -p 3000:3000 -v $PWD:/usr/src task-circle_frontend

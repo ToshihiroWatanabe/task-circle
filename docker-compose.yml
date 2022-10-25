@@ -3,12 +3,12 @@ services:
   frontend:
     build:
       context: frontend
-      dockerfile: backend/dev.Dockerfile
+      dockerfile: ./dev.Dockerfile
     volumes:
       - ./frontend:/home/node
       - node_modules_volume:/home/node/node_modules
     ports:
-      - 8161:8161
+      - 3000:3000
 
   db:
     image: mysql:8.0
@@ -35,13 +35,13 @@ services:
   backend:
     build:
       context: .
-      dockerfile: backend/dev.Dockerfile
+      dockerfile: ./backend/dev.Dockerfile
     volumes:
       - ./backend:/usr/src/backend
     env_file:
       - ./.env.local
     ports:
-      - 8160:8160
+      - 8080:8080
     depends_on:
       db:
         condition: service_healthy

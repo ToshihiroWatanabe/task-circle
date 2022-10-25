@@ -20,7 +20,7 @@ export const DRAWER_WIDTH = "15rem";
 export const SOCKET_URL =
   process.env.NODE_ENV === "production"
     ? "/websocket"
-    : "http://localhost:8160/websocket";
+    : "http://localhost:8080/websocket";
 
 /** 使用できないユーザー名 */
 export const NG_USER_NAMES = [
