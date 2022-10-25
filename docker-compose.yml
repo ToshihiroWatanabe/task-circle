@@ -3,7 +3,7 @@ services:
   frontend:
     build:
       context: frontend
-      dockerfile: Dockerfile
+      dockerfile: backend/dev.Dockerfile
     volumes:
       - ./frontend:/home/node
       - node_modules_volume:/home/node/node_modules
@@ -35,7 +35,7 @@ services:
   backend:
     build:
       context: .
-      dockerfile: backend/Dockerfile
+      dockerfile: backend/dev.Dockerfile
     volumes:
       - ./backend:/usr/src/backend
     env_file:
