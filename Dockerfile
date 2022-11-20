@@ -1,4 +1,5 @@
 # frontendのビルドを行います。
+
 FROM node:14 AS frontend-build
 
 WORKDIR /home/node
@@ -12,6 +13,7 @@ USER node
 RUN npm run build
 
 # backendのビルドを行います。
+
 FROM openjdk:11-slim AS backend-build
 WORKDIR /usr/src/backend
 COPY ./backend .
@@ -50,4 +52,4 @@ RUN chmod 755 /startup.sh
 CMD /startup.sh
 
 # docker build . -t task-circle
-# docker run -p 8080:8080 task-circle
+# docker run -p 8080:8080 --name task-circle task-circle
