@@ -19,7 +19,7 @@ export function register(config?: Config) {
     }
 
     window.addEventListener("load", () => {
-      const swUrl = `https://task-circle.herokuapp.com/service-worker.js`;
+      const swUrl = `https://task-circle.onrender.com/service-worker.js`;
 
       if (isLocalhost) {
         checkValidServiceWorker(swUrl, config);
