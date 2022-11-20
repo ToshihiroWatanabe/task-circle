@@ -1,9 +1,6 @@
 # frontendのビルドを行います。
 FROM node:14 AS frontend-build
 
-ARG REACT_APP_CLIENT_ID
-ENV REACT_APP_CLIENT_ID=$REACT_APP_CLIENT_ID
-
 WORKDIR /home/node
 COPY ./frontend .
 COPY --chown=node:node ./frontend/package.json .
@@ -34,8 +31,6 @@ ENV MYSQL_DATABASE taskcircledb
 ENV MYSQL_PASSWORD root
 ENV MYSQL_USERNAME root
 ENV MYSQL_URL=jdbc:mysql://localhost:3306/taskcircledb
-
-EXPOSE 8080
 
 COPY --from=backend-build /usr/src/backend/target /usr/src
 COPY ./my.cnf /usr/src
