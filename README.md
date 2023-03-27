@@ -24,7 +24,7 @@
 <a href="https://task-circle.onrender.com" align="center">https://task-circle.onrender.com</a>
 </h3>
 
-# 💡概要
+# 💡 概要
 
 **タスク管理**と**タイマー**、**他のユーザーのステータス表示機能**のあるWebアプリケーションです。
 
@@ -45,7 +45,7 @@
 -   独自ドメインを取得してRoute53に登録し、Let's Encryptで取得した証明書をTomcatにインストールし、80番と443番ポートの通信を8443番ポートへ転送してHTTPS化しています。<br>
     </details>
 
-# 🔰使い方
+# 🔰 使い方
 
 ![TaskCircle_QuickStartGuide_1](https://user-images.githubusercontent.com/79039863/125425089-ce0972c5-b7ea-4c47-b917-ae6bd2e5e632.png)
 
@@ -55,16 +55,16 @@
 
 ![TaskCircle_QuickStartGuide_4](https://user-images.githubusercontent.com/79039863/125425277-bd286a68-8cc4-4c35-b1a1-757847d78c9f.png)
 
-# 📅開発履歴
+# 📅 開発履歴
 
 2021年6月18日 Reactプロジェクトを作成  
 2021年6月29日 Spring Bootプロジェクトを追加  
 2021年7月 3日 AWSにデプロイし、アプリ公開  
 2021年7月15日 TypeScriptへの移行開始  
-2022年3月21日 ホスティングサービスをAWSからHerokuに移行
+2022年3月21日 ホスティングサービスをAWSからHerokuに移行  
 2022年11月21日 ホスティングサービスをHerokuからRenderに移行
 
-# 👨‍💻使用技術
+# 👨‍💻 使用技術
 
 <details>
   <summary>React</summary>
@@ -99,7 +99,7 @@
   データベースを管理するためのシステムおよび言語です。基本的なCRUD処理(新規作成、取得、更新、削除)を行っています。
 </details>
 
-# 🛠インストール手順
+# 🛠 インストール手順
 
 ## 実行環境
 
