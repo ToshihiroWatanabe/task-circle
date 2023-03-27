@@ -1,4 +1,4 @@
-# task-circle/springboot
+# task-circle/backend
 
 Javaのフレームワーク「Spring Boot」で制作したバックエンドWebアプリケーションです。
 
@@ -12,24 +12,24 @@ Javaのフレームワーク「Spring Boot」で制作したバックエンドWe
 
 受信元|送信先|説明
 ---|---|---
-[/websocket/session/enter](/springboot/src/main/java/app/taskcircle/controller/SessionWebSocketController.java)|[/websocket/topic/session](/springboot/src/main/java/app/taskcircle/controller/SessionWebSocketController.java)|入室メッセージ
-[/websocket/session/leave](/springboot/src/main/java/app/taskcircle/controller/SessionWebSocketController.java)|[/websocket/topic/session/leave](/springboot/src/main/java/app/taskcircle/controller/SessionWebSocketController.java)|退室メッセージ
-[/websocket/session](/springboot/src/main/java/app/taskcircle/controller/SessionWebSocketController.java)|[/websocket/topic/session](/springboot/src/main/java/app/taskcircle/controller/SessionWebSocketController.java)|その他のメッセージ
+[/websocket/session/enter](/backend/src/main/java/app/taskcircle/controller/SessionWebSocketController.java)|[/websocket/topic/session](/backend/src/main/java/app/taskcircle/controller/SessionWebSocketController.java)|入室メッセージ
+[/websocket/session/leave](/backend/src/main/java/app/taskcircle/controller/SessionWebSocketController.java)|[/websocket/topic/session/leave](/backend/src/main/java/app/taskcircle/controller/SessionWebSocketController.java)|退室メッセージ
+[/websocket/session](/backend/src/main/java/app/taskcircle/controller/SessionWebSocketController.java)|[/websocket/topic/session](/backend/src/main/java/app/taskcircle/controller/SessionWebSocketController.java)|その他のメッセージ
 
 ## API
 
 URI(エンドポイント)|リクエスト|パラメータ|説明
 ---|---|---|---
-[/api/auth/login](/springboot/src/main/java/app/taskcircle/controller/AuthController.java)|POST|リクエストボディ･･･トークンID、メールアドレス|ログインまたは新規登録します。
-[/api/todolist/findbytokenid](/springboot/src/main/java/app/taskcircle/controller/TodoListController.java)|POST|リクエストボディ･･･トークンID|ToDoリストを取得します。
-[/api/todolist/update](/springboot/src/main/java/app/taskcircle/controller/TodoListController.java)|POST|リクエストボディ･･･トークンID、ToDoリスト|ToDoリストを更新します。
-[/api/setting/findbytokenid](/springboot/src/main/java/app/taskcircle/controller/SettingController.java)|POST|リクエストボディ･･･トークンID|設定を取得します。
-[/api/setting/update](/springboot/src/main/java/app/taskcircle/controller/SettingController.java)|POST|リクエストボディ･･･トークンID、設定|設定を更新します。
-[/actuator/info](/springboot/src/main/resources/application.properties)|GET|なし|アプリのビルド時刻などを取得します。
+[/api/auth/login](/backend/src/main/java/app/taskcircle/controller/AuthController.java)|POST|リクエストボディ･･･トークンID、メールアドレス|ログインまたは新規登録します。
+[/api/todolist/findbytokenid](/backend/src/main/java/app/taskcircle/controller/TodoListController.java)|POST|リクエストボディ･･･トークンID|ToDoリストを取得します。
+[/api/todolist/update](/backend/src/main/java/app/taskcircle/controller/TodoListController.java)|POST|リクエストボディ･･･トークンID、ToDoリスト|ToDoリストを更新します。
+[/api/setting/findbytokenid](/backend/src/main/java/app/taskcircle/controller/SettingController.java)|POST|リクエストボディ･･･トークンID|設定を取得します。
+[/api/setting/update](/backend/src/main/java/app/taskcircle/controller/SettingController.java)|POST|リクエストボディ･･･トークンID、設定|設定を更新します。
+[/actuator/info](/backend/src/main/resources/application.properties)|GET|なし|アプリのビルド時刻などを取得します。
 
 ## データベース
 
-DDL(テーブルを作成する文)は[/springboot/src/main/resources/schema.sql](/springboot/src/main/resources/schema.sql)を参照してください。
+DDL(テーブルを作成する文)は[/backend/src/main/resources/schema.sql](/backend/src/main/resources/schema.sql)を参照してください。
 
 ### ER図
 
