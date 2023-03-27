@@ -1,8 +1,8 @@
-# task-circle/react
+# task-circle/frontend
 
 JavaScriptのライブラリ「React」を使ったフロントエンドWebアプリケーションです。
 
-# 🌟機能
+# 🌟 機能
 
 ## ボード形式のタスク管理
 
